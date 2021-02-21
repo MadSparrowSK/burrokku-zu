@@ -11,20 +11,12 @@
         WindowStyle="None"
         Background="Transparent"
         ResizeMode="CanResizeWithGrip"
-<<<<<<< HEAD
         Icon="/Icon/icon.png"
         MinHeight="500"
         MinWidth="800">
     <Border BorderBrush="Black"
             BorderThickness="0"
-            CornerRadius="0"
-=======
-        Icon="/Icon/icon.png">
-    <Border BorderBrush="Gray"
-            BorderThickness="2"
-            CornerRadius="2"
->>>>>>> parent of 68b5be4 (Update MainWindow.xaml)
-            Background="Black">
+            CornerRadius="0">
         <Grid ShowGridLines="True">
 
             <Grid.RowDefinitions>
