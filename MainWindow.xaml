@@ -9,25 +9,30 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None"
-        Background="Transparent"
+        Background="Black"
         ResizeMode="CanResizeWithGrip"
         Icon="/Icon/icon.png"
         MinHeight="400"
         MinWidth="800">
-    <Border BorderBrush="Black"
-            BorderThickness="0"
-            CornerRadius="0"
-            Background="Black">
-        <Grid ShowGridLines="True">
+    <Border BorderThickness="1.2"
+            CornerRadius="0">
+        <Border.BorderBrush>
+            <SolidColorBrush Color="Purple" Opacity="0.4"></SolidColorBrush>
+        </Border.BorderBrush>
+        <Border.Background>
+            <SolidColorBrush Color="Gray" Opacity="0.1"></SolidColorBrush>
+        </Border.Background>
+
+        <Grid ShowGridLines="False">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="110"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
@@ -37,36 +42,39 @@
             <!--#region right_side-->
             <DockPanel Grid.Column="3"
                        Grid.Row="0"
-                       Background="Black"
                        MouseLeftButtonDown="Mouse_Drag_Window">
+                <DockPanel.Background>
+                    <SolidColorBrush Color="Gray" Opacity="0.2">
+                    </SolidColorBrush>
+                </DockPanel.Background>
 
                 <StackPanel
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
 
-                    <Label Width="35"
+                    <Label Width="44"
                            MouseEnter="Mouse_Enter"
                            MouseLeave="Mouse_Leave"
-                           Padding="11.5,15,5,5"
-                           MouseLeftButtonDown="Roll_Up">
-                        <Rectangle Height="1.3"
-                                   Width="14"
-                                   Fill="White"></Rectangle>
+                           MouseLeftButtonDown="Roll_Up"
+                           Padding="14.55,18,0,0">
+
+                        <Polyline Stroke="White" Points=" 0,0 15,0"></Polyline>
+                        
                     </Label>
 
                     <Label Foreground="White"
-                           Width="35"
+                           Width="44"
                            MouseEnter="Mouse_Enter"
                            MouseLeave="Mouse_Leave"
-                           Padding="12,13,5,5"
+                           Padding="17,12,5,5"
                            MouseLeftButtonDown="Resize_Wondow">
 
                         <Canvas>
                             <Rectangle Stroke="White"
                                        Height="10"
                                        Width="10"
-                                       Fill="Black"
-                                       Panel.ZIndex="1"></Rectangle>
+                                       Panel.ZIndex="1"
+                                       Fill="Black"></Rectangle>
 
                             <Rectangle Stroke="White"
                                        Width="10"
@@ -77,58 +85,40 @@
 
                     </Label>
 
-                    <Label MouseEnter="Mouse_Enter"
-                           MouseLeave="Mouse_Leave"
+                    <Label MouseEnter="Mouse_Enter_Close"
+                           MouseLeave="Mouse_Leave_Close"
                            MouseLeftButtonDown="Close_Click" 
                            Foreground="White"
-                           Content="X"
                            Name="lbl_Close"
-                           Padding="15,9,5,5"
-                           Width="35"/>
+                           Padding="30,9,7,5"
+                           Width="47">
+
+                        <Canvas>
+                            <Polyline Stroke="White" Points="0,0 -13,15"></Polyline>
+                            <Polyline Stroke="White" Points=" 0,15 -13,0"></Polyline>
+                            
+                        </Canvas>
+                        
+                    </Label>
 
                 </StackPanel>
             </DockPanel>
-            <!--#endregion-->
-
-            <!--#region center-->
-
-            <DockPanel Background="Black"
-                       Grid.Row="0"
-                       Grid.Column="2"
-                       MouseLeftButtonDown="Mouse_Drag_Window">
-
-                <Label MouseLeftButtonDown="Change_Window"
-                       FontSize="18"
-                       HorizontalAlignment="Center"
-                       Content="Change Theme"
-                       FontFamily="/Font/#Clickuper"
-                       Padding="0,7,0,0">
-                    <Label.Foreground>
-                        <LinearGradientBrush>
-                            <GradientStop Color="Orange" Offset="0.0"></GradientStop>
-                            <GradientStop Color="Red" Offset="0.25"></GradientStop>
-                            <GradientStop Color="Blue" Offset="0.75"></GradientStop>
-                            <GradientStop Color="LightGray" Offset="0.99"></GradientStop>
-                        </LinearGradientBrush>
-                    </Label.Foreground>
-                </Label>
-            </DockPanel>
-   
-            
             <!--#endregion-->
             
             <!--#region left_side-->
             <DockPanel Grid.Column="0"
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
-                       Background="Black"
                        MouseLeftButtonDown="Mouse_Drag_Window">
+                <DockPanel.Background>
+                    <SolidColorBrush Color="Gray" Opacity="0.2"></SolidColorBrush>
+                </DockPanel.Background>
 
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Left">
                     
                     <!--#region symbol-->
-                    <Label Padding="20,10,44,0">
+                    <Label Padding="20,7,44,0">
                         <Canvas>
                             <Polyline Stroke="Orange" Points="38,2 30,13"></Polyline>
                             <Polyline Points="42,4 48,8 42,11" Stroke="#D032FC"></Polyline>
@@ -142,8 +132,8 @@
                     <Label Content="Burrokku-Zu"
                            FontSize="18"
                            FontFamily="/Font/#Clickuper"
-                           Foreground="White"
-                           Padding="20,7,0,0"></Label>
+                           Foreground="Gray"
+                           Padding="20,3,0,0"></Label>
                 </StackPanel>
             </DockPanel>
             <!--#endregion-->
@@ -154,75 +144,90 @@
             <Canvas Grid.Row="1"
                     Grid.Column="1"
                     Grid.ColumnSpan="3"
-                    Background="#808087">
+                    Background="White"
+                    Opacity="0.4">
                 
             </Canvas>
             <!--#endregion-->
 
            <!--#region side bar-->
 
-           <DockPanel Grid.Column="0"
+            <Border    Grid.Column="0"
+                       Grid.Row="1">
+                <Border.Background>
+                    <SolidColorBrush Color="Gray" Opacity="0.2"></SolidColorBrush>
+                </Border.Background>
+            </Border>
+            
+            <DockPanel Grid.Column="0"
                        Grid.Row="1"
-                       VerticalAlignment="Top"
-                       Background="Black">
+                       VerticalAlignment="Top">
+                <DockPanel.Background>
+                    <SolidColorBrush Color="Gray" Opacity="0"></SolidColorBrush>
+                </DockPanel.Background>
 
                 <StackPanel Orientation="Vertical">
 
                     <!--#region  ellipse-->
                     <Label Padding="20,10,0,10"
                            MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave">
+                           MouseLeave="SideBar_Mouse_Leave"
+                           Name="lbl_Ellipse">
                         <Rectangle Width="70"
                                    Height="25"
-                                   Stroke="White"
+                                   Stroke="Gray"
                                    RadiusX="13"
-                                   RadiusY="20"></Rectangle>
+                                   RadiusY="20"
+                                   Name="Ellipse"></Rectangle>
                     </Label>
                     <!--#endregion-->
                     
                     <!--#region rectangle-->
                     <Label Padding="20,10,0,10"
-                           Background="Black"
                            MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave">
+                           MouseLeave="SideBar_Mouse_Leave"
+                           Name="lbl_Rect">
 
-                        <Polygon Stroke="White" Points="8,1 8,30 60,30 60,1"></Polygon>
+                        <Polygon Stroke="Gray" Points="8,1 8,30 60,30 60,1"
+                                 Name="Rekt"></Polygon>
                         
                     </Label>
                     <!--#endregion-->
 
                     <!--#region parallelogram-->
                     <Label Padding="19,10,0,10"
-                           Background="Black"
                            MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave">
+                           MouseLeave="SideBar_Mouse_Leave"
+                           Name="lbl_Parrabellum">
 
-                        <Polygon Stroke="White" Points="8,1 0,30 60,30 68,1"></Polygon>
+                        <Polygon Stroke="Gray" Points="8,1 0,30 60,30 68,1"
+                                 Name="Parrabellum"></Polygon>
                        
                     </Label>
                     <!--#endregion-->
                     
                     <!--#region rhombus-->
                     <Label Padding="14,12,0,8"
-                           Background="Black"
                            MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave">
+                           MouseLeave="SideBar_Mouse_Leave"
+                           Name="lbl_Rhomb">
 
-                        <Polygon Stroke="White" Points="0,8 40,20 80,8 40,-4"></Polygon>
+                        <Polygon Stroke="Gray" Points="0,8 40,20 80,8 40,-4"
+                                 Name="Rhomb"></Polygon>
                         
                     </Label>
                     <!--#endregion-->
                     
                     <!--#region rectangle with line-->
                     <Label Padding="9,12,0,44"
-                           Background="Black"
                            MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave">
+                           MouseLeave="SideBar_Mouse_Leave"
+                           Name="lbl_RWL">
 
                         <Canvas>
-                            <Polyline Stroke="White" Points="18,1 18,30"></Polyline>
-                            <Polyline Stroke="White" Points="70,1 70,30"></Polyline>
-                            <Polygon Stroke="White" Points="8,1 8,30 80,30 80,1"></Polygon>
+                            <Polyline Stroke="Gray" Points="18,1 18,30" Name="RWL_1"></Polyline>
+                            <Polyline Stroke="Gray" Points="70,1 70,30" Name="RWL_2"></Polyline>
+                            <Polygon Stroke="Gray" Points="8,1 8,30 80,30 80,1" Name="RWL_3"></Polygon>
                         </Canvas>
                         
                     </Label>
@@ -230,11 +235,12 @@
                     
                     <!--#region cycle-->
                     <Label Padding="20,16,0,12"
-                           Background="Black"
                            MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave">
+                           MouseLeave="SideBar_Mouse_Leave"
+                           Name="lbl_Cylce">
 
-                        <Polygon Stroke="White" Points="1,8 7,20 60,20 67,8 60,-6 7,-6"></Polygon>
+                        <Polygon Stroke="Gray" Points="1,8 7,20 60,20 67,8 60,-6 7,-6"
+                                 Name="Cycle"></Polygon>
                         
                     </Label>
                     <!--#endregion-->
@@ -243,6 +249,35 @@
             </DockPanel>
             
            <!--#endregion-->
+            
+           <!--#region footer-->
+            <Border    Grid.ColumnSpan="3"
+                       Grid.Row="2"
+                       Grid.Column="0">
+                <Border.Background>
+                    <SolidColorBrush Color="Purple" Opacity="0.4"></SolidColorBrush>
+                </Border.Background>
+            </Border>
+
+
+            <DockPanel Grid.ColumnSpan="3"
+                       Grid.Row="2"
+                       Grid.Column="0" 
+                       HorizontalAlignment="Left">
+
+                <StackPanel Orientation="Horizontal">
+
+                    <Label Content="Settings"
+                           Foreground="White">
+                        
+                        
+                    </Label>
+                    
+                </StackPanel>
+                
+            </DockPanel> 
+           <!--#endregion-->
+            
         </Grid>
     </Border>
 </Window>

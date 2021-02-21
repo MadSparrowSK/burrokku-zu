@@ -39,22 +39,60 @@ namespace Interface_1._0
         }
         private void Mouse_Leave(object sender, RoutedEventArgs e)
         {
-            ((Label)sender).Background = Brushes.Black;
+            ((Label)sender).Background = new SolidColorBrush(Colors.Gray) { Opacity = 0 };
         }
         private void Close_Click(object sender, RoutedEventArgs e) 
         {
             this.Close();
+        }
+        private void Mouse_Enter_Close(object sender, RoutedEventArgs e)
+        {
+            ((Label)sender).Background = Brushes.Red;
+        }
+        private void Mouse_Leave_Close(object sender, RoutedEventArgs e)
+        {
+            lbl_Close.Background = new SolidColorBrush(Colors.Gray) { Opacity = 0 };
         }
         #endregion
 
         #region Interactions with SideBar
         private void SideBar_Mouse_Enter(object sender, RoutedEventArgs e)
         {
-            ((Label)sender).Background = Brushes.Gray;
+            if (lbl_Ellipse == sender)
+                Ellipse.Stroke = Brushes.White;
+            if (lbl_Cylce == sender)
+                Cycle.Stroke = Brushes.White;
+            if (lbl_Parrabellum == sender)
+                Parrabellum.Stroke = Brushes.White;
+            if (lbl_Rhomb == sender)
+                Rhomb.Stroke = Brushes.White;
+            if (lbl_Rect == sender)
+                Rekt.Stroke = Brushes.White;
+            if (lbl_RWL == sender)
+            {
+                RWL_1.Stroke = Brushes.White;
+                RWL_2.Stroke = Brushes.White;
+                RWL_3.Stroke = Brushes.White;
+            }
         }
         private void SideBar_Mouse_Leave(Object sender, RoutedEventArgs e)
         {
-            ((Label)sender).Background = Brushes.Black;
+            if (lbl_Ellipse == sender)
+                Ellipse.Stroke = Brushes.Gray;
+            if (lbl_Cylce == sender)
+                Cycle.Stroke = Brushes.Gray;
+            if (lbl_Parrabellum == sender)
+                Parrabellum.Stroke = Brushes.Gray;
+            if (lbl_Rhomb == sender)
+                Rhomb.Stroke = Brushes.Gray;
+            if (lbl_Rect == sender)
+                Rekt.Stroke = Brushes.Gray;
+            if (lbl_RWL == sender)
+            {
+                RWL_1.Stroke = Brushes.Gray;
+                RWL_2.Stroke = Brushes.Gray;
+                RWL_3.Stroke = Brushes.Gray;
+            }
         }
         #endregion
 
