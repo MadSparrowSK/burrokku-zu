@@ -12,11 +12,11 @@
         Background="Transparent"
         ResizeMode="CanResizeWithGrip"
         Icon="/Icon/icon.png"
-        MinWidth="700"
-        MinHeight="400">
-    <Border BorderBrush="Gray"
-            BorderThickness="2"
-            CornerRadius="2"
+        MinHeight="500"
+        MinWidth="800">
+    <Border BorderBrush="Black"
+            BorderThickness="0"
+            CornerRadius="0"
             Background="Black">
         <Grid ShowGridLines="True">
 
