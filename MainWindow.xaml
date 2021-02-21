@@ -23,7 +23,7 @@
             <SolidColorBrush Color="Gray" Opacity="0.1"></SolidColorBrush>
         </Border.Background>
 
-        <Grid ShowGridLines="False">
+        <Grid ShowGridLines="True">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
@@ -114,7 +114,7 @@
                     <SolidColorBrush Color="Gray" Opacity="0.2"></SolidColorBrush>
                 </DockPanel.Background>
 
-                <StackPanel Orientation="Horizontal"
+                <StackPanel Orientation="Vertical"
                             HorizontalAlignment="Left">
                     
                     <!--#region symbol-->
@@ -129,13 +129,28 @@
                     </Label>
                     <!--#endregion-->
 
-                    <Label Content="Burrokku-Zu"
-                           FontSize="18"
+                    <!--<Label Content="Burrokku-Zu"
+                           FontSize="9"
                            FontFamily="/Font/#Clickuper"
-                           Foreground="Gray"
-                           Padding="20,3,0,0"></Label>
+                           Foreground="White"
+                           Padding="20,3,0,0"></Label>-->
                 </StackPanel>
             </DockPanel>
+            <!--#endregion-->
+            
+            <!--#region menu_bar-->
+
+            <DockPanel Grid.Column="1"
+                       Grid.Row="0" HorizontalAlignment="Left">
+
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="File" Foreground="Gray" Padding="10,5,10,0"></Label>
+                    <Label Content="Help" Foreground="Gray" Padding="10,5,10,0"></Label>
+                    <Label Content="something more ..." Foreground="Gray" Padding="10,5,10,0"></Label>
+                </StackPanel>
+
+            </DockPanel>
+            
             <!--#endregion-->
             
             <!--#endregion-->
@@ -267,8 +282,9 @@
 
                 <StackPanel Orientation="Horizontal">
 
-                    <Label Content="Settings"
-                           Foreground="White">
+                    <Label Content="Icon Settings"
+                           Foreground="White"
+                           Padding="10,3,0,0">
                         
                         
                     </Label>
