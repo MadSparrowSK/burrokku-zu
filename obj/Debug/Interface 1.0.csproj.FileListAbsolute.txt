@@ -1,0 +1,17 @@
+F:\С#\Interface 1.0\bin\Debug\Interface 1.0.exe.config
+F:\С#\Interface 1.0\bin\Debug\Interface 1.0.exe
+F:\С#\Interface 1.0\bin\Debug\Interface 1.0.pdb
+F:\С#\Interface 1.0\obj\Debug\Interface 1.0.csprojAssemblyReference.cache
+F:\С#\Interface 1.0\obj\Debug\MainWindow.g.cs
+F:\С#\Interface 1.0\obj\Debug\App.g.cs
+F:\С#\Interface 1.0\obj\Debug\Interface 1.0_MarkupCompile.cache
+F:\С#\Interface 1.0\obj\Debug\Interface 1.0_MarkupCompile.lref
+F:\С#\Interface 1.0\obj\Debug\MainWindow.baml
+F:\С#\Interface 1.0\obj\Debug\Interface 1.0.g.resources
+F:\С#\Interface 1.0\obj\Debug\Interface_1._0.Properties.Resources.resources
+F:\С#\Interface 1.0\obj\Debug\Interface 1.0.csproj.GenerateResource.cache
+F:\С#\Interface 1.0\obj\Debug\Interface 1.0.csproj.CoreCompileInputs.cache
+F:\С#\Interface 1.0\obj\Debug\Interface 1.0.exe
+F:\С#\Interface 1.0\obj\Debug\Interface 1.0.pdb
+F:\С#\Interface 1.0\obj\Debug\ChangeWindow.g.cs
+F:\С#\Interface 1.0\obj\Debug\ChangeWindow.baml
