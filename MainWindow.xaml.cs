@@ -117,5 +117,44 @@ namespace Interface_1._0
             this.WindowState = WindowState.Minimized;
         }
         #endregion
+
+        #region Drag_N_Drop
+
+        private void lbl_MD(object sender, MouseButtonEventArgs e)
+        {
+            Label lbl_Copy = (Label)sender;
+            DragDrop.DoDragDrop(lbl_Copy, lbl_Copy.Content, DragDropEffects.Copy);
+        }
+        private void Ellipse_MD(object sender, MouseButtonEventArgs e)
+        {
+            DataObject data = new DataObject();
+            data.SetData(DataFormats.StringFormat, Ellipse.Stroke.ToString());
+            data.SetData("Double", Ellipse.Width);
+            data.SetData("Double", Ellipse.Height);
+            data.SetData("Double", Ellipse.RadiusX);
+            data.SetData("Double", Ellipse.RadiusY);
+            data.SetData("Object", this);
+
+            DragDrop.DoDragDrop(this, data, DragDropEffects.Copy);
+        }
+        private void DnD_Enter(object sender, DragEventArgs e)
+        { 
+        }
+        private void DnD_Drop(object sender, DragEventArgs e)
+        {
+            Copy_Tangle.Fill = Ellipse.Fill;
+            Copy_Tangle.Stroke = Brushes.White;
+            Copy_Tangle.Width = Ellipse.Width;
+            Copy_Tangle.Height= Ellipse.Height;
+            Copy_Tangle.RadiusX = Ellipse.RadiusX;
+            Copy_Tangle.RadiusY = Ellipse.RadiusY;
+            
+        }
+        private void DnD_Leave(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion
     }
 }

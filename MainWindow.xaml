@@ -144,8 +144,8 @@
                        Grid.Row="0" HorizontalAlignment="Left">
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="File" Foreground="Gray" Padding="10,5,10,0"></Label>
-                    <Label Content="Help" Foreground="Gray" Padding="10,5,10,0"></Label>
+                    <Label Content="File" Foreground="Gray" Padding="10,5,10,0" ></Label>
+                    <Label Content="Help" Foreground="Gray" Padding="10,5,10,0" ></Label>
                     <Label Content="something more ..." Foreground="Gray" Padding="10,5,10,0"></Label>
                 </StackPanel>
 
@@ -159,9 +159,18 @@
             <Canvas Grid.Row="1"
                     Grid.Column="1"
                     Grid.ColumnSpan="3"
-                    Background="White"
-                    Opacity="0.4">
-                
+                    Background="Black"
+                    Opacity="1"
+                    AllowDrop="True"
+                    DragEnter="DnD_Enter"
+                    DragLeave="DnD_Leave"
+                    Drop="DnD_Drop"
+                    Name="CanvasPos">
+
+                <Label Name="lbl_Drop" Padding="5" Canvas.Top="0" Canvas.Left="0">
+                    <Rectangle Name="Copy_Tangle"></Rectangle>
+                </Label>
+
             </Canvas>
             <!--#endregion-->
 
@@ -190,10 +199,12 @@
                            Name="lbl_Ellipse">
                         <Rectangle Width="70"
                                    Height="25"
+                                   Fill="Transparent"
                                    Stroke="Gray"
                                    RadiusX="13"
                                    RadiusY="20"
-                                   Name="Ellipse"></Rectangle>
+                                   Name="Ellipse"
+                                   MouseDown="Ellipse_MD"></Rectangle>
                     </Label>
                     <!--#endregion-->
                     
