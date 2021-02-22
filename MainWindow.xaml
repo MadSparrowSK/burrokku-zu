@@ -23,7 +23,7 @@
             <SolidColorBrush Color="Gray" Opacity="0.1"></SolidColorBrush>
         </Border.Background>
 
-        <Grid ShowGridLines="True">
+        <Grid ShowGridLines="False">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
@@ -147,6 +147,8 @@
                     <Label Content="File" Foreground="Gray" Padding="10,5,10,0" ></Label>
                     <Label Content="Help" Foreground="Gray" Padding="10,5,10,0" ></Label>
                     <Label Content="something more ..." Foreground="Gray" Padding="10,5,10,0"></Label>
+                    <Label Content="Clear" Foreground="Gray" Padding="10,5,10,0" 
+                           MouseDown="inTrash"></Label>
                 </StackPanel>
 
             </DockPanel>
@@ -162,14 +164,9 @@
                     Background="Black"
                     Opacity="1"
                     AllowDrop="True"
-                    DragEnter="DnD_Enter"
-                    DragLeave="DnD_Leave"
                     Drop="DnD_Drop"
                     Name="CanvasPos">
 
-                <Label Name="lbl_Drop" Padding="5" Canvas.Top="0" Canvas.Left="0">
-                    <Rectangle Name="Copy_Tangle"></Rectangle>
-                </Label>
 
             </Canvas>
             <!--#endregion-->
