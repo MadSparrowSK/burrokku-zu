@@ -25,7 +25,7 @@ namespace Interface_1._0
         private bool CheckParall = false;
         private bool CheckEllipse = false;
         private bool CheckFigure = false;
-
+        private bool Check = false;
 
         public MainWindow()
         {
@@ -127,16 +127,26 @@ namespace Interface_1._0
 
         #region Drag_N_Drop
 
+        private void TestDnD(object sender, MouseButtonEventArgs e)
+        {
+           
+            DataObject data = new DataObject();
+            data.SetData("Object", this);
+
+            DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
+        }
+
+
         private void DragDrop_MD(object sender, MouseButtonEventArgs e)
         {
-            if (Rekt == sender)
+            /*if (Rekt == sender)
                 CheckRekt = true;
             if (Parrabellum == sender)
                 CheckParall = true;
             if (Ellipse == sender)
                 CheckEllipse = true;
             if (Cycle == sender)
-                CheckFigure = true;
+                CheckFigure = true;*/
 
 
             DataObject data = new DataObject();
@@ -146,62 +156,102 @@ namespace Interface_1._0
         }
 
 
-        
+        Rectangle rekkkt;
         private void DnD_Drop(object sender, DragEventArgs e)
         {
-            if(CheckRekt)
+
+            if(!Check)
             {
-                Polygon pol = new Polygon();
-                pol.Points = Rekt.Points;
-                pol.Stroke = Brushes.White;
+                rekkkt = new Rectangle();
+
+                rekkkt.Fill = Brushes.Transparent;
+                rekkkt.Stroke = Brushes.White;
+                rekkkt.Width = Ellipse.Width;
+                rekkkt.Height = Ellipse.Height;
 
                 var pos = e.GetPosition(CanvasPos);
 
-                CanvasPos.Children.Add(pol);
-                Canvas.SetLeft(pol, pos.X);
-                Canvas.SetTop(pol, pos.Y);
+                CanvasPos.Children.Add(rekkkt);
+                Canvas.SetLeft(rekkkt, pos.X);
+                Canvas.SetTop(rekkkt, pos.Y);
 
-                CheckRekt = false;
+                Check = true;
             }
-            if (CheckParall)
+            else
             {
-                Polygon pol = new Polygon();
-                pol.Points = Parrabellum.Points;
-                pol.Stroke = Brushes.White;
-
                 var pos = e.GetPosition(CanvasPos);
 
-                CanvasPos.Children.Add(pol);
-                Canvas.SetLeft(pol, pos.X);
-                Canvas.SetTop(pol, pos.Y);
-
-                CheckParall = false;
+                Canvas.SetLeft(rekkkt, pos.X);
+                Canvas.SetTop(rekkkt, pos.Y);
             }
-            if(CheckEllipse)
-            {
-                Rectangle rekt = new Rectangle()
-                {
-                    Width = Ellipse.Width,
-                    Height = Ellipse.Height,
-                    Stroke = Brushes.White,
-                    RadiusX = Ellipse.RadiusX,
-                    RadiusY = Ellipse.RadiusY,
-                    Fill = Brushes.Transparent
-                };
 
-                var pos = e.GetPosition(CanvasPos);
+            /*rekt_copy.Fill = Brushes.Transparent;
+            rekt_copy.Stroke = Brushes.White;
+            rekt_copy.Width = Ellipse.Width;
+            rekt_copy.Height = Ellipse.Height;
+            rekt_copy.RadiusX = Ellipse.RadiusX;
+            rekt_copy.RadiusY = Ellipse.RadiusY;
 
-                CanvasPos.Children.Add(rekt);
-                Canvas.SetLeft(rekt, pos.X);
-                Canvas.SetTop(rekt, pos.Y);
+            var pos = e.GetPosition(CanvasPos);
 
-                CheckEllipse = false;
-            }
-            if (CheckFigure)
-            {
-                //Polygon pol = new Polygon();
+            Canvas.SetLeft(rekt_copy, pos.X);
+            Canvas.SetTop(rekt_copy, pos.Y);
+*/
 
-            }
+
+            /* if(CheckRekt)
+             {
+                 Polygon pol = new Polygon();
+                 pol.Points = Rekt.Points;
+                 pol.Stroke = Brushes.White;
+
+                 var pos = e.GetPosition(CanvasPos);
+
+                 CanvasPos.Children.Add(pol);
+                 Canvas.SetLeft(pol, pos.X);
+                 Canvas.SetTop(pol, pos.Y);
+
+                 CheckRekt = false;
+             }
+             if (CheckParall)
+             {
+                 Polygon pol = new Polygon();
+                 pol.Points = Parrabellum.Points;
+                 pol.Stroke = Brushes.White;
+
+                 var pos = e.GetPosition(CanvasPos);
+
+                 CanvasPos.Children.Add(pol);
+                 Canvas.SetLeft(pol, pos.X);
+                 Canvas.SetTop(pol, pos.Y);
+
+                 CheckParall = false;
+             }
+             if(CheckEllipse)
+             {
+                 Rectangle rekt = new Rectangle()
+                 {
+                     Width = Ellipse.Width,
+                     Height = Ellipse.Height,
+                     Stroke = Brushes.White,
+                     RadiusX = Ellipse.RadiusX,
+                     RadiusY = Ellipse.RadiusY,
+                     Fill = Brushes.Transparent
+                 };
+
+                 var pos = e.GetPosition(CanvasPos);
+
+                 CanvasPos.Children.Add(rekt);
+                 Canvas.SetLeft(rekt, pos.X);
+                 Canvas.SetTop(rekt, pos.Y);
+
+                 CheckEllipse = false;
+             }
+             if (CheckFigure)
+             {
+                 //Polygon pol = new Polygon();
+
+             }*/
         }
 
         private void inTrash(object sender, RoutedEventArgs e)

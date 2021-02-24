@@ -165,9 +165,12 @@
                     Opacity="1"
                     AllowDrop="True"
                     Drop="DnD_Drop"
-                    Name="CanvasPos">
+                    Name="CanvasPos"
+                    MouseDown="TestDnD">
 
 
+                <Rectangle Name="rekt_copy"></Rectangle>
+                
             </Canvas>
             <!--#endregion-->
 
