@@ -201,7 +201,7 @@
                                    RadiusX="13"
                                    RadiusY="20"
                                    Name="Ellipse"
-                                   MouseDown="Ellipse_MD"></Rectangle>
+                                   MouseDown="DragDrop_MD"></Rectangle>
                     </Label>
                     <!--#endregion-->
                     
@@ -211,8 +211,9 @@
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Rect">
 
-                        <Polygon Stroke="Gray" Points="8,1 8,30 60,30 60,1"
-                                 Name="Rekt"></Polygon>
+                        <Polygon Stroke="Gray" Fill="Transparent" 
+                                 Points="8,1 8,30 60,30 60,1"
+                                 Name="Rekt" MouseDown="DragDrop_MD"></Polygon>
                         
                     </Label>
                     <!--#endregion-->
@@ -224,7 +225,8 @@
                            Name="lbl_Parrabellum">
 
                         <Polygon Stroke="Gray" Points="8,1 0,30 60,30 68,1"
-                                 Name="Parrabellum"></Polygon>
+                                 Name="Parrabellum" Fill="Transparent"
+                                 MouseDown="DragDrop_MD"></Polygon>
                        
                     </Label>
                     <!--#endregion-->
@@ -236,7 +238,8 @@
                            Name="lbl_Rhomb">
 
                         <Polygon Stroke="Gray" Points="0,8 40,20 80,8 40,-4"
-                                 Name="Rhomb"></Polygon>
+                                 Name="Rhomb" Fill="Transparent"
+                                 MouseDown="DragDrop_MD"></Polygon>
                         
                     </Label>
                     <!--#endregion-->
@@ -263,7 +266,7 @@
                            Name="lbl_Cylce">
 
                         <Polygon Stroke="Gray" Points="1,8 7,20 60,20 67,8 60,-6 7,-6"
-                                 Name="Cycle"></Polygon>
+                                 Name="Cycle" Fill="Transparent" MouseDown="DragDrop_MD"></Polygon>
                         
                     </Label>
                     <!--#endregion-->
