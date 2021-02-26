@@ -168,9 +168,10 @@
                     Name="CanvasPos"
                     MouseDown="TestDnD">
 
+                <!--<Rectangle Name="rekt_copy"></Rectangle>-->
 
-                <Rectangle Name="rekt_copy"></Rectangle>
                 
+
             </Canvas>
             <!--#endregion-->
 
@@ -192,6 +193,8 @@
 
                 <StackPanel Orientation="Vertical">
 
+                    
+                    
                     <!--#region  ellipse-->
                     <Label Padding="20,10,0,10"
                            MouseEnter="SideBar_Mouse_Enter"
