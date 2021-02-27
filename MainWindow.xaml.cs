@@ -21,15 +21,6 @@ namespace Interface_1._0
     public partial class MainWindow : Window
     {
 
-        /*private bool CheckRekt = false;
-        private bool CheckParall = false;
-        private bool CheckEllipse = false;
-        private bool CheckFigure = false;
-        private bool Check = false;
-        private static int ID = 0;*/
-
-        private bool Check = false;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -79,11 +70,7 @@ namespace Interface_1._0
             if (lbl_Rect == sender)
                 Rekt.Stroke = Brushes.White;
             if (lbl_RWL == sender)
-            {
-                RWL_1.Stroke = Brushes.White;
-                RWL_2.Stroke = Brushes.White;
-                RWL_3.Stroke = Brushes.White;
-            }
+                RWL_Main.Stroke = Brushes.White;
         }
         private void SideBar_Mouse_Leave(Object sender, RoutedEventArgs e)
         {
@@ -98,11 +85,7 @@ namespace Interface_1._0
             if (lbl_Rect == sender)
                 Rekt.Stroke = Brushes.Gray;
             if (lbl_RWL == sender)
-            {
-                RWL_1.Stroke = Brushes.Gray;
-                RWL_2.Stroke = Brushes.Gray;
-                RWL_3.Stroke = Brushes.Gray;
-            }
+                RWL_Main.Stroke = Brushes.Gray;
         }
         #endregion
 
@@ -130,146 +113,91 @@ namespace Interface_1._0
 
         #region Drag_N_Drop
 
-        public static Image global_sender;
-        private void TestDnD(object sender, MouseButtonEventArgs e)
+        private void TestDnD(MouseButtonEventArgs e)
         {
-
             Check = true;
-            DataObject data = new DataObject();
-            data.SetData("Object", this);
-
-            DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
         }
 
+        private bool Check = false;
 
+        private bool RWL_Check = false;
+        private bool Rectangle_Check = false;
+        private bool Parrabullem_Check = false;
+        private bool Rhomb_Check = false;
+        private bool Cycle_Check = false;
         private void DragDrop_MD(object sender, MouseButtonEventArgs e)
         {
-           /* if (Rekt == sender)
-                CheckRekt = true;
+            if (RWL_Main == sender)
+                RWL_Check = true;
+            if (Rekt == sender)
+                Rectangle_Check = true;
+            if (Rhomb == sender)
+                Rhomb_Check = true;
             if (Parrabellum == sender)
-                CheckParall = true;
-            if (Ellipse == sender)
-                CheckEllipse = true;
+                Parrabullem_Check = true;
             if (Cycle == sender)
-                CheckFigure = true;*/
+                Cycle_Check = true;
 
-
-            DataObject data = new DataObject();
-            data.SetData("Object", this);
-
-            DragDrop.DoDragDrop(this, data, DragDropEffects.Copy);
+            DragDrop.DoDragDrop(this, this, DragDropEffects.Copy);
         }
 
+        private void IntoCanvasDown(object sender, MouseButtonEventArgs e)
+        {
+            var smt = (UIElement)sender;
+            smt.CaptureMouse();
+        }
+        private void IntoCanvasUp(object sender, MouseButtonEventArgs e)
+        {
+            var smt = (UIElement)sender;
+            var pos = e.GetPosition(CanvasPos);
+
+            Canvas.SetLeft(smt, pos.X);
+            Canvas.SetTop(smt, pos.Y);
+
+            smt.ReleaseMouseCapture();
+        }
         private void DnD_Drop(object sender, DragEventArgs e)
         {
-
-            if(!Check)
-            {
-                Polygon polygon = new Polygon();
-                polygon.Points = Rekt.Points;
-                polygon.Fill = Brushes.Transparent;
-                polygon.Stroke = Brushes.White;
-
-                var pos = e.GetPosition(CanvasPos);
-                CanvasPos.Children.Add(polygon);
-
-                Canvas.SetLeft(polygon, pos.X);
-                Canvas.SetTop(polygon, pos.Y);
-            }
-
-
-            /*rekkkt = new Rectangle();
-
-            rekkkt.Fill = Brushes.Transparent;
-            rekkkt.Stroke = Brushes.White;
-            rekkkt.Width = Ellipse.Width;
-            rekkkt.Height = Ellipse.Height;
-
-            var pos = e.GetPosition(CanvasPos);
-
-            CanvasPos.Children.Add(rekkkt);
-            Canvas.SetLeft(rekkkt, pos.X);
-            Canvas.SetTop(rekkkt, pos.Y);*/
-
-            /*rekt_copy.Fill = Brushes.Transparent;
-            rekt_copy.Stroke = Brushes.White;
-            rekt_copy.Width = Ellipse.Width;
-            rekt_copy.Height = Ellipse.Height;
-            rekt_copy.RadiusX = Ellipse.RadiusX;
-            rekt_copy.RadiusY = Ellipse.RadiusY;
-
-            var pos = e.GetPosition(CanvasPos);
-
-            Canvas.SetLeft(rekt_copy, pos.X);
-            Canvas.SetTop(rekt_copy, pos.Y);
-*/
-
-
-            /*if (CheckRekt)
-            {
-                Polygon pol = new Polygon();
-                pol.Points = Rekt.Points;
-                pol.Stroke = Brushes.White;
-
-                var pos = e.GetPosition(CanvasPos);
-
-                CanvasPos.Children.Add(pol);
-                Canvas.SetLeft(pol, pos.X);
-                Canvas.SetTop(pol, pos.Y);
-
-                CheckRekt = false;
-            }
-            if (CheckParall)
-            {
-                Polygon pol = new Polygon();
-                pol.Points = Parrabellum.Points;
-                pol.Stroke = Brushes.White;
-
-                var pos = e.GetPosition(CanvasPos);
-
-                CanvasPos.Children.Add(pol);
-                Canvas.SetLeft(pol, pos.X);
-                Canvas.SetTop(pol, pos.Y);
-
-                CheckParall = false;
-            }
-            if (CheckEllipse)
-            {
-                Rectangle rekt = new Rectangle()
-                {
-                    Width = Ellipse.Width,
-                    Height = Ellipse.Height,
-                    Stroke = Brushes.White,
-                    RadiusX = Ellipse.RadiusX,
-                    RadiusY = Ellipse.RadiusY,
-                    Fill = Brushes.Transparent
-                };
-
-                var pos = e.GetPosition(CanvasPos);
-
-                CanvasPos.Children.Add(rekt);
-                Canvas.SetLeft(rekt, pos.X);
-                Canvas.SetTop(rekt, pos.Y);
-
-                CheckEllipse = false;
-            }
-            if (CheckFigure)
-            {
-                //Polygon pol = new Polygon();
-
-            }*/
-            if(Check)
-            {
-                Check = false;
-
-                var a = (Rectangle)sender;
+            
+                Polyline polyline = new Polyline();
+                polyline.Stroke = Brushes.White;
+                polyline.Fill = Brushes.Transparent;
+                polyline.StrokeThickness = 1.5;
+                
+                polyline.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
+                polyline.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
                 
                 var pos = e.GetPosition(CanvasPos);
+                CanvasPos.Children.Add(polyline);
 
-                Canvas.SetLeft(a, pos.X);
-                Canvas.SetTop(a, pos.Y);
+                if (RWL_Check)
+                {
+                    polyline.Points = RWL_Main.Points;
+                    RWL_Check = false;
+                }
+                if (Rectangle_Check)
+                {
+                    polyline.Points = Rekt.Points;
+                    Rectangle_Check = false;
+                }
+                if (Cycle_Check)
+                {
+                    polyline.Points = Cycle.Points;
+                    Cycle_Check = false;
+                }
+                if (Rhomb_Check)
+                {
+                    polyline.Points = Rhomb.Points;
+                    Rhomb_Check = false;
+                }
+                if (Parrabullem_Check)
+                {
+                    polyline.Points = Parrabellum.Points;
+                    Parrabullem_Check = false;
+                }
 
-            }
+                Canvas.SetLeft(polyline, pos.X);
+                Canvas.SetTop(polyline, pos.Y);
         }
 
         private void inTrash(object sender, RoutedEventArgs e)
