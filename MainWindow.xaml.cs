@@ -34,6 +34,8 @@ namespace Interface_1._0
         #endregion
 
         #region Interactions with Header
+
+        #region right_side
         private void Mouse_Enter(object sender, RoutedEventArgs e)
         {
             ((Label)sender).Background = Brushes.Gray;
@@ -54,6 +56,20 @@ namespace Interface_1._0
         {
             lbl_Close.Background = new SolidColorBrush(Colors.Gray) { Opacity = 0 };
         }
+        #endregion
+
+        #region left_side
+        private void Help_Window(object sender, RoutedEventArgs e) { }
+        private void Header_Mouse_Enter(object sender, RoutedEventArgs e)
+        {
+            ((Label)sender).Foreground = Brushes.White;
+        }
+        private void Header_Mouse_Leave(object sender, RoutedEventArgs e)
+        {
+            ((Label)sender).Foreground = Brushes.Gray;
+        }
+        #endregion
+
         #endregion
 
         #region Interactions with SideBar
@@ -233,6 +249,17 @@ namespace Interface_1._0
             }
         }
 
+
+        private void Clear_Mouse_Enter(object sender, RoutedEventArgs e)
+        {
+            Clear.Foreground = Brushes.White;
+            Clear.Background = new SolidColorBrush(Colors.Purple) { Opacity = 0.5 };
+        }
+        private void Clear_Mouse_Leave(object sender, RoutedEventArgs e)
+        {
+            Clear.Foreground = Brushes.Gray;
+            Clear.Background = Brushes.Transparent;
+        }
         private void inTrash(object sender, RoutedEventArgs e)
         {
             CanvasPos.Children.Clear();

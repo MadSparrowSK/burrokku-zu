@@ -11,7 +11,6 @@
         WindowStyle="None"
         Background="Black"
         ResizeMode="CanResizeWithGrip"
-        Icon="/Icon/icon.png"
         MinHeight="400"
         MinWidth="800">
     <Border BorderThickness="1.2"
@@ -23,7 +22,7 @@
             <SolidColorBrush Color="Gray" Opacity="0.1"></SolidColorBrush>
         </Border.Background>
 
-        <Grid ShowGridLines="False">
+        <Grid ShowGridLines="True">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
@@ -144,11 +143,20 @@
                        Grid.Row="0" HorizontalAlignment="Left">
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="File" Foreground="Gray" Padding="10,5,10,0" ></Label>
-                    <Label Content="Help" Foreground="Gray" Padding="10,5,10,0" ></Label>
-                    <Label Content="something more ..." Foreground="Gray" Padding="10,5,10,0"></Label>
+                    <Label Content="File" Foreground="Gray" Padding="10,5,10,0" 
+                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"/>
+
+                    <Label Content="something more ..." MouseEnter="Header_Mouse_Enter"
+                           MouseLeave="Header_Mouse_Leave"
+                           Foreground="Gray" Padding="10,5,10,0"/>
+                    
                     <Label Content="Clear" Foreground="Gray" Padding="10,5,10,0" 
-                           MouseDown="inTrash"></Label>
+                           MouseDown="inTrash" MouseEnter="Clear_Mouse_Enter" 
+                           MouseLeave="Clear_Mouse_Leave" Name="Clear"/>
+
+                    <Label Content="Help" Foreground="Gray" Padding="10,5,10,0"
+                           MouseDown="Help_Window" MouseEnter="Header_Mouse_Enter"
+                           MouseLeave="Header_Mouse_Leave" Name="Help"/>
                 </StackPanel>
 
             </DockPanel>
@@ -160,12 +168,13 @@
            <!--#region  main field-->
            <Canvas  Grid.Row="1"
                     Grid.Column="1"
-                    Grid.ColumnSpan="3"
+                    Grid.ColumnSpan="2"
                     Background="Black"
-                    Opacity="1"
                     AllowDrop="True"
                     Drop="DnD_Drop"
-                    Name="CanvasPos">
+                    Name="CanvasPos"
+                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                    ScrollViewer.VerticalScrollBarVisibility="Visible">
 
                 <!--<Rectangle Name="rekt_copy"></Rectangle>-->
 
@@ -295,12 +304,9 @@
 
                 <StackPanel Orientation="Horizontal">
 
-                    <Label Content="Icon Settings"
-                           Foreground="White"
-                           Padding="10,3,0,0">
-                        
-                        
-                    </Label>
+                    <Label Content="Burrokku-zu" FontFamily="Clickuper"
+                           FontSize="15" Padding="10,3,0,0" 
+                           Foreground="Gray" Opacity="0.7"></Label>
                     
                 </StackPanel>
                 
