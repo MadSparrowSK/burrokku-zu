@@ -158,7 +158,7 @@
             <!--#endregion-->
             
            <!--#region  main field-->
-           <Canvas Grid.Row="1"
+           <Canvas  Grid.Row="1"
                     Grid.Column="1"
                     Grid.ColumnSpan="3"
                     Background="Black"
@@ -204,7 +204,7 @@
                                    RadiusX="13"
                                    RadiusY="20"
                                    Name="Ellipse"
-                                   MouseDown="DragDrop_MD"></Rectangle>
+                                   MouseDown="DragDrop_MD"/>
                     </Label>
                     <!--#endregion-->
                     
