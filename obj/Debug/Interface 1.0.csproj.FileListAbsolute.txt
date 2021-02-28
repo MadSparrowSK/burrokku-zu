@@ -32,3 +32,5 @@ F:\Burrokku-zu\obj\Debug\Interface 1.0.csproj.GenerateResource.cache
 F:\Burrokku-zu\obj\Debug\Interface 1.0.csproj.CoreCompileInputs.cache
 F:\Burrokku-zu\obj\Debug\Interface 1.0.exe
 F:\Burrokku-zu\obj\Debug\Interface 1.0.pdb
+F:\Burrokku-zu\obj\Debug\HelpWindow.g.cs
+F:\Burrokku-zu\obj\Debug\HelpWindow.baml

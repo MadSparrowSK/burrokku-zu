@@ -12,9 +12,10 @@
         Background="Black"
         ResizeMode="CanResizeWithGrip"
         MinHeight="400"
-        MinWidth="800">
+        MinWidth="800"
+        Icon="Icon/Icon.jpg">
     <Border BorderThickness="1.2"
-            CornerRadius="0">
+            CornerRadius="0" Name="Border">
         <Border.BorderBrush>
             <SolidColorBrush Color="Purple" Opacity="0.4"></SolidColorBrush>
         </Border.BorderBrush>
@@ -22,7 +23,7 @@
             <SolidColorBrush Color="Gray" Opacity="0.1"></SolidColorBrush>
         </Border.Background>
 
-        <Grid ShowGridLines="True">
+        <Grid ShowGridLines="False">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
@@ -34,14 +35,16 @@
                 <ColumnDefinition Width="110"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="50"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <!--#region  Header-->
             
             <!--#region right_side-->
-            <DockPanel Grid.Column="3"
+            <DockPanel Grid.Column="2"
                        Grid.Row="0"
-                       MouseLeftButtonDown="Mouse_Drag_Window">
+                       Grid.ColumnSpan="2"
+                       MouseLeftButtonDown="Mouse_Drag_Window" Name="RHDP">
                 <DockPanel.Background>
                     <SolidColorBrush Color="Gray" Opacity="0.2">
                     </SolidColorBrush>
@@ -57,7 +60,7 @@
                            MouseLeftButtonDown="Roll_Up"
                            Padding="14.55,18,0,0">
 
-                        <Polyline Stroke="White" Points=" 0,0 15,0"></Polyline>
+                        <Polyline Stroke="White" Points=" 0,0 15,0" Name="RollUp"></Polyline>
                         
                     </Label>
 
@@ -146,17 +149,14 @@
                     <Label Content="File" Foreground="Gray" Padding="10,5,10,0" 
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"/>
 
+                    <Label Content="settings" Foreground="Gray" Padding="10,5,10,0"
+                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
+                           MouseDown="Change_Window"/>
+
                     <Label Content="something more ..." MouseEnter="Header_Mouse_Enter"
                            MouseLeave="Header_Mouse_Leave"
                            Foreground="Gray" Padding="10,5,10,0"/>
                     
-                    <Label Content="Clear" Foreground="Gray" Padding="10,5,10,0" 
-                           MouseDown="inTrash" MouseEnter="Clear_Mouse_Enter" 
-                           MouseLeave="Clear_Mouse_Leave" Name="Clear"/>
-
-                    <Label Content="Help" Foreground="Gray" Padding="10,5,10,0"
-                           MouseDown="Help_Window" MouseEnter="Header_Mouse_Enter"
-                           MouseLeave="Header_Mouse_Leave" Name="Help"/>
                 </StackPanel>
 
             </DockPanel>
@@ -181,7 +181,7 @@
            </Canvas>
             <!--#endregion-->
 
-           <!--#region side bar-->
+           <!--#region left side bar-->
 
            <Border    Grid.Column="0"
                        Grid.Row="1">
@@ -287,8 +287,38 @@
             
            <!--#endregion-->
             
+           <!--#region right side bar-->
+
+            <DockPanel Grid.Column="3" Grid.Row="1">
+                <DockPanel.Background>
+                    <SolidColorBrush Color="Gray" Opacity="0.2"></SolidColorBrush>
+                </DockPanel.Background>
+
+                <StackPanel Orientation="Vertical">
+
+                    <Label Content="Clear" Foreground="Gray" Padding="10,10,10,10" 
+                           MouseDown="inTrash" MouseEnter="Clear_Mouse_Enter" 
+                           MouseLeave="Clear_Mouse_Leave" Name="Clear"/>
+
+                    <Label Content="Help" Foreground="Gray" Padding="10,10,10,10"
+                           MouseDown="HelpWindowOpen" MouseEnter="Header_Mouse_Enter"
+                           MouseLeave="Header_Mouse_Leave" Name="Help"/>
+
+                    <Label Content="Light" Padding="10,10,10,10" Foreground="Gray"
+                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
+                           MouseDown="Switch_Light"/>
+
+                    <Label Content="..." Padding="10,10,10,10" Foreground="Gray"
+                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"/>
+                    
+                </StackPanel>
+                
+            </DockPanel>
+            
+            <!--#endregion-->
+            
            <!--#region footer-->
-            <Border    Grid.ColumnSpan="3"
+            <Border    Grid.ColumnSpan="4"
                        Grid.Row="2"
                        Grid.Column="0">
                 <Border.Background>
