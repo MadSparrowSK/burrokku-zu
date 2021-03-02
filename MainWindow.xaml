@@ -15,20 +15,20 @@
         MinWidth="800"
         Icon="Icon/Icon.jpg">
 
-    <!--<Window.Resources>
+    <Window.Resources>
 
         <Style x:Key="ScrollBarThumbStyle" TargetType="Thumb">
 
             <Setter Property="IsTabStop" Value="False"/>
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="Margin" Value="1,0,1,0"/>
-            <Setter Property="Background" Value="red"/>
-            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
 
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Thumb">
-                        <Ellipse Fill="Blue"/>
+                        <Rectangle Fill="Gray" Opacity="0.2"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -58,14 +58,14 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="RepeatButton">
                         <Grid Margin="1">
-                            <Ellipse Name="Border" StrokeThickness="2" 
-                                     Stroke="Black" Fill="Gray"/>
+                            <Rectangle Name="Border" StrokeThickness="2" 
+                                     Stroke="Transparent" Fill="Transparent"/>
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Border" Property="Fill" Value="Blue"/>
+                                <Setter TargetName="Border" Property="Fill" Value="Purple"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -86,7 +86,7 @@
                 <RepeatButton Grid.Row="0" Height="18" 
                               Style="{StaticResource ScrollBarLineButtonStyle}"
                               Command="ScrollBar.LineUpCommand">
-                    <Path Fill="Red" Data="M 0 4 L 8 4 L 4 0 Z"/>
+                    <Path Fill="Gray" Data="M 0 4 L 8 4 L 4 0 Z" Opacity="0.3"/>
                 </RepeatButton>
 
                 <Track Grid.Row="1" ViewportSize="0" IsDirectionReversed="True"
@@ -113,7 +113,7 @@
                               Grid.Row="3" Height="18" 
                               Style="{StaticResource ScrollBarLineButtonStyle}">
 
-                    <Path Fill="Red" Data="M 0 0 L 4 4 L 8 0 Z"/>
+                    <Path Fill="Gray" Data="M 0 0 L 4 4 L 8 0 Z" Opacity="0.3"/>
 
                 </RepeatButton>
 
@@ -127,10 +127,11 @@
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
-            <Setter Property="Padding" Value="4"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
 
-            <Setter Property="BorderBrush">
+            <!--<Setter Property="BorderBrush">
                 <Setter.Value>
                     <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                         <GradientStop Color="#FFA3AEB9" Offset="0"/>
@@ -139,12 +140,12 @@
                         <GradientStop Color="#FF617584" Offset="1"/>
                     </LinearGradientBrush>
                 </Setter.Value>
-            </Setter>
+            </Setter>-->
 
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ScrollViewer">
-                        <Border CornerRadius="2" BorderBrush="{TemplateBinding BorderBrush}"
+                        <Border CornerRadius="0" BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
 
                             <Grid Background="{TemplateBinding Background}">
@@ -165,7 +166,7 @@
                                                         ContentTemplate="{TemplateBinding ContentTemplate}"/>
 
                                 <Rectangle Grid.Column="1" Grid.Row="1"  
-                                           Fill="#FFE9EEF4"/>
+                                           Fill="Transparent"/>
 
                                 <ScrollBar Name="PART_VerticalScrollBar" Width="18"
                                            IsTabStop="False"
@@ -180,10 +181,40 @@
                                            Template="{StaticResource scroll}"
                                            SnapsToDevicePixels="True"
                                            OverridesDefaultStyle="True"/>
-                                ...
+
+                                <ScrollBar Name="PART_HorizontalScrollBar"
+                                           Height="18" IsTabStop="False"
+                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                           Grid.Column="0" Grid.Row="1"
+                                           Orientation="Horizontal"
+                                           ViewportSize="{TemplateBinding ViewportWidth}"
+                                           Maximum="{TemplateBinding ScrollableWidth}"
+                                           Minimum="0"
+                                           Value="{TemplateBinding HorizontalOffset}"
+                                           Margin="-1,0,-1,-1"/>
 
                             </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
+        <Style TargetType="ListView">
+
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border Background="{TemplateBinding Background}">
+                            <ScrollViewer>
+                                <ItemsPresenter Margin="2">
+                                </ItemsPresenter>
+                            </ScrollViewer>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -191,7 +222,7 @@
 
         </Style>
 
-    </Window.Resources>-->
+    </Window.Resources>
 
     <Border BorderThickness="1.2"
             CornerRadius="0" Name="Border">
@@ -345,24 +376,26 @@
             <!--#endregion-->
             
            <!--#region  main field-->
-           <!--<ScrollViewer Grid.Row="1"
+           <ScrollViewer Grid.Row="1"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                          VerticalScrollBarVisibility="Visible"
-                         HorizontalScrollBarVisibility="Visible">-->
+                         HorizontalScrollBarVisibility="Visible">
 
-                <Canvas  Grid.Row="1"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    Background="Black"
-                    AllowDrop="True"
-                    Drop="DnD_Drop"
-                    Name="CanvasPos"
-                    Width="2099"
-                    Height="2099">
+                    <Canvas Grid.Row="1"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Background="Black"
+                            AllowDrop="True"
+                            Drop="DnD_Drop"
+                            Name="CanvasPos"
+                            Width="2099"
+                            Height="2099">
 
-                </Canvas>
-            <!--</ScrollViewer>-->
+                    </Canvas>
+
+
+           </ScrollViewer>
       
             <!--#endregion-->
 

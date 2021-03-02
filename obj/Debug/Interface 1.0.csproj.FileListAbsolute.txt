@@ -36,4 +36,3 @@ F:\Burrokku-zu\obj\Debug\HelpWindow.g.cs
 F:\Burrokku-zu\obj\Debug\HelpWindow.baml
 F:\Burrokku-zu\obj\Debug\Style.g.cs
 F:\Burrokku-zu\obj\Debug\Style.baml
-F:\Burrokku-zu\obj\Debug\GeneratedInternalTypeHelper.g.cs
