@@ -23,7 +23,7 @@
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="Margin" Value="1,0,1,0"/>
             <Setter Property="Background" Value="Gray"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
 
             <Setter Property="Template">
                 <Setter.Value>
@@ -76,7 +76,7 @@
 
         <ControlTemplate x:Key="scroll" TargetType="ScrollBar">
 
-            <Grid>
+            <Grid ShowGridLines="False">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="18"/>
                     <RowDefinition Height="*"/>
@@ -121,12 +121,61 @@
 
         </ControlTemplate>
 
+        <ControlTemplate TargetType="ScrollBar" x:Key="scrollHos">
+
+            <Grid ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="18"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="18"/>
+                </Grid.ColumnDefinitions>
+
+                <RepeatButton Grid.Column="0" Height="18"
+                              Style="{StaticResource ScrollBarLineButtonStyle}"
+                              Command="ScrollBar.LineRightCommand">
+                    <!--Path ...-->
+                    <Path Fill="Gray" Data="M 0 4 L 8 4 L 4 0 Z" Opacity="0.3"/>
+                </RepeatButton>
+
+                <Track Grid.Column="1" ViewportSize="0" IsDirectionReversed="True"
+                       x:Name="PART_Track_Hos">
+                    
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Command="ScrollBar.PageLeftCommand"
+                                      Style="{StaticResource ScrollBarPageButtonStyle}">
+                        </RepeatButton>
+                    </Track.DecreaseRepeatButton>
+
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource ScrollBarThumbStyle}"/>
+                    </Track.Thumb>
+
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Command="ScrollBar.PageRightCommand" 
+                                      Style="{StaticResource ScrollBarPageButtonStyle}">
+                        </RepeatButton>
+                    </Track.IncreaseRepeatButton>
+
+                </Track>
+
+                <RepeatButton Command="{x:Static ScrollBar.LineLeftCommand}"
+                              Grid.Column="3" Height="18" 
+                              Style="{StaticResource ScrollBarLineButtonStyle}">
+
+                    <Path Fill="Gray" Data="M 0 0 L 4 4 L 8 0 Z" Opacity="0.3"/>
+
+                </RepeatButton>
+                
+            </Grid>
+            
+        </ControlTemplate>
 
         <Style TargetType="ScrollViewer">
 
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Visible"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -148,7 +197,7 @@
                         <Border CornerRadius="0" BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
 
-                            <Grid Background="{TemplateBinding Background}">
+                            <Grid Background="{TemplateBinding Background}" ShowGridLines="False">
 
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -183,7 +232,7 @@
                                            OverridesDefaultStyle="True"/>
 
                                 <ScrollBar Name="PART_HorizontalScrollBar"
-                                           Height="18" IsTabStop="False"
+                                           Height="19" IsTabStop="False"
                                            Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
                                            Grid.Column="0" Grid.Row="1"
                                            Orientation="Horizontal"
@@ -191,6 +240,9 @@
                                            Maximum="{TemplateBinding ScrollableWidth}"
                                            Minimum="0"
                                            Value="{TemplateBinding HorizontalOffset}"
+                                           OverridesDefaultStyle="True"
+                                           SnapsToDevicePixels="True"
+                                           Template="{StaticResource scrollHos}"
                                            Margin="-1,0,-1,-1"/>
 
                             </Grid>
@@ -379,8 +431,7 @@
            <ScrollViewer Grid.Row="1"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
-                         VerticalScrollBarVisibility="Visible"
-                         HorizontalScrollBarVisibility="Visible">
+                    HorizontalScrollBarVisibility="Visible">
 
                     <Canvas Grid.Row="1"
                             Grid.Column="1"
