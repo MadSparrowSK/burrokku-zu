@@ -21,8 +21,6 @@ namespace Interface_1._0
     public partial class MainWindow : Window
     {
 
-        private bool light = false;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -87,8 +85,6 @@ namespace Interface_1._0
                 Rhomb.Stroke = Brushes.White;
             if (lbl_Rect == sender)
                 Rekt.Stroke = Brushes.White;
-            if (lbl_RWL == sender)
-                RWL_Main.Stroke = Brushes.White;
         }
         private void SideBar_Mouse_Leave(Object sender, RoutedEventArgs e)
         {
@@ -102,8 +98,6 @@ namespace Interface_1._0
                 Rhomb.Stroke = Brushes.Gray;
             if (lbl_Rect == sender)
                 Rekt.Stroke = Brushes.Gray;
-            if (lbl_RWL == sender)
-                RWL_Main.Stroke = Brushes.Gray;
         }
         private void Switch_Light(object sender, RoutedEventArgs e)
         {
@@ -147,9 +141,9 @@ namespace Interface_1._0
 
         HitType MouseHitType = HitType.None;
         private bool DragInProgress = false;
-        private Point LastPoint;
+        //private Point LastPoint;
 
-        private HitType SetHitType(Polyline polyline, Point point)
+        private HitType SetHitType(UIElement polyline, Point point)
         {
             double left = Canvas.GetLeft(polyline);
             double top = Canvas.GetTop(polyline);
@@ -184,7 +178,7 @@ namespace Interface_1._0
 
             switch(MouseHitType)
             {
-                case HitType.None: desired_cursor = Cursors.Arrow; break;
+                //case HitType.None: desired_cursor = Cursors.Arrow; break;
                 case HitType.Body: desired_cursor = Cursors.ScrollAll; break;
                 case HitType.UL:
                 case HitType.LR: desired_cursor = Cursors.SizeNESW; break;
@@ -195,8 +189,8 @@ namespace Interface_1._0
             }
 
             if (Cursor != desired_cursor) Cursor = desired_cursor;
-        }
-        private void Test_MouseDown(object sender, MouseButtonEventArgs e)
+        }*/
+        /*private void Test_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var obj = (Polyline)sender;
             MouseHitType = SetHitType(obj, Mouse.GetPosition(CanvasPos));
@@ -291,8 +285,6 @@ namespace Interface_1._0
         }*/
 
 
-
-        private bool RWL_Check = false;
         private bool Rectangle_Check = false;
         private bool Parrabullem_Check = false;
         private bool Rhomb_Check = false;
@@ -300,8 +292,6 @@ namespace Interface_1._0
         private bool Ellipse_Check = false;
         private void DragDrop_MD(object sender, MouseButtonEventArgs e)
         {
-            if (RWL_Main == sender)
-                RWL_Check = true;
             if (Rekt == sender)
                 Rectangle_Check = true;
             if (Rhomb == sender)
@@ -318,24 +308,32 @@ namespace Interface_1._0
         }
 
         #region Interaction_With_Shapes_Into_Canvas
+
+        Point LastPoint;
+
         private void IntoCanvasDown(object sender, MouseButtonEventArgs e)
         {
+            
             var smt = (UIElement)sender;
-            smt.CaptureMouse();
+            LastPoint = Mouse.GetPosition(smt);
         }
         private void IntoCanvasMove(object sender, MouseEventArgs e)
         {
-            if(e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
-                var smt = (UIElement)sender;
-                var pos = e.GetPosition(CanvasPos);
+                var element = (UIElement)sender;
+                element.CaptureMouse();
 
-                Canvas.SetLeft(smt, pos.X);
-                Canvas.SetTop(smt, pos.Y);
+                var pos = Mouse.GetPosition(CanvasPos);
+
+                Canvas.SetLeft(element, pos.X - LastPoint.X);
+                Canvas.SetTop(element, pos.Y - LastPoint.Y);
+
             }
         }
         private void IntoCanvasUp(object sender, MouseButtonEventArgs e)
         {
+            
             var smt = (UIElement)sender;
             smt.ReleaseMouseCapture();
         }
@@ -343,164 +341,157 @@ namespace Interface_1._0
 
         private void DnD_Drop(object sender, DragEventArgs e)
         {
-            if(!light)
+            if(Rectangle_Check)
             {
-                if (!Ellipse_Check)
+                Rectangle_Check = false;
+
+                CustomShape shape = new CustomShape(Rekt);
+                shape.polyline.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
+                shape.polyline.MouseMove += new MouseEventHandler(IntoCanvasMove);
+                shape.polyline.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
+
+                CanvasPos.Children.Add(shape.polyline);
+                var pos = e.GetPosition(CanvasPos);
+
+                Canvas.SetLeft(shape.polyline, pos.X);
+                Canvas.SetTop(shape.polyline, pos.Y);
+            }
+            if(Parrabullem_Check)
+            {
+                Parrabullem_Check = false;
+
+                CustomShape shape = new CustomShape(Parrabellum);
+                shape.polyline.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
+                shape.polyline.MouseMove += new MouseEventHandler(IntoCanvasMove);
+                shape.polyline.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
+
+                CanvasPos.Children.Add(shape.polyline);
+                var pos = e.GetPosition(CanvasPos);
+
+                Canvas.SetLeft(shape.polyline, pos.X);
+                Canvas.SetTop(shape.polyline, pos.Y);
+            }
+            if(Rhomb_Check)
+            {
+                Rhomb_Check = false;
+
+                CustomShape shape = new CustomShape(Rhomb);
+                shape.polyline.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
+                shape.polyline.MouseMove += new MouseEventHandler(IntoCanvasMove);
+                shape.polyline.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
+
+                CanvasPos.Children.Add(shape.polyline);
+                var pos = e.GetPosition(CanvasPos);
+
+                Canvas.SetLeft(shape.polyline, pos.X);
+                Canvas.SetTop(shape.polyline, pos.Y);
+            }
+            if(Cycle_Check)
+            {
+                Cycle_Check = false;
+
+                CustomShape shape = new CustomShape(Cycle);
+                shape.polyline.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
+                shape.polyline.MouseMove += new MouseEventHandler(IntoCanvasMove);
+                shape.polyline.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
+
+                CanvasPos.Children.Add(shape.polyline);
+                var pos = e.GetPosition(CanvasPos);
+
+                Canvas.SetLeft(shape.polyline, pos.X);
+                Canvas.SetTop(shape.polyline, pos.Y);
+            }
+            if(Ellipse_Check)
+            {
+                Ellipse_Check = false;
+
+                CustomShape shape = new CustomShape(Ellipse);
+                shape.rectangle.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
+                shape.rectangle.MouseMove += new MouseEventHandler(IntoCanvasMove);
+                shape.rectangle.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
+
+                CanvasPos.Children.Add(shape.rectangle);
+                var pos = e.GetPosition(CanvasPos);
+
+                Canvas.SetLeft(shape.rectangle, pos.X);
+                Canvas.SetTop(shape.rectangle, pos.Y);
+            }
+
+            /*if (!Ellipse_Check)
+            {
+                Polyline polyline = new Polyline();
+                polyline.Stroke = Brushes.White;
+                polyline.Fill = Brushes.Transparent;
+                polyline.StrokeThickness = 1.5;
+
+                Polyline pol = new Polyline();
+                polyline.MouseMove += new MouseEventHandler(IntoCanvasMove);
+                polyline.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
+                polyline.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
+
+                var pos = e.GetPosition(CanvasPos);
+                CanvasPos.Children.Add(polyline);
+
+                if (Rectangle_Check)
                 {
-                    Polyline polyline = new Polyline();
-                    polyline.Stroke = Brushes.White;
-                    polyline.Fill = Brushes.Transparent;
-                    polyline.StrokeThickness = 1.5;
-
-                    polyline.MouseMove += new MouseEventHandler(IntoCanvasMove);
-                    polyline.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
-                    polyline.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
-
-                    var pos = e.GetPosition(CanvasPos);
-                    CanvasPos.Children.Add(polyline);
-
-                    if (RWL_Check)
-                    {
-                        polyline.Points = RWL_Main.Points;
-                        RWL_Check = false;
-                    }
-                    if (Rectangle_Check)
-                    {
-                        polyline.Points = Rekt.Points;
-                        Rectangle_Check = false;
-                    }
-                    if (Cycle_Check)
-                    {
-                        polyline.Points = Cycle.Points;
-                        Cycle_Check = false;
-                    }
-                    if (Rhomb_Check)
-                    {
-                        polyline.Points = Rhomb.Points;
-                        Rhomb_Check = false;
-                    }
-                    if (Parrabullem_Check)
-                    {
-                        polyline.Points = Parrabellum.Points;
-                        Parrabullem_Check = false;
-                    }
-
-                    Canvas.SetLeft(polyline, pos.X);
-                    Canvas.SetTop(polyline, pos.Y);
+                    polyline.Points = Rekt.Points;
+                    Rectangle_Check = false;
                 }
-                else
+                if (Cycle_Check)
                 {
-                    Ellipse_Check = false;
-
-                    Rectangle rekt = new Rectangle();
-                    rekt.Width = Ellipse.Width;
-                    rekt.Height = Ellipse.Height;
-                    rekt.Fill = Brushes.Transparent;
-                    rekt.Stroke = Brushes.White;
-                    rekt.StrokeThickness = 1.5;
-                    rekt.RadiusX = Ellipse.RadiusX;
-                    rekt.RadiusY = Ellipse.RadiusY;
-
-                    rekt.MouseMove += new MouseEventHandler(IntoCanvasMove);
-                    rekt.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
-                    rekt.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
-
-                    var pos = e.GetPosition(CanvasPos);
-                    CanvasPos.Children.Add(rekt);
-
-                    Canvas.SetLeft(rekt, pos.X);
-                    Canvas.SetTop(rekt, pos.Y);
+                    polyline.Points = Cycle.Points;
+                    Cycle_Check = false;
                 }
+                if (Rhomb_Check)
+                {
+                    polyline.Points = Rhomb.Points;
+                    Rhomb_Check = false;
+                }
+                if (Parrabullem_Check)
+                {
+                    polyline.Points = Parrabellum.Points;
+                    Parrabullem_Check = false;
+                }
+
+                Canvas.SetLeft(polyline, pos.X);
+                Canvas.SetTop(polyline, pos.Y);
             }
             else
             {
-                if (!Ellipse_Check)
-                {
-                    Polyline polyline = new Polyline();
-                    polyline.Stroke = Brushes.Black;
-                    polyline.Fill = Brushes.Transparent;
-                    polyline.StrokeThickness = 1.5;
+                Ellipse_Check = false;
 
-                    polyline.MouseMove += new MouseEventHandler(IntoCanvasMove);
-                    polyline.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
-                    polyline.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
+                Rectangle rekt = new Rectangle();
+                rekt.Width = Ellipse.Width;
+                rekt.Height = Ellipse.Height;
+                rekt.Fill = Brushes.Transparent;
+                rekt.Stroke = Brushes.White;
+                rekt.StrokeThickness = 1.5;
+                rekt.RadiusX = Ellipse.RadiusX;
+                rekt.RadiusY = Ellipse.RadiusY;
 
-                    var pos = e.GetPosition(CanvasPos);
-                    CanvasPos.Children.Add(polyline);
+                rekt.MouseMove += new MouseEventHandler(IntoCanvasMove);
+                rekt.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
+                rekt.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
 
-                    if (RWL_Check)
-                    {
-                        polyline.Points = RWL_Main.Points;
-                        RWL_Check = false;
-                    }
-                    if (Rectangle_Check)
-                    {
-                        polyline.Points = Rekt.Points;
-                        Rectangle_Check = false;
-                    }
-                    if (Cycle_Check)
-                    {
-                        polyline.Points = Cycle.Points;
-                        Cycle_Check = false;
-                    }
-                    if (Rhomb_Check)
-                    {
-                        polyline.Points = Rhomb.Points;
-                        Rhomb_Check = false;
-                    }
-                    if (Parrabullem_Check)
-                    {
-                        polyline.Points = Parrabellum.Points;
-                        Parrabullem_Check = false;
-                    }
+                var pos = e.GetPosition(CanvasPos);
+                CanvasPos.Children.Add(rekt);
 
-                    Canvas.SetLeft(polyline, pos.X);
-                    Canvas.SetTop(polyline, pos.Y);
-                }
-                else
-                {
-                    Ellipse_Check = false;
 
-                    Rectangle rekt = new Rectangle();
-                    rekt.Width = Ellipse.Width;
-                    rekt.Height = Ellipse.Height;
-                    rekt.Fill = Brushes.Transparent;
-                    rekt.Stroke = Brushes.Black;
-                    rekt.StrokeThickness = 1.5;
-                    rekt.RadiusX = Ellipse.RadiusX;
-                    rekt.RadiusY = Ellipse.RadiusY;
 
-                    rekt.MouseMove += new MouseEventHandler(IntoCanvasMove);
-                    rekt.MouseDown += new MouseButtonEventHandler(IntoCanvasDown);
-                    rekt.MouseUp += new MouseButtonEventHandler(IntoCanvasUp);
-
-                    var pos = e.GetPosition(CanvasPos);
-                    CanvasPos.Children.Add(rekt);
-
-                    Canvas.SetLeft(rekt, pos.X);
-                    Canvas.SetTop(rekt, pos.Y);
-                }
-            }
+                Canvas.SetLeft(rekt, pos.X);
+                Canvas.SetTop(rekt, pos.Y);
+            }*/
         }
 
 
         private void Clear_Mouse_Enter(object sender, RoutedEventArgs e)
         {
-            if(!light)
-            {
-                Clear.Foreground = Brushes.White;
-                Clear.Background = new SolidColorBrush(Colors.Purple) { Opacity = 0.5 };
-            }
-            else
-            {
-                Clear.Foreground = Brushes.Black;
-                Clear.Background = new SolidColorBrush(Colors.Purple) { Opacity = 0.5 };
-            }
+
+            ((Label)sender).Foreground = Brushes.White;
         }
         private void Clear_Mouse_Leave(object sender, RoutedEventArgs e)
         {
-            Clear.Foreground = Brushes.Gray;
-            Clear.Background = Brushes.Transparent;
+            ((Label)sender).Foreground = Brushes.Gray;
         }
         private void inTrash(object sender, RoutedEventArgs e)
         {
@@ -508,25 +499,33 @@ namespace Interface_1._0
         }
         #endregion
 
+        /*Point StartPoint;
+        Point EndPoint;
+        Line line;
+        private void DrawLineMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            line = new Line();
+            line.Stroke = Brushes.White;
+
+            CanvasPos.Children.Add(line);
+
+            StartPoint = Mouse.GetPosition(CanvasPos);
+            line.X1 = StartPoint.X;
+            line.Y1 = StartPoint.Y;
+        }
+        private void DrawLineMouseMove(object sender, MouseEventArgs e)
+        {
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+                EndPoint = Mouse.GetPosition(CanvasPos);
+                line.X2 = EndPoint.X;
+                line.Y2 = EndPoint.Y;
+            }
+        }*/
+
         #region infinite_area
 
         #endregion
-    }
-
-    public class ScrollLimitConverter : IMultiValueConverter
-    {
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            if (values.Length == 2 && values[0] is double && values[1] is double)
-            {
-                return (double)values[0] == (double)values[1];
-            }
-            return false;
-        }
-
-        public object[] ConvertBack(object value, Type[] targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
