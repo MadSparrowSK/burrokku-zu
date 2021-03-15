@@ -170,10 +170,12 @@
            <Canvas Grid.Row="1"
                    Grid.Column="1"
                    Grid.ColumnSpan="2"
-                   Background="Black"
+                   Background="White"
                    AllowDrop="True"
                    Drop="DnD_Drop"
-                   Name="CanvasPos">
+                   Name="CanvasPos"
+                   Opacity="0.2">
+                 
            </Canvas>
             <!--#endregion-->
 
@@ -261,7 +263,7 @@
                         
                     </Label>
                     <!--#endregion-->
-                    
+
                 </StackPanel>
 
 
@@ -303,6 +305,7 @@
                            FontSize="15" Padding="10,3,0,0" 
                            Foreground="Gray" Opacity="0.7"/>
 
+                    <Polyline Stroke="Transparent" Points="8,0 0,0 0,8 8,0" Name="Anchor"/>
                 </StackPanel>
                 
            </DockPanel> 
