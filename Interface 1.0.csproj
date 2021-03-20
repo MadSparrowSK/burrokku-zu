@@ -99,11 +99,7 @@
     <Resource Include="Icon\Icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Shapes\Circle_line.png" />
-    <Resource Include="Shapes\Ellipse.png" />
-    <Resource Include="Shapes\Parrabellum.png" />
-    <Resource Include="Shapes\rectangle.png" />
-    <Resource Include="Shapes\Rhomb.png" />
+    <Folder Include="Shapes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
