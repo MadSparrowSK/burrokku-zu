@@ -55,7 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ImageCustomShape.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -96,12 +95,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Icon\Icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Shapes\rekt.png" />
+    <Resource Include="Shapes\Circle_line.png" />
+    <Resource Include="Shapes\Ellipse.png" />
+    <Resource Include="Shapes\Parrabellum.png" />
+    <Resource Include="Shapes\rectangle.png" />
+    <Resource Include="Shapes\Rhomb.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

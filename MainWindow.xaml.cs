@@ -20,9 +20,100 @@ namespace Interface_1._0
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        #region shapes points
+        Point rectangleNW = new Point();
+        Point rectangleSW = new Point();
+        Point rectangleSE = new Point();
+        Point rectnagleNE = new Point();
+
+        Point parabellumNW = new Point();
+        Point parabellumSW = new Point();
+        Point parabellumSE = new Point();
+        Point parabellumNE = new Point();
+
+        Point rhombN = new Point();
+        Point rhombW = new Point();
+        Point rhombS = new Point();
+        Point rhombE = new Point();
+
+        Point cycleNW = new Point();
+        Point cycleW = new Point();
+        Point cycleSW = new Point();
+        Point cycleSE = new Point();
+        Point cycleE = new Point();
+        Point cycleNE = new Point();
+        #endregion
+
         public MainWindow()
         {
             InitializeComponent();
+
+            #region initialized shapes points
+
+            #region rectangle points
+            rectangleNW.X = 8;
+            rectangleNW.Y = 1;
+
+            rectangleSW.X = 8;
+            rectangleSW.Y = 30;
+
+            rectangleSE.X = 60;
+            rectangleSE.Y = 30;
+
+            rectnagleNE.X = 60;
+            rectnagleNE.Y = 1;
+            #endregion
+
+            #region parrabellum points
+            parabellumNW.X = 8;
+            parabellumNW.Y = 1;
+
+            parabellumSW.X = 0;
+            parabellumSW.Y = 30;
+
+            parabellumSE.X = 60;
+            parabellumSE.Y = 30;
+
+            parabellumNE.X = 68;
+            parabellumNE.Y = 1;
+            #endregion
+
+            #region rhomb points
+            rhombW.X = 0;
+            rhombW.Y = 8;
+
+            rhombS.X = 40;
+            rhombS.Y = 20;
+
+            rhombE.X = 80;
+            rhombE.Y = 8;
+
+            rhombN.X = 40;
+            rhombN.Y = -4;
+            #endregion
+
+            #region cycle points
+            cycleW.X = 1;
+            cycleW.Y = 8;
+
+            cycleSW.X = 7;
+            cycleSW.Y = 20;
+
+            cycleSE.X = 60;
+            cycleSE.Y = 20;
+
+            cycleE.X = 67;
+            cycleE.Y = 8;
+
+            cycleNE.X = 60;
+            cycleNE.Y = -6;
+
+            cycleNW.X = 7;
+            cycleNW.Y = -6;
+            #endregion
+
+            #endregion
         }
 
         #region DragMainWindow
@@ -85,7 +176,7 @@ namespace Interface_1._0
             if (lbl_Rect == sender)
                 Rekt.Stroke = Brushes.White;
         }
-        private void SideBar_Mouse_Leave(Object sender, RoutedEventArgs e)
+        private void SideBar_Mouse_Leave(object sender, RoutedEventArgs e)
         {
             if (lbl_Ellipse == sender)
                 Ellipse.Stroke = Brushes.Gray;
@@ -149,138 +240,852 @@ namespace Interface_1._0
                 Ellipse_Check = true;
 
             var smt = (UIElement)sender;
-            lastPoint_img = e.GetPosition(smt);
+            lastPoint = e.GetPosition(smt);
 
             DragDrop.DoDragDrop(this, this, DragDropEffects.Copy);
         }
 
         #region Interaction_With_Shapes_Into_Canvas
 
-        ImageCustomShape img_custom;
         Polyline anchor_size;
 
-        Point lastPoint_img;
+        Point lastPoint;
         Point lastPoint_anchor;
         Point current_anchor_postion;
 
-        bool anchor_create = false;
+        bool is_anchor_create = false;
 
-        private void IntoCanvasDown(object sender, MouseButtonEventArgs e)
+        private void RectangleAdd(Polygon polygon, TextBox txt)
         {
-            var smt = (Image)sender;
-            lastPoint_img = e.GetPosition(smt);
+            polygon.MouseDown += IntoCanvasDownPolylineRectangle;
 
-            if(!anchor_create)
+            void IntoCanvasDownPolylineRectangle(object sender, MouseButtonEventArgs e)
             {
-                anchor_size = new Polyline();
-                anchor_size.Points = Anchor.Points;
-                anchor_size.Stroke = Brushes.Gray;
-                anchor_size.Fill = Brushes.Transparent;
+                var smt = (Polygon)sender;
+                lastPoint = e.GetPosition(smt);
 
-                anchor_size.MouseDown += AnchorMouseDown;
-                anchor_size.MouseMove += AnchorMouseMove;
-                anchor_size.MouseUp   += AnchorMouseUp;
-
-                CanvasPos.Children.Add(anchor_size);
-
-                Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt) + 25);
-                Canvas.SetTop(anchor_size, Canvas.GetTop(smt) + 10);
-
-                anchor_create = true;
-            }
-        }
-
-        private void AnchorMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var anchor = (UIElement)sender;
-            lastPoint_anchor = e.GetPosition(anchor);
-            current_anchor_postion = e.GetPosition(CanvasPos);
-        }
-        private void AnchorMouseMove(object sender, MouseEventArgs e)
-        {
-            if(e.LeftButton == MouseButtonState.Pressed)
-            {
-                Point pos = new Point();
-
-                var anchor = (UIElement)sender;
-                anchor.CaptureMouse();
-
-                pos.X = e.GetPosition(CanvasPos).X - lastPoint_anchor.X;
-                pos.Y = e.GetPosition(CanvasPos).Y - lastPoint_anchor.Y;
-
-                if(pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y) 
+                #region delete shape
+                if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    img_custom.img.Width  += 1;
-                    img_custom.img.Height += 1;
-
-                    //current_anchor_postion = e.GetPosition(CanvasPos);
-                }
-                else
-                {
-                    img_custom.img.Width  -= 1;
-                    img_custom.img.Height -= 1;
-
-                    //current_anchor_postion = e.GetPosition(CanvasPos);
-                }
-
-                Canvas.SetLeft(anchor, pos.X);
-                Canvas.SetTop(anchor, pos.Y);
-            }
-        }
-        private void AnchorMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            var anchor = (UIElement)sender;
-            anchor.ReleaseMouseCapture();
-        }
-
-        private void IntoCanvasMove(object sender, MouseEventArgs e)
-        {
-            if(e.LeftButton == MouseButtonState.Pressed) 
-            {
-                if(anchor_create)
-                {
-                    anchor_create = false;
+                    CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
+                    CanvasPos.Children.Remove(txt);
                 }
+                #endregion
 
-                var smt = (UIElement)sender;
-                smt.CaptureMouse();
+                #region anchor
+                if (!is_anchor_create)
+                {
 
-                var pos = e.GetPosition(CanvasPos);
+                    anchor_size = new Polyline();
+                    anchor_size.Points = Anchor.Points;
+                    anchor_size.Stroke = Brushes.Red;
+                    anchor_size.Fill = Brushes.Transparent;
 
-                Canvas.SetLeft(smt, pos.X - lastPoint_img.X);
-                Canvas.SetTop(smt, pos.Y - lastPoint_img.Y);
+                    anchor_size.MouseDown += AnchorMouseDown;
+                    anchor_size.MouseMove += AnchorMouseMove;
+                    anchor_size.MouseUp += AnchorMouseUp;
+
+                    #region anchor_action
+
+                    void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var anchor = (UIElement)sndr;
+                        lastPoint_anchor = evnt.GetPosition(anchor);
+                        current_anchor_postion = evnt.GetPosition(CanvasPos);
+                    }
+
+                    void AnchorMouseMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
+                        {
+
+                            var anchor = (UIElement)sndr;
+                            anchor.CaptureMouse();
+
+                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
+                            {
+                                //text_into_shapes.MaxHeight += .3;
+                                //text_into_shapes.MaxWidth += .7;
+
+                                //++fisrt.X;
+                                //++fisrt.Y;
+
+                                //++second.X;
+                                rectangleSW.Y += .5;
+
+                                ++rectangleSE.X;
+                                rectangleSE.Y += .5;
+
+                                ++rectnagleNE.X;
+                                //++fourth.Y;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(rectangleNW);
+                                points.Add(rectangleSW);
+                                points.Add(rectangleSE);
+                                points.Add(rectnagleNE);
+
+                                smt.Points = points;
+
+                            }
+                            else
+                            {
+                                //text_into_shapes.MaxHeight -= .3;
+                                //text_into_shapes.MaxWidth -= .7;
+
+                                //++fisrt.X;
+                                //++fisrt.Y;
+
+                                //++second.X;
+                                rectangleSW.Y -= .5;
+
+                                --rectangleSE.X;
+                                rectangleSE.Y -= .5;
+
+                                --rectnagleNE.X;
+                                //++fourth.Y;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(rectangleNW);
+                                points.Add(rectangleSW);
+                                points.Add(rectangleSE);
+                                points.Add(rectnagleNE);
+
+                                smt.Points = points;
+                            }
+
+                            Canvas.SetLeft(anchor, pos.X);
+                            Canvas.SetTop(anchor, pos.Y);
+                        }
+                    }
+                    void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var anchor = (UIElement)sndr;
+                        anchor.ReleaseMouseCapture();
+                    }
+
+                    #endregion
+
+                    CanvasPos.Children.Add(anchor_size);
+
+                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt));
+                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
+
+                    is_anchor_create = true;
+                }
+                #endregion
+
+                REPCIntoCanvasMouseMove(polygon, txt);
             }
         }
+        private void ParrabellumAdd(Polygon polygon, TextBox txt)
+        {
+            polygon.MouseDown += IntoCanvasDownPolylineParrabellum;
+
+            void IntoCanvasDownPolylineParrabellum(object sender, MouseButtonEventArgs e)
+            {
+                var smt = (Polygon)sender;
+                lastPoint = e.GetPosition(smt);
+
+                #region delete shape
+                if (e.RightButton == MouseButtonState.Pressed)
+                {
+                    CanvasPos.Children.Remove(smt);
+                    CanvasPos.Children.Remove(anchor_size);
+                    CanvasPos.Children.Remove(txt);
+                }
+                #endregion
+
+                #region anchor
+                if (!is_anchor_create)
+                {
+
+                    anchor_size = new Polyline();
+                    anchor_size.Points = Anchor.Points;
+                    anchor_size.Stroke = Brushes.Red;
+                    anchor_size.Fill = Brushes.Transparent;
+
+                    anchor_size.MouseDown += AnchorMouseDown;
+                    anchor_size.MouseMove += AnchorMouseMove;
+                    anchor_size.MouseUp  += AnchorMouseUp;
+
+                    #region anchor_action
+                    void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var anchor = (UIElement)sndr;
+                        lastPoint_anchor = evnt.GetPosition(anchor);
+                        current_anchor_postion = evnt.GetPosition(CanvasPos);
+                    }
+
+                    void AnchorMouseMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
+                        {
+
+                            var anchor = (UIElement)sndr;
+                            anchor.CaptureMouse();
+
+                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
+                            {
+                                //++fisrt.X;
+                                //++fisrt.Y;
+
+                                //++second.X;
+                                parabellumSW.Y += .5;
+
+                                ++parabellumSE.X;
+                                parabellumSE.Y += .5;
+
+                                ++parabellumNE.X;
+                                //++fourth.Y;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(parabellumNW);
+                                points.Add(parabellumSW);
+                                points.Add(parabellumSE);
+                                points.Add(parabellumNE);
+
+                                smt.Points = points;
+
+                            }
+                            else
+                            {
+                                //++fisrt.X;
+                                //++fisrt.Y;
+
+                                //++second.X;
+                                parabellumSW.Y -= .5;
+
+                                --parabellumSE.X;
+                                parabellumSE.Y -= .5;
+
+                                --parabellumNE.X;
+                                //++fourth.Y;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(parabellumNW);
+                                points.Add(parabellumSW);
+                                points.Add(parabellumSE);
+                                points.Add(parabellumNE);
+
+                                smt.Points = points;
+                            }
+
+                            Canvas.SetLeft(anchor, pos.X);
+                            Canvas.SetTop(anchor, pos.Y);
+                        }
+                    }
+                    void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var anchor = (UIElement)sndr;
+                        anchor.ReleaseMouseCapture();
+                    }
+
+                    #endregion
+
+                    CanvasPos.Children.Add(anchor_size);
+
+                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt));
+                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
+
+                    is_anchor_create = true;
+                }
+                #endregion
+
+                REPCIntoCanvasMouseMove(polygon, txt);
+            }
+        }
+        private void RhombAdd(Polygon polygon, TextBox txt)
+        {
+            polygon.MouseDown += IntoCanvasDownPolylineRhomb;
+
+            void IntoCanvasDownPolylineRhomb(object sender, MouseButtonEventArgs e)
+            {
+                var smt = (Polygon)sender;
+                lastPoint = e.GetPosition(smt);
+
+                #region anchor
+                if (!is_anchor_create)
+                {
+                    anchor_size = new Polyline();
+                    anchor_size.Points = Anchor.Points;
+                    anchor_size.Stroke = Brushes.Red;
+                    anchor_size.Fill = Brushes.Transparent;
+
+                    anchor_size.MouseDown += AnchorMouseDown;
+                    anchor_size.MouseMove += AnchorMouseMove;
+                    anchor_size.MouseUp   += AnchorMouseUp;
+
+                    #region anchor_action
+
+                    void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var anchor = (UIElement)sndr;
+                        lastPoint_anchor = evnt.GetPosition(anchor);
+                        current_anchor_postion = evnt.GetPosition(CanvasPos);
+                    }
+                    void AnchorMouseMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
+                        {
+
+                            var anchor = (UIElement)sndr;
+                            anchor.CaptureMouse();
+
+                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
+                            {
+                                rhombW.X -= 1;
+                                //rhombW.Y += .5;
+
+                                rhombS.Y += .5;
+                                //rhombS.X += .5;
+
+                                rhombE.X += 1;
+                                //rhombE.Y += .5;
+
+                                //rhombN.X += .5;
+                                rhombN.Y -= .5;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(rhombW);
+                                points.Add(rhombS);
+                                points.Add(rhombE);
+                                points.Add(rhombN);
+
+                                smt.Points = points;
+
+                            }
+                            else
+                            {
+                                rhombW.X += 1;
+                                rhombS.Y -= .5;
+                                rhombE.X -= 1;
+                                rhombN.Y += .5;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(rhombW);
+                                points.Add(rhombS);
+                                points.Add(rhombE);
+                                points.Add(rhombN);
+
+                                smt.Points = points;
+                            }
+
+                            Canvas.SetLeft(anchor, pos.X);
+                            Canvas.SetTop(anchor, pos.Y);
+                        }
+                    }
+                    void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var anchor = (UIElement)sndr;
+                        anchor.ReleaseMouseCapture();
+                    }
+
+                    #endregion
+
+                    CanvasPos.Children.Add(anchor_size);
+
+                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt));
+                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
+
+                    is_anchor_create = true;
+                }
+                #endregion
+
+                #region delete shape
+                if (e.RightButton == MouseButtonState.Pressed)
+                {
+                    CanvasPos.Children.Remove(smt);
+                    CanvasPos.Children.Remove(anchor_size);
+                    CanvasPos.Children.Remove(txt);
+                }
+                #endregion
+
+                RhombIntoCanvasMouseMove(polygon, txt);
+            }
+        } 
+        private void CycleAdd(Polygon polygon, TextBox txt)
+        {
+            polygon.MouseDown += IntoCanvasDownPolylineCycle;
+
+            void IntoCanvasDownPolylineCycle(object sender, MouseButtonEventArgs e)
+            {
+                var smt = (Polygon)sender;
+                lastPoint = e.GetPosition(smt);
+
+                #region anchor
+                if (!is_anchor_create)
+                {
+
+                    anchor_size = new Polyline();
+                    anchor_size.Points = Anchor.Points;
+                    anchor_size.Stroke = Brushes.Red;
+                    anchor_size.Fill = Brushes.Transparent;
+
+                    anchor_size.MouseDown += AnchorMouseDown;
+                    anchor_size.MouseMove += AnchorMouseMove;
+                    anchor_size.MouseUp += AnchorMouseUp;
+
+                    #region anchor_action
+
+                    void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var anchor = (UIElement)sndr;
+                        lastPoint_anchor = evnt.GetPosition(anchor);
+                        current_anchor_postion = evnt.GetPosition(CanvasPos);
+                    }
+
+                    void AnchorMouseMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
+                        {
+
+                            var anchor = (UIElement)sndr;
+                            anchor.CaptureMouse();
+
+                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
+                            {
+                                cycleW.X -= .2;
+
+                                cycleSW.Y += .5;
+
+                                cycleSE.X += 1;
+                                cycleSE.Y += .5;
+
+                                cycleE.X += 1.2;
+
+                                cycleNE.X += 1;
+                                cycleNE.Y -= .5;
+
+                                cycleNW.Y -= .5;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(cycleW);
+                                points.Add(cycleSW);
+                                points.Add(cycleSE);
+                                points.Add(cycleE);
+                                points.Add(cycleNE);
+                                points.Add(cycleNW);
+
+                                smt.Points = points;
+                            }
+                            else
+                            {
+                                cycleW.X += .2;
+
+                                cycleSW.Y -= .5;
+
+                                cycleSE.X -= 1;
+                                cycleSE.Y -= .5;
+
+                                cycleE.X -= 1.2;
+
+                                cycleNE.X -= 1;
+                                cycleNE.Y += .5;
+
+                                cycleNW.Y += .5;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(cycleW);
+                                points.Add(cycleSW);
+                                points.Add(cycleSE);
+                                points.Add(cycleE);
+                                points.Add(cycleNE);
+                                points.Add(cycleNW);
+
+                                smt.Points = points;
+                            }
+
+                            Canvas.SetLeft(anchor, pos.X);
+                            Canvas.SetTop(anchor, pos.Y);
+                        }
+                    }
+                    void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var anchor = (UIElement)sndr;
+                        anchor.ReleaseMouseCapture();
+                    }
+
+                    #endregion
+
+                    CanvasPos.Children.Add(anchor_size);
+
+                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt));
+                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
+
+                    is_anchor_create = true;
+                }
+                #endregion
+
+                #region delete shape
+                if (e.RightButton == MouseButtonState.Pressed)
+                {
+                    CanvasPos.Children.Remove(smt);
+                    CanvasPos.Children.Remove(anchor_size);
+                    CanvasPos.Children.Remove(txt);
+                }
+                #endregion
+
+                REPCIntoCanvasMouseMove(polygon, txt);
+            }
+        }
+        private void EllipseAdd(Polygon polygon, TextBox txt)
+        {
+            polygon.MouseDown += IntoCanvasMouseDownRectangle;
+
+            void IntoCanvasMouseDownRectangle(object sender, MouseButtonEventArgs e)
+            {
+                var smt = (Rectangle)sender;
+                lastPoint = e.GetPosition(smt);
+
+                #region anchor
+                if (!is_anchor_create)
+                {
+                    anchor_size = new Polyline();
+                    anchor_size.Points = Anchor.Points;
+                    anchor_size.Stroke = Brushes.Red;
+                    anchor_size.Fill = Brushes.Transparent;
+
+                    anchor_size.MouseDown += AnchorMouseDown;
+                    anchor_size.MouseMove += AnchorMouseMove;
+                    anchor_size.MouseUp   += AnchorMouseUp;
+
+                    #region anchor_action
+
+                    void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var anchor = (UIElement)sndr;
+                        lastPoint_anchor = evnt.GetPosition(anchor);
+                        current_anchor_postion = evnt.GetPosition(CanvasPos);
+                    }
+                    void AnchorMouseMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
+                        {
+                            var anchor = (UIElement)sndr;
+                            anchor.CaptureMouse();
+
+                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
+                            {
+                                smt.Width += 1;
+                                smt.Height += 1;
+                            }
+                            else if (smt.Width > 0 && smt.Height > 0)
+                            {
+                                smt.Width -= 1;
+                                smt.Height -= 1;
+                            }
+
+                            Canvas.SetLeft(anchor, pos.X);
+                            Canvas.SetTop(anchor, pos.Y);
+                        }
+                    }
+                    void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var anchor = (UIElement)sndr;
+                        anchor.ReleaseMouseCapture();
+                    }
+
+                    #endregion
+
+                    CanvasPos.Children.Add(anchor_size);
+
+                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt));
+                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
+
+                    is_anchor_create = true;
+                }
+                #endregion
+
+                #region delete shape
+                if (e.RightButton == MouseButtonState.Pressed)
+                {
+                    CanvasPos.Children.Remove(smt);
+                    CanvasPos.Children.Remove(anchor_size);
+                    CanvasPos.Children.Remove(txt);
+                }
+                #endregion
+
+                REPCIntoCanvasMouseMove(polygon, txt);
+            }
+        }
+
+
+        private void REPCIntoCanvasMouseMove(Polygon polygon, TextBox txt)
+        {
+            polygon.MouseMove += IntoCanvasMove;
+
+            void IntoCanvasMove(object sender, MouseEventArgs e)
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    if (is_anchor_create)
+                    {
+                        is_anchor_create = false;
+                        CanvasPos.Children.Remove(anchor_size);
+                    }
+
+                    var smt = (UIElement)sender;
+                    smt.CaptureMouse();
+
+                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
+                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 10);
+                    Canvas.SetTop(txt, Canvas.GetTop(smt) + 5);
+                }
+            }
+        }
+        private void RhombIntoCanvasMouseMove(Polygon polygon, TextBox txt)
+        {
+            polygon.MouseMove += IntoCanvasMove;
+
+            void IntoCanvasMove(object sender, MouseEventArgs e)
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    if (is_anchor_create)
+                    {
+                        is_anchor_create = false;
+                        CanvasPos.Children.Remove(anchor_size);
+                    }
+
+                    var smt = (UIElement)sender;
+                    smt.CaptureMouse();
+
+                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
+                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 10);
+                    Canvas.SetTop(txt, Canvas.GetTop(smt) + 5);
+                }
+            }
+        }
+        
+
         public void IntoCanvasUp(object sender, MouseButtonEventArgs e)
         {
-            var smt = (Image)sender;
+            var smt = (UIElement)sender;
             smt.ReleaseMouseCapture();
         }
         #endregion
+
         private void DnD_Drop(object sender, DragEventArgs e)
-        {
-
-            if(Rectangle_Check) 
+        { 
+            if(Rectangle_Check)
             {
+                Polygon polyline = new Polygon();
+                TextBox text_into_shapes = new TextBox();
+
                 Rectangle_Check = false;
+                polyline.Points = Rekt.Points;
 
-                img_custom = new ImageCustomShape();
-                img_custom.addRectangle();
+                text_into_shapes.Text = "Text";
+                text_into_shapes.MaxWidth = 40;
+                text_into_shapes.MaxHeight = 20;
+                text_into_shapes.TextWrapping = TextWrapping.Wrap;
+                text_into_shapes.FontSize = 10;
+                text_into_shapes.BorderBrush = Brushes.Transparent;
+                text_into_shapes.Foreground = Brushes.White;
+                text_into_shapes.Background = Brushes.Transparent;
 
-                img_custom.img.MouseDown += IntoCanvasDown;
-                img_custom.img.MouseMove += IntoCanvasMove;
-                img_custom.img.MouseUp   += IntoCanvasUp;
+                polyline.Stroke = Brushes.White;
+                polyline.Fill   = Brushes.Transparent;
 
-                CanvasPos.Children.Add(img_custom.img);
+                polyline.MouseUp   += IntoCanvasUp;
 
-                var pos = e.GetPosition(CanvasPos);
+                CanvasPos.Children.Add(polyline);
+                CanvasPos.Children.Add(text_into_shapes);
 
-                Canvas.SetLeft(img_custom.img, pos.X - lastPoint_img.X);
-                Canvas.SetTop(img_custom.img, pos.Y - lastPoint_img.Y);
+                Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
+                Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y  - lastPoint.Y);
+
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 10);
+                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + 5);
+
+                RectangleAdd(polyline, text_into_shapes);
             }
-        }
+            if(Parrabullem_Check)
+            {
+                Polygon polyline = new Polygon();
+                TextBox text_into_shapes = new TextBox();
 
+                Parrabullem_Check = false;
+                polyline.Points = Parrabellum.Points;
+
+                text_into_shapes.Text = "Text";
+                text_into_shapes.MaxWidth = 40;
+                text_into_shapes.MaxHeight = 20;
+                text_into_shapes.TextWrapping = TextWrapping.Wrap;
+                text_into_shapes.FontSize = 10;
+                text_into_shapes.BorderBrush = Brushes.Transparent;
+                text_into_shapes.Foreground = Brushes.White;
+                text_into_shapes.Background = Brushes.Transparent;
+
+                polyline.Stroke = Brushes.White;
+                polyline.Fill = Brushes.Transparent;
+
+                polyline.MouseUp += IntoCanvasUp;
+
+                CanvasPos.Children.Add(polyline);
+                CanvasPos.Children.Add(text_into_shapes);
+
+                Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
+                Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 10);
+                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + 5);
+
+                ParrabellumAdd(polyline, text_into_shapes);
+            }
+            if(Rhomb_Check)
+            {
+                Rhomb_Check = false;
+
+                Polygon polyline = new Polygon();
+                TextBox text_into_shapes = new TextBox();
+
+                Parrabullem_Check = false;
+                polyline.Points = Rhomb.Points;
+
+                text_into_shapes.Text = "Text";
+                text_into_shapes.MaxWidth = 40;
+                text_into_shapes.MaxHeight = 20;
+                text_into_shapes.TextWrapping = TextWrapping.Wrap;
+                text_into_shapes.FontSize = 10;
+                text_into_shapes.BorderBrush = Brushes.Transparent;
+                text_into_shapes.Foreground = Brushes.White;
+                text_into_shapes.Background = Brushes.Transparent;
+
+                polyline.Stroke = Brushes.White;
+                polyline.Fill = Brushes.Transparent;
+
+                polyline.MouseUp += IntoCanvasUp;
+
+                CanvasPos.Children.Add(polyline);
+                CanvasPos.Children.Add(text_into_shapes);
+
+                Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
+                Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 10);
+                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + 5);
+
+                RhombAdd(polyline, text_into_shapes);
+            }
+            if(Cycle_Check)
+            {
+                Cycle_Check = false;
+
+                Polygon polyline = new Polygon();
+                TextBox text_into_shapes = new TextBox();
+
+                Parrabullem_Check = false;
+                polyline.Points = Cycle.Points;
+
+                text_into_shapes.Text = "Text";
+                text_into_shapes.MaxWidth = 40;
+                text_into_shapes.MaxHeight = 20;
+                text_into_shapes.TextWrapping = TextWrapping.Wrap;
+                text_into_shapes.FontSize = 10;
+                text_into_shapes.BorderBrush = Brushes.Transparent;
+                text_into_shapes.Foreground = Brushes.White;
+                text_into_shapes.Background = Brushes.Transparent;
+
+                polyline.Stroke = Brushes.White;
+                polyline.Fill = Brushes.Transparent;
+
+                polyline.MouseUp += IntoCanvasUp;
+
+                CanvasPos.Children.Add(polyline);
+                CanvasPos.Children.Add(text_into_shapes);
+
+                Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
+                Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 10);
+                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + 5);
+
+                CycleAdd(polyline, text_into_shapes);
+            }
+
+            #region initialized shapes points
+
+            #region rectangle points
+            rectangleNW.X = 8;
+            rectangleNW.Y = 1;
+
+            rectangleSW.X = 8;
+            rectangleSW.Y = 30;
+
+            rectangleSE.X = 60;
+            rectangleSE.Y = 30;
+
+            rectnagleNE.X = 60;
+            rectnagleNE.Y = 1;
+            #endregion
+
+            #region parrabellum points
+            parabellumNW.X = 8;
+            parabellumNW.Y = 1;
+
+            parabellumSW.X = 0;
+            parabellumSW.Y = 30;
+
+            parabellumSE.X = 60;
+            parabellumSE.Y = 30;
+
+            parabellumNE.X = 68;
+            parabellumNE.Y = 1;
+            #endregion
+
+            #region rhomb points
+            rhombW.X = 0;
+            rhombW.Y = 8;
+
+            rhombS.X = 40;
+            rhombS.Y = 20;
+
+            rhombE.X = 80;
+            rhombE.Y = 8;
+
+            rhombN.X = 40;
+            rhombN.Y = -4;
+            #endregion
+
+            #region cycle points
+            cycleW.X = 1;
+            cycleW.Y = 8;
+
+            cycleSW.X = 7;
+            cycleSW.Y = 20;
+
+            cycleSE.X = 60;
+            cycleSE.Y = 20;
+
+            cycleE.X = 67;
+            cycleE.Y = 8;
+
+            cycleNE.X = 60;
+            cycleNE.Y = -6;
+
+            cycleNW.X = 7;
+            cycleNW.Y = -6;
+            #endregion
+
+            #endregion
+        }
 
         private void Clear_Mouse_Enter(object sender, RoutedEventArgs e)
         {
@@ -294,6 +1099,72 @@ namespace Interface_1._0
         private void inTrash(object sender, RoutedEventArgs e)
         {
             CanvasPos.Children.Clear();
+
+            #region initialized shapes points
+
+            #region rectangle points
+            rectangleNW.X = 8;
+            rectangleNW.Y = 1;
+
+            rectangleSW.X = 8;
+            rectangleSW.Y = 30;
+
+            rectangleSE.X = 60;
+            rectangleSE.Y = 30;
+
+            rectnagleNE.X = 60;
+            rectnagleNE.Y = 1;
+            #endregion
+
+            #region parrabellum points
+            parabellumNW.X = 8;
+            parabellumNW.Y = 1;
+
+            parabellumSW.X = 0;
+            parabellumSW.Y = 30;
+
+            parabellumSE.X = 60;
+            parabellumSE.Y = 30;
+
+            parabellumNE.X = 68;
+            parabellumNE.Y = 1;
+            #endregion
+
+            #region rhomb points
+            rhombW.X = 0;
+            rhombW.Y = 8;
+
+            rhombS.X = 40;
+            rhombS.Y = 20;
+
+            rhombE.X = 80;
+            rhombE.Y = 8;
+
+            rhombN.X = 40;
+            rhombN.Y = -4;
+            #endregion
+
+            #region cycle points
+            cycleW.X = 1;
+            cycleW.Y = 8;
+
+            cycleSW.X = 7;
+            cycleSW.Y = 20;
+
+            cycleSE.X = 60;
+            cycleSE.Y = 20;
+
+            cycleE.X = 67;
+            cycleE.Y = 8;
+
+            cycleNE.X = 60;
+            cycleNE.Y = -6;
+
+            cycleNW.X = 7;
+            cycleNW.Y = -6;
+            #endregion
+
+            #endregion
         }
         #endregion
     }

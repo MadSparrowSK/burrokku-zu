@@ -170,11 +170,10 @@
            <Canvas Grid.Row="1"
                    Grid.Column="1"
                    Grid.ColumnSpan="2"
-                   Background="White"
+                   Background="Black"
                    AllowDrop="True"
                    Drop="DnD_Drop"
-                   Name="CanvasPos"
-                   Opacity="0.2">
+                   Name="CanvasPos">
                  
            </Canvas>
             <!--#endregion-->
@@ -219,8 +218,8 @@
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Rect">
                         
-                        <Polyline Stroke="Gray" Fill="Transparent" 
-                                 Points="8,1 8,30 60,30 60,1 8,1"
+                        <Polygon Stroke="Gray" Fill="Transparent" 
+                                 Points="8,1 8,30 60,30 60,1"
                                  Name="Rekt" MouseDown="DragDrop_MD"/>
                             
                     </Label>
@@ -232,9 +231,9 @@
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Parrabellum">
 
-                        <Polyline Stroke="Gray" Points="8,1 0,30 60,30 68,1 8,1"
+                        <Polygon Stroke="Gray" Points="8,1 0,30 60,30 68,1"
                                  Name="Parrabellum" Fill="Transparent"
-                                 MouseDown="DragDrop_MD"></Polyline>
+                                 MouseDown="DragDrop_MD"></Polygon>
                        
                     </Label>
                     <!--#endregion-->
@@ -245,7 +244,7 @@
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Rhomb">
 
-                        <Polyline Stroke="Gray" Points="0,8 40,20 80,8 40,-4 0,8"
+                        <Polygon Stroke="Gray" Points="0,8 40,20 80,8 40,-4"
                                  Name="Rhomb" Fill="Transparent"
                                  MouseDown="DragDrop_MD"/>
 
@@ -258,8 +257,8 @@
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Cylce">
 
-                        <Polyline Stroke="Gray" Points="1,8 7,20 60,20 67,8 60,-6 7,-6 1,8"
-                                 Name="Cycle" Fill="Transparent" MouseDown="DragDrop_MD"></Polyline>
+                        <Polygon Stroke="Gray" Points="1,8 7,20 60,20 67,8 60,-6 7,-6"
+                                 Name="Cycle" Fill="Transparent" MouseDown="DragDrop_MD"></Polygon>
                         
                     </Label>
                     <!--#endregion-->
