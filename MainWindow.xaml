@@ -15,267 +15,16 @@
         MinWidth="800"
         Icon="Icon/Icon.jpg">
 
-    <Window.Resources>
-
-        <Style x:Key="ScrollBarThumbStyle" TargetType="Thumb">
-
-            <Setter Property="IsTabStop" Value="False"/>
-            <Setter Property="Focusable" Value="False"/>
-            <Setter Property="Margin" Value="1,0,1,0"/>
-            <Setter Property="Background" Value="Gray"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Thumb">
-                        <Rectangle Fill="Gray" Opacity="0.2"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-        </Style>
-
-        <Style x:Key="ScrollBarPageButtonStyle" TargetType="RepeatButton">
-
-            <Setter Property="IsTabStop" Value="False"/>
-            <Setter Property="Focusable" Value="False"/>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="RepeatButton">
-                        <Border Background="Transparent"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-        </Style>
-
-        <Style x:Key="ScrollBarLineButtonStyle" TargetType="RepeatButton">
-
-            <Setter Property="Focusable" Value="False"/>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="RepeatButton">
-                        <Grid Margin="1">
-                            <Rectangle Name="Border" StrokeThickness="2" 
-                                     Stroke="Transparent" Fill="Transparent"/>
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Border" Property="Fill" Value="Purple"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-        </Style>
-
-        <ControlTemplate x:Key="scroll" TargetType="ScrollBar">
-
-            <Grid ShowGridLines="False">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="18"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="18"/>
-                </Grid.RowDefinitions>
-
-                <RepeatButton Grid.Row="0" Height="18" 
-                              Style="{StaticResource ScrollBarLineButtonStyle}"
-                              Command="ScrollBar.LineUpCommand">
-                    <Path Fill="Gray" Data="M 0 4 L 8 4 L 4 0 Z" Opacity="0.3"/>
-                </RepeatButton>
-
-                <Track Grid.Row="1" ViewportSize="0" IsDirectionReversed="True"
-                       x:Name="PART_Track">
-
-                    <Track.DecreaseRepeatButton>
-                        <RepeatButton Command="ScrollBar.PageUpCommand"
-                                      Style="{StaticResource ScrollBarPageButtonStyle}">
-                        </RepeatButton>
-                    </Track.DecreaseRepeatButton>
-
-                    <Track.Thumb>
-                        <Thumb Style="{StaticResource ScrollBarThumbStyle}"/>
-                    </Track.Thumb>
-
-                    <Track.IncreaseRepeatButton>
-                        <RepeatButton Command="ScrollBar.PageDownCommand" 
-                                      Style="{StaticResource ScrollBarPageButtonStyle}"></RepeatButton>
-                    </Track.IncreaseRepeatButton>
-
-                </Track>
-
-                <RepeatButton Command="{x:Static ScrollBar.LineDownCommand}"
-                              Grid.Row="3" Height="18" 
-                              Style="{StaticResource ScrollBarLineButtonStyle}">
-
-                    <Path Fill="Gray" Data="M 0 0 L 4 4 L 8 0 Z" Opacity="0.3"/>
-
-                </RepeatButton>
-
-            </Grid>
-
-        </ControlTemplate>
-
-        <ControlTemplate TargetType="ScrollBar" x:Key="scrollHos">
-
-            <Grid ShowGridLines="False">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="18"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="18"/>
-                </Grid.ColumnDefinitions>
-
-                <RepeatButton Grid.Column="0" Height="18"
-                              Style="{StaticResource ScrollBarLineButtonStyle}"
-                              Command="ScrollBar.LineLeftCommand">
-                    <!--Path ...-->
-                    <Path Fill="Gray" Data="M 0 4 L 8 4 L 4 0 Z" Opacity="0.3"/>
-                </RepeatButton>
-
-                <Track Grid.Column="1" ViewportSize="0" IsDirectionReversed="True"
-                       x:Name="PART_Track_Hos">
-                    
-                    <Track.DecreaseRepeatButton>
-                        <RepeatButton Command="ScrollBar.PageLeftCommand"
-                                      Style="{StaticResource ScrollBarPageButtonStyle}">
-                        </RepeatButton>
-                    </Track.DecreaseRepeatButton>
-
-                    <Track.Thumb>
-                        <Thumb Style="{StaticResource ScrollBarThumbStyle}"/>
-                    </Track.Thumb>
-
-                    <Track.IncreaseRepeatButton>
-                        <RepeatButton Command="ScrollBar.PageRightCommand" 
-                                      Style="{StaticResource ScrollBarPageButtonStyle}">
-                        </RepeatButton>
-                    </Track.IncreaseRepeatButton>
-
-                </Track>
-
-                <RepeatButton Command="{x:Static ScrollBar.LineRightCommand}"
-                              Grid.Column="3" Height="18" 
-                              Style="{StaticResource ScrollBarLineButtonStyle}">
-
-                    <Path Fill="Gray" Data="M 0 0 L 4 4 L 8 0 Z" Opacity="0.3"/>
-
-                </RepeatButton>
-                
-            </Grid>
-            
-        </ControlTemplate>
-
-        <Style TargetType="ScrollViewer">
-
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment" Value="Bottom"/>
-            <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
-            <Setter Property="HorizontalScrollBarVisibility" Value="Visible"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Background" Value="Transparent"/>
-
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ScrollViewer">
-                        <Border CornerRadius="0" BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-
-                            <Grid Background="{TemplateBinding Background}" ShowGridLines="False">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <ScrollContentPresenter x:Name="ScrollContentPresenter"
-                                                        Cursor="{TemplateBinding Cursor}"
-                                                        Margin="{TemplateBinding Padding}"
-                                                        ContentTemplate="{TemplateBinding ContentTemplate}"/>
-
-                                <Rectangle Grid.Column="1" Grid.Row="1"  
-                                           Fill="Transparent"/>
-
-                                <ScrollBar Name="PART_VerticalScrollBar" Width="18"
-                                           IsTabStop="False"
-                                           Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                           Grid.Column="1" Grid.Row="0"
-                                           ViewportSize="{TemplateBinding ViewportHeight}"
-                                           Orientation="Vertical"
-                                           Maximum="{TemplateBinding ScrollableHeight}"
-                                           Minimum="0"
-                                           Value="{TemplateBinding VerticalOffset}"
-                                           Margin="0,-1,-1,-1"
-                                           Template="{StaticResource scroll}"
-                                           SnapsToDevicePixels="True"
-                                           OverridesDefaultStyle="True"/>
-
-                                <ScrollBar Name="PART_HorizontalScrollBar"
-                                           Height="18" IsTabStop="False"
-                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                                           Grid.Column="0" Grid.Row="1"
-                                           Orientation="Horizontal"
-                                           ViewportSize="{TemplateBinding ViewportWidth}"
-                                           Maximum="{TemplateBinding ScrollableWidth}"
-                                           Minimum="0"
-                                           Value="{TemplateBinding HorizontalOffset}"
-                                           OverridesDefaultStyle="True"
-                                           SnapsToDevicePixels="True"
-                                           Template="{StaticResource scrollHos}"
-                                           Margin="-1,0,-1,-1"/>
-
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style TargetType="ListView">
-
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Border Background="{TemplateBinding Background}">
-                            <ScrollViewer>
-                                <ItemsPresenter Margin="2">
-                                </ItemsPresenter>
-                            </ScrollViewer>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-        </Style>
-
-    </Window.Resources>
-
     <Border BorderThickness="1.2"
             CornerRadius="0" Name="Border">
         <Border.BorderBrush>
-            <SolidColorBrush Color="Purple" Opacity="0.4"></SolidColorBrush>
+            <SolidColorBrush Color="Purple" Opacity="0.5"></SolidColorBrush>
         </Border.BorderBrush>
         <Border.Background>
             <SolidColorBrush Color="Gray" Opacity="0.1"></SolidColorBrush>
         </Border.Background>
 
-        <Grid ShowGridLines="False">
+        <Grid ShowGridLines="False" Name="GridPos">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
@@ -287,7 +36,6 @@
                 <ColumnDefinition Width="110"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="48"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <!--#region  Header-->
@@ -418,32 +166,23 @@
             <!--#endregion-->
             
            <!--#region  main field-->
-           <ScrollViewer Grid.Row="1"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    HorizontalScrollBarVisibility="Visible">
 
-                    <Canvas Grid.Row="1"
-                            Grid.Column="1"
-                            Grid.ColumnSpan="2"
-                            Background="Black"
-                            AllowDrop="True"
-                            Drop="DnD_Drop"
-                            Name="CanvasPos"
-                            Width="2099"
-                            Height="2099">
-
-                    </Canvas>
-
-
-           </ScrollViewer>
-      
+           <Canvas Grid.Row="1"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="2"
+                   Background="White"
+                   AllowDrop="True"
+                   Drop="DnD_Drop"
+                   Name="CanvasPos"
+                   Opacity="0.2">
+                 
+           </Canvas>
             <!--#endregion-->
 
            <!--#region left side bar-->
 
            <Border    Grid.Column="0"
-                       Grid.Row="1">
+                      Grid.Row="1">
                 <Border.Background>
                     <SolidColorBrush Color="Gray" Opacity="0.2"></SolidColorBrush>
                 </Border.Background>
@@ -458,8 +197,6 @@
 
                 <StackPanel Orientation="Vertical">
 
-                    
-                    
                     <!--#region  ellipse-->
                     <Label Padding="20,10,0,10"
                            MouseEnter="SideBar_Mouse_Enter"
@@ -481,11 +218,11 @@
                            MouseEnter="SideBar_Mouse_Enter"
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Rect">
-
+                        
                         <Polyline Stroke="Gray" Fill="Transparent" 
                                  Points="8,1 8,30 60,30 60,1 8,1"
                                  Name="Rekt" MouseDown="DragDrop_MD"/>
-
+                            
                     </Label>
                     <!--#endregion-->
 
@@ -515,20 +252,6 @@
                     </Label>
                     <!--#endregion-->
                     
-                    <!--#region rectangle with line-->
-                    <Label Padding="9,12,0,12"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
-                           Name="lbl_RWL">
-
-                        <Polyline Stroke="Gray" Points="8,1 8,30 80,30 80,1 8,1 8,30 18,30 18,1 70,1 70,30"  
-                                  Name="RWL_Main"
-                                  MouseDown="DragDrop_MD"
-                                  Fill="Transparent"/>
-
-                    </Label>
-                    <!--#endregion-->
-                    
                     <!--#region cycle-->
                     <Label Padding="20,16,0,12"
                            MouseEnter="SideBar_Mouse_Enter"
@@ -540,53 +263,38 @@
                         
                     </Label>
                     <!--#endregion-->
+
                 </StackPanel>
-                
+
+
+            </DockPanel>
+
+           <DockPanel Grid.Column="0"
+                       Grid.Row="1"
+                       VerticalAlignment="Bottom">
+                <WrapPanel>
+                    <Label Content="Clear" Foreground="Gray"
+                           MouseEnter="Clear_Mouse_Enter"
+                           MouseLeave="Clear_Mouse_Leave"
+                           Name="Clear"
+                           MouseDown="inTrash"
+                           FontFamily="Clickuper"></Label>
+                </WrapPanel> 
            </DockPanel>
             
            <!--#endregion-->
-            
-           <!--#region right side bar-->
-
-            <DockPanel Grid.Column="3" Grid.Row="1">
-                <DockPanel.Background>
-                    <SolidColorBrush Color="Gray" Opacity="0.2"></SolidColorBrush>
-                </DockPanel.Background>
-
-                <StackPanel Orientation="Vertical">
-
-                    <Label Content="Clear" Foreground="Gray" Padding="10,10,10,10" 
-                           MouseDown="inTrash" MouseEnter="Clear_Mouse_Enter" 
-                           MouseLeave="Clear_Mouse_Leave" Name="Clear"/>
-
-                    <Label Content="Help" Foreground="Gray" Padding="10,10,10,10"
-                           MouseDown="HelpWindowOpen" MouseEnter="Header_Mouse_Enter"
-                           MouseLeave="Header_Mouse_Leave" Name="Help"/>
-
-                    <Label Content="Light" Padding="10,10,10,10" Foreground="Gray"
-                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
-                           MouseDown="Switch_Light"/>
-
-                    <Label Content="..." Padding="10,10,10,10" Foreground="Gray"
-                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"/>
-                    
-                </StackPanel>
-                
-            </DockPanel>
-            
-            <!--#endregion-->
-            
+             
            <!--#region footer-->
-            <Border    Grid.ColumnSpan="4"
+           <Border    Grid.ColumnSpan="4"
                        Grid.Row="2"
                        Grid.Column="0">
                 <Border.Background>
                     <SolidColorBrush Color="Purple" Opacity="0.4"></SolidColorBrush>
                 </Border.Background>
-            </Border>
+           </Border>
 
 
-            <DockPanel Grid.ColumnSpan="3"
+           <DockPanel Grid.ColumnSpan="3"
                        Grid.Row="2"
                        Grid.Column="0" 
                        HorizontalAlignment="Left">
@@ -595,11 +303,12 @@
 
                     <Label Content="Burrokku-zu" FontFamily="Clickuper"
                            FontSize="15" Padding="10,3,0,0" 
-                           Foreground="Gray" Opacity="0.7"></Label>
-                    
+                           Foreground="Gray" Opacity="0.7"/>
+
+                    <Polyline Stroke="Transparent" Points="8,0 0,0 0,8 8,0" Name="Anchor"/>
                 </StackPanel>
                 
-            </DockPanel> 
+           </DockPanel> 
            <!--#endregion-->
             
         </Grid>
