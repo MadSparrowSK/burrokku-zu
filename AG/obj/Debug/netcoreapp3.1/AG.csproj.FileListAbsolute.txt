@@ -1,0 +1,13 @@
+C:\Users\79996\source\repos\AG\bin\Debug\netcoreapp3.1\AG.exe
+C:\Users\79996\source\repos\AG\bin\Debug\netcoreapp3.1\AG.deps.json
+C:\Users\79996\source\repos\AG\bin\Debug\netcoreapp3.1\AG.runtimeconfig.json
+C:\Users\79996\source\repos\AG\bin\Debug\netcoreapp3.1\AG.runtimeconfig.dev.json
+C:\Users\79996\source\repos\AG\bin\Debug\netcoreapp3.1\AG.dll
+C:\Users\79996\source\repos\AG\bin\Debug\netcoreapp3.1\AG.pdb
+C:\Users\79996\source\repos\AG\obj\Debug\netcoreapp3.1\AG.csprojAssemblyReference.cache
+C:\Users\79996\source\repos\AG\obj\Debug\netcoreapp3.1\AG.AssemblyInfoInputs.cache
+C:\Users\79996\source\repos\AG\obj\Debug\netcoreapp3.1\AG.AssemblyInfo.cs
+C:\Users\79996\source\repos\AG\obj\Debug\netcoreapp3.1\AG.csproj.CoreCompileInputs.cache
+C:\Users\79996\source\repos\AG\obj\Debug\netcoreapp3.1\AG.dll
+C:\Users\79996\source\repos\AG\obj\Debug\netcoreapp3.1\AG.pdb
+C:\Users\79996\source\repos\AG\obj\Debug\netcoreapp3.1\AG.genruntimeconfig.cache
