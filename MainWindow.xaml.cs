@@ -69,6 +69,38 @@ namespace Interface_1._0
         }
         #endregion
 
+        #region menu_bar
+        private void FileButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ((Button)sender).Foreground = Brushes.White;
+        }
+
+        private void FileButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ((Button)sender).Foreground = Brushes.Gray;
+        }
+
+        private void FileButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((Button)sender).Foreground = Brushes.Gray;
+        }
+
+        private void FileButton_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ((Button)sender).Foreground = Brushes.White;
+        }
+
+        private void FileButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SaveLoadPanel.Visibility == Visibility.Visible)
+            {
+                SaveLoadPanel.Visibility = Visibility.Hidden;
+            }
+            else
+                SaveLoadPanel.Visibility = Visibility.Visible;
+        }
+        #endregion
+
         #endregion
 
         #region Interactions with SideBar
@@ -296,5 +328,8 @@ namespace Interface_1._0
             CanvasPos.Children.Clear();
         }
         #endregion
+
+
+        
     }
 }

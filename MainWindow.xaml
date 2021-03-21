@@ -14,7 +14,99 @@
         MinHeight="400"
         MinWidth="800"
         Icon="Icon/Icon.jpg">
+    <Window.Resources>
+        <!--Название для присвоения и тип объекта, с которым будет работать стиль-->
+        <Style x:Key="ComboboxButton1" TargetType="Button">
+            <!--
+                Разрешение на изменение стандартного стиля
+                Задний фон
+                Тег для работы с тригерами и фоном-->
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="#FF242424"/>
+            <Setter Property="Template">
+                <Setter.Value>
 
+                    <ControlTemplate TargetType="Button">
+                        <!--Работа с границей кнопки-->
+                        <Border Name="border" BorderThickness="0" 
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+
+                        </Border>
+                        <!--Тригеры-->
+                        <ControlTemplate.Triggers>
+                            
+                            <!--ЛУЧШАЯ анимация нажатия (если когда-то у вас вдруг появится вкус,
+                            то в 44-ой строчке (To) поменяйте первые два значения на 2)-->
+                            <!--Два тригера (событие) для создания анимации нажатия через Margin-->
+                            <EventTrigger RoutedEvent="PreviewMouseDown">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                            Duration="0:0:0.100" To="0,0,0,0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="PreviewMouseUp">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                            Duration="0:0:0.100" To="0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CmbButton" TargetType="Button">
+            <!--
+                Разрешение на изменение стиля
+                Задний фон
+                Высота кнопки
+                Цвет штриха
+                Размер штриха
+                ...-->
+
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="#FF242424"/>
+            <Setter Property="Height" Value="17"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <!--Работа с границей кнопки-->
+                        <Border Name="border" BorderThickness="0" 
+                                Background="{TemplateBinding Background}">
+                            <!--Настройка расположения объекта внтури кнопки-->
+                            <ContentPresenter
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Margin="0,0,0,0"/>
+
+                        </Border>
+                        <!--Работа с тригерами кнопки -->
+                        <ControlTemplate.Triggers>
+                            <!--При наведении на кнопку...-->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!--Изменение заливки и цвета текста-->
+                                <Setter Property="Background" Value="#FF2E2E30"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+
+
+
+        </Style>
+    </Window.Resources>
     <Border BorderThickness="1.2"
             CornerRadius="0" Name="Border">
         <Border.BorderBrush>
@@ -39,7 +131,7 @@
             </Grid.ColumnDefinitions>
 
             <!--#region  Header-->
-            
+
             <!--#region right_side-->
             <DockPanel Grid.Column="2"
                        Grid.Row="0"
@@ -61,7 +153,7 @@
                            Padding="14.55,18,0,0">
 
                         <Polyline Stroke="White" Points=" 0,0 15,0" Name="RollUp"></Polyline>
-                        
+
                     </Label>
 
                     <Label Foreground="White"
@@ -98,15 +190,15 @@
                         <Canvas>
                             <Polyline Stroke="White" Points="0,0 -13,15"></Polyline>
                             <Polyline Stroke="White" Points=" 0,15 -13,0"></Polyline>
-                            
+
                         </Canvas>
-                        
+
                     </Label>
 
                 </StackPanel>
             </DockPanel>
             <!--#endregion-->
-            
+
             <!--#region left_side-->
             <DockPanel Grid.Column="0"
                        Grid.Row="0"
@@ -118,7 +210,7 @@
 
                 <StackPanel Orientation="Vertical"
                             HorizontalAlignment="Left">
-                    
+
                     <!--#region symbol-->
                     <Label Padding="20,7,44,0">
                         <Canvas>
@@ -139,35 +231,140 @@
                 </StackPanel>
             </DockPanel>
             <!--#endregion-->
-            
+
             <!--#region menu_bar-->
 
             <DockPanel Grid.Column="1"
                        Grid.Row="0" HorizontalAlignment="Left">
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="File" Foreground="Gray" Padding="10,5,10,0" 
-                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"/>
+                    <!--Создание первой кнопки-->
+                    <Border  Height="30" Width="55"
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top"
+                Margin="0,0,0,0"
+                CornerRadius="0"
+                BorderThickness="1"
+                Background="Black">
+                        <!--Работа со стилями конкретно этой кнопки-->
+                        <Border.Style >
+                            <Style TargetType="{x:Type Border}">
+                                <!--Стандартный цвет границы-->
+                                <Setter Property="BorderBrush" Value="#FF400040"></Setter>
+                                <!--Список тригеров-->
+                                <Style.Triggers>
+                                    <!--При навдении изменить цвет границы-->
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="BorderBrush" Value="#FF5B025B"></Setter>
+                                        
+                                    </Trigger>
+                                    <!--При нажатии вернуть стандатрный цвет границы-->
+                                    <EventTrigger RoutedEvent="PreviewMouseDown">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color"
+                                                            Duration="0:0:0.100" To="#FF400040"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <!--При прекращении нажатия вернуть подсвеченный цвет-->
+                                    <EventTrigger RoutedEvent="PreviewMouseUp">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color"
+                                                            Duration="0:0:0.100" To="#FF5B025B"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Style.Triggers>
 
-                    <Label Content="settings" Foreground="Gray" Padding="10,5,10,0"
-                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
-                           MouseDown="Change_Window"/>
 
-                    <Label Content="something more ..." MouseEnter="Header_Mouse_Enter"
-                           MouseLeave="Header_Mouse_Leave"
-                           Foreground="Gray" Padding="10,5,10,0"/>
+                            </Style>
+                        </Border.Style>
+                        <!--Задаем кнопке пользовательский стиль-->
+                        <!--Если не нравится, что при нажатии на File меняется цвет шрифта, то удали
+                         PreviewMouseDown и PreviewMouseUp-->
+                        <Button Name="FileButton"
+                                Style="{StaticResource ComboboxButton1}" 
+                                FontSize="16"
+                                Padding="0,0,0,2"
+                                Foreground="Gray"
+                                Content="File" 
+                                MouseEnter="FileButton_MouseEnter" MouseLeave="FileButton_MouseLeave" 
+                                PreviewMouseDown="FileButton_PreviewMouseDown" PreviewMouseUp="FileButton_PreviewMouseUp" 
+                                Click="FileButton_Click"
+                                />
+
+
+                    </Border>
                     
                 </StackPanel>
 
             </DockPanel>
-            
-            <!--#endregion-->
-            
-            <!--#endregion-->
-            
-           <!--#region  main field-->
+            <!--Меню с кнопками-->
+            <Grid Name="SaveLoadPanel"
+                  Grid.Row="1" Grid.Column="1" 
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Left"
+                  Panel.ZIndex="900"
+                  Height="40" Width="100"
+                  Visibility="Hidden">
+                <!--Прорисовка меню
+                Задний фон
+                Передний фон
+                Fill - цвет фигуры
+                Stroke - цвет границы-->
+                <Polygon Fill="Black" StrokeThickness="2" Stroke="#FF400040"
+                     Points="
+                         0,0
+                         0,40
+                         100,40
+                         100,0
+                         
+                     
+                     "></Polygon>
+                <Polygon Fill="#FF272727" StrokeThickness="1" Stroke="#FF400040" 
+                     Points="
+                         0,0
+                         0,40
+                         100,40
+                         100,0
+                     "></Polygon>
+                <!--Грид для настройки взаимного расположения кнопок-->
+                <Grid Height="36" Width="98" >
+                    <!--Контейнер с кнопками-->
+                    <StackPanel Orientation="Vertical">
+                        <!--Задаем им пользовательский стиль и события при нажатии (меняем цвет шрифта)-->
+                        <Button Style="{StaticResource CmbButton}" 
+                        MouseEnter="FileButton_MouseEnter" MouseLeave="FileButton_MouseLeave" 
+                        PreviewMouseDown="FileButton_PreviewMouseDown" PreviewMouseUp="FileButton_PreviewMouseUp"        
+                        >
+                            <TextBlock Text="Add diagram" 
+                               Margin="0,0,1,0"
+                              />
+                        </Button>
+                        <Button Style="{StaticResource CmbButton}"
+                            Margin="0,3,0,0"
+                            MouseEnter="FileButton_MouseEnter" MouseLeave="FileButton_MouseLeave" 
+                            PreviewMouseDown="FileButton_PreviewMouseDown" PreviewMouseUp="FileButton_PreviewMouseUp"
+                        >
+                            <TextBlock Text="Safe diagram" 
+                               Margin="0,0,0,0"
+                              />
+                        </Button>
 
-           <Canvas Grid.Row="1"
+                    </StackPanel>
+                </Grid>
+
+
+            </Grid>
+            <!--#endregion-->
+
+            <!--#endregion-->
+
+            <!--#region  main field-->
+
+            <Canvas Grid.Row="1"
                    Grid.Column="1"
                    Grid.ColumnSpan="2"
                    Background="White"
@@ -175,20 +372,20 @@
                    Drop="DnD_Drop"
                    Name="CanvasPos"
                    Opacity="0.2">
-                 
-           </Canvas>
+
+            </Canvas>
             <!--#endregion-->
 
-           <!--#region left side bar-->
+            <!--#region left side bar-->
 
-           <Border    Grid.Column="0"
+            <Border    Grid.Column="0"
                       Grid.Row="1">
                 <Border.Background>
                     <SolidColorBrush Color="Gray" Opacity="0.2"></SolidColorBrush>
                 </Border.Background>
-           </Border>
-            
-           <DockPanel Grid.Column="0"
+            </Border>
+
+            <DockPanel Grid.Column="0"
                        Grid.Row="1"
                        VerticalAlignment="Top">
                 <DockPanel.Background>
@@ -212,17 +409,17 @@
                                    MouseDown="DragDrop_MD"/>
                     </Label>
                     <!--#endregion-->
-                    
+
                     <!--#region rectangle-->
                     <Label Padding="20,10,0,10"
                            MouseEnter="SideBar_Mouse_Enter"
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Rect">
-                        
+
                         <Polyline Stroke="Gray" Fill="Transparent" 
                                  Points="8,1 8,30 60,30 60,1 8,1"
                                  Name="Rekt" MouseDown="DragDrop_MD"/>
-                            
+
                     </Label>
                     <!--#endregion-->
 
@@ -235,10 +432,10 @@
                         <Polyline Stroke="Gray" Points="8,1 0,30 60,30 68,1 8,1"
                                  Name="Parrabellum" Fill="Transparent"
                                  MouseDown="DragDrop_MD"></Polyline>
-                       
+
                     </Label>
                     <!--#endregion-->
-                    
+
                     <!--#region rhombus-->
                     <Label Padding="14,12,0,8"
                            MouseEnter="SideBar_Mouse_Enter"
@@ -251,7 +448,7 @@
 
                     </Label>
                     <!--#endregion-->
-                    
+
                     <!--#region cycle-->
                     <Label Padding="20,16,0,12"
                            MouseEnter="SideBar_Mouse_Enter"
@@ -260,7 +457,7 @@
 
                         <Polyline Stroke="Gray" Points="1,8 7,20 60,20 67,8 60,-6 7,-6 1,8"
                                  Name="Cycle" Fill="Transparent" MouseDown="DragDrop_MD"></Polyline>
-                        
+
                     </Label>
                     <!--#endregion-->
 
@@ -269,7 +466,7 @@
 
             </DockPanel>
 
-           <DockPanel Grid.Column="0"
+            <DockPanel Grid.Column="0"
                        Grid.Row="1"
                        VerticalAlignment="Bottom">
                 <WrapPanel>
@@ -279,22 +476,22 @@
                            Name="Clear"
                            MouseDown="inTrash"
                            FontFamily="Clickuper"></Label>
-                </WrapPanel> 
-           </DockPanel>
-            
-           <!--#endregion-->
-             
-           <!--#region footer-->
-           <Border    Grid.ColumnSpan="4"
+                </WrapPanel>
+            </DockPanel>
+
+            <!--#endregion-->
+
+            <!--#region footer-->
+            <Border    Grid.ColumnSpan="4"
                        Grid.Row="2"
                        Grid.Column="0">
                 <Border.Background>
                     <SolidColorBrush Color="Purple" Opacity="0.4"></SolidColorBrush>
                 </Border.Background>
-           </Border>
+            </Border>
 
 
-           <DockPanel Grid.ColumnSpan="3"
+            <DockPanel Grid.ColumnSpan="3"
                        Grid.Row="2"
                        Grid.Column="0" 
                        HorizontalAlignment="Left">
@@ -307,10 +504,10 @@
 
                     <Polyline Stroke="Transparent" Points="8,0 0,0 0,8 8,0" Name="Anchor"/>
                 </StackPanel>
-                
-           </DockPanel> 
-           <!--#endregion-->
-            
+
+            </DockPanel>
+            <!--#endregion-->
+
         </Grid>
     </Border>
 </Window>
