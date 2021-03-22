@@ -27,15 +27,30 @@ namespace Interface_1._0
         Point rectangleSE = new Point();
         Point rectnagleNE = new Point();
 
+        Point startRectangleNW = new Point();
+        Point startRectangleSW = new Point();
+        Point startRectangleSE = new Point();
+        Point startRectangleNE = new Point();
+
         Point parabellumNW = new Point();
         Point parabellumSW = new Point();
         Point parabellumSE = new Point();
         Point parabellumNE = new Point();
 
+        Point startParabellumNW = new Point();
+        Point startParabellumSW = new Point();
+        Point startParabellumSE = new Point();
+        Point startParabellumNE = new Point();
+
         Point rhombN = new Point();
         Point rhombW = new Point();
         Point rhombS = new Point();
         Point rhombE = new Point();
+
+        Point startRhombN = new Point();
+        Point startRhombW = new Point();
+        Point strtRhombS = new Point();
+        Point startRhombE = new Point();
 
         Point cycleNW = new Point();
         Point cycleW = new Point();
@@ -43,74 +58,81 @@ namespace Interface_1._0
         Point cycleSE = new Point();
         Point cycleE = new Point();
         Point cycleNE = new Point();
+
+        Point startCycleNW = new Point();
+        Point startCycleW = new Point();
+        Point startCycleSW = new Point();
+        Point startCycleSE = new Point();
+        Point startCycleE = new Point();
+        Point startCycleNE = new Point();
         #endregion
 
         public MainWindow()
         {
             InitializeComponent();
 
-            #region initialized shapes points
+            #region initialized shapes start points
 
             #region rectangle points
-            rectangleNW.X = 8;
-            rectangleNW.Y = 1;
+            startRectangleNW.X = 8;
+            startRectangleNW.Y = 1;
 
-            rectangleSW.X = 8;
-            rectangleSW.Y = 30;
+            startRectangleSW.X = 8;
+            startRectangleSW.Y = 30;
 
-            rectangleSE.X = 60;
-            rectangleSE.Y = 30;
+            startRectangleSE.X = 60;
+            startRectangleSE.Y = 30;
 
-            rectnagleNE.X = 60;
-            rectnagleNE.Y = 1;
+            startRectangleNE.X = 60;
+            startRectangleNE.Y = 1;
             #endregion
 
             #region parrabellum points
-            parabellumNW.X = 8;
-            parabellumNW.Y = 1;
+            startParabellumNW.X = 8;
+            startParabellumNW.Y = 1;
 
-            parabellumSW.X = 0;
-            parabellumSW.Y = 30;
+            startParabellumSW.X = 0;
+            startParabellumSW.Y = 30;
 
-            parabellumSE.X = 60;
-            parabellumSE.Y = 30;
+            startParabellumSE.X = 60;
+            startParabellumSE.Y = 30;
 
-            parabellumNE.X = 68;
-            parabellumNE.Y = 1;
+            startParabellumNE.X = 68;
+            startParabellumNE.Y = 1;
             #endregion
 
             #region rhomb points
-            rhombW.X = 0;
-            rhombW.Y = 8;
+            startRhombW.X = 0;
+            startRhombW.Y = 8;
 
-            rhombS.X = 40;
-            rhombS.Y = 20;
+            strtRhombS.X = 40;
+            strtRhombS.Y = 20;
 
-            rhombE.X = 80;
-            rhombE.Y = 8;
+            startRhombE.X = 80;
+            startRhombE.Y = 8;
 
-            rhombN.X = 40;
-            rhombN.Y = -4;
+            startRhombN.X = 40;
+            startRhombN.Y = -4;
             #endregion
 
             #region cycle points
-            cycleW.X = 1;
-            cycleW.Y = 8;
+            startCycleW.X = 1;
+            startCycleW.Y = 8;
 
-            cycleSW.X = 7;
-            cycleSW.Y = 20;
+            startCycleSW.X = 7;
+            startCycleSW.Y = 20;
 
-            cycleSE.X = 60;
-            cycleSE.Y = 20;
+            startCycleSE.X = 60;
+            startCycleSE.Y = 20;
 
-            cycleE.X = 67;
-            cycleE.Y = 8;
+            startCycleE.X = 67;
+            startCycleE.Y = 8;
 
-            cycleNE.X = 60;
-            cycleNE.Y = -6;
+            startCycleNE.X = 60;
+            startCycleNE.Y = -6;
 
-            cycleNW.X = 7;
-            cycleNW.Y = -6;
+            startCycleNW.X = 7;
+            startCycleNW.Y = -6;
             #endregion
 
             #endregion
@@ -284,7 +306,7 @@ namespace Interface_1._0
 
                     anchor_size.MouseDown += AnchorMouseDown;
                     anchor_size.MouseMove += AnchorMouseMove;
-                    anchor_size.MouseUp += AnchorMouseUp;
+                    anchor_size.MouseUp   += AnchorMouseUp;
 
                     #region anchor_action
 
@@ -294,7 +316,6 @@ namespace Interface_1._0
                         lastPoint_anchor = evnt.GetPosition(anchor);
                         current_anchor_postion = evnt.GetPosition(CanvasPos);
                     }
-
                     void AnchorMouseMove(object sndr, MouseEventArgs evnt)
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
@@ -307,8 +328,8 @@ namespace Interface_1._0
 
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
-                                //text_into_shapes.MaxHeight += .3;
-                                //text_into_shapes.MaxWidth += .7;
+                                txt.MaxHeight += .3;
+                                txt.MaxWidth += .7;
 
                                 //++fisrt.X;
                                 //++fisrt.Y;
@@ -330,11 +351,19 @@ namespace Interface_1._0
 
                                 smt.Points = points;
 
+                                current_anchor_postion.X = Canvas.GetLeft(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+
+                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - 1);
+                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - .5);
+
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + 20);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + 5);
                             }
-                            else
+                            else if(startRectangleNE != rectnagleNE)
                             {
-                                //text_into_shapes.MaxHeight -= .3;
-                                //text_into_shapes.MaxWidth -= .7;
+                                txt.MaxHeight -= .3;
+                                txt.MaxWidth  -= .7;
 
                                 //++fisrt.X;
                                 //++fisrt.Y;
@@ -355,6 +384,15 @@ namespace Interface_1._0
                                 points.Add(rectnagleNE);
 
                                 smt.Points = points;
+
+                                current_anchor_postion.X = Canvas.GetLeft(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+
+                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + 1);
+                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + .5);
+
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + 20);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + 5);
                             }
 
                             Canvas.SetLeft(anchor, pos.X);
@@ -378,9 +416,35 @@ namespace Interface_1._0
                 }
                 #endregion
 
-                REPCIntoCanvasMouseMove(polygon, txt);
+                RectangleIntoCanvasMouseMove(polygon, txt);
             }
         }
+        private void RectangleIntoCanvasMouseMove(Polygon polygon, TextBox txt)
+        {
+            polygon.MouseMove += IntoCanvasMove;
+
+            void IntoCanvasMove(object sender, MouseEventArgs e)
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    if (is_anchor_create)
+                    {
+                        is_anchor_create = false;
+                        CanvasPos.Children.Remove(anchor_size);
+                    }
+
+                    var smt = (UIElement)sender;
+                    smt.CaptureMouse();
+
+                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
+                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 20);
+                    Canvas.SetTop(txt, Canvas.GetTop(smt) + 5);
+                }
+            }
+        }
+
         private void ParrabellumAdd(Polygon polygon, TextBox txt)
         {
             polygon.MouseDown += IntoCanvasDownPolylineParrabellum;
@@ -410,7 +474,7 @@ namespace Interface_1._0
 
                     anchor_size.MouseDown += AnchorMouseDown;
                     anchor_size.MouseMove += AnchorMouseMove;
-                    anchor_size.MouseUp  += AnchorMouseUp;
+                    anchor_size.MouseUp   += AnchorMouseUp;
 
                     #region anchor_action
                     void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
@@ -419,7 +483,6 @@ namespace Interface_1._0
                         lastPoint_anchor = evnt.GetPosition(anchor);
                         current_anchor_postion = evnt.GetPosition(CanvasPos);
                     }
-
                     void AnchorMouseMove(object sndr, MouseEventArgs evnt)
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
@@ -432,6 +495,9 @@ namespace Interface_1._0
 
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
+                                txt.MaxHeight += .5;
+                                txt.MaxWidth += .5;
+
                                 //++fisrt.X;
                                 //++fisrt.Y;
 
@@ -452,9 +518,20 @@ namespace Interface_1._0
 
                                 smt.Points = points;
 
+                                current_anchor_postion.X = Canvas.GetLeft(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+
+                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - 1);
+                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - .5);
+
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + 20);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + 5);
                             }
-                            else
+                            else if(startParabellumNE != parabellumNE)
                             {
+                                txt.MaxWidth  -= .5;
+                                txt.MaxHeight -= .5;
+
                                 //++fisrt.X;
                                 //++fisrt.Y;
 
@@ -474,6 +551,15 @@ namespace Interface_1._0
                                 points.Add(parabellumNE);
 
                                 smt.Points = points;
+
+                                current_anchor_postion.X = Canvas.GetLeft(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+
+                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + 1);
+                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + .5);
+
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + 20);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + 5);
                             }
 
                             Canvas.SetLeft(anchor, pos.X);
@@ -497,9 +583,35 @@ namespace Interface_1._0
                 }
                 #endregion
 
-                REPCIntoCanvasMouseMove(polygon, txt);
+                ParrabellumIntoCanvasMouseMove(polygon, txt);
             }
         }
+        private void ParrabellumIntoCanvasMouseMove(Polygon polygon, TextBox txt)
+        {
+            polygon.MouseMove += IntoCanvasMove;
+
+            void IntoCanvasMove(object sender, MouseEventArgs e)
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    if (is_anchor_create)
+                    {
+                        is_anchor_create = false;
+                        CanvasPos.Children.Remove(anchor_size);
+                    }
+
+                    var smt = (UIElement)sender;
+                    smt.CaptureMouse();
+
+                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
+                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 20);
+                    Canvas.SetTop(txt, Canvas.GetTop(smt) + 5);
+                }
+            }
+        }
+
         private void RhombAdd(Polygon polygon, TextBox txt)
         {
             polygon.MouseDown += IntoCanvasDownPolylineRhomb;
@@ -541,6 +653,9 @@ namespace Interface_1._0
 
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
+                                txt.MaxHeight += .5;
+                                txt.MaxWidth += .5;
+
                                 rhombW.X -= 1;
                                 //rhombW.Y += .5;
 
@@ -562,8 +677,11 @@ namespace Interface_1._0
                                 smt.Points = points;
 
                             }
-                            else
+                            else if(startRhombE != rhombE)
                             {
+                                txt.MaxWidth  -= .5;
+                                txt.MaxHeight -= .5;
+
                                 rhombW.X += 1;
                                 rhombS.Y -= .5;
                                 rhombE.X -= 1;
@@ -611,6 +729,32 @@ namespace Interface_1._0
                 RhombIntoCanvasMouseMove(polygon, txt);
             }
         } 
+        private void RhombIntoCanvasMouseMove(Polygon polygon, TextBox txt)
+        {
+            polygon.MouseMove += IntoCanvasMove;
+
+            void IntoCanvasMove(object sender, MouseEventArgs e)
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    if (is_anchor_create)
+                    {
+                        is_anchor_create = false;
+                        CanvasPos.Children.Remove(anchor_size);
+                    }
+
+                    var smt = (UIElement)sender;
+                    smt.CaptureMouse();
+
+                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
+                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 25);
+                    Canvas.SetTop(txt, Canvas.GetTop(smt) - 1);
+                }
+            }
+        }
+
         private void CycleAdd(Polygon polygon, TextBox txt)
         {
             polygon.MouseDown += IntoCanvasDownPolylineCycle;
@@ -654,6 +798,9 @@ namespace Interface_1._0
 
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
+                                txt.MaxHeight += .5;
+                                txt.MaxWidth += .5;
+
                                 cycleW.X -= .2;
 
                                 cycleSW.Y += .5;
@@ -677,9 +824,21 @@ namespace Interface_1._0
                                 points.Add(cycleNW);
 
                                 smt.Points = points;
+
+                                current_anchor_postion.X = Canvas.GetLeft(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+
+                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - 1);
+                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - .5);
+
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + 20);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon) - 3);
                             }
-                            else
+                            else if(startCycleNE != cycleNE)
                             {
+                                txt.MaxHeight -= .5;
+                                txt.MaxWidth -= .5;
+
                                 cycleW.X += .2;
 
                                 cycleSW.Y -= .5;
@@ -703,6 +862,15 @@ namespace Interface_1._0
                                 points.Add(cycleNW);
 
                                 smt.Points = points;
+
+                                current_anchor_postion.X = Canvas.GetLeft(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+
+                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + 1);
+                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + .5);
+
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + 20);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon) - 3);
                             }
 
                             Canvas.SetLeft(anchor, pos.X);
@@ -735,10 +903,36 @@ namespace Interface_1._0
                 }
                 #endregion
 
-                REPCIntoCanvasMouseMove(polygon, txt);
+                CycleIntoCanvasMouseMove(polygon, txt);
             }
         }
-        private void EllipseAdd(Polygon polygon, TextBox txt)
+        private void CycleIntoCanvasMouseMove(Polygon polygon, TextBox txt)
+        {
+            polygon.MouseMove += IntoCanvasMove;
+
+            void IntoCanvasMove(object sender, MouseEventArgs e)
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    if (is_anchor_create)
+                    {
+                        is_anchor_create = false;
+                        CanvasPos.Children.Remove(anchor_size);
+                    }
+
+                    var smt = (UIElement)sender;
+                    smt.CaptureMouse();
+
+                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
+                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 20);
+                    Canvas.SetTop(txt, Canvas.GetTop(smt) - 3);
+                }
+            }
+        }
+
+        private void EllipseAdd(Rectangle polygon, TextBox txt)
         {
             polygon.MouseDown += IntoCanvasMouseDownRectangle;
 
@@ -778,13 +972,34 @@ namespace Interface_1._0
 
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
-                                smt.Width += 1;
+                                txt.MaxWidth  += .5;
+                                txt.MaxHeight += .5;
+
+                                smt.Width  += 1;
                                 smt.Height += 1;
+
+                                current_anchor_postion.X = Canvas.GetLeft(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+
+                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - .2);
+                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - .2);
+
+                                //Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width * 0.28);
+                                //Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height * 0.08);
                             }
-                            else if (smt.Width > 0 && smt.Height > 0)
+                            else if(polygon.Width > 75 && polygon.Height > 25)
                             {
-                                smt.Width -= 1;
+                                txt.MaxWidth  -= .5;
+                                txt.MaxHeight -= .5;
+
+                                smt.Width  -= 1;
                                 smt.Height -= 1;
+
+                                current_anchor_postion.X = Canvas.GetLeft(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+
+                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + .2);
+                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + .2);
                             }
 
                             Canvas.SetLeft(anchor, pos.X);
@@ -817,12 +1032,10 @@ namespace Interface_1._0
                 }
                 #endregion
 
-                REPCIntoCanvasMouseMove(polygon, txt);
+                EllipseIntoCanvasMouseMove(polygon, txt);
             }
         }
-
-
-        private void REPCIntoCanvasMouseMove(Polygon polygon, TextBox txt)
+        private void EllipseIntoCanvasMouseMove(Rectangle polygon, TextBox txt)
         {
             polygon.MouseMove += IntoCanvasMove;
 
@@ -842,36 +1055,12 @@ namespace Interface_1._0
                     Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 10);
-                    Canvas.SetTop(txt, Canvas.GetTop(smt) + 5);
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + polygon.Width * 0.28);
+                    Canvas.SetTop(txt, Canvas.GetTop(smt) + polygon.Height * 0.08);
                 }
             }
         }
-        private void RhombIntoCanvasMouseMove(Polygon polygon, TextBox txt)
-        {
-            polygon.MouseMove += IntoCanvasMove;
 
-            void IntoCanvasMove(object sender, MouseEventArgs e)
-            {
-                if (e.LeftButton == MouseButtonState.Pressed)
-                {
-                    if (is_anchor_create)
-                    {
-                        is_anchor_create = false;
-                        CanvasPos.Children.Remove(anchor_size);
-                    }
-
-                    var smt = (UIElement)sender;
-                    smt.CaptureMouse();
-
-                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
-                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
-
-                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 10);
-                    Canvas.SetTop(txt, Canvas.GetTop(smt) + 5);
-                }
-            }
-        }
         
 
         public void IntoCanvasUp(object sender, MouseButtonEventArgs e)
@@ -903,7 +1092,7 @@ namespace Interface_1._0
                 polyline.Stroke = Brushes.White;
                 polyline.Fill   = Brushes.Transparent;
 
-                polyline.MouseUp   += IntoCanvasUp;
+                polyline.MouseUp += IntoCanvasUp;
 
                 CanvasPos.Children.Add(polyline);
                 CanvasPos.Children.Add(text_into_shapes);
@@ -911,7 +1100,7 @@ namespace Interface_1._0
                 Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
                 Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y  - lastPoint.Y);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 10);
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 20);
                 Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + 5);
 
                 RectangleAdd(polyline, text_into_shapes);
@@ -944,7 +1133,7 @@ namespace Interface_1._0
                 Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
                 Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 10);
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 20);
                 Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + 5);
 
                 ParrabellumAdd(polyline, text_into_shapes);
@@ -979,8 +1168,8 @@ namespace Interface_1._0
                 Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
                 Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 10);
-                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + 5);
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 25);
+                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline)- 1);
 
                 RhombAdd(polyline, text_into_shapes);
             }
@@ -1014,10 +1203,46 @@ namespace Interface_1._0
                 Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
                 Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 10);
-                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + 5);
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 20);
+                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) - 3);
 
                 CycleAdd(polyline, text_into_shapes);
+            }
+            if(Ellipse_Check)
+            {
+                Ellipse_Check = false;
+
+                Rectangle rectangle = new Rectangle();
+                TextBox text_into_shapes = new TextBox();
+
+                rectangle.Width = Ellipse.Width;
+                rectangle.Height = Ellipse.Height;
+                rectangle.RadiusX = Ellipse.RadiusX;
+                rectangle.RadiusY = Ellipse.RadiusY;
+                rectangle.Fill = Brushes.Transparent;
+                rectangle.Stroke = Brushes.White;
+
+                text_into_shapes.Text = "Text";
+                text_into_shapes.MaxWidth = 40;
+                text_into_shapes.MaxHeight = 20;
+                text_into_shapes.TextWrapping = TextWrapping.Wrap;
+                text_into_shapes.FontSize = 10;
+                text_into_shapes.BorderBrush = Brushes.Transparent;
+                text_into_shapes.Foreground = Brushes.White;
+                text_into_shapes.Background = Brushes.Transparent;
+
+                rectangle.MouseUp += IntoCanvasUp;
+
+                CanvasPos.Children.Add(rectangle);
+                CanvasPos.Children.Add(text_into_shapes);
+
+                Canvas.SetLeft(rectangle, e.GetPosition(CanvasPos).X - lastPoint.X);
+                Canvas.SetTop(rectangle, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(rectangle) + rectangle.Width * 0.28);
+                Canvas.SetTop(text_into_shapes, Canvas.GetTop(rectangle) + rectangle.Height * 0.08);
+
+                EllipseAdd(rectangle, text_into_shapes);
             }
 
             #region initialized shapes points
