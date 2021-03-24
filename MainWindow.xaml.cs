@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -83,6 +84,16 @@ namespace Interface_1._0
         private void FileButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((Button)sender).Foreground = Brushes.Gray;
+            Thread.Sleep(250);
+            if (((Button)sender).Name == "FileButton")
+            {
+                if (SaveLoadPanel.Visibility == Visibility.Visible)
+                {
+                    BorderButton.BorderThickness = new Thickness(0);
+                }
+                else
+                    BorderButton.BorderThickness = new Thickness(1, 1, 1, 0);
+            }
         }
 
         private void FileButton_PreviewMouseUp(object sender, MouseButtonEventArgs e)

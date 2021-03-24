@@ -39,7 +39,7 @@
                             
                             <!--ЛУЧШАЯ анимация нажатия (если когда-то у вас вдруг появится вкус,
                             то в 44-ой строчке (To) поменяйте первые два значения на 2)-->
-                            <!--Два тригера (событие) для создания анимации нажатия через Margin-->
+                            <!--Два тригера (событие) для создания анимации нажатия через Margin
                             <EventTrigger RoutedEvent="PreviewMouseDown">
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -56,7 +56,7 @@
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
-                            
+                            -->
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -238,14 +238,16 @@
                        Grid.Row="0" HorizontalAlignment="Left">
 
                 <StackPanel Orientation="Horizontal">
-                    <!--Создание первой кнопки-->
+                    
+                    <!--Создание первой кнопки (BorderThickness = "1" - для создания границы)-->
                     <Border  Height="30" Width="55"
+                Name="BorderButton"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
                 Margin="0,0,0,0"
                 CornerRadius="0"
-                BorderThickness="1"
-                Background="Black">
+                BorderThickness="0"
+                Background="#FF242424">
                         <!--Работа со стилями конкретно этой кнопки-->
                         <Border.Style >
                             <Style TargetType="{x:Type Border}">
@@ -253,12 +255,12 @@
                                 <Setter Property="BorderBrush" Value="#FF400040"></Setter>
                                 <!--Список тригеров-->
                                 <Style.Triggers>
-                                    <!--При навдении изменить цвет границы-->
+                                    <!--При навдении изменить цвет границы
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="BorderBrush" Value="#FF5B025B"></Setter>
                                         
                                     </Trigger>
-                                    <!--При нажатии вернуть стандатрный цвет границы-->
+                                    При нажатии вернуть стандатрный цвет границы
                                     <EventTrigger RoutedEvent="PreviewMouseDown">
                                         <BeginStoryboard>
                                             <Storyboard>
@@ -267,7 +269,7 @@
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger>
-                                    <!--При прекращении нажатия вернуть подсвеченный цвет-->
+                                    При прекращении нажатия вернуть подсвеченный цвет
                                     <EventTrigger RoutedEvent="PreviewMouseUp">
                                         <BeginStoryboard>
                                             <Storyboard>
@@ -276,6 +278,7 @@
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger>
+                                    -->
                                 </Style.Triggers>
 
 
@@ -302,19 +305,33 @@
 
             </DockPanel>
             <!--Меню с кнопками-->
+            
             <Grid Name="SaveLoadPanel"
                   Grid.Row="1" Grid.Column="1" 
                   VerticalAlignment="Top"
                   HorizontalAlignment="Left"
                   Panel.ZIndex="900"
                   Height="40" Width="100"
-                  Visibility="Hidden">
+                  Visibility="Hidden"
+                  >
+                
                 <!--Прорисовка меню
                 Задний фон
                 Передний фон
                 Fill - цвет фигуры
                 Stroke - цвет границы-->
-                <Polygon Fill="Black" StrokeThickness="2" Stroke="#FF400040"
+                <Polyline Stroke="#FF400040" StrokeThickness="2" Panel.ZIndex="10" Points="
+                          0,0
+                          0,40
+                          100,40
+                          100,0
+                          54,0
+                          "></Polyline>
+                <Polyline Stroke="#FF242424" StrokeThickness="2" Panel.ZIndex="10" Points="
+                          54,0
+                          1,0
+                          "></Polyline>
+                <Polygon Fill="#FF242424" StrokeThickness="0" Stroke="#FF400040"
                      Points="
                          0,0
                          0,40
@@ -323,7 +340,7 @@
                          
                      
                      "></Polygon>
-                <Polygon Fill="#FF272727" StrokeThickness="1" Stroke="#FF400040" 
+                <Polygon Fill="#FF242424" StrokeThickness="0" Stroke="#FF400040"
                      Points="
                          0,0
                          0,40
@@ -339,7 +356,7 @@
                         MouseEnter="FileButton_MouseEnter" MouseLeave="FileButton_MouseLeave" 
                         PreviewMouseDown="FileButton_PreviewMouseDown" PreviewMouseUp="FileButton_PreviewMouseUp"        
                         >
-                            <TextBlock Text="Add diagram" 
+                            <TextBlock Text="Open" 
                                Margin="0,0,1,0"
                               />
                         </Button>
@@ -348,14 +365,14 @@
                             MouseEnter="FileButton_MouseEnter" MouseLeave="FileButton_MouseLeave" 
                             PreviewMouseDown="FileButton_PreviewMouseDown" PreviewMouseUp="FileButton_PreviewMouseUp"
                         >
-                            <TextBlock Text="Safe diagram" 
+                            <TextBlock Text="Save" 
                                Margin="0,0,0,0"
                               />
                         </Button>
 
                     </StackPanel>
                 </Grid>
-
+                
 
             </Grid>
             <!--#endregion-->
