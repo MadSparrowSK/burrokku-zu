@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 F:\Burrokku-zu\App.xaml
-11151548125
+41382700169
 
-7-2142733770
+9-378543089
 13152784993
-MainWindow.xaml;
+HelpWindow.xaml;MainWindow.xaml;ChangeWindow.xaml;Style.xaml;
 
-False
+True
 

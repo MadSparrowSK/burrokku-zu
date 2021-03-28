@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-F:\Burrokku-zu\obj\Debug\
+C:\Users\79996\source\repos\Burrokku-zu\obj\Debug\
 Interface_1._0
 none
 false
 DEBUG;TRACE
-F:\Burrokku-zu\App.xaml
-11151548125
+C:\Users\79996\source\repos\Burrokku-zu\App.xaml
+41382700169
 
-6-1388163986
+8376026695
 13152784993
-MainWindow.xaml;
+HelpWindow.xaml;MainWindow.xaml;ChangeWindow.xaml;Style.xaml;
 
-False
+True
 

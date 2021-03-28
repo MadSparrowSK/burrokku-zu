@@ -1,0 +1,26 @@
+﻿<Window x:Class="Interface_1._0.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Interface_1._0"
+        mc:Ignorable="d"
+        Title="ShangeWindow" Height="450" Width="600"
+        Background="Transparent"
+        WindowStyle="None"
+        AllowsTransparency="True">
+    <Border BorderBrush="Purple"
+            BorderThickness="3"
+            CornerRadius="4"
+            Background="Black">
+
+        <Label 
+                MouseLeftButtonDown="Close_Click_W1" 
+                Foreground="White"
+                Content="X"
+                Name="lbl_Close"
+                Padding="15,9,5,5"
+                Width="35"
+                HorizontalAlignment="Right"/>
+    </Border>
+</Window>
