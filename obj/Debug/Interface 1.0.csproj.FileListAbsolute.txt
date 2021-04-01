@@ -20,16 +20,19 @@ F:\Burrokku-zu\bin\Debug\Interface 1.0.exe
 F:\Burrokku-zu\bin\Debug\Interface 1.0.pdb
 F:\Burrokku-zu\obj\Debug\Interface 1.0.csprojAssemblyReference.cache
 F:\Burrokku-zu\obj\Debug\MainWindow.g.cs
+F:\Burrokku-zu\obj\Debug\ChangeWindow.g.cs
 F:\Burrokku-zu\obj\Debug\App.g.cs
 F:\Burrokku-zu\obj\Debug\Interface 1.0_MarkupCompile.cache
 F:\Burrokku-zu\obj\Debug\Interface 1.0_MarkupCompile.lref
 F:\Burrokku-zu\obj\Debug\MainWindow.baml
+F:\Burrokku-zu\obj\Debug\ChangeWindow.baml
 F:\Burrokku-zu\obj\Debug\Interface 1.0.g.resources
 F:\Burrokku-zu\obj\Debug\Interface_1._0.Properties.Resources.resources
 F:\Burrokku-zu\obj\Debug\Interface 1.0.csproj.GenerateResource.cache
 F:\Burrokku-zu\obj\Debug\Interface 1.0.csproj.CoreCompileInputs.cache
 F:\Burrokku-zu\obj\Debug\Interface 1.0.exe
 F:\Burrokku-zu\obj\Debug\Interface 1.0.pdb
+<<<<<<< HEAD
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\Interface 1.0.exe.config
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\Interface 1.0.exe
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\Interface 1.0.pdb
@@ -45,3 +48,9 @@ C:\Программирование\проекты\Project_block_diagram\Burrokk
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.csproj.CoreCompileInputs.cache
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.exe
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.pdb
+=======
+F:\Burrokku-zu\obj\Debug\HelpWindow.g.cs
+F:\Burrokku-zu\obj\Debug\HelpWindow.baml
+F:\Burrokku-zu\obj\Debug\Style.g.cs
+F:\Burrokku-zu\obj\Debug\Style.baml
+>>>>>>> parent of bea8725 (Рома молодец, остальные сак дык)

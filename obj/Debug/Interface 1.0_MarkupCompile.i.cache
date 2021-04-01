@@ -9,12 +9,21 @@ Interface_1._0
 none
 false
 DEBUG;TRACE
+<<<<<<< HEAD
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\App.xaml
 11151548125
 
 6-1049819441
 131569487696
 MainWindow.xaml;
+=======
+F:\Burrokku-zu\App.xaml
+41382700169
+
+9-378543089
+13152784993
+HelpWindow.xaml;MainWindow.xaml;ChangeWindow.xaml;Style.xaml;
+>>>>>>> parent of bea8725 (Рома молодец, остальные сак дык)
 
 True
 
