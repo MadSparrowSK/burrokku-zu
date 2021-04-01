@@ -139,7 +139,8 @@ namespace Interface_1._0
 
             #endregion
         }
-
+        //тестовый класс-хранилище
+        private Diagramm diagramm = new Diagramm();
         #region DragMainWindow
         //Разрешение на передвижение окна
         private void Mouse_Drag_Window(object sender, MouseButtonEventArgs e)
@@ -270,7 +271,7 @@ namespace Interface_1._0
             //Активируем возможность перетаскивания фигур
             DragDrop.DoDragDrop(this, this, DragDropEffects.Copy);
         }
-        //Взаимодействуем с фигурами внутри канваса (не зря англ учил)
+        //Взаимодействуем с фигурами внутри канваса 
         #region Interaction_With_Shapes_Into_Canvas
 
         Ellipse line_elipse;
@@ -285,7 +286,47 @@ namespace Interface_1._0
 
         private void RectangleAdd(Polygon polygon, TextBox txt)
         {
+            /*
+             * №1
+            var Rect = polygon;
+            Point NW = Rect.Points[0];
+            Point NE = Rect.Points[1];
+            Point SW = Rect.Points[2];
+            Point SE = Rect.Points[3];
+
+            diagramm.blocks.Add(new block(Shapes.Rekt, NW, NE, SW, SE));
+            string test = diagramm.blocks[0].ToString();
+            */
+
             polygon.MouseDown += IntoCanvasDownPolylineRectangle;
+            //polygon.MouseLeave += Polygon_MouseLeave;
+            //polygon.MouseUp += Polygon_MouseUp;
+            /*№2
+            void Polygon_MouseUp(object sender, MouseButtonEventArgs e)
+            {
+                var Rect = sender as Polygon;
+                Point NW = Rect.Points[0];
+                Point NE = Rect.Points[1];
+                Point SW = Rect.Points[2];
+                Point SE = Rect.Points[3];
+
+                diagramm.blocks.Add(new block(Shapes.Rekt, NW, NE, SW, SE));
+                string test = diagramm.blocks[0].ToString();
+            }
+            
+            void Polygon_MouseLeave(object sender, MouseEventArgs e)
+            {
+                var Rect1 = sender as Polygon;
+                Point NW1 = Rect.Points[0];
+                Point NE1 = Rect.Points[1];
+                Point SW1 = Rect.Points[2];
+                Point SE1 = Rect.Points[3];
+
+                diagramm.blocks.Add(new block(Shapes.Rekt, NW, NE, SW, SE));
+                string test1 = diagramm.blocks[0].ToString();
+            }
+            */
+
 
             void IntoCanvasDownPolylineRectangle(object sender, MouseButtonEventArgs e)
             {
@@ -425,9 +466,13 @@ namespace Interface_1._0
                 RectangleIntoCanvasMouseMove(polygon, txt);
             }
         }
+
+        
+
         private void RectangleIntoCanvasMouseMove(Polygon polygon, TextBox txt)
         {
             polygon.MouseMove += IntoCanvasMove;
+            
 
             void IntoCanvasMove(object sender, MouseEventArgs e)
             {
@@ -444,25 +489,44 @@ namespace Interface_1._0
 
                     Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
-
                     Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 20);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) + 5);
-                }
-                //Может так? Слишком плохо понимаю этот код. Узнаю в пятницу...
-                if (e.LeftButton == MouseButtonState.Released)
-                {
+                    //Пытаюсь поймать координаты элемента в канвасе
+                    double x = Canvas.GetLeft(CanvasPos.Children[2] as Polygon);
+                    double y = Canvas.GetTop(sender as Polygon);
+                    double z = Canvas.GetRight(sender as Polygon);
+                    double t = Canvas.GetBottom(sender as Polygon);
+
+                    //Polygon LN = ((CanvasPos.Children[2] as Polygon));
+
+
+                    //LN.X = ((CanvasPos.Children[0] as Polygon)).Points[0].X - (sender as Polygon).Points[0].X;
+                    //LN.Y = ((CanvasPos.Children[0] as Polygon)).Points[0].Y - (sender as Polygon).Points[0].Y;
+                    /*
+                     * №3
                     var Rect = sender as Polygon;
+                    Point p = new Point {X= 0, Y= 0 };
+                    p.X = e.GetPosition(CanvasPos).X - lastPoint.X;
+                    p.Y = e.GetPosition(CanvasPos).Y - lastPoint.Y;
                     Point NW = Rect.Points[0];
                     Point NE = Rect.Points[1];
                     Point SW = Rect.Points[2];
                     Point SE = Rect.Points[3];
-                    Diagramm diagramm = new Diagramm();
 
-                    diagramm.blocks.Add(new block(Shapes.Rekt, NW, NE, SW, SE));
+                    diagramm.blocks.Add(new block(Shapes.Rekt, p, NE, SW, SE));
+                    string test = diagramm.blocks[0].ToString();
+                    */
                 }
+                
+                
+                    
+
+                
+                
 
             }
         }
+
 
         private void ParrabellumAdd(Polygon polygon, TextBox txt)
         {

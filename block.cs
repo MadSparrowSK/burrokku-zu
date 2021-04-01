@@ -19,7 +19,7 @@ namespace Interface_1._0
 
     class Diagramm
     {
-        public List<block> blocks { get; set; }
+        public List<block> blocks = new List<block>();
     }
     class block
     {
@@ -28,7 +28,6 @@ namespace Interface_1._0
         public Point NE { get; set; }
         public Point SW { get; set; }
         public Point SE { get; set; }
-        public Point d;
         // две доп. координаты для пятиугольника
         public Point AddPoint1 { get; set; } 
         public Point AddPoint2 { get; set; }
@@ -99,6 +98,10 @@ namespace Interface_1._0
         }
         */
 
+        public override string ToString()
+        {
+            return Shape.ToString();
+        }
     }
 
     class Arrows
