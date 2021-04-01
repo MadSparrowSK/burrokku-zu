@@ -20,45 +20,46 @@ namespace Interface_1._0
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        //Инициализация пойнтов
+        //Прямоугольник переменные
         #region shapes points
         Point rectangleNW = new Point();
         Point rectangleSW = new Point();
         Point rectangleSE = new Point();
         Point rectnagleNE = new Point();
-
+        //Прямоугольник начальные константы
         Point startRectangleNW = new Point();
         Point startRectangleSW = new Point();
         Point startRectangleSE = new Point();
         Point startRectangleNE = new Point();
-
+        //Паралелограм переменные
         Point parabellumNW = new Point();
         Point parabellumSW = new Point();
         Point parabellumSE = new Point();
         Point parabellumNE = new Point();
-
+        //Паралелорамм начальные константы
         Point startParabellumNW = new Point();
         Point startParabellumSW = new Point();
         Point startParabellumSE = new Point();
         Point startParabellumNE = new Point();
-
+        //Ромб переменные
         Point rhombN = new Point();
         Point rhombW = new Point();
         Point rhombS = new Point();
         Point rhombE = new Point();
-
+        //Ромб начальные константы
         Point startRhombN = new Point();
         Point startRhombW = new Point();
         Point strtRhombS = new Point();
         Point startRhombE = new Point();
-
+        //Многогранник переменные
         Point cycleNW = new Point();
         Point cycleW = new Point();
         Point cycleSW = new Point();
         Point cycleSE = new Point();
         Point cycleE = new Point();
         Point cycleNE = new Point();
-
+        //Многогранник начальные константы
         Point startCycleNW = new Point();
         Point startCycleW = new Point();
         Point startCycleSW = new Point();
@@ -67,10 +68,11 @@ namespace Interface_1._0
         Point startCycleNE = new Point();
         #endregion
 
+        //Запуск проекта
         public MainWindow()
         {
             InitializeComponent();
-
+            //Инициализация стартовых позиций
             #region initialized shapes start points
 
             #region rectangle points
@@ -139,12 +141,13 @@ namespace Interface_1._0
         }
 
         #region DragMainWindow
+        //Разрешение на передвижение окна
         private void Mouse_Drag_Window(object sender, MouseButtonEventArgs e)
         {
             DragMove();
         }
         #endregion
-
+        //Косметика для хедера
         #region Interactions with Header
 
         #region right_side
@@ -183,7 +186,7 @@ namespace Interface_1._0
         #endregion
 
         #endregion
-
+        //Косметика для сайдбаров
         #region Interactions with SideBar
         private void SideBar_Mouse_Enter(object sender, RoutedEventArgs e)
         {
@@ -212,7 +215,7 @@ namespace Interface_1._0
                 Rekt.Stroke = Brushes.Gray;
         }
         #endregion
-
+        //Задел на будущее
         #region Show Window with Settings
         private void Change_Window(object sender, RoutedEventArgs e)
         {
@@ -225,7 +228,7 @@ namespace Interface_1._0
             //hw.Show();
         }
         #endregion
-
+        //Разрешение на изменение размера окна
         #region ResizeMainWindow
         private void Resize_Wondow(object sender, RoutedEventArgs e)
         {
@@ -241,13 +244,13 @@ namespace Interface_1._0
         #endregion
 
         #region Drag_N_Drop
-
+        //Булевые ф-и для определения вызванной фигуры
         private bool Rectangle_Check = false;
         private bool Parrabullem_Check = false;
         private bool Rhomb_Check = false;
         private bool Cycle_Check = false;
         private bool Ellipse_Check = false;
-
+        //Как MouseDown - определяем выбранную фигуру
         private void DragDrop_MD(object sender, MouseButtonEventArgs e)
         {
             if (Rekt == sender)
@@ -260,10 +263,10 @@ namespace Interface_1._0
                 Cycle_Check = true;
             if (Ellipse == sender)
                 Ellipse_Check = true;
-
+            //Запоминаем выбранную точку внутри фигуры
             var smt = (UIElement)sender;
             lastPoint = e.GetPosition(smt);
-
+            //Активируем возможность перетаскивания фигур
             DragDrop.DoDragDrop(this, this, DragDropEffects.Copy);
         }
 
