@@ -30,18 +30,3 @@ F:\Burrokku-zu\obj\Debug\Interface 1.0.csproj.GenerateResource.cache
 F:\Burrokku-zu\obj\Debug\Interface 1.0.csproj.CoreCompileInputs.cache
 F:\Burrokku-zu\obj\Debug\Interface 1.0.exe
 F:\Burrokku-zu\obj\Debug\Interface 1.0.pdb
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\Interface 1.0.exe.config
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\Interface 1.0.exe
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\Interface 1.0.pdb
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.csprojAssemblyReference.cache
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\MainWindow.g.cs
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\App.g.cs
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0_MarkupCompile.cache
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0_MarkupCompile.lref
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\MainWindow.baml
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.g.resources
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface_1._0.Properties.Resources.resources
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.csproj.GenerateResource.cache
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.csproj.CoreCompileInputs.cache
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.exe
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.pdb
