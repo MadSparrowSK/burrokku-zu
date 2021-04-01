@@ -253,6 +253,7 @@ namespace Interface_1._0
         //Как MouseDown - определяем выбранную фигуру
         private void DragDrop_MD(object sender, MouseButtonEventArgs e)
         {
+            //сравнение происходит по именам
             if (Rekt == sender)
                 Rectangle_Check = true;
             if (Rhomb == sender)
@@ -269,7 +270,7 @@ namespace Interface_1._0
             //Активируем возможность перетаскивания фигур
             DragDrop.DoDragDrop(this, this, DragDropEffects.Copy);
         }
-
+        //Взаимодействуем с фигурами внутри канваса (не зря англ учил)
         #region Interaction_With_Shapes_Into_Canvas
 
         Ellipse line_elipse;
@@ -447,6 +448,19 @@ namespace Interface_1._0
                     Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 20);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) + 5);
                 }
+                //Может так? Слишком плохо понимаю этот код. Узнаю в пятницу...
+                if (e.LeftButton == MouseButtonState.Released)
+                {
+                    var Rect = sender as Polygon;
+                    Point NW = Rect.Points[0];
+                    Point NE = Rect.Points[1];
+                    Point SW = Rect.Points[2];
+                    Point SE = Rect.Points[3];
+                    Diagramm diagramm = new Diagramm();
+
+                    diagramm.blocks.Add(new block(Shapes.Rekt, NW, NE, SW, SE));
+                }
+
             }
         }
 

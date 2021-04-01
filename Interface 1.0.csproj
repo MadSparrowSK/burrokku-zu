@@ -56,6 +56,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="block.cs" />
+    <Compile Include="Diagramm.cs" />
+    <Compile Include="ImageCustomShape.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -99,6 +102,9 @@
   <ItemGroup />
   <ItemGroup>
     <Resource Include="Icon\Icon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Shapes\rekt.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
