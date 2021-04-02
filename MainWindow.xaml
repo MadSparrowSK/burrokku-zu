@@ -257,7 +257,7 @@
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Cylce">
 
-                        <Polygon Stroke="Gray" Points="1,8 7,20 60,20 67,8 60,-6 7,-6"
+                        <Polygon Stroke="Gray" Points="8,1 -1,15 8,30 60,30 69,15 60,1"
                                  Name="Cycle" Fill="Transparent" MouseDown="DragDrop_MD"></Polygon>
                         
                     </Label>
