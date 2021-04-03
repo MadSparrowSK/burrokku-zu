@@ -35,7 +35,7 @@ namespace Interface_1._0
         public Point AddPoint2 { get; set; }
 
         //Индекс фигуры
-        public int indexNumber = 0;
+        public int IndexNumber = 0;
         
 
         //Длина и ширина фигуры для элипса
@@ -60,7 +60,7 @@ namespace Interface_1._0
 
         }
         //Конструктор для работы с фигурой без текста
-        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw , Point se, Point addpoint1, Point addpoint2, int width = 0, int height = 0, int indexOfShape = 0)
+        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw , Point se, Point addpoint1, Point addpoint2, int indexNumber,  int width = 0, int height = 0)
         {
             LeftTop = leftTop;
             NW = nw;
@@ -72,10 +72,10 @@ namespace Interface_1._0
             Width = width;
             Height = height;
             Shape = shape;
-            indexNumber = indexOfShape;
+            IndexNumber = indexNumber;
         }
         
-        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw, Point se, int width = 0, int height = 0)
+        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw, Point se, int indexNumber , int width = 0, int height = 0)
         {
             LeftTop = leftTop;
             NW = nw;
@@ -85,6 +85,7 @@ namespace Interface_1._0
             Width = width;
             Height = height;
             Shape = shape;
+            IndexNumber = indexNumber;
         }
         /*
         //Конструктор для работы с фигурой с текстом

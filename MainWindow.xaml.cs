@@ -296,11 +296,11 @@ namespace Interface_1._0
                 X = 0,
                 Y = 0
             };
+                
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE));
+            diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, shapesCounter - 1));
             diagramm.ShapesCounter++;
-            diagramm.blocks[shapesCounter-1].indexNumber = shapesCounter - 1;
             polygon.MouseDown += IntoCanvasDownPolylineRectangle;
 
             void IntoCanvasDownPolylineRectangle(object sender, MouseButtonEventArgs e)
@@ -443,9 +443,9 @@ namespace Interface_1._0
                             int indexOfShape = GetIndexOfShape(Shapes.Rekt, polygon.Name);
                             foreach (Block block in diagramm.blocks)
                             {
-                                if (block.indexNumber == indexOfShape)
+                                if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.indexNumber, new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, indexOfShape));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -504,6 +504,26 @@ namespace Interface_1._0
 
                     Canvas.SetLeft(txt, Canvas.GetLeft(smt) + text_position_x - 10);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) + text_position_y - 5);
+
+                    //Повторно считываем данных о фигуре при ее перемещении
+                    Point LeftTop = new Point()
+                    {
+                        X = 0,
+                        Y = 0
+                    };
+                    LeftTop.X = Canvas.GetLeft(polygon);
+                    LeftTop.Y = Canvas.GetTop(polygon);
+                    int indexOfShape = GetIndexOfShape(Shapes.Rekt, polygon.Name);
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if (block.IndexNumber == indexOfShape)
+                        {
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, indexOfShape));
+                            diagramm.blocks.Remove(block);
+                            return;
+                        }
+                    }
+
                 }
             }
         }
