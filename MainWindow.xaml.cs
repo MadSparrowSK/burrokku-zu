@@ -438,7 +438,6 @@ namespace Interface_1._0
                                 point_summ_second_Y = (int)(rectangleNW.Y + rectangleSE.Y + rectangleSW.Y + rectnagleNE.Y);
                             }
                             //Повторно считываем данных о фигуре
-                            int t = 0;
                             LeftTop.X = Canvas.GetLeft(polygon);
                             LeftTop.Y = Canvas.GetTop(polygon);
                             int indexOfShape = GetIndexOfShape(Shapes.Rekt, polygon.Name);

@@ -77,6 +77,7 @@ namespace Interface_1._0
         
         public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw, Point se, int width = 0, int height = 0)
         {
+            LeftTop = leftTop;
             NW = nw;
             NE = ne;
             SW = sw;
