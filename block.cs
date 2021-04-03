@@ -19,11 +19,13 @@ namespace Interface_1._0
 
     class Diagramm
     {
-        public List<block> blocks = new List<block>();
+        public int ShapesCounter { get; set; }
+        public List<Block> blocks = new List<Block>();
     }
-    class block
+    class Block
     {
         //Координаты фигуры
+        public Point LeftTop { get; set; }
         public Point NW { get; set; }
         public Point NE { get; set; }
         public Point SW { get; set; }
@@ -32,7 +34,9 @@ namespace Interface_1._0
         public Point AddPoint1 { get; set; } 
         public Point AddPoint2 { get; set; }
 
-
+        //Индекс фигуры
+        public int indexNumber = 0;
+        
 
         //Длина и ширина фигуры для элипса
         public double Width { get; set; }
@@ -51,13 +55,14 @@ namespace Interface_1._0
         public int FontSize { get; set; }
         */
 
-        public block()
+        public Block()
         {
 
         }
         //Конструктор для работы с фигурой без текста
-        public block(Shapes shape, Point nw, Point ne, Point sw , Point se, Point addpoint1, Point addpoint2, int width = 0, int height = 0)
+        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw , Point se, Point addpoint1, Point addpoint2, int width = 0, int height = 0, int indexOfShape = 0)
         {
+            LeftTop = leftTop;
             NW = nw;
             NE = ne;
             SW = sw;
@@ -67,8 +72,10 @@ namespace Interface_1._0
             Width = width;
             Height = height;
             Shape = shape;
+            indexNumber = indexOfShape;
         }
-        public block(Shapes shape, Point nw, Point ne, Point sw, Point se, int width = 0, int height = 0)
+        
+        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw, Point se, int width = 0, int height = 0)
         {
             NW = nw;
             NE = ne;
@@ -78,9 +85,9 @@ namespace Interface_1._0
             Height = height;
             Shape = shape;
         }
-
-        //Конструктор для работы с фигурой с текстом
         /*
+        //Конструктор для работы с фигурой с текстом
+        
         public Diagramm(Shapes shape, int nw, int ne, int sw, int se, int addpoint1 = 0, int addpoint2 = 0, int width = 0, int height = 0, int textWidth = 10, int textHeight = 10, int fontSize = 8)
         {
             NW = nw;

@@ -118,6 +118,37 @@ namespace Interface_1._0
             #endregion
         }
 
+        #region create Class-container
+
+        private Diagramm diagramm = new Diagramm();
+        private int shapesCounter = 0;
+        //метод для извелчения индекса из имени объекта
+        private int GetIndexOfShape(Shapes shape, string name)
+        {
+            int index = 0;
+            string temp = "";
+            if( shape == Shapes.Rekt)
+            {
+                if (name.Length == 6)
+                {
+                    temp = name[5].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+                if (name.Length == 7)
+                {
+                    temp = name[5].ToString() + name[6].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+                if (name.Length == 8)
+                {
+                    temp = name[5].ToString() + name[6].ToString() + name[7].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+            }
+            return index;
+        }
+        #endregion
+
         #region DragMainWindow
         private void Mouse_Drag_Window(object sender, MouseButtonEventArgs e)
         {
@@ -221,13 +252,13 @@ namespace Interface_1._0
         #endregion
 
         #region Drag_N_Drop
-
+        //Булевые переменные для определения фигуры
         private bool Rectangle_Check = false;
         private bool Parrabullem_Check = false;
         private bool Rhomb_Check = false;
         private bool Cycle_Check = false;
         private bool Ellipse_Check = false;
-
+        //Определение отправителя объекта №1
         private void DragDrop_MD(object sender, MouseButtonEventArgs e)
         {
             if (Rekt == sender)
@@ -240,10 +271,10 @@ namespace Interface_1._0
                 Cycle_Check = true;
             if (Ellipse == sender)
                 Ellipse_Check = true;
-
+            //Запоминаем нажатую точку мыши в фигуре
             var smt = (UIElement)sender;
             lastPoint = e.GetPosition(smt);
-
+            //Запуск DragandDrop
             DragDrop.DoDragDrop(this, this, DragDropEffects.Copy);
         }
 
@@ -256,9 +287,20 @@ namespace Interface_1._0
         Point current_anchor_postion;
 
         bool is_anchor_create = false;
-
+        //Добавление и обработка логики фигур
         private void RectangleAdd(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
         {
+            //Считывание данных о фигуре
+            Point LeftTop = new Point()
+            {
+                X = 0,
+                Y = 0
+            };
+            LeftTop.X = Canvas.GetLeft(polygon);
+            LeftTop.Y = Canvas.GetTop(polygon);
+            diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE));
+            diagramm.ShapesCounter++;
+            diagramm.blocks[shapesCounter-1].indexNumber = shapesCounter - 1;
             polygon.MouseDown += IntoCanvasDownPolylineRectangle;
 
             void IntoCanvasDownPolylineRectangle(object sender, MouseButtonEventArgs e)
@@ -299,7 +341,9 @@ namespace Interface_1._0
                     void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
                     {
                         var anchor = (UIElement)sndr;
+                        //Позиция мыши в анкоре
                         lastPoint_anchor = evnt.GetPosition(anchor);
+                        //Позиция анкора в канвасе = позиция мыши в канвасе
                         current_anchor_postion = evnt.GetPosition(CanvasPos);
                     }
                     void AnchorMouseMove(object sndr, MouseEventArgs evnt)
@@ -316,7 +360,7 @@ namespace Interface_1._0
 
                             var text_position_x = Math.Abs(Math.Sqrt((Math.Pow(rectangleNW.X, 2) + Math.Pow(rectangleNW.Y, 2))) - (Math.Sqrt(Math.Pow(rectnagleNE.X, 2) + Math.Pow(rectnagleNE.Y, 2)))) / 2;
                             var text_position_y = Math.Abs(Math.Sqrt((Math.Pow(rectangleNW.X, 2) + Math.Pow(rectangleNW.Y, 2))) - (Math.Sqrt(Math.Pow(rectangleSW.X, 2) + Math.Pow(rectangleSW.Y, 2)))) / 2;
-
+                            //Если фигуру увеличивают
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
                                 //txt.MaxHeight += .3;
@@ -341,7 +385,6 @@ namespace Interface_1._0
                                 points.Add(rectnagleNE);
 
                                 smt.Points = points;
-
                                 current_anchor_postion.X = Canvas.GetLeft(polygon);
                                 current_anchor_postion.Y = Canvas.GetTop(polygon);
 
@@ -353,6 +396,9 @@ namespace Interface_1._0
 
                                 point_summ_second_X = (int)(rectangleNW.X + rectangleSE.X + rectangleSW.X + rectnagleNE.X);
                                 point_summ_second_Y = (int)(rectangleNW.Y + rectangleSE.Y + rectangleSW.Y + rectnagleNE.Y);
+
+                                
+                                polygon.MouseDown += IntoCanvasDownPolylineRectangle;
                             }
                             else if (point_summ_second_X >= point_summ_main_X && point_summ_second_Y >= point_summ_main_Y)
                             {
@@ -390,6 +436,20 @@ namespace Interface_1._0
 
                                 point_summ_second_X = (int)(rectangleNW.X + rectangleSE.X + rectangleSW.X + rectnagleNE.X);
                                 point_summ_second_Y = (int)(rectangleNW.Y + rectangleSE.Y + rectangleSW.Y + rectnagleNE.Y);
+                            }
+                            //Повторно считываем данных о фигуре
+                            int t = 0;
+                            LeftTop.X = Canvas.GetLeft(polygon);
+                            LeftTop.Y = Canvas.GetTop(polygon);
+                            int indexOfShape = GetIndexOfShape(Shapes.Rekt, polygon.Name);
+                            foreach (Block block in diagramm.blocks)
+                            {
+                                if (block.indexNumber == indexOfShape)
+                                {
+                                    diagramm.blocks.Insert(block.indexNumber, new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE));
+                                    diagramm.blocks.Remove(block);
+                                    return;
+                                }
                             }
 
                             Canvas.SetLeft(anchor, pos.X);
@@ -1123,18 +1183,18 @@ namespace Interface_1._0
                 }
             }
         }
-
+        //Отменить захват на фигуре
         public void IntoCanvasUp(object sender, MouseButtonEventArgs e)
         {
             var smt = (UIElement)sender;
             smt.ReleaseMouseCapture();
         }
         #endregion
-
+        //Метод, происходящий при сбросе фигуры в Canvas №2
         private void DnD_Drop(object sender, DragEventArgs e)
         {
             #region points
-
+            //Создание точек для всех возможных фигур
             Point rectangleNW = new Point();
             Point rectangleSW = new Point();
             Point rectangleSE = new Point();
@@ -1225,11 +1285,15 @@ namespace Interface_1._0
             #endregion
 
             #endregion
-
+            //Создание фигур
             if (Rectangle_Check)
             {
+                
                 Polygon polyline = new Polygon();
                 TextBox text_into_shapes = new TextBox();
+                //Индексация фигур              
+                polyline.Name = "Rect_" + shapesCounter.ToString();
+                shapesCounter++;
 
                 Rectangle_Check = false;
                 polyline.Points = Rekt.Points;
@@ -1260,6 +1324,8 @@ namespace Interface_1._0
                 Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + text_position_y - 5);
 
                 RectangleAdd(polyline, text_into_shapes, rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
+
+                
             }
             if (Parrabullem_Check)
             {
