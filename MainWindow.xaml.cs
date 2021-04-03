@@ -145,6 +145,63 @@ namespace Interface_1._0
                     index = Convert.ToInt32(temp);
                 }
             }
+
+            if (shape == Shapes.Parrabellum)
+            {
+                if (name.Length == 13)
+                {
+                    temp = name[12].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+                if (name.Length == 14)
+                {
+                    temp = name[12].ToString() + name[13].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+                if (name.Length == 15)
+                {
+                    temp = name[12].ToString() + name[13].ToString() + name[14].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+            }
+
+            if ((shape == Shapes.Rhomb)||(shape == Shapes.Cycle))
+            {
+                if (name.Length == 7)
+                {
+                    temp = name[6].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+                if (name.Length == 8)
+                {
+                    temp = name[6].ToString() + name[7].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+                if (name.Length == 9)
+                {
+                    temp = name[6].ToString() + name[7].ToString() + name[8].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+            }
+
+            if (shape == Shapes.Ellipse)
+            {
+                if (name.Length == 9)
+                {
+                    temp = name[8].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+                if (name.Length == 10)
+                {
+                    temp = name[8].ToString() + name[9].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+                if (name.Length == 11)
+                {
+                    temp = name[8].ToString() + name[9].ToString() + name[10].ToString();
+                    index = Convert.ToInt32(temp);
+                }
+            }
             return index;
         }
         #endregion
@@ -301,6 +358,7 @@ namespace Interface_1._0
             LeftTop.Y = Canvas.GetTop(polygon);
             diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, shapesCounter - 1));
             diagramm.ShapesCounter++;
+
             polygon.MouseDown += IntoCanvasDownPolylineRectangle;
 
             void IntoCanvasDownPolylineRectangle(object sender, MouseButtonEventArgs e)
@@ -314,6 +372,30 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
+                    bool isCanBeLower = false;
+                    bool indexNotFound = true;
+                    int indexForDeleting = GetIndexOfShape(Shapes.Rekt, polygon.Name);
+                    shapesCounter--;
+                    
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if ((block.IndexNumber == indexForDeleting)&&(indexNotFound))
+                        {
+                            isCanBeLower = true;
+                            indexNotFound = false;
+                        }
+                        if (isCanBeLower)
+                        {
+                            block.IndexNumber--;
+                        }
+                        
+                    }
+                    if (diagramm.blocks.Count > 1)
+                        diagramm.blocks.RemoveAt(indexForDeleting);
+                    else
+                        diagramm.blocks.RemoveAt(0);
+
+
                 }
                 #endregion
 
@@ -530,6 +612,18 @@ namespace Interface_1._0
 
         private void ParrabellumAdd(Polygon polygon, TextBox txt, Point parabellumNW, Point parabellumSW, Point parabellumSE, Point parabellumNE)
         {
+            //Считывание данных о фигуре
+            Point LeftTop = new Point()
+            {
+                X = 0,
+                Y = 0
+            };
+
+            LeftTop.X = Canvas.GetLeft(polygon);
+            LeftTop.Y = Canvas.GetTop(polygon);
+            diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, shapesCounter - 1));
+            diagramm.ShapesCounter++;
+
             polygon.MouseDown += IntoCanvasDownPolylineParrabellum;
 
             void IntoCanvasDownPolylineParrabellum(object sender, MouseButtonEventArgs e)
@@ -543,6 +637,28 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
+                    bool isCanBeLower = false;
+                    bool indexNotFound = true;
+                    int indexForDeleting = GetIndexOfShape(Shapes.Parrabellum, polygon.Name);
+                    shapesCounter--;
+
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if ((block.IndexNumber == indexForDeleting) && (indexNotFound))
+                        {
+                            isCanBeLower = true;
+                            indexNotFound = false;
+                        }
+                        if (isCanBeLower)
+                        {
+                            block.IndexNumber--;
+                        }
+
+                    }
+                    if (diagramm.blocks.Count > 1)
+                        diagramm.blocks.RemoveAt(indexForDeleting);
+                    else
+                        diagramm.blocks.RemoveAt(0);
                 }
                 #endregion
 
@@ -658,6 +774,19 @@ namespace Interface_1._0
                                 point_summ_second_X = (int)(parabellumNW.X + parabellumSE.X + parabellumSW.X + parabellumNE.X);
                                 point_summ_second_Y = (int)(parabellumNW.Y + parabellumSE.Y + parabellumSW.Y + parabellumNE.Y);
                             }
+                            //Повторно считываем данных о фигуре при изменении ее размера
+                            LeftTop.X = Canvas.GetLeft(polygon);
+                            LeftTop.Y = Canvas.GetTop(polygon);
+                            int indexOfShape = GetIndexOfShape(Shapes.Parrabellum, polygon.Name);
+                            foreach (Block block in diagramm.blocks)
+                            {
+                                if (block.IndexNumber == indexOfShape)
+                                {
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, indexOfShape));
+                                    diagramm.blocks.Remove(block);
+                                    return;
+                                }
+                            }
 
                             Canvas.SetLeft(anchor, pos.X);
                             Canvas.SetTop(anchor, pos.Y);
@@ -678,6 +807,7 @@ namespace Interface_1._0
                     #endregion
 
                     CanvasPos.Children.Add(anchor_size);
+
 
                     Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt));
                     Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
@@ -714,12 +844,44 @@ namespace Interface_1._0
 
                     Canvas.SetLeft(txt, Canvas.GetLeft(smt) + text_position_x - 13);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) + text_position_y - 6);
+
+                    //Повторно считываем данных о фигуре при перемещении
+                    Point LeftTop = new Point()
+                    {
+                        X = 0,
+                        Y = 0
+                    };
+                    LeftTop.X = Canvas.GetLeft(polygon);
+                    LeftTop.Y = Canvas.GetTop(polygon);
+                    int indexOfShape = GetIndexOfShape(Shapes.Parrabellum, polygon.Name);
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if (block.IndexNumber == indexOfShape)
+                        {
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, indexOfShape));
+                            diagramm.blocks.Remove(block);
+                            return;
+                        }
+                    }
+
                 }
             }
         }
 
         private void RhombAdd(Polygon polygon, TextBox txt, Point rhombN, Point rhombW, Point rhombS, Point rhombE)
         {
+            //Считывание данных о фигуре
+            Point LeftTop = new Point()
+            {
+                X = 0,
+                Y = 0
+            };
+
+            LeftTop.X = Canvas.GetLeft(polygon);
+            LeftTop.Y = Canvas.GetTop(polygon);
+            diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, shapesCounter - 1));
+            diagramm.ShapesCounter++;
+
             polygon.MouseDown += IntoCanvasDownPolylineRhomb;
 
             void IntoCanvasDownPolylineRhomb(object sender, MouseButtonEventArgs e)
@@ -810,6 +972,20 @@ namespace Interface_1._0
                                 current_anchor_postion.Y = Canvas.GetTop(polygon);
                             }
 
+                            //Повторно считываем данных о фигуре при изменении ее размера
+                            LeftTop.X = Canvas.GetLeft(polygon);
+                            LeftTop.Y = Canvas.GetTop(polygon);
+                            int indexOfShape = GetIndexOfShape(Shapes.Rhomb, polygon.Name);
+                            foreach (Block block in diagramm.blocks)
+                            {
+                                if (block.IndexNumber == indexOfShape)
+                                {
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, indexOfShape));
+                                    diagramm.blocks.Remove(block);
+                                    return;
+                                }
+                            }
+
                             Canvas.SetLeft(anchor, pos.X);
                             Canvas.SetTop(anchor, pos.Y);
                         }
@@ -843,13 +1019,35 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
+                    bool isCanBeLower = false;
+                    bool indexNotFound = true;
+                    int indexForDeleting = GetIndexOfShape(Shapes.Rhomb, polygon.Name);
+                    shapesCounter--;
+
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if ((block.IndexNumber == indexForDeleting) && (indexNotFound))
+                        {
+                            isCanBeLower = true;
+                            indexNotFound = false;
+                        }
+                        if (isCanBeLower)
+                        {
+                            block.IndexNumber--;
+                        }
+
+                    }
+                    if (diagramm.blocks.Count > 1)
+                        diagramm.blocks.RemoveAt(indexForDeleting);
+                    else
+                        diagramm.blocks.RemoveAt(0);
                 }
                 #endregion
 
-                RhombIntoCanvasMouseMove(polygon, txt);
+                RhombIntoCanvasMouseMove(polygon, txt, rhombN, rhombW, rhombS, rhombE);
             }
         }
-        private void RhombIntoCanvasMouseMove(Polygon polygon, TextBox txt)
+        private void RhombIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point rhombN, Point rhombW, Point rhombS, Point rhombE)
         {
             polygon.MouseMove += IntoCanvasMove;
 
@@ -871,12 +1069,44 @@ namespace Interface_1._0
 
                     Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 25);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) - 1);
+
+                    //Повторно считываем данных о фигуре при изменении ее размера
+                    Point LeftTop = new Point()
+                    {
+                        X = 0,
+                        Y = 0
+                    };
+                    LeftTop.X = Canvas.GetLeft(polygon);
+                    LeftTop.Y = Canvas.GetTop(polygon);
+                    int indexOfShape = GetIndexOfShape(Shapes.Rhomb, polygon.Name);
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if (block.IndexNumber == indexOfShape)
+                        {
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, indexOfShape));
+                            diagramm.blocks.Remove(block);
+                            return;
+                        }
+                    }
+
                 }
             }
         }
 
         private void CycleAdd(Polygon polygon, TextBox txt, Point cycleNW, Point cycleW, Point cycleSW, Point cycleSE, Point cycleE, Point cycleNE)
         {
+            //Считывание данных о фигуре
+            Point LeftTop = new Point()
+            {
+                X = 0,
+                Y = 0
+            };
+
+            LeftTop.X = Canvas.GetLeft(polygon);
+            LeftTop.Y = Canvas.GetTop(polygon);
+            diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, shapesCounter - 1));
+            diagramm.ShapesCounter++;
+
             polygon.MouseDown += IntoCanvasDownPolylineCycle;
 
             void IntoCanvasDownPolylineCycle(object sender, MouseButtonEventArgs e)
@@ -998,6 +1228,19 @@ namespace Interface_1._0
                                 Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + text_position_x - 10);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + text_position_y - 5);
                             }
+                            //Повторно считываем данных о фигуре при изменении ее размера
+                            LeftTop.X = Canvas.GetLeft(polygon);
+                            LeftTop.Y = Canvas.GetTop(polygon);
+                            int indexOfShape = GetIndexOfShape(Shapes.Cycle, polygon.Name);
+                            foreach (Block block in diagramm.blocks)
+                            {
+                                if (block.IndexNumber == indexOfShape)
+                                {
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, indexOfShape));
+                                    diagramm.blocks.Remove(block);
+                                    return;
+                                }
+                            }
 
                             Canvas.SetLeft(anchor, pos.X);
                             Canvas.SetTop(anchor, pos.Y);
@@ -1032,6 +1275,28 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
+                    bool isCanBeLower = false;
+                    bool indexNotFound = true;
+                    int indexForDeleting = GetIndexOfShape(Shapes.Cycle, polygon.Name);
+                    shapesCounter--;
+
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if ((block.IndexNumber == indexForDeleting) && (indexNotFound))
+                        {
+                            isCanBeLower = true;
+                            indexNotFound = false;
+                        }
+                        if (isCanBeLower)
+                        {
+                            block.IndexNumber--;
+                        }
+
+                    }
+                    if (diagramm.blocks.Count > 1)
+                        diagramm.blocks.RemoveAt(indexForDeleting);
+                    else
+                        diagramm.blocks.RemoveAt(0);
                 }
                 #endregion
 
@@ -1063,12 +1328,43 @@ namespace Interface_1._0
 
                     Canvas.SetLeft(txt, Canvas.GetLeft(smt) + text_position_x - 10);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) + text_position_y - 5);
+
+                    //Повторно считываем данных о фигуре при передвижении
+                    Point LeftTop = new Point()
+                    {
+                        X = 0,
+                        Y = 0
+                    };
+                    LeftTop.X = Canvas.GetLeft(polygon);
+                    LeftTop.Y = Canvas.GetTop(polygon);
+                    int indexOfShape = GetIndexOfShape(Shapes.Cycle, polygon.Name);
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if (block.IndexNumber == indexOfShape)
+                        {
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, indexOfShape));
+                            diagramm.blocks.Remove(block);
+                            return;
+                        }
+                    }
                 }
             }
         }
 
-        private void EllipseAdd(Rectangle polygon, TextBox txt)
+        private void EllipseAdd(Rectangle polygon, TextBox txt, double width, double height)
         {
+            //Считывание данных о фигуре
+            Point LeftTop = new Point()
+            {
+                X = 0,
+                Y = 0
+            };
+
+            LeftTop.X = Canvas.GetLeft(polygon);
+            LeftTop.Y = Canvas.GetTop(polygon);
+            diagramm.blocks.Add(new Block(Shapes.Ellipse, LeftTop, width, height, shapesCounter - 1));
+            diagramm.ShapesCounter++;
+
             polygon.MouseDown += IntoCanvasMouseDownRectangle;
 
             void IntoCanvasMouseDownRectangle(object sender, MouseButtonEventArgs e)
@@ -1138,6 +1434,20 @@ namespace Interface_1._0
 
                             }
 
+                            //Повторно считываем данных о фигуре при изменении ее размера
+                            LeftTop.X = Canvas.GetLeft(polygon);
+                            LeftTop.Y = Canvas.GetTop(polygon);
+                            int indexOfShape = GetIndexOfShape(Shapes.Ellipse, polygon.Name);
+                            foreach (Block block in diagramm.blocks)
+                            {
+                                if (block.IndexNumber == indexOfShape)
+                                {
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, smt.Width, smt.Height, indexOfShape));
+                                    diagramm.blocks.Remove(block);
+                                    return;
+                                }
+                            }
+
                             Canvas.SetLeft(anchor, pos.X);
                             Canvas.SetTop(anchor, pos.Y);
                         }
@@ -1171,13 +1481,35 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
+                    bool isCanBeLower = false;
+                    bool indexNotFound = true;
+                    int indexForDeleting = GetIndexOfShape(Shapes.Ellipse, polygon.Name);
+                    shapesCounter--;
+
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if ((block.IndexNumber == indexForDeleting) && (indexNotFound))
+                        {
+                            isCanBeLower = true;
+                            indexNotFound = false;
+                        }
+                        if (isCanBeLower)
+                        {
+                            block.IndexNumber--;
+                        }
+
+                    }
+                    if (diagramm.blocks.Count > 1)
+                        diagramm.blocks.RemoveAt(indexForDeleting);
+                    else
+                        diagramm.blocks.RemoveAt(0);
                 }
                 #endregion
 
-                EllipseIntoCanvasMouseMove(polygon, txt);
+                EllipseIntoCanvasMouseMove(polygon, txt, width, height);
             }
         }
-        private void EllipseIntoCanvasMouseMove(Rectangle polygon, TextBox txt)
+        private void EllipseIntoCanvasMouseMove(Rectangle polygon, TextBox txt, double width, double height)
         {
             polygon.MouseMove += IntoCanvasMove;
 
@@ -1199,6 +1531,21 @@ namespace Interface_1._0
 
                     Canvas.SetLeft(txt, Canvas.GetLeft(smt) + polygon.Width / 2 - 15);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) + polygon.Height / 2 - 10);
+
+                    //Повторно считываем данных о фигуре при передвижении
+                    Point LeftTop = new Point() { X = 0, Y = 0 };
+                    LeftTop.X = Canvas.GetLeft(polygon);
+                    LeftTop.Y = Canvas.GetTop(polygon);
+                    int indexOfShape = GetIndexOfShape(Shapes.Ellipse, polygon.Name);
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if (block.IndexNumber == indexOfShape)
+                        {
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, width, height, indexOfShape));
+                            diagramm.blocks.Remove(block);
+                            return;
+                        }
+                    }
                 }
             }
         }
@@ -1348,8 +1695,14 @@ namespace Interface_1._0
             }
             if (Parrabullem_Check)
             {
+
+
                 Polygon polyline = new Polygon();
                 TextBox text_into_shapes = new TextBox();
+
+                //Индексация фигур              
+                polyline.Name = "Parrabullem_" + shapesCounter.ToString();
+                shapesCounter++;
 
                 Parrabullem_Check = false;
                 polyline.Points = Parrabellum.Points;
@@ -1388,6 +1741,10 @@ namespace Interface_1._0
                 Polygon polyline = new Polygon();
                 TextBox text_into_shapes = new TextBox();
 
+                //Индексация фигур              
+                polyline.Name = "Rhomb_" + shapesCounter.ToString();
+                shapesCounter++;
+
                 Parrabullem_Check = false;
                 polyline.Points = Rhomb.Points;
 
@@ -1421,6 +1778,11 @@ namespace Interface_1._0
 
                 Polygon polyline = new Polygon();
                 TextBox text_into_shapes = new TextBox();
+
+                //Индексация фигур              
+                polyline.Name = "Cycle_" + shapesCounter.ToString();
+                shapesCounter++;
+
 
                 Parrabullem_Check = false;
                 polyline.Points = Cycle.Points;
@@ -1459,6 +1821,10 @@ namespace Interface_1._0
                 Rectangle rectangle = new Rectangle();
                 TextBox text_into_shapes = new TextBox();
 
+                //Индексация фигур
+                rectangle.Name = "Ellipse_" + shapesCounter.ToString();
+                shapesCounter++;
+
                 rectangle.Width = Ellipse.Width;
                 rectangle.Height = Ellipse.Height;
                 rectangle.RadiusX = Ellipse.RadiusX;
@@ -1485,7 +1851,7 @@ namespace Interface_1._0
                 Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(rectangle) + rectangle.Width / 2 - 15);
                 Canvas.SetTop(text_into_shapes, Canvas.GetTop(rectangle) + rectangle.Height / 2 - 10);
 
-                EllipseAdd(rectangle, text_into_shapes);
+                EllipseAdd(rectangle, text_into_shapes, rectangle.Width, rectangle.Height);
             }
         }
 
@@ -1501,6 +1867,7 @@ namespace Interface_1._0
         private void inTrash(object sender, RoutedEventArgs e)
         {
             CanvasPos.Children.Clear();
+            diagramm = new Diagramm();
         }
         #endregion
     }

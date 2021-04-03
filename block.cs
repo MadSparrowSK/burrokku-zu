@@ -60,7 +60,7 @@ namespace Interface_1._0
 
         }
         //Конструктор для работы с фигурой без текста
-        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw , Point se, Point addpoint1, Point addpoint2, int indexNumber,  int width = 0, int height = 0)
+        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw , Point se, Point addpoint1, Point addpoint2, int indexNumber)
         {
             LeftTop = leftTop;
             NW = nw;
@@ -69,22 +69,28 @@ namespace Interface_1._0
             SE = se;
             AddPoint1= addpoint1;
             AddPoint2 = addpoint2;
-            Width = width;
-            Height = height;
+            
             Shape = shape;
             IndexNumber = indexNumber;
         }
         
-        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw, Point se, int indexNumber , int width = 0, int height = 0)
+        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw, Point se, int indexNumber)
         {
             LeftTop = leftTop;
             NW = nw;
             NE = ne;
             SW = sw;
             SE = se;
+            Shape = shape;
+            IndexNumber = indexNumber;
+        }
+
+        public Block(Shapes shape, Point leftTop, double width, double height, int indexNumber)
+        {
+            Shape = shape;
+            LeftTop = leftTop;
             Width = width;
             Height = height;
-            Shape = shape;
             IndexNumber = indexNumber;
         }
         /*
