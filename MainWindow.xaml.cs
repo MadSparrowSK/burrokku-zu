@@ -353,13 +353,23 @@ namespace Interface_1._0
                 X = 0,
                 Y = 0
             };
-                
+            
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, shapesCounter - 1));
+            diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, shapesCounter - 1, txt.Text));
             diagramm.ShapesCounter++;
+            //Сохранение текста внутри фигуры
+            int index = GetIndexOfShape(Shapes.Rekt, polygon.Name);
+            txt.MouseLeave += Txt_MouseLeave;
+            void Txt_MouseLeave(object sender, MouseEventArgs e)
+            {
+                Keyboard.ClearFocus();
+                diagramm.blocks[index].TextIntoTextBox = txt.Text;
+            }
 
             polygon.MouseDown += IntoCanvasDownPolylineRectangle;
+
+
 
             void IntoCanvasDownPolylineRectangle(object sender, MouseButtonEventArgs e)
             {
@@ -527,7 +537,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, indexOfShape));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, indexOfShape, txt.Text));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -561,6 +571,9 @@ namespace Interface_1._0
                 RectangleIntoCanvasMouseMove(polygon, txt, rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
             }
         }
+
+        
+
         private void RectangleIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
         {
             polygon.MouseMove += IntoCanvasMove;
@@ -600,7 +613,7 @@ namespace Interface_1._0
                     {
                         if (block.IndexNumber == indexOfShape)
                         {
-                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, indexOfShape));
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, indexOfShape, txt.Text));
                             diagramm.blocks.Remove(block);
                             return;
                         }
@@ -621,8 +634,16 @@ namespace Interface_1._0
 
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, shapesCounter - 1));
+            diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, shapesCounter - 1, txt.Text));
             diagramm.ShapesCounter++;
+            //Сохранение текста внутри фигуры
+            int index = GetIndexOfShape(Shapes.Parrabellum, polygon.Name);
+            txt.MouseLeave += Txt_MouseLeave;
+            void Txt_MouseLeave(object sender, MouseEventArgs e)
+            {
+                Keyboard.ClearFocus();
+                diagramm.blocks[index].TextIntoTextBox = txt.Text;
+            }
 
             polygon.MouseDown += IntoCanvasDownPolylineParrabellum;
 
@@ -782,7 +803,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, indexOfShape));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, indexOfShape, txt.Text));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -858,7 +879,7 @@ namespace Interface_1._0
                     {
                         if (block.IndexNumber == indexOfShape)
                         {
-                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, indexOfShape));
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, indexOfShape, txt.Text));
                             diagramm.blocks.Remove(block);
                             return;
                         }
@@ -879,8 +900,16 @@ namespace Interface_1._0
 
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, shapesCounter - 1));
+            diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, shapesCounter - 1, txt.Text));
             diagramm.ShapesCounter++;
+            //Сохранение текста внутри фигуры
+            int index = GetIndexOfShape(Shapes.Rhomb, polygon.Name);
+            txt.MouseLeave += Txt_MouseLeave;
+            void Txt_MouseLeave(object sender, MouseEventArgs e)
+            {
+                Keyboard.ClearFocus();
+                diagramm.blocks[index].TextIntoTextBox = txt.Text;
+            }
 
             polygon.MouseDown += IntoCanvasDownPolylineRhomb;
 
@@ -980,7 +1009,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, indexOfShape));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, indexOfShape, txt.Text));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -1083,7 +1112,7 @@ namespace Interface_1._0
                     {
                         if (block.IndexNumber == indexOfShape)
                         {
-                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, indexOfShape));
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, indexOfShape, txt.Text));
                             diagramm.blocks.Remove(block);
                             return;
                         }
@@ -1104,8 +1133,16 @@ namespace Interface_1._0
 
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, shapesCounter - 1));
+            diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, shapesCounter - 1, txt.Text));
             diagramm.ShapesCounter++;
+            //Сохранение текста внутри фигуры
+            int index = GetIndexOfShape(Shapes.Cycle, polygon.Name);
+            txt.MouseLeave += Txt_MouseLeave;
+            void Txt_MouseLeave(object sender, MouseEventArgs e)
+            {
+                Keyboard.ClearFocus();
+                diagramm.blocks[index].TextIntoTextBox = txt.Text;
+            }
 
             polygon.MouseDown += IntoCanvasDownPolylineCycle;
 
@@ -1236,7 +1273,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, indexOfShape));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, indexOfShape, txt.Text));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -1342,7 +1379,7 @@ namespace Interface_1._0
                     {
                         if (block.IndexNumber == indexOfShape)
                         {
-                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, indexOfShape));
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, indexOfShape,txt.Text));
                             diagramm.blocks.Remove(block);
                             return;
                         }
@@ -1362,8 +1399,16 @@ namespace Interface_1._0
 
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            diagramm.blocks.Add(new Block(Shapes.Ellipse, LeftTop, width, height, shapesCounter - 1));
+            diagramm.blocks.Add(new Block(Shapes.Ellipse, LeftTop, width, height, shapesCounter - 1, txt.Text));
             diagramm.ShapesCounter++;
+            //Сохранение текста внутри фигуры
+            int index = GetIndexOfShape(Shapes.Ellipse, polygon.Name);
+            txt.MouseLeave += Txt_MouseLeave;
+            void Txt_MouseLeave(object sender, MouseEventArgs e)
+            {
+                Keyboard.ClearFocus();
+                diagramm.blocks[index].TextIntoTextBox = txt.Text;
+            }
 
             polygon.MouseDown += IntoCanvasMouseDownRectangle;
 
@@ -1442,7 +1487,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, smt.Width, smt.Height, indexOfShape));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, smt.Width, smt.Height, indexOfShape, txt.Text));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -1541,7 +1586,7 @@ namespace Interface_1._0
                     {
                         if (block.IndexNumber == indexOfShape)
                         {
-                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, width, height, indexOfShape));
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, width, height, indexOfShape, txt.Text));
                             diagramm.blocks.Remove(block);
                             return;
                         }

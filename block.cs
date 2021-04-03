@@ -46,6 +46,9 @@ namespace Interface_1._0
         //Тип фигуры
         public Shapes Shape { get; set; }
 
+        //Текст внутри фигуры
+        public string  TextIntoTextBox { get; set; }
+
         //Ширина, длина и размер шрифта текста внутри фигуры
         /*
         public int TextWidth { get; set; }
@@ -60,7 +63,7 @@ namespace Interface_1._0
 
         }
         //Конструктор для работы с фигурой без текста
-        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw , Point se, Point addpoint1, Point addpoint2, int indexNumber)
+        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw , Point se, Point addpoint1, Point addpoint2, int indexNumber, string textIntoTextBox)
         {
             LeftTop = leftTop;
             NW = nw;
@@ -72,9 +75,11 @@ namespace Interface_1._0
             
             Shape = shape;
             IndexNumber = indexNumber;
+
+            TextIntoTextBox = textIntoTextBox;
         }
         
-        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw, Point se, int indexNumber)
+        public Block(Shapes shape, Point leftTop, Point nw, Point ne, Point sw, Point se, int indexNumber, string textIntoTextBox)
         {
             LeftTop = leftTop;
             NW = nw;
@@ -83,15 +88,17 @@ namespace Interface_1._0
             SE = se;
             Shape = shape;
             IndexNumber = indexNumber;
+            TextIntoTextBox = textIntoTextBox;
         }
 
-        public Block(Shapes shape, Point leftTop, double width, double height, int indexNumber)
+        public Block(Shapes shape, Point leftTop, double width, double height, int indexNumber, string textIntoTextBox)
         {
             Shape = shape;
             LeftTop = leftTop;
             Width = width;
             Height = height;
             IndexNumber = indexNumber;
+            TextIntoTextBox = textIntoTextBox;
         }
         /*
         //Конструктор для работы с фигурой с текстом
