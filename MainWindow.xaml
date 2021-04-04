@@ -259,7 +259,7 @@
 
                         <Polygon Stroke="Gray" Points="8,1 -1,15 8,30 60,30 69,15 60,1"
                                  Name="Cycle" Fill="Transparent" MouseDown="DragDrop_MD"></Polygon>
-                        
+
                     </Label>
                     <!--#endregion-->
 
@@ -305,6 +305,8 @@
                            Foreground="Gray" Opacity="0.7"/>
 
                     <Polyline Stroke="Transparent" Points="8,0 0,0 0,8 8,0" Name="Anchor"/>
+                    <Polyline Points="4,0 0,10 4,20 4,0" Stroke="Transparent" Name="anchor_Left"/>
+                    <Polyline Points="0,4 10,0 20,4 0,4" Stroke="Transparent" Name="anchor_Top"/>
                 </StackPanel>
                 
            </DockPanel> 
