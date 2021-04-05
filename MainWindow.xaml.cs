@@ -121,6 +121,7 @@ namespace Interface_1._0
         #region create Class-container
 
         private Diagramm diagramm = new Diagramm();
+        private Diagramm OldDiagramm = new Diagramm();
         private int shapesCounter = 0;
         //метод для извелчения индекса из имени объекта
         private int GetIndexOfShape(Shapes shape, string name)
@@ -897,7 +898,6 @@ namespace Interface_1._0
                 X = 0,
                 Y = 0
             };
-
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
             diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, shapesCounter - 1, txt.Text));
@@ -1124,6 +1124,7 @@ namespace Interface_1._0
 
         private void CycleAdd(Polygon polygon, TextBox txt, Point cycleNW, Point cycleW, Point cycleSW, Point cycleSE, Point cycleE, Point cycleNE)
         {
+
             //Считывание данных о фигуре
             Point LeftTop = new Point()
             {
@@ -1817,6 +1818,7 @@ namespace Interface_1._0
 
                 RhombAdd(polyline, text_into_shapes, rhombN, rhombW, rhombS, rhombE);
             }
+
             if (Cycle_Check)
             {
                 Cycle_Check = false;
@@ -1912,8 +1914,251 @@ namespace Interface_1._0
         private void inTrash(object sender, RoutedEventArgs e)
         {
             CanvasPos.Children.Clear();
+            OldDiagramm = diagramm;
             diagramm = new Diagramm();
+            shapesCounter = 0;
         }
         #endregion
+
+        private void DownLoad(object sender, MouseButtonEventArgs e)
+        {
+           
+            foreach (Block block in OldDiagramm.blocks)
+            {
+                if (block.Shape == Shapes.Rekt)
+                {
+                    Point rectangleNW = block.NW;
+                    Point rectangleSW = block.SW;
+                    Point rectangleSE = block.SE;
+                    Point rectnagleNE = block.NE;
+
+                    PointCollection RectPoints = new PointCollection();
+                    RectPoints.Add(rectangleNW);
+                    RectPoints.Add(rectangleSW);
+                    RectPoints.Add(rectangleSE);
+                    RectPoints.Add(rectnagleNE);
+                    Polygon polyline = new Polygon();
+                    TextBox text_into_shapes = new TextBox();
+                    text_into_shapes.Text = block.TextIntoTextBox;
+                    //Индексация фигур              
+                    polyline.Name = "Rect_" + shapesCounter.ToString();
+                    shapesCounter++;
+
+                    polyline.Points = RectPoints;
+                    text_into_shapes.MinWidth = 40;
+                    text_into_shapes.MinHeight = 20;
+                    text_into_shapes.FontSize = 10;
+                    text_into_shapes.BorderBrush = Brushes.Transparent;
+                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Background = Brushes.Transparent;
+
+                    polyline.Stroke = Brushes.White;
+                    polyline.Fill = Brushes.Transparent;
+
+                    polyline.MouseUp += IntoCanvasUp;
+
+                    var text_position_x = Math.Abs(Math.Sqrt((Math.Pow(rectangleNW.X, 2) + Math.Pow(rectangleNW.Y, 2))) - (Math.Sqrt(Math.Pow(rectnagleNE.X, 2) + Math.Pow(rectnagleNE.Y, 2)))) / 2;
+                    var text_position_y = Math.Abs(Math.Sqrt((Math.Pow(rectangleNW.X, 2) + Math.Pow(rectangleNW.Y, 2))) - (Math.Sqrt(Math.Pow(rectangleSW.X, 2) + Math.Pow(rectangleSW.Y, 2)))) / 2;
+
+                    CanvasPos.Children.Add(polyline);
+                    CanvasPos.Children.Add(text_into_shapes);
+
+                    Canvas.SetLeft(polyline, block.LeftTop.X);
+                    Canvas.SetTop(polyline, block.LeftTop.Y);
+
+                    Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + text_position_x - 10);
+                    Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + text_position_y - 5);
+
+                    RectangleAdd(polyline, text_into_shapes, rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
+                }
+                if (block.Shape == Shapes.Parrabellum)
+                {
+                    Point parabellumNW = block.NW;
+                    Point parabellumSW = block.SW;
+                    Point parabellumSE = block.SE;
+                    Point parabellumNE = block.NE;
+
+                    PointCollection parabellumPoints = new PointCollection();
+                    parabellumPoints.Add(parabellumNW);
+                    parabellumPoints.Add(parabellumSW);
+                    parabellumPoints.Add(parabellumSE);
+                    parabellumPoints.Add(parabellumNE);
+
+                    Polygon polyline = new Polygon();
+                    TextBox text_into_shapes = new TextBox();
+
+                    //Индексация фигур              
+                    polyline.Name = "Parrabullem_" + shapesCounter.ToString();
+                    shapesCounter++;
+
+                    polyline.Points = parabellumPoints;
+
+                    text_into_shapes.Text = block.TextIntoTextBox;
+                    text_into_shapes.MinWidth = 40;
+                    text_into_shapes.MinHeight = 20;
+                    text_into_shapes.FontSize = 10;
+                    text_into_shapes.BorderBrush = Brushes.Transparent;
+                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Background = Brushes.Transparent;
+
+                    polyline.Stroke = Brushes.White;
+                    polyline.Fill = Brushes.Transparent;
+
+                    polyline.MouseUp += IntoCanvasUp;
+
+                    CanvasPos.Children.Add(polyline);
+                    CanvasPos.Children.Add(text_into_shapes);
+
+                    var text_position_x = Math.Abs((Math.Sqrt(Math.Pow(parabellumNW.X, 2) + Math.Pow(parabellumNW.Y, 2))) - (Math.Sqrt(Math.Pow(parabellumNE.X, 2) + Math.Pow(parabellumNE.Y, 2)))) / 2;
+                    var text_position_y = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2) + Math.Pow(parabellumNW.Y, 2)) - Math.Sqrt(Math.Pow(parabellumSW.X, 2) + Math.Pow(parabellumSW.Y, 2))) / 2;
+
+                    Canvas.SetLeft(polyline, block.LeftTop.X);
+                    Canvas.SetTop(polyline, block.LeftTop.Y);
+
+                    Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + text_position_x - 13);
+                    Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + text_position_y - 2);
+
+                    ParrabellumAdd(polyline, text_into_shapes, parabellumNW, parabellumSW, parabellumSE, parabellumNE);
+
+                }
+                if (block.Shape == Shapes.Rhomb)
+                {
+                    Point rhombN = block.NW;
+                    Point rhombW = block.NE;
+                    Point rhombS = block.SW;
+                    Point rhombE = block.SE;
+
+                    PointCollection rhombPoints = new PointCollection();
+                    rhombPoints.Add(rhombN);
+                    rhombPoints.Add(rhombW);
+                    rhombPoints.Add(rhombS);
+                    rhombPoints.Add(rhombE);
+
+                    Polygon polyline = new Polygon();
+                    TextBox text_into_shapes = new TextBox();
+
+                    //Индексация фигур              
+                    polyline.Name = "Rhomb_" + shapesCounter.ToString();
+                    shapesCounter++;
+
+                    polyline.Points = rhombPoints;
+
+                    text_into_shapes.Text = block.TextIntoTextBox;
+                    text_into_shapes.MinWidth = 40;
+                    text_into_shapes.MinHeight = 20;
+                    text_into_shapes.FontSize = 10;
+                    text_into_shapes.BorderBrush = Brushes.Transparent;
+                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Background = Brushes.Transparent;
+
+                    polyline.Stroke = Brushes.White;
+                    polyline.Fill = Brushes.Transparent;
+
+                    polyline.MouseUp += IntoCanvasUp;
+
+                    CanvasPos.Children.Add(polyline);
+                    CanvasPos.Children.Add(text_into_shapes);
+
+                    Canvas.SetLeft(polyline, block.LeftTop.X);
+                    Canvas.SetTop(polyline, block.LeftTop.Y);
+
+                    Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + 25);
+                    Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) - 1);
+
+                    RhombAdd(polyline, text_into_shapes, rhombN, rhombW, rhombS, rhombE);
+                }
+                if (block.Shape == Shapes.Cycle)
+                {
+                    Point cycleNW = block.NW;
+                    Point cycleW = block.AddPoint1;
+                    Point cycleSW = block.SW;
+                    Point cycleSE = block.SE;
+                    Point cycleE = block.AddPoint2;
+                    Point cycleNE = block.NE;
+                    PointCollection cyclePoints = new PointCollection()
+                    {
+                        cycleNW,
+                        cycleW,
+                        cycleSW,
+                        cycleSE,
+                        cycleE,
+                        cycleNE
+                    };
+
+                    Polygon polyline = new Polygon();
+                    TextBox text_into_shapes = new TextBox();
+
+                    //Индексация фигур              
+                    polyline.Name = "Cycle_" + shapesCounter.ToString();
+                    shapesCounter++;
+
+                    polyline.Points = cyclePoints;
+
+                    text_into_shapes.Text = block.TextIntoTextBox;
+                    text_into_shapes.MinWidth = 40;
+                    text_into_shapes.MinHeight = 20;
+                    text_into_shapes.FontSize = 10;
+                    text_into_shapes.BorderBrush = Brushes.Transparent;
+                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Background = Brushes.Transparent;
+
+                    polyline.Stroke = Brushes.White;
+                    polyline.Fill = Brushes.Transparent;
+
+                    polyline.MouseUp += IntoCanvasUp;
+
+                    CanvasPos.Children.Add(polyline);
+                    CanvasPos.Children.Add(text_into_shapes);
+
+                    var text_position_x = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2) + Math.Pow(cycleNW.Y, 2)) - Math.Sqrt(Math.Pow(cycleNE.X, 2) + Math.Pow(cycleNE.Y, 2))) / 2;
+                    var text_position_y = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2) + Math.Pow(cycleNW.Y, 2)) - Math.Sqrt(Math.Pow(cycleSW.X, 2) + Math.Pow(cycleSW.Y, 2))) / 2;
+
+                    Canvas.SetLeft(polyline, block.LeftTop.X);
+                    Canvas.SetTop(polyline, block.LeftTop.Y);
+
+                    Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + text_position_x - 10);
+                    Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + text_position_y - 5);
+
+                    CycleAdd(polyline, text_into_shapes, cycleNW, cycleW, cycleSW, cycleSE, cycleE, cycleNE);
+                }
+                if (block.Shape == Shapes.Ellipse)
+                {
+                    Rectangle rectangle = new Rectangle();
+                    TextBox text_into_shapes = new TextBox();
+
+                    //Индексация фигур
+                    rectangle.Name = "Ellipse_" + shapesCounter.ToString();
+                    shapesCounter++;
+
+                    rectangle.Width = block.Width;
+                    rectangle.Height = block.Height;
+                    rectangle.RadiusX = Ellipse.RadiusX;
+                    rectangle.RadiusY = Ellipse.RadiusY;
+                    rectangle.Fill = Brushes.Transparent;
+                    rectangle.Stroke = Brushes.White;
+
+                    text_into_shapes.Text = block.TextIntoTextBox;
+                    text_into_shapes.MinWidth = 40;
+                    text_into_shapes.MinHeight = 20;
+                    text_into_shapes.FontSize = 10;
+                    text_into_shapes.BorderBrush = Brushes.Transparent;
+                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Background = Brushes.Transparent;
+
+                    rectangle.MouseUp += IntoCanvasUp;
+
+                    CanvasPos.Children.Add(rectangle);
+                    CanvasPos.Children.Add(text_into_shapes);
+
+                    Canvas.SetLeft(rectangle, block.LeftTop.X);
+                    Canvas.SetTop(rectangle, block.LeftTop.Y);
+
+                    Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(rectangle) + rectangle.Width / 2 - 15);
+                    Canvas.SetTop(text_into_shapes, Canvas.GetTop(rectangle) + rectangle.Height / 2 - 10);
+
+                    EllipseAdd(rectangle, text_into_shapes, rectangle.Width, rectangle.Height);
+                }
+            }
+        }
     }
 }
