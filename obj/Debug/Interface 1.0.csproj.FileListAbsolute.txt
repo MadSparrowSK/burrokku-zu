@@ -45,3 +45,14 @@ C:\Программирование\проекты\Project_block_diagram\Burrokk
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.csproj.CoreCompileInputs.cache
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.exe
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.pdb
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.exe.config
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\Newtonsoft.Json.dll
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\System.Text.Json.dll
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\System.Memory.dll
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\System.Text.Encodings.Web.dll
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\System.Numerics.Vectors.dll
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\System.Buffers.dll
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.csproj.CopyComplete

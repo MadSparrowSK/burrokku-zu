@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.Json;
+using System.Runtime.Serialization.Json;
 
 namespace Interface_1._0
 {
@@ -120,8 +124,10 @@ namespace Interface_1._0
 
         #region create Class-container
 
+        OpenFileDialog _openDialog = new OpenFileDialog();
+        SaveFileDialog _safeDialog = new SaveFileDialog();
         private Diagramm diagramm = new Diagramm();
-        private Diagramm OldDiagramm = new Diagramm();
+        private Diagramm tempDiagramm = new Diagramm();
         private int shapesCounter = 0;
         //метод для извелчения индекса из имени объекта
         private int GetIndexOfShape(Shapes shape, string name)
@@ -1914,16 +1920,39 @@ namespace Interface_1._0
         private void inTrash(object sender, RoutedEventArgs e)
         {
             CanvasPos.Children.Clear();
-            OldDiagramm = diagramm;
             diagramm = new Diagramm();
             shapesCounter = 0;
         }
         #endregion
-
+        #region save and load files
         private void DownLoad(object sender, MouseButtonEventArgs e)
         {
-           
-            foreach (Block block in OldDiagramm.blocks)
+            inTrash(sender, e);
+            //Фильтр расширений при загрузке
+            _openDialog.Filter = "JSON files (*.json)|*.json";
+            if (_openDialog.ShowDialog() == true)
+            {
+                //Запускаем поток и передаем в него путь
+                StreamReader reader = new StreamReader(_openDialog.FileName);
+                //передаем полученные данные в строку
+                string json = reader.ReadToEnd();
+                //Пытаемся десериализовать строку - если формат не подходит, то обнуляем временную диаграмму
+                try
+                {
+                    tempDiagramm = JsonSerializer.Deserialize<Diagramm>(json) as Diagramm;
+                }
+                catch (Exception)
+                {
+
+                    tempDiagramm = new Diagramm();
+                }
+                //Обнуляем основную диаграмму и счетчик фигур    
+                diagramm = new Diagramm();
+                shapesCounter = 0;
+                reader.Close();
+            }
+            //Прорисовываем десериализованные фигуры
+            foreach (Block block in tempDiagramm.blocks)
             {
                 if (block.Shape == Shapes.Rekt)
                 {
@@ -2158,6 +2187,26 @@ namespace Interface_1._0
 
                     EllipseAdd(rectangle, text_into_shapes, rectangle.Width, rectangle.Height);
                 }
+            }
+            
+        }
+
+        #endregion
+
+        private void DownSave(object sender, MouseButtonEventArgs e)
+        {
+            //Настраиваем диалоговое окно для сохранения файлов. Указываем два фильтра для расширений файлов (В скобках видимое)
+            _safeDialog.Filter = "JSON Files (*.json)|*.json";
+            string json = JsonSerializer.Serialize<Diagramm>(diagramm);
+            if (_safeDialog.ShowDialog() == true)
+            {
+                //Запускаем поток и передаем в него путь
+                StreamWriter writer = new StreamWriter(_safeDialog.FileName);
+                string test = writer.ToString();
+                //Передаем в поток данные с нашего текстбокса
+                writer.WriteLine(json);
+                //Закрываем поток
+                writer.Close();
             }
         }
     }

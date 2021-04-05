@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 namespace Interface_1._0
 {
     //Перечисление типов фигур
+    [DataContract]
     enum Shapes
     {
         Ellipse,
@@ -16,11 +20,11 @@ namespace Interface_1._0
         Rhomb,
         Cycle
     }
-
     class Diagramm
     {
+        
         public int ShapesCounter { get; set; }
-        public List<Block> blocks = new List<Block>();
+        public List<Block> blocks { get; set; } = new List<Block>();
     }
     class Block
     {

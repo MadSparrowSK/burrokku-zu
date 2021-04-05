@@ -118,6 +118,7 @@
 
                     <Label Content="Something more ..." MouseEnter="Header_Mouse_Enter"
                            MouseLeave="Header_Mouse_Leave"
+                           MouseDown="DownSave"
                            Foreground="Gray" Padding="10,5,10,0"/>
 
                 </StackPanel>
