@@ -9,11 +9,12 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None"
-        Background="#1e1e1e"
+        Background="#FF2D2D30"
         ResizeMode="CanResizeWithGrip"
         MinHeight="540"
         MinWidth="900"
-        Icon="Icon/Icon.jpg">
+        Icon="Icon/Icon.jpg"
+        Closing ="Window_Closing">
     <Border Name="Border">
 
         <Grid ShowGridLines="False">

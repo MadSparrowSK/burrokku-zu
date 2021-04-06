@@ -49,11 +49,10 @@ namespace Interface_1._0
         Point startCycleE = new Point();
         Point startCycleNE = new Point();
         #endregion
-
+        
         public MainWindow()
         {
             InitializeComponent();
-
             #region initialized shapes start points
 
             #region rectangle points
@@ -122,10 +121,13 @@ namespace Interface_1._0
             #endregion
         }
 
-        #region create Class-container
-
-        OpenFileDialog _openDialog = new OpenFileDialog();
-        SaveFileDialog _safeDialog = new SaveFileDialog();
+        #region Data for serialization
+        //Булевые переменные, необходимые для всплывающего окна
+        private bool isLoaded = false;
+        private bool isChangde = false;
+        //Данные, необходимые для сериализации
+        private OpenFileDialog _openDialog = new OpenFileDialog();
+        private SaveFileDialog _safeDialog = new SaveFileDialog();
         private Diagramm diagramm = new Diagramm();
         private Diagramm tempDiagramm = new Diagramm();
         private int shapesCounter = 0;
@@ -211,12 +213,66 @@ namespace Interface_1._0
             }
             return index;
         }
+        //Метод для повторный нейминг фигур
+        private void ReName()
+        {
+            //Повторный нейминг всех фигур
+            int counterForName = 0;
+            foreach (Object shape in CanvasPos.Children)
+            {
+                if (shape is Polygon polygon1)
+                {
+                    string oldName = polygon1.Name;
+                    polygon1.Name = "";
+                    bool stup = false;
+
+                    for (int i = 0; i < oldName.Length; i++)
+                    {
+                        if (!stup)
+                        {
+                            polygon1.Name += oldName[i];
+                            if (polygon1.Name[i] == '_')
+                            {
+                                stup = true;
+
+                            }
+                        }
+                    }
+                    polygon1.Name = polygon1.Name + counterForName;
+                    counterForName++;
+                }
+                if (shape is Rectangle poligon1)
+                {
+
+                    string oldName = poligon1.Name;
+                    poligon1.Name = "";
+                    bool stup = false;
+
+                    for (int i = 0; i < oldName.Length; i++)
+                    {
+                        if (!stup)
+                        {
+                            poligon1.Name += oldName[i];
+                            if (poligon1.Name[i] == '_')
+                            {
+                                stup = true;
+
+                            }
+                        }
+                    }
+                    poligon1.Name = poligon1.Name + counterForName;
+                    counterForName++;
+                }
+            }
+        }
         #endregion
 
         #region DragMainWindow
         private void Mouse_Drag_Window(object sender, MouseButtonEventArgs e)
         {
-            DragMove();
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+
         }
         #endregion
 
@@ -354,6 +410,7 @@ namespace Interface_1._0
         //Добавление и обработка логики фигур
         private void RectangleAdd(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
         {
+            //Операция для поддержания нормальной инедксации
             //Считывание данных о фигуре
             Point LeftTop = new Point()
             {
@@ -363,13 +420,19 @@ namespace Interface_1._0
             
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, shapesCounter - 1, txt.Text));
+
+            if (isLoaded)
+                diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, shapesCounter, txt.Text));
+            else
+                diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, shapesCounter - 1, txt.Text));
+
             diagramm.ShapesCounter++;
             //Сохранение текста внутри фигуры
-            int index = GetIndexOfShape(Shapes.Rekt, polygon.Name);
+            
             txt.MouseLeave += Txt_MouseLeave;
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
+                int index = GetIndexOfShape(Shapes.Rekt, polygon.Name);
                 Keyboard.ClearFocus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
             }
@@ -386,6 +449,7 @@ namespace Interface_1._0
                 #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
+                    isChangde = true;
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
@@ -393,7 +457,9 @@ namespace Interface_1._0
                     bool indexNotFound = true;
                     int indexForDeleting = GetIndexOfShape(Shapes.Rekt, polygon.Name);
                     shapesCounter--;
-                    
+                    diagramm.ShapesCounter--;
+                    if (diagramm.ShapesCounter == 0) isChangde = false;
+
                     foreach (Block block in diagramm.blocks)
                     {
                         if ((block.IndexNumber == indexForDeleting)&&(indexNotFound))
@@ -410,8 +476,18 @@ namespace Interface_1._0
                     if (diagramm.blocks.Count > 1)
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
-                        diagramm.blocks.RemoveAt(0);
-
+                        try
+                        {
+                            diagramm.blocks.RemoveAt(0);
+                            shapesCounter = 0;
+                        }
+                        catch
+                        {
+                            diagramm = new Diagramm();
+                            shapesCounter = 0;
+                        }
+                    //Повторный нейминг всех фигур
+                    ReName();
 
                 }
                 #endregion
@@ -449,7 +525,7 @@ namespace Interface_1._0
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-
+                            isChangde = true;
                             var anchor = (Polyline)sndr;
                             anchor.CaptureMouse();
                             anchor.Stroke = Brushes.Transparent;
@@ -578,9 +654,6 @@ namespace Interface_1._0
                 RectangleIntoCanvasMouseMove(polygon, txt, rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
             }
         }
-
-        
-
         private void RectangleIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
         {
             polygon.MouseMove += IntoCanvasMove;
@@ -589,6 +662,7 @@ namespace Interface_1._0
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
+                    isChangde = true;
                     if (is_anchor_create)
                     {
                         is_anchor_create = false;
@@ -629,7 +703,6 @@ namespace Interface_1._0
                 }
             }
         }
-
         private void ParrabellumAdd(Polygon polygon, TextBox txt, Point parabellumNW, Point parabellumSW, Point parabellumSE, Point parabellumNE)
         {
             //Считывание данных о фигуре
@@ -641,13 +714,16 @@ namespace Interface_1._0
 
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, shapesCounter - 1, txt.Text));
+            if (isLoaded)
+                diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, shapesCounter, txt.Text));
+            else
+                diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, shapesCounter - 1, txt.Text));
             diagramm.ShapesCounter++;
             //Сохранение текста внутри фигуры
-            int index = GetIndexOfShape(Shapes.Parrabellum, polygon.Name);
             txt.MouseLeave += Txt_MouseLeave;
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
+                int index = GetIndexOfShape(Shapes.Parrabellum, polygon.Name);
                 Keyboard.ClearFocus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
             }
@@ -662,6 +738,7 @@ namespace Interface_1._0
                 #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
+                    isChangde = true;
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
@@ -669,6 +746,8 @@ namespace Interface_1._0
                     bool indexNotFound = true;
                     int indexForDeleting = GetIndexOfShape(Shapes.Parrabellum, polygon.Name);
                     shapesCounter--;
+                    diagramm.ShapesCounter--;
+                    if (diagramm.ShapesCounter == 0) isChangde = false;
 
                     foreach (Block block in diagramm.blocks)
                     {
@@ -686,7 +765,20 @@ namespace Interface_1._0
                     if (diagramm.blocks.Count > 1)
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
-                        diagramm.blocks.RemoveAt(0);
+                        try
+                        {
+                            diagramm.blocks.RemoveAt(0);
+                            shapesCounter = 0;
+                        }
+                        catch
+                        {
+                            diagramm = new Diagramm();
+                            shapesCounter = 0;
+                        }
+
+                    if (diagramm.ShapesCounter == 0) isChangde = false;
+                    //Повторный нейминг всех фигур
+                    ReName();
                 }
                 #endregion
 
@@ -721,6 +813,7 @@ namespace Interface_1._0
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
+                            isChangde = true;
                             var anchor = (Polyline)sndr;
                             anchor.CaptureMouse();
 
@@ -855,6 +948,7 @@ namespace Interface_1._0
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
+                    isChangde = true;
                     if (is_anchor_create)
                     {
                         is_anchor_create = false;
@@ -897,7 +991,7 @@ namespace Interface_1._0
         }
 
         private void RhombAdd(Polygon polygon, TextBox txt, Point rhombN, Point rhombW, Point rhombS, Point rhombE)
-        {
+        { 
             //Считывание данных о фигуре
             Point LeftTop = new Point()
             {
@@ -906,13 +1000,16 @@ namespace Interface_1._0
             };
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, shapesCounter - 1, txt.Text));
+            if (isLoaded)
+                diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, shapesCounter, txt.Text));
+            else
+                diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, shapesCounter - 1, txt.Text));
             diagramm.ShapesCounter++;
             //Сохранение текста внутри фигуры
-            int index = GetIndexOfShape(Shapes.Rhomb, polygon.Name);
             txt.MouseLeave += Txt_MouseLeave;
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
+                int index = GetIndexOfShape(Shapes.Rhomb, polygon.Name);
                 Keyboard.ClearFocus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
             }
@@ -948,6 +1045,7 @@ namespace Interface_1._0
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
+                            isChangde = true;
                             var anchor = (Polyline)sndr;
                             anchor.CaptureMouse();
 
@@ -1051,6 +1149,7 @@ namespace Interface_1._0
                 #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
+                    isChangde = true;
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
@@ -1058,7 +1157,7 @@ namespace Interface_1._0
                     bool indexNotFound = true;
                     int indexForDeleting = GetIndexOfShape(Shapes.Rhomb, polygon.Name);
                     shapesCounter--;
-
+                    diagramm.ShapesCounter--;
                     foreach (Block block in diagramm.blocks)
                     {
                         if ((block.IndexNumber == indexForDeleting) && (indexNotFound))
@@ -1075,7 +1174,20 @@ namespace Interface_1._0
                     if (diagramm.blocks.Count > 1)
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
-                        diagramm.blocks.RemoveAt(0);
+                        try
+                        {
+                            diagramm.blocks.RemoveAt(0);
+                            shapesCounter = 0;
+                        }
+                        catch
+                        {
+                            diagramm = new Diagramm();
+                            shapesCounter = 0;
+                        }
+
+                    if (diagramm.ShapesCounter == 0) isChangde = false;
+                    //Повторный нейминг всех фигур
+                    ReName();
                 }
                 #endregion
 
@@ -1090,6 +1202,7 @@ namespace Interface_1._0
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
+                    isChangde = true;
                     if (is_anchor_create)
                     {
                         is_anchor_create = false;
@@ -1130,7 +1243,6 @@ namespace Interface_1._0
 
         private void CycleAdd(Polygon polygon, TextBox txt, Point cycleNW, Point cycleW, Point cycleSW, Point cycleSE, Point cycleE, Point cycleNE)
         {
-
             //Считывание данных о фигуре
             Point LeftTop = new Point()
             {
@@ -1140,13 +1252,17 @@ namespace Interface_1._0
 
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, shapesCounter - 1, txt.Text));
+            if (isLoaded)
+                diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, shapesCounter, txt.Text));
+            else
+                diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, shapesCounter - 1, txt.Text));
+
             diagramm.ShapesCounter++;
             //Сохранение текста внутри фигуры
-            int index = GetIndexOfShape(Shapes.Cycle, polygon.Name);
             txt.MouseLeave += Txt_MouseLeave;
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
+                int index = GetIndexOfShape(Shapes.Cycle, polygon.Name);
                 Keyboard.ClearFocus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
             }
@@ -1183,7 +1299,7 @@ namespace Interface_1._0
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-
+                            isChangde = true;
                             var anchor = (Polyline)sndr;
                             anchor.CaptureMouse();
 
@@ -1316,6 +1432,7 @@ namespace Interface_1._0
                 #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
+                    isChangde = true;
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
@@ -1323,7 +1440,7 @@ namespace Interface_1._0
                     bool indexNotFound = true;
                     int indexForDeleting = GetIndexOfShape(Shapes.Cycle, polygon.Name);
                     shapesCounter--;
-
+                    diagramm.ShapesCounter--;
                     foreach (Block block in diagramm.blocks)
                     {
                         if ((block.IndexNumber == indexForDeleting) && (indexNotFound))
@@ -1340,7 +1457,19 @@ namespace Interface_1._0
                     if (diagramm.blocks.Count > 1)
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
-                        diagramm.blocks.RemoveAt(0);
+                        try
+                        {
+                            diagramm.blocks.RemoveAt(0);
+                            shapesCounter = 0;
+                        }
+                        catch
+                        {
+                            diagramm = new Diagramm();
+                            shapesCounter = 0;
+                        }
+                    if (diagramm.ShapesCounter == 0) isChangde = false;
+                    //Повторный нейминг всех фигур
+                    ReName();
                 }
                 #endregion
 
@@ -1355,6 +1484,7 @@ namespace Interface_1._0
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
+                    isChangde = true;
                     if (is_anchor_create)
                     {
                         is_anchor_create = false;
@@ -1406,13 +1536,17 @@ namespace Interface_1._0
 
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            diagramm.blocks.Add(new Block(Shapes.Ellipse, LeftTop, width, height, shapesCounter - 1, txt.Text));
+            if (isLoaded)
+                diagramm.blocks.Add(new Block(Shapes.Ellipse, LeftTop, width, height, shapesCounter, txt.Text));
+            else
+                diagramm.blocks.Add(new Block(Shapes.Ellipse, LeftTop, width, height, shapesCounter - 1, txt.Text));
+
             diagramm.ShapesCounter++;
             //Сохранение текста внутри фигуры
-            int index = GetIndexOfShape(Shapes.Ellipse, polygon.Name);
             txt.MouseLeave += Txt_MouseLeave;
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
+                int index = GetIndexOfShape(Shapes.Ellipse, polygon.Name);
                 Keyboard.ClearFocus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
             }
@@ -1427,6 +1561,7 @@ namespace Interface_1._0
                 #region anchor
                 if (!is_anchor_create)
                 {
+
                     anchor_size = new Polyline();
                     anchor_size.Points = Anchor.Points;
                     anchor_size.Stroke = Brushes.Red;
@@ -1448,6 +1583,7 @@ namespace Interface_1._0
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
+                            isChangde = true;
                             var anchor = (Polyline)sndr;
                             anchor.CaptureMouse();
 
@@ -1530,6 +1666,7 @@ namespace Interface_1._0
                 #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
+                    isChangde = true;
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
@@ -1537,7 +1674,7 @@ namespace Interface_1._0
                     bool indexNotFound = true;
                     int indexForDeleting = GetIndexOfShape(Shapes.Ellipse, polygon.Name);
                     shapesCounter--;
-
+                    diagramm.ShapesCounter--;
                     foreach (Block block in diagramm.blocks)
                     {
                         if ((block.IndexNumber == indexForDeleting) && (indexNotFound))
@@ -1554,7 +1691,19 @@ namespace Interface_1._0
                     if (diagramm.blocks.Count > 1)
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
-                        diagramm.blocks.RemoveAt(0);
+                        try
+                        {
+                            diagramm.blocks.RemoveAt(0);
+                            shapesCounter = 0;
+                        }
+                        catch
+                        {
+                            diagramm = new Diagramm();
+                            shapesCounter = 0;
+                        }
+                    if (diagramm.ShapesCounter == 0) isChangde = false;
+                    //Повторный нейминг всех фигур
+                    ReName();
                 }
                 #endregion
 
@@ -1569,6 +1718,7 @@ namespace Interface_1._0
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
+                    isChangde = true;
                     if (is_anchor_create)
                     {
                         is_anchor_create = false;
@@ -1611,6 +1761,10 @@ namespace Interface_1._0
         //Метод, происходящий при сбросе фигуры в Canvas №2
         private void DnD_Drop(object sender, DragEventArgs e)
         {
+
+            if (shapesCounter < 0) shapesCounter = 0;
+            isChangde = true;
+
             #region points
             //Создание точек для всех возможных фигур
             Point rectangleNW = new Point();
@@ -1919,6 +2073,7 @@ namespace Interface_1._0
         }
         private void inTrash(object sender, RoutedEventArgs e)
         {
+            isChangde = false;
             CanvasPos.Children.Clear();
             diagramm = new Diagramm();
             shapesCounter = 0;
@@ -1927,6 +2082,8 @@ namespace Interface_1._0
         #region save and load files
         private void DownLoad(object sender, MouseButtonEventArgs e)
         {
+            isLoaded = true;
+            isChangde = false;
             inTrash(sender, e);
             //Фильтр расширений при загрузке
             _openDialog.Filter = "JSON files (*.json)|*.json";
@@ -1970,8 +2127,8 @@ namespace Interface_1._0
                     TextBox text_into_shapes = new TextBox();
                     text_into_shapes.Text = block.TextIntoTextBox;
                     //Индексация фигур              
-                    polyline.Name = "Rect_" + shapesCounter.ToString();
-                    shapesCounter++;
+                    polyline.Name = "Rect_" + block.IndexNumber.ToString();
+                    
 
                     polyline.Points = RectPoints;
                     text_into_shapes.MinWidth = 40;
@@ -2017,8 +2174,7 @@ namespace Interface_1._0
                     TextBox text_into_shapes = new TextBox();
 
                     //Индексация фигур              
-                    polyline.Name = "Parrabullem_" + shapesCounter.ToString();
-                    shapesCounter++;
+                    polyline.Name = "Parrabullem_" + block.IndexNumber.ToString();
 
                     polyline.Points = parabellumPoints;
 
@@ -2067,8 +2223,8 @@ namespace Interface_1._0
                     TextBox text_into_shapes = new TextBox();
 
                     //Индексация фигур              
-                    polyline.Name = "Rhomb_" + shapesCounter.ToString();
-                    shapesCounter++;
+                    polyline.Name = "Rhomb_" + block.IndexNumber.ToString();
+
 
                     polyline.Points = rhombPoints;
 
@@ -2118,9 +2274,7 @@ namespace Interface_1._0
                     TextBox text_into_shapes = new TextBox();
 
                     //Индексация фигур              
-                    polyline.Name = "Cycle_" + shapesCounter.ToString();
-                    shapesCounter++;
-
+                    polyline.Name = "Cycle_" + block.IndexNumber.ToString();
                     polyline.Points = cyclePoints;
 
                     text_into_shapes.Text = block.TextIntoTextBox;
@@ -2156,8 +2310,8 @@ namespace Interface_1._0
                     TextBox text_into_shapes = new TextBox();
 
                     //Индексация фигур
-                    rectangle.Name = "Ellipse_" + shapesCounter.ToString();
-                    shapesCounter++;
+                    rectangle.Name = "Ellipse_" + block.IndexNumber.ToString();
+
 
                     rectangle.Width = block.Width;
                     rectangle.Height = block.Height;
@@ -2187,14 +2341,17 @@ namespace Interface_1._0
 
                     EllipseAdd(rectangle, text_into_shapes, rectangle.Width, rectangle.Height);
                 }
+                shapesCounter++;
             }
-            
+            //Булевая переменная, необходимая для сохранения индексации
+            isLoaded = false;
         }
 
         #endregion
 
-        private void DownSave(object sender, MouseButtonEventArgs e)
+        public void DownSave(object sender, MouseButtonEventArgs e)
         {
+            isChangde = false;
             //Настраиваем диалоговое окно для сохранения файлов. Указываем два фильтра для расширений файлов (В скобках видимое)
             _safeDialog.Filter = "JSON Files (*.json)|*.json";
             string json = JsonSerializer.Serialize<Diagramm>(diagramm);
@@ -2208,6 +2365,20 @@ namespace Interface_1._0
                 //Закрываем поток
                 writer.Close();
             }
+        }
+        //Окно для напоминания про сохранение
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SaveWindow _window = new SaveWindow();
+            _window.Owner = this;
+            if(isChangde)
+            {
+                if (_window.ShowDialog() == false)
+                {
+                    e.Cancel = true; // Отмена закрытия окна 
+                }
+            }
+            
         }
     }
 }

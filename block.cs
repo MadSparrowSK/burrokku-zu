@@ -12,7 +12,7 @@ namespace Interface_1._0
 {
     //Перечисление типов фигур
     [DataContract]
-    enum Shapes
+    public enum Shapes
     {
         Ellipse,
         Rekt,
@@ -20,13 +20,13 @@ namespace Interface_1._0
         Rhomb,
         Cycle
     }
-    class Diagramm
+    public class Diagramm
     {
         
         public int ShapesCounter { get; set; }
         public List<Block> blocks { get; set; } = new List<Block>();
     }
-    class Block
+    public class Block
     {
         //Координаты фигуры
         public Point LeftTop { get; set; }
@@ -39,7 +39,7 @@ namespace Interface_1._0
         public Point AddPoint2 { get; set; }
 
         //Индекс фигуры
-        public int IndexNumber = 0;
+        public int IndexNumber { get; set; }
         
 
         //Длина и ширина фигуры для элипса
