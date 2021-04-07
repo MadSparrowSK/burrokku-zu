@@ -291,7 +291,6 @@ namespace Interface_1._0
                 #region anchor
                 if (!is_anchor_create)
                 {
-
                     anchor_size = new Polyline();
                     anchor_size.Points = Anchor.Points;
                     anchor_size.Stroke = Brushes.Red;
@@ -304,7 +303,7 @@ namespace Interface_1._0
                     anchor_left = new Polyline();
                     anchor_left.Points = anchor_Left.Points;
                     anchor_left.Stroke = Brushes.Red;
-                    anchor_left.Fill = Brushes.Transparent;
+                    anchor_left.Fill   = Brushes.Transparent;
 
                     anchor_left.MouseDown += AnchorMouseDown;
                     anchor_left.MouseMove += AnchorLeftMouseMove;
@@ -1043,14 +1042,14 @@ namespace Interface_1._0
                 var smt = (Polygon)sender;
                 lastPoint = e.GetPosition(smt);
 
-                int point_summ_main_X = (int)(strtRhombS.X + startRhombE.X + startRhombW.X + startRhombN.X);
-                int point_summ_main_Y = (int)(strtRhombS.Y + startRhombE.Y + startRhombW.Y + startRhombN.Y);
+                double point_summ_main_X = Math.Abs(Math.Sqrt(Math.Pow(startRhombE.X, 2))  + Math.Sqrt(Math.Pow(startRhombE.X, 2)));
+                double point_summ_main_Y = Math.Abs(Math.Sqrt(Math.Pow(startRhombN.Y, 2))  + Math.Sqrt(Math.Pow(strtRhombS.Y, 2)));
 
-                int point_summ_second_X = 0;
-                int point_summ_second_Y = 0;
+                double point_summ_second_X = 0;
+                double point_summ_second_Y = 0;
 
-                int anchor_left_indent = (int)Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2) + Math.Pow(rhombW.Y, 2)) - Math.Sqrt(Math.Pow(rhombE.X, 2) + Math.Pow(rhombE.Y, 2))) / 2;
-                int anchor_top_indent = (int)Math.Abs(Math.Sqrt(Math.Pow(rhombN.X, 2) + Math.Pow(rhombN.Y, 2)) - Math.Sqrt(Math.Pow(rhombS.X, 2) + Math.Pow(rhombS.Y, 2))) / 2;
+                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) + Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
+                double anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;
 
                 #region anchor
                 if (!is_anchor_create)
@@ -1076,7 +1075,7 @@ namespace Interface_1._0
                     anchor_top = new Polyline();
                     anchor_top.Points = anchor_Top.Points;
                     anchor_top.Stroke = Brushes.Red;
-                    anchor_top.Fill = Brushes.Transparent;
+                    anchor_top.Fill   = Brushes.Transparent;
 
                     anchor_top.MouseDown += AnchorMouseDown;
                     anchor_top.MouseMove += AnchorTopMouseMove;
@@ -1099,35 +1098,27 @@ namespace Interface_1._0
 
                             anchor_size.Stroke = Brushes.Transparent;
                             anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke = Brushes.Transparent;
+                            anchor_top.Stroke  = Brushes.Transparent;
 
                             Cursor = Cursors.SizeNS;
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
 
-                            anchor_left_indent = (int)Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2) + Math.Pow(rhombW.Y, 2)) - Math.Sqrt(Math.Pow(rhombE.X, 2) + Math.Pow(rhombE.Y, 2))) / 2;
-                            anchor_top_indent = (int)Math.Abs(Math.Sqrt(Math.Pow(rhombN.X, 2) + Math.Pow(rhombN.Y, 2)) - Math.Sqrt(Math.Pow(rhombS.X, 2) + Math.Pow(rhombS.Y, 2))) / 2;
+                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) - Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
+                            anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) - Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;
 
                             var text_position_y = Math.Abs(Math.Sqrt((Math.Pow(rhombN.X, 2) + Math.Pow(rhombN.Y, 2))) - (Math.Sqrt(Math.Pow(rhombS.X, 2) + Math.Pow(rhombS.Y, 2)))) / 2;
                             var text_position_x = Math.Abs(Math.Sqrt((Math.Pow(rhombW.X, 2) + Math.Pow(rhombW.Y, 2))) - (Math.Sqrt(Math.Pow(rhombE.X, 2) + Math.Pow(rhombE.Y, 2)))) / 2;
 
+                            point_summ_second_X = (int)(rhombN.X + rhombW.X + rhombS.X + rhombE.X);
+                            point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2)));
+
                             if (pos.Y < current_anchor_postion.Y)
                             {
-                                //rhombN.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
                                 rhombN.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-
-                                //rhombW.X -= 1;
-                                //rhombW.Y += .5;
-
+                                
                                 rhombS.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-                                //rhombS.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                //rhombE.X += Math.Abs(pos.X - current_anchor_postion.X);
-                                //rhombE.Y += .5;
-
-                                //rhombN.X += .5;
-                                //rhombN.Y -= .5;
-
+                                
                                 PointCollection points = new PointCollection();
                                 points.Add(rhombW);
                                 points.Add(rhombS);
@@ -1136,35 +1127,23 @@ namespace Interface_1._0
 
                                 smt.Points = points;
 
-                                //Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
 
                                 Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + text_position_x - 10);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + text_position_y - 10);
 
                                 current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(polygon) + anchor_top_indent;
 
                                 point_summ_second_X = (int)(rhombN.X + rhombW.X + rhombS.X + rhombE.X);
-                                point_summ_second_Y = (int)(rhombN.Y + rhombW.Y + rhombS.Y + rhombE.Y);
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2)));
                             }
-                            else if (point_summ_second_Y > point_summ_main_Y)
+                            else if(point_summ_second_Y > 30)
                             {
-                                //rhombN.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
                                 rhombN.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
 
-                                //rhombW.X -= 1;
-                                //rhombW.Y += .5;
-
                                 rhombS.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-                                //rhombS.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                //rhombE.X -= Math.Abs(pos.X - current_anchor_postion.X);
-                                //rhombE.Y += .5;
-
-                                //rhombN.X += .5;
-                                //rhombN.Y -= .5;
-
+                                
                                 PointCollection points = new PointCollection();
                                 points.Add(rhombW);
                                 points.Add(rhombS);
@@ -1173,17 +1152,16 @@ namespace Interface_1._0
 
                                 smt.Points = points;
 
-                                //Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 30);
+                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
 
                                 Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + text_position_x - 10);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + text_position_y - 10);
 
                                 current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(polygon) + anchor_top_indent;
 
                                 point_summ_second_X = (int)(rhombN.X + rhombW.X + rhombS.X + rhombE.X);
-                                point_summ_second_Y = (int)(rhombN.Y + rhombW.Y + rhombS.Y + rhombE.Y);
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2)));
                             }
                         }
                     }
@@ -1211,21 +1189,13 @@ namespace Interface_1._0
                             if (pos.X < current_anchor_postion.X)
                             {
                                 rhombN.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-                                //rhombN.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-
-                                //rhombW.X -= 1;
-                                //rhombW.Y += .5;
-
-                                //rhombS.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
+                             
                                 rhombS.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
 
                                 rhombE.X += Math.Abs(pos.X - current_anchor_postion.X);
-                                //rhombE.Y += .5;
-
-                                //rhombN.X += .5;
-                                //rhombN.Y -= .5;
 
                                 PointCollection points = new PointCollection();
+
                                 points.Add(rhombW);
                                 points.Add(rhombS);
                                 points.Add(rhombE);
@@ -1234,7 +1204,6 @@ namespace Interface_1._0
                                 smt.Points = points;
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
-                                //Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
 
                                 Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + text_position_x - 10);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + text_position_y - 10);
@@ -1248,19 +1217,10 @@ namespace Interface_1._0
                             else if(point_summ_second_X >= point_summ_main_X)
                             {
                                 rhombN.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-                                //rhombN.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
 
-                                //rhombW.X -= 1;
-                                //rhombW.Y += .5;
-
-                                //rhombS.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
                                 rhombS.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
 
                                 rhombE.X -= Math.Abs(pos.X - current_anchor_postion.X);
-                                //rhombE.Y += .5;
-
-                                //rhombN.X += .5;
-                                //rhombN.Y -= .5;
 
                                 PointCollection points = new PointCollection();
                                 points.Add(rhombW);
@@ -1271,7 +1231,6 @@ namespace Interface_1._0
                                 smt.Points = points;
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
-                                //Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
 
                                 Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + text_position_x - 10);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + text_position_y - 10);
@@ -1299,8 +1258,8 @@ namespace Interface_1._0
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
 
-                            anchor_left_indent = (int)Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2) + Math.Pow(rhombW.Y, 2)) - Math.Sqrt(Math.Pow(rhombE.X, 2) + Math.Pow(rhombE.Y, 2))) / 2;
-                            anchor_top_indent = (int)Math.Abs(Math.Sqrt(Math.Pow(rhombN.X, 2) + Math.Pow(rhombN.Y, 2)) - Math.Sqrt(Math.Pow(rhombS.X, 2) + Math.Pow(rhombS.Y, 2))) / 2;
+                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) - Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
+                            anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) - Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;                            
 
                             var text_position_y = Math.Abs(Math.Sqrt((Math.Pow(rhombN.X, 2) + Math.Pow(rhombN.Y, 2))) - (Math.Sqrt(Math.Pow(rhombS.X, 2) + Math.Pow(rhombS.Y, 2)))) / 2;
                             var text_position_x = Math.Abs(Math.Sqrt((Math.Pow(rhombW.X, 2) + Math.Pow(rhombW.Y, 2))) - (Math.Sqrt(Math.Pow(rhombE.X, 2) + Math.Pow(rhombE.Y, 2)))) / 2;
@@ -1310,17 +1269,10 @@ namespace Interface_1._0
                                 rhombN.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
                                 rhombN.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
 
-                                //rhombW.X -= 1;
-                                //rhombW.Y += .5;
-
                                 rhombS.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
                                 rhombS.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
 
                                 rhombE.X += Math.Abs(pos.X - current_anchor_postion.X);
-                                //rhombE.Y += .5;
-
-                                //rhombN.X += .5;
-                                //rhombN.Y -= .5;
 
                                 PointCollection points = new PointCollection();
                                 points.Add(rhombW);
@@ -1339,25 +1291,18 @@ namespace Interface_1._0
                                 current_anchor_postion.X = Canvas.GetLeft(polygon);
                                 current_anchor_postion.Y = Canvas.GetTop(polygon);
 
-                                point_summ_second_X = (int)(rhombN.X + rhombW.X + rhombS.X + rhombE.X);
-                                point_summ_second_Y = (int)(rhombN.Y + rhombW.Y + rhombS.Y + rhombE.Y);
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rhombE.X, 2)) + Math.Sqrt(Math.Pow(rhombW.X, 2)));
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2)));
                             }
-                            else if (point_summ_second_X >= point_summ_main_X || point_summ_second_Y > point_summ_main_Y)
+                            else if (point_summ_second_X > 50 && point_summ_second_Y > 25)
                             {
                                 rhombN.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
                                 rhombN.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-
-                                //rhombW.X -= 1;
-                                //rhombW.Y += .5;
 
                                 rhombS.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
                                 rhombS.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
 
                                 rhombE.X -= Math.Abs(pos.X - current_anchor_postion.X);
-                                //rhombE.Y += .5;
-
-                                //rhombN.X += .5;
-                                //rhombN.Y -= .5;
 
                                 PointCollection points = new PointCollection();
                                 points.Add(rhombW);
@@ -1376,8 +1321,8 @@ namespace Interface_1._0
                                 current_anchor_postion.X = Canvas.GetLeft(polygon);
                                 current_anchor_postion.Y = Canvas.GetTop(polygon);
 
-                                point_summ_second_X = (int)(rhombN.X + rhombW.X + rhombS.X + rhombE.X);
-                                point_summ_second_Y = (int)(rhombN.Y + rhombW.Y + rhombS.Y + rhombE.Y);
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rhombE.X, 2)) + Math.Sqrt(Math.Pow(rhombW.X, 2)));
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2)));
                             }
                         }
                     }
@@ -1392,14 +1337,17 @@ namespace Interface_1._0
 
                         Cursor = Cursors.Arrow;
 
-                        Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt) + anchor_top_indent + 4);
-                        Canvas.SetTop(anchor_size, Canvas.GetTop(smt) - 3);
+                        anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) - Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
+                        anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) - Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;
 
-                        Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt) - anchor_top_indent - 3);
+                        Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt));
+                        Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
+
+                        Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt) - 3);
                         Canvas.SetTop(anchor_left, Canvas.GetTop(smt));
 
-                        Canvas.SetLeft(anchor_top, Canvas.GetLeft(polygon) + anchor_left_indent - 5);
-                        Canvas.SetTop(anchor_top, Canvas.GetTop(polygon) - anchor_top_indent*2);
+                        Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + anchor_left_indent - 10);
+                        Canvas.SetTop(anchor_top, Canvas.GetTop(polygon) - anchor_top_indent);
                     }
 
                     #endregion
@@ -1408,14 +1356,14 @@ namespace Interface_1._0
                     CanvasPos.Children.Add(anchor_left);
                     CanvasPos.Children.Add(anchor_top);
 
-                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt) + anchor_top_indent + 4);
-                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt) - 3);
+                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt));
+                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
 
                     Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt) - anchor_top_indent - 3);
                     Canvas.SetTop(anchor_left, Canvas.GetTop(smt));
 
-                    Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + anchor_left_indent - 5);
-                    Canvas.SetTop(anchor_top, Canvas.GetTop(polygon) - anchor_top_indent * 2);
+                    Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + anchor_left_indent - 10);
+                    Canvas.SetTop(anchor_top, Canvas.GetTop(polygon) - anchor_top_indent);
 
                     is_anchor_create = true;
                 }
@@ -1435,7 +1383,6 @@ namespace Interface_1._0
                 RhombIntoCanvasMouseMove(polygon, txt,rhombN,rhombW,rhombS,rhombE);
             }
         }
-
         private void RhombIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point rhombN, Point rhombW, Point rhombS, Point rhombE)
         {
             polygon.MouseMove += IntoCanvasMove;
@@ -1749,7 +1696,7 @@ namespace Interface_1._0
 
                             anchor_size.Stroke = Brushes.Transparent;
                             anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke = Brushes.Transparent;
+                            anchor_top.Stroke  = Brushes.Transparent;
 
                             Cursor = Cursors.SizeNWSE;
 
@@ -1772,9 +1719,6 @@ namespace Interface_1._0
                                 cycleE.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 8;
 
                                 cycleNE.X += Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-                                //cycleNE.Y -= .5;
-
-                                //cycleNW.Y -= .5;
 
                                 PointCollection points = new PointCollection();
                                 points.Add(cycleW);
@@ -1815,9 +1759,6 @@ namespace Interface_1._0
                                 cycleE.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 8;
 
                                 cycleNE.X -= Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-                                //cycleNE.Y -= .5;
-
-                                //cycleNW.Y -= .5;
 
                                 PointCollection points = new PointCollection();
                                 points.Add(cycleW);
