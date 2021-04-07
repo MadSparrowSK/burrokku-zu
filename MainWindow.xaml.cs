@@ -372,25 +372,45 @@ namespace Interface_1._0
         #endregion
 
         #region Drag_N_Drop
+        
         //Булевые переменные для определения фигуры
         private bool Rectangle_Check = false;
         private bool Parrabullem_Check = false;
         private bool Rhomb_Check = false;
         private bool Cycle_Check = false;
         private bool Ellipse_Check = false;
+        
+        private void turnOffCheckBoxes(Shapes shape)
+        {
+             Rectangle_Check = false;
+             Parrabullem_Check = false;
+             Rhomb_Check = false;
+             Cycle_Check = false;
+             Ellipse_Check = false;
+            if (shape == Shapes.Rekt)
+                Rectangle_Check = true;
+            if (shape == Shapes.Parrabellum)
+                Parrabullem_Check = true;
+            if (shape == Shapes.Rhomb)
+                Rhomb_Check = true;
+            if (shape == Shapes.Cycle)
+                Cycle_Check = true;
+            if (shape == Shapes.Ellipse)
+                Ellipse_Check = true;
+        }
         //Определение отправителя объекта №1
         private void DragDrop_MD(object sender, MouseButtonEventArgs e)
         {
             if (Rekt == sender)
-                Rectangle_Check = true;
+                turnOffCheckBoxes(Shapes.Rekt);
             if (Rhomb == sender)
-                Rhomb_Check = true;
+                turnOffCheckBoxes(Shapes.Rhomb);
             if (Parrabellum == sender)
-                Parrabullem_Check = true;
+                turnOffCheckBoxes(Shapes.Parrabellum);
             if (Cycle == sender)
-                Cycle_Check = true;
+                turnOffCheckBoxes(Shapes.Cycle);
             if (Ellipse == sender)
-                Ellipse_Check = true;
+                turnOffCheckBoxes(Shapes.Ellipse);
             //Запоминаем нажатую точку мыши в фигуре
             var smt = (UIElement)sender;
             lastPoint = e.GetPosition(smt);
