@@ -54,7 +54,8 @@ namespace Interface_1._0
         private void Save(object sender, RoutedEventArgs e)
         {
             (Owner as MainWindow).DownSave(sender, null);
-            DialogResult = true;
+            if ((Owner as MainWindow).path != "")
+                DialogResult = true;
 
 
         }

@@ -24,7 +24,8 @@ namespace Interface_1._0
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        //Данные для корректного сохранения
+        string title = "";
         #region shapes points
 
         Point startRectangleNW = new Point();
@@ -53,6 +54,7 @@ namespace Interface_1._0
         public MainWindow()
         {
             InitializeComponent();
+            title = this.Title.ToString();
             #region initialized shapes start points
 
             #region rectangle points
@@ -131,6 +133,7 @@ namespace Interface_1._0
         private Diagramm diagramm = new Diagramm();
         private Diagramm tempDiagramm = new Diagramm();
         private int shapesCounter = 0;
+        public string path = "";
         //метод для извелчения индекса из имени объекта
         private int GetIndexOfShape(Shapes shape, string name)
         {
@@ -2382,9 +2385,11 @@ namespace Interface_1._0
                 string test = writer.ToString();
                 //Передаем в поток данные с нашего текстбокса
                 writer.WriteLine(json);
-                //Закрываем поток
+                //Проверяем на изменения
+                path =  _safeDialog.FileName;
                 writer.Close();
             }
+            
         }
         //Окно для напоминания про сохранение
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -2397,8 +2402,7 @@ namespace Interface_1._0
                 {
                     e.Cancel = true; // Отмена закрытия окна 
                 }
-            }
-            
+            }   
         }
     }
 }
