@@ -10,7 +10,9 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 namespace Interface_1._0
 {
-    //Перечисление типов фигур
+    /// <summary>
+    /// Перечисление доступных типов фигур
+    /// </summary>
     [DataContract]
     public enum Shapes
     {
@@ -20,12 +22,84 @@ namespace Interface_1._0
         Rhomb,
         Cycle
     }
+    /// <summary>
+    /// Класс-контейнер, необходимый для операц сериализации (сохранение, загрузка, кодировани данных)
+    /// </summary>
     public class Diagramm
     {
-        
+        public Diagramm()
+        {
+            _id = randomID.Next(-100000, 100000) * randomID.NextDouble();
+        }
+
+        //Рандомайзер для создания id диаграмм
+        public static Random randomID = new Random();
+        private double _id = 0;
+        //Счетчик фигур. По большеому счету, бесполезен, но в теории может пригодиться при добавлении стрел
         public int ShapesCounter { get; set; }
+        //ID диаграммы
+        public double ID { get { return _id; } set { _id = value; } }
+        
+
+        /// <summary>
+        /// Список со всеми фигурами
+        /// </summary>
         public List<Block> blocks { get; set; } = new List<Block>();
+        //Вспоминаем, что класс - это ссылочный тип и пишем метод для передачи значения экземпляра
+        /// <summary>
+        /// Возвращает Diagramm-объект, хранящий значение данного объекта
+        /// </summary>
+        /// <returns></returns>
+        public Diagramm Clone()
+        {
+            List<Block> blocksClone = new List<Block> { };
+            foreach (Block block in blocks)
+            {
+                blocksClone.Add(block.Clone());
+            }
+            Diagramm diagrammClone = new Diagramm()
+            {
+                blocks = blocksClone,
+                ShapesCounter = this.ShapesCounter
+            };
+            return diagrammClone;
+        }
+        public Diagramm Clone(double id)
+        {
+            List<Block> blocksClone = new List<Block> { };
+            foreach (Block block in blocks)
+            {
+                blocksClone.Add(block.Clone());
+            }
+            Diagramm diagrammClone = new Diagramm()
+            {
+                blocks = blocksClone,
+                ShapesCounter = this.ShapesCounter,
+                ID = id
+            };
+            return diagrammClone;
+        }
+        /// <summary>
+        /// Статический метод для обновления ID
+        /// </summary>
+        /// <param name="diagramm"></param>
+        public static void NewID( in Diagramm diagramm)
+        {
+            diagramm.ID = randomID.Next(-100000, 100000) * randomID.NextDouble();
+        }
+
+        /// <summary>
+        /// Возвращает id диаграммы
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "Diagramm id " + ID;
+        }
     }
+    /// <summary>
+    /// Класс-контейнер, содержащий в себе данные для воссоздания фигуры
+    /// </summary>
     public class Block
     {
         //Координаты фигуры
@@ -124,10 +198,40 @@ namespace Interface_1._0
         }
         */
 
+        /// <summary>
+        /// Возвращает Block-объект, хранящий значение данного объекта
+        /// </summary>
+        /// <returns></returns>
+        public Block Clone()
+        {
+            Block blockClone = new Block()
+            {
+                LeftTop = this.LeftTop,
+                NW = this.NW,
+                NE = this.NE,
+                SW = this.SW,
+                SE = this.SE,
+                AddPoint1 = this.AddPoint1,
+                AddPoint2 = this.AddPoint2,
+                Shape = this.Shape,
+                IndexNumber = this.IndexNumber,
+                Width = this.Width,
+                Height = this.Height,
+                TextIntoTextBox = this.TextIntoTextBox,
+            };
+        
+            return blockClone;
+        }
+
+        /// <summary>
+        /// Вернет имя данной фигуры (в имени хранится индекс и тип фигуры)
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
-            return Shape.ToString();
+            return Shape.ToString() + "_" + IndexNumber;
         }
+
     }
 
     class Arrows

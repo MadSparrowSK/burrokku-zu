@@ -109,17 +109,21 @@
                        Grid.Row="0" HorizontalAlignment="Left" Width="454">
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="File" Foreground="Gray" Padding="10,5,10,0" 
+                    <Label Content="Load" Foreground="Gray" Padding="10,5,10,0" 
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
                            MouseDown="DownLoad"/>
-
-                    <Label Content="Settings" Foreground="Gray" Padding="10,5,10,0"
-                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
-                           MouseDown="Change_Window"/>
-
-                    <Label Content="Something more ..." MouseEnter="Header_Mouse_Enter"
+                    <Label Content="Save" MouseEnter="Header_Mouse_Enter"
                            MouseLeave="Header_Mouse_Leave"
                            MouseDown="DownSave"
+                           Foreground="Gray" Padding="10,5,10,0"/>
+                    <Label Content="prev" Foreground="Gray" Padding="10,5,10,0"
+                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
+                           MouseDown="prev"/>
+
+                    
+                    <Label Content="next" MouseEnter="Header_Mouse_Enter"
+                           MouseLeave="Header_Mouse_Leave"
+                           MouseDown="next"
                            Foreground="Gray" Padding="10,5,10,0"/>
 
                 </StackPanel>
