@@ -166,6 +166,49 @@ namespace Interface_1._0
 
         bool is_anchor_create = false;
 
+        private void TextMethodSee(UIElement polygon,TextBox txt, Point pointW, Point pointE)
+        {
+            Canvas.SetZIndex(txt, 1);
+            txt.CaretBrush = Brushes.Red;
+            txt.BorderBrush = Brushes.Gray;
+
+            double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(pointW.X, 2)) - Math.Sqrt(Math.Pow(pointE.X, 2))) / 2;
+
+            txt.KeyDown += EnterDown;
+
+            void EnterDown(object sender, KeyEventArgs e)
+            {
+                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
+
+                if (Keyboard.IsKeyDown(Key.Enter))
+                {
+                    Canvas.SetZIndex(txt, -1);
+                    txt.CaretBrush = Brushes.Transparent;
+                    txt.BorderBrush = Brushes.Transparent;
+                }
+            }
+        }
+        private void TextMethodSee(Rectangle polygon, TextBox txt)
+        {
+            Canvas.SetZIndex(txt, 1);
+            txt.CaretBrush = Brushes.Red;
+            txt.BorderBrush = Brushes.Gray;
+
+            txt.KeyDown += EnterDown;
+
+            void EnterDown(object sender, KeyEventArgs e)
+            {
+                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.ActualWidth/2 - txt.ActualWidth / 2.5 + 7);
+
+                if (Keyboard.IsKeyDown(Key.Enter))
+                {
+                    Canvas.SetZIndex(txt, -1);
+                    txt.CaretBrush = Brushes.Transparent;
+                    txt.BorderBrush = Brushes.Transparent;
+                }
+            }
+        }
+
         private void RectangleAdd(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
         {
             polygon.MouseDown += IntoCanvasDownPolylineRectangle;
@@ -188,6 +231,9 @@ namespace Interface_1._0
 
                 double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) - Math.Sqrt(Math.Pow(rectnagleNE.X, 2))) / 2;
                 double anchor_top_indent =  Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) - Math.Sqrt(Math.Pow(rectangleSW.Y, 2))) / 2;
+
+                if(e.ClickCount == 2)
+                    TextMethodSee(polygon ,txt, rectangleNW, rectnagleNE);
 
                 #region anchor
                 if (!is_anchor_create)
@@ -271,7 +317,7 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) + Math.Sqrt(Math.Pow(rectnagleNE.X, 2)));
@@ -295,7 +341,7 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) + Math.Sqrt(Math.Pow(rectnagleNE.X, 2)));
@@ -341,7 +387,7 @@ namespace Interface_1._0
 
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) + Math.Sqrt(Math.Pow(rectangleSW.Y, 2)));
@@ -365,7 +411,7 @@ namespace Interface_1._0
 
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) + Math.Sqrt(Math.Pow(rectangleSW.Y, 2)));
@@ -418,7 +464,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) + Math.Sqrt(Math.Pow(rectangleSW.Y, 2)));
@@ -447,7 +493,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 2);
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) + Math.Sqrt(Math.Pow(rectangleSW.Y, 2)));
@@ -523,7 +569,7 @@ namespace Interface_1._0
                     Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + anchor_left_indent - 10);
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + anchor_left_indent - txt.ActualWidth/2.5 + 7);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) + anchor_top_indent - 5);
                 }
             }
@@ -551,6 +597,9 @@ namespace Interface_1._0
 
                 double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) - Math.Sqrt(Math.Pow(parabellumNE.X, 2))) / 2;
                 double anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) - Math.Sqrt(Math.Pow(parabellumSW.Y, 2))) / 2;
+
+                if (e.ClickCount == 2)
+                    TextMethodSee(polygon, txt, parabellumNW, parabellumNE);
 
                 #region anchor
                 if (!is_anchor_create)
@@ -633,7 +682,7 @@ namespace Interface_1._0
 
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 13);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) + Math.Sqrt(Math.Pow(parabellumSW.Y, 2)));
@@ -657,7 +706,7 @@ namespace Interface_1._0
 
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 13);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) + Math.Sqrt(Math.Pow(parabellumSW.Y, 2)));
@@ -703,7 +752,7 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 13);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) + Math.Sqrt(Math.Pow(parabellumNE.X, 2)));
@@ -727,7 +776,7 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 13);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) + Math.Sqrt(Math.Pow(parabellumNE.X, 2)));
@@ -778,7 +827,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 13);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) + Math.Sqrt(Math.Pow(parabellumNE.X, 2)));
@@ -807,7 +856,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 13);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
 
                                 point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) + Math.Sqrt(Math.Pow(parabellumNE.X, 2)));
@@ -883,8 +932,8 @@ namespace Interface_1._0
                     Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                    Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 13);
-                    Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 6);
+                    Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
+                    Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
                 }
             }
         }
@@ -900,6 +949,9 @@ namespace Interface_1._0
 
                 double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) + Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
                 double anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;
+
+                if (e.ClickCount == 2)
+                    TextMethodSee(polygon, txt, rhombW, rhombE);
 
                 #region anchor
                 if (!is_anchor_create)
@@ -979,8 +1031,8 @@ namespace Interface_1._0
 
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
 
                                 current_anchor_postion.X = Canvas.GetLeft(polygon);
                                 current_anchor_postion.Y = Canvas.GetTop(polygon) + anchor_top_indent;
@@ -1003,8 +1055,8 @@ namespace Interface_1._0
 
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 14);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 14);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
 
                                 current_anchor_postion.X = Canvas.GetLeft(polygon);
                                 current_anchor_postion.Y = Canvas.GetTop(polygon) + anchor_top_indent;
@@ -1051,8 +1103,8 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 14);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 14);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
 
                                 current_anchor_postion.X = Canvas.GetLeft(polygon);
                                 current_anchor_postion.Y = Canvas.GetTop(polygon);
@@ -1077,8 +1129,8 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 14);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 14);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
 
                                 current_anchor_postion.X = Canvas.GetLeft(polygon);
                                 current_anchor_postion.Y = Canvas.GetTop(polygon);
@@ -1129,8 +1181,8 @@ namespace Interface_1._0
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 14);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 14);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
 
                                 current_anchor_postion.X = Canvas.GetLeft(polygon);
                                 current_anchor_postion.Y = Canvas.GetTop(polygon);
@@ -1159,8 +1211,8 @@ namespace Interface_1._0
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 14);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 14);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
+                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
 
                                 current_anchor_postion.X = Canvas.GetLeft(polygon);
                                 current_anchor_postion.Y = Canvas.GetTop(polygon);
@@ -1252,8 +1304,8 @@ namespace Interface_1._0
                     Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + anchor_left_indent - 14);
-                    Canvas.SetTop(txt, Canvas.GetTop(smt) + anchor_top_indent - 14);
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
+                    Canvas.SetTop(txt, Canvas.GetTop(smt));
                 }
             }
         }
@@ -1269,6 +1321,9 @@ namespace Interface_1._0
 
                 double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) - Math.Sqrt(Math.Pow(cycleNE.X, 2))) / 2;
                 double anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) - Math.Sqrt(Math.Pow(cycleSW.Y, 2))) / 2;
+
+                if (e.ClickCount == 2)
+                    TextMethodSee(polygon, txt, cycleW, cycleE);
 
                 #region anchor
                 if (!is_anchor_create)
@@ -1358,7 +1413,7 @@ namespace Interface_1._0
 
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
                             }
                             else if (point_summ_second_Y > 40)
@@ -1388,7 +1443,7 @@ namespace Interface_1._0
 
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
                             }
                         }
@@ -1440,7 +1495,7 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 2);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
                             }
                             else if(point_summ_second_X > 80)
@@ -1470,7 +1525,7 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 2);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
                             }
                         }
@@ -1530,7 +1585,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 2);
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
                             }
                             else if (point_summ_second_X > 60 && point_summ_second_Y > 40)
@@ -1567,7 +1622,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 2);
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - 10);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
                             }
                         }
@@ -1651,7 +1706,7 @@ namespace Interface_1._0
                     Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + anchor_left_indent - 10);
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) + anchor_top_indent - 5);
                 }
             }
@@ -1665,6 +1720,9 @@ namespace Interface_1._0
             {
                 var smt = (Rectangle)sender;
                 lastPoint = e.GetPosition(smt);
+
+                if (e.ClickCount == 2)
+                    TextMethodSee(polygon, txt);
 
                 #region anchor
                 if (!is_anchor_create)
@@ -1732,7 +1790,7 @@ namespace Interface_1._0
 
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - 15);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
                             }
                             else if (polygon.Height > 40)
@@ -1744,7 +1802,7 @@ namespace Interface_1._0
 
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - 15);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
 
                             }
@@ -1774,7 +1832,7 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - 15);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
                             }
                             else if (polygon.Width > 75)
@@ -1786,7 +1844,7 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - 15);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
                             }
                         }
@@ -1817,7 +1875,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - 15);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
                             }
                             else if (polygon.Width > 75 && polygon.Height > 40)
@@ -1831,7 +1889,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - 15);
+                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
                                 Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
 
                             }
@@ -1914,7 +1972,7 @@ namespace Interface_1._0
                     Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + polygon.Width / 2 - 15);
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + polygon.Width / 2 - txt.ActualWidth/2.5);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) + polygon.Height / 2 - 10);
                 }
             }
@@ -2037,6 +2095,7 @@ namespace Interface_1._0
                 text_into_shapes.BorderBrush = Brushes.Transparent;
                 text_into_shapes.Foreground = Brushes.White;
                 text_into_shapes.Background = Brushes.Transparent;
+                Canvas.SetZIndex(text_into_shapes, -1);
 
                 polyline.Stroke = Brushes.White;
                 polyline.Fill = Brushes.Transparent;
@@ -2072,6 +2131,7 @@ namespace Interface_1._0
                 text_into_shapes.BorderBrush = Brushes.Transparent;
                 text_into_shapes.Foreground = Brushes.White;
                 text_into_shapes.Background = Brushes.Transparent;
+                Canvas.SetZIndex(text_into_shapes, -1);
 
                 polyline.Stroke = Brushes.White;
                 polyline.Fill   = Brushes.Transparent;
@@ -2087,8 +2147,8 @@ namespace Interface_1._0
                 Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
                 Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + anchor_left_indent - 13);
-                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + anchor_top_indent - 2);
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + anchor_left_indent - text_into_shapes.ActualWidth/2.5 - 10);
+                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + anchor_top_indent - 5);
 
                 ParrabellumAdd(polyline, text_into_shapes, parabellumNW, parabellumSW, parabellumSE, parabellumNE);
             }
@@ -2109,6 +2169,7 @@ namespace Interface_1._0
                 text_into_shapes.BorderBrush = Brushes.Transparent;
                 text_into_shapes.Foreground = Brushes.White;
                 text_into_shapes.Background = Brushes.Transparent;
+                Canvas.SetZIndex(text_into_shapes, -1);
 
                 polyline.Stroke = Brushes.White;
                 polyline.Fill = Brushes.Transparent;
@@ -2124,8 +2185,8 @@ namespace Interface_1._0
                 Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
                 Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + anchor_left_indent - 14);
-                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + anchor_top_indent - 14);
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + anchor_left_indent - text_into_shapes.ActualWidth/2.5 - 14);
+                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline));
 
                 RhombAdd(polyline, text_into_shapes, rhombN, rhombW, rhombS, rhombE);
             }
@@ -2146,6 +2207,7 @@ namespace Interface_1._0
                 text_into_shapes.BorderBrush = Brushes.Transparent;
                 text_into_shapes.Foreground = Brushes.White;
                 text_into_shapes.Background = Brushes.Transparent;
+                Canvas.SetZIndex(text_into_shapes, -1);
 
                 polyline.Stroke = Brushes.White;
                 polyline.Fill = Brushes.Transparent;
@@ -2161,7 +2223,7 @@ namespace Interface_1._0
                 Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
                 Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + anchor_left_indent - 10);
+                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + anchor_left_indent - text_into_shapes.ActualWidth/2.5 - 10);
                 Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + anchor_top_indent - 5);
 
                 CycleAdd(polyline, text_into_shapes, cycleNW, cycleW, cycleSW, cycleSE, cycleE, cycleNE);
@@ -2187,6 +2249,7 @@ namespace Interface_1._0
                 text_into_shapes.BorderBrush = Brushes.Transparent;
                 text_into_shapes.Foreground = Brushes.White;
                 text_into_shapes.Background = Brushes.Transparent;
+                Canvas.SetZIndex(text_into_shapes, -1);
 
                 rectangle.MouseUp += IntoCanvasUp;
 
