@@ -209,7 +209,7 @@ namespace Interface_1._0
             }
         }
 
-        private void RectangleAdd(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
+        private void RectangleAdd(Polygon polygon, TextBox txt,Ellipse ellipse, Line line,Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
         {
             polygon.MouseDown += IntoCanvasDownPolylineRectangle;
 
@@ -226,6 +226,8 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(anchor_left);
                     CanvasPos.Children.Remove(anchor_top);
+                    CanvasPos.Children.Remove(ellipse);
+                    CanvasPos.Children.Remove(line);
                 }
                 #endregion
 
@@ -541,10 +543,10 @@ namespace Interface_1._0
                 }
                 #endregion
 
-                RectangleIntoCanvasMouseMove(polygon, txt, rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
+                RectangleIntoCanvasMouseMove(polygon, txt,ellipse,line ,rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
             }
         }
-        private void RectangleIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
+        private void RectangleIntoCanvasMouseMove(Polygon polygon, TextBox txt, Ellipse ellipse, Line line,Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
         {
             polygon.MouseMove += IntoCanvasMove;
 
@@ -571,6 +573,16 @@ namespace Interface_1._0
 
                     Canvas.SetLeft(txt, Canvas.GetLeft(smt) + anchor_left_indent - txt.ActualWidth/2.5 + 7);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) + anchor_top_indent - 5);
+
+                    Canvas.SetLeft(ellipse, Canvas.GetLeft(smt) - anchor_left_indent);
+                    Canvas.SetTop(ellipse, Canvas.GetTop(smt) + anchor_top_indent);
+
+
+                    if(line.X1 != 0)
+                    {
+                        line.X1 = Canvas.GetLeft(ellipse);
+                        line.Y1 = Canvas.GetTop(ellipse);
+                    }
                 }
             }
         }
@@ -1985,6 +1997,36 @@ namespace Interface_1._0
         }
         #endregion
 
+        void DrawLine(Ellipse ellipse, Line line)
+        {
+            ellipse.MouseDown += EllipseDown;
+
+            line.MouseMove += LineMouseMove;
+            line.MouseUp   += LineMouseUp;
+
+            void EllipseDown(object sender, MouseButtonEventArgs e)
+            {
+                line.X1 = Canvas.GetLeft(ellipse);   
+                line.Y1 = Canvas.GetTop(ellipse);
+                line.CaptureMouse();
+            }
+            void LineMouseMove(object sender, MouseEventArgs e)
+            {
+                if(e.LeftButton == MouseButtonState.Pressed)
+                {
+                    line.CaptureMouse();
+                    line.X2 = e.GetPosition(CanvasPos).X;
+                    line.Y2 = e.GetPosition(CanvasPos).Y;
+                }
+            }
+            void LineMouseUp(object sender, MouseButtonEventArgs e)
+            {
+                line.ReleaseMouseCapture();
+                line.X2 = e.GetPosition(CanvasPos).X;
+                line.Y2 = e.GetPosition(CanvasPos).Y;
+            }
+        }
+
         private void DnD_Drop(object sender, DragEventArgs e)
         {
             #region points
@@ -2084,6 +2126,8 @@ namespace Interface_1._0
             {
                 Polygon polyline = new Polygon();
                 TextBox text_into_shapes = new TextBox();
+                Ellipse line_button = new Ellipse();
+                Line line = new Line();
 
                 Rectangle_Check = false;
                 polyline.Points = Rekt.Points;
@@ -2102,9 +2146,17 @@ namespace Interface_1._0
 
                 polyline.MouseUp += IntoCanvasUp;
 
+                line_button.Width = 5;
+                line_button.Height = 5;
+                line_button.Fill = Brushes.Green;
+
+                line.Stroke = Brushes.Yellow;
+
                 double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) - Math.Sqrt(Math.Pow(rectnagleNE.X, 2))) / 2;
                 double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) - Math.Sqrt(Math.Pow(rectangleSW.Y, 2))) / 2;
 
+                CanvasPos.Children.Add(line);
+                CanvasPos.Children.Add(line_button);
                 CanvasPos.Children.Add(polyline);
                 CanvasPos.Children.Add(text_into_shapes);
 
@@ -2114,7 +2166,11 @@ namespace Interface_1._0
                 Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + anchor_left_indent - 10);
                 Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + anchor_top_indent - 5);
 
-                RectangleAdd(polyline, text_into_shapes, rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
+                Canvas.SetLeft(line_button, Canvas.GetLeft(polyline) - anchor_left_indent);
+                Canvas.SetTop(line_button, Canvas.GetTop(polyline) + anchor_top_indent);
+
+                RectangleAdd(polyline, text_into_shapes, line_button,line,rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
+                DrawLine(line_button, line);
             }
             if (Parrabullem_Check)
             {
