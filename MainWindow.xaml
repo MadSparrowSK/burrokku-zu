@@ -14,10 +14,13 @@
         MinHeight="540"
         MinWidth="900"
         Icon="Icon/Icon.jpg"
-        Closing ="Window_Closing">
-    <Border Name="Border">
+        Closing ="Window_Closing"
+        PreviewKeyDown="KeyBinding"
+        
+        >
+    <Border Name="Border" >
 
-        <Grid ShowGridLines="False">
+        <Grid ShowGridLines="False" Name="test">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -33,7 +36,8 @@
             <DockPanel Grid.Column="2"
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
-                       MouseLeftButtonDown="Mouse_Drag_Window" Name="RHDP">
+                       MouseLeftButtonDown="Mouse_Drag_Window" Name="RHDP"
+                       KeyDown="KeyBinding">
                 <DockPanel.Background>
                     <SolidColorBrush Color="#2d2d30">
                     </SolidColorBrush>
@@ -41,7 +45,8 @@
 
                 <StackPanel
                         Orientation="Horizontal"
-                        HorizontalAlignment="Right">
+                        HorizontalAlignment="Right"
+                        KeyDown="KeyBinding">
                     <Label Width="44"
                            MouseEnter="Mouse_Enter"
                            MouseLeave="Mouse_Leave"
@@ -56,8 +61,9 @@
                            MouseEnter="Mouse_Enter"
                            MouseLeave="Mouse_Leave"
                            Padding="17,12,5,5"
-                           MouseLeftButtonDown="Resize_Wondow">
-                        <Canvas>
+                           MouseLeftButtonDown="Resize_Wondow"
+                           >
+                        <Canvas >
                             <Rectangle Stroke="White"
                                        Height="10"
                                        Width="10"
@@ -135,13 +141,14 @@
             <!--#region  main field-->
                 <Canvas Grid.Row="1"
                             Grid.Column="1"
-                           
                             Background="#2b2b2b"
                             AllowDrop="True"
                             Drop="DnD_Drop"
                             Name="CanvasPos"
                             Width="2099"
-                            Height="2099">
+                            Height="2099"
+                            Focusable="True"
+                        >
                     <Polyline Stroke="Transparent" Points="8,0 0,0 0,8 8,0" Name="Anchor"/>
                 </Canvas>
                

@@ -130,6 +130,7 @@ namespace Interface_1._0
         //Булевые переменные, необходимые для работы PrevNext
         private bool isPrevNext = false;
         private bool PrevNextTextChanged = false;
+        private bool isEmpty = false;
         //Данные, необходимые для сериализации
         private OpenFileDialog _openDialog = new OpenFileDialog();
         private SaveFileDialog _safeDialog = new SaveFileDialog();
@@ -471,7 +472,7 @@ namespace Interface_1._0
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 int index = GetIndexOfShape(Shapes.Rekt, polygon.Name);
-                Keyboard.ClearFocus();
+                CanvasPos.Focus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
                 if (PrevNextTextChanged)
                 {
@@ -701,9 +702,6 @@ namespace Interface_1._0
                 RectangleIntoCanvasMouseMove(polygon, txt, rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
             }
         }
-
-        
-
         private void RectangleIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
         {
             polygon.MouseMove += IntoCanvasMove;
@@ -782,7 +780,7 @@ namespace Interface_1._0
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 int index = GetIndexOfShape(Shapes.Parrabellum, polygon.Name);
-                Keyboard.ClearFocus();
+                CanvasPos.Focus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
                 if (PrevNextTextChanged)
                 {
@@ -1005,7 +1003,7 @@ namespace Interface_1._0
                 }
                 #endregion
 
-                ParrabellumIntoCanvasMouseMove(polygon, txt, parabellumNW, parabellumSE, parabellumSE, parabellumNE);
+                ParrabellumIntoCanvasMouseMove(polygon, txt, parabellumNW, parabellumSW, parabellumSE, parabellumNE);
             }
         }
         private void ParrabellumIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point parabellumNW, Point parabellumSW, Point parabellumSE, Point parabellumNE)
@@ -1038,6 +1036,7 @@ namespace Interface_1._0
                     //Повторно считываем данных о фигуре при перемещении
                     Point LeftTop = new Point()
                     {
+
                         X = 0,
                         Y = 0
                     };
@@ -1083,7 +1082,7 @@ namespace Interface_1._0
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 int index = GetIndexOfShape(Shapes.Rhomb, polygon.Name);
-                Keyboard.ClearFocus();
+                CanvasPos.Focus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
                 if (PrevNextTextChanged)
                 {
@@ -1348,7 +1347,7 @@ namespace Interface_1._0
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 int index = GetIndexOfShape(Shapes.Cycle, polygon.Name);
-                Keyboard.ClearFocus();
+                CanvasPos.Focus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
                 if (PrevNextTextChanged)
                 {
@@ -1647,8 +1646,8 @@ namespace Interface_1._0
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 int index = GetIndexOfShape(Shapes.Ellipse, polygon.Name);
-                Keyboard.ClearFocus();
-                diagramm.blocks[index].TextIntoTextBox = txt.Text;
+                CanvasPos.Focus();
+                diagramm.blocks[index].TextIntoTextBox = txt.Text ;
                 if (PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
@@ -1870,7 +1869,7 @@ namespace Interface_1._0
         //Метод, происходящий при сбросе фигуры в Canvas №2
         private void DnD_Drop(object sender, DragEventArgs e)
         {
-
+            
             if (shapesCounter < 0) shapesCounter = 0;
             isChangde = true;
 
@@ -2208,11 +2207,12 @@ namespace Interface_1._0
         {
             isLoaded = true;
             isChangde = false;
-            inTrash(sender, e);
+            isEmpty = false;
             //Фильтр расширений при загрузке
             _openDialog.Filter = "JSON files (*.json)|*.json";
             if (_openDialog.ShowDialog() == true)
             {
+                
                 //Запускаем поток и передаем в него путь
                 StreamReader reader = new StreamReader(_openDialog.FileName);
                 //передаем полученные данные в строку
@@ -2224,14 +2224,18 @@ namespace Interface_1._0
                 }
                 catch (Exception)
                 {
-
                     tempDiagramm = new Diagramm();
+                    isEmpty = true;
                 }
-                //Обнуляем основную диаграмму и счетчик фигур    
+                //Обнуляем основную диаграмму и счетчик фигур, запоминаем путь и закрываем поток   
                 diagramm = new Diagramm();
                 shapesCounter = 0;
+                path = _openDialog.FileName;
                 reader.Close();
             }
+
+            if (path != "")
+                inTrash(sender, e);
             //Прорисовываем десериализованные фигуры
             foreach (Block block in tempDiagramm.blocks)
             {
@@ -2467,8 +2471,18 @@ namespace Interface_1._0
                 }
                 shapesCounter++;
             }
+            path = _openDialog.FileName;
+            
             //Булевая переменная, необходимая для сохранения индексации
             isLoaded = false;
+            path = "";
+            //Операции с PrevNext
+            PrevNext.Clear();
+            if (!isEmpty)
+                PrevNext.AddDiagramm(ref diagramm);
+            isEmpty = false;
+            
+
         }
         /// <summary>
         /// Отрисовка диаграммы при откате
@@ -2798,5 +2812,24 @@ namespace Interface_1._0
                 CutDownLoad(diagramm);
 
         }
+        /// <summary>
+        /// Событие, в котором прописаны все комбинации клавиш
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void KeyBinding(object sender, KeyEventArgs e)
+        {
+
+            if ((e.Key == Key.S) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))         
+                DownSave(null, null);
+    
+            if ((e.Key == Key.L) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
+                DownLoad(null, null);
+            if ((e.Key == Key.Z) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
+                prev(null, null);
+            if (((e.Key == Key.Y) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control)))
+                next(null, null);
+        }
+
     }
 }
