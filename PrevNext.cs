@@ -24,13 +24,37 @@ namespace Interface_1._0
         /// Метод, добавляющий принимаемый параметр в общий список диаграмм
         /// </summary>
         /// <param name="diagramm"></param>
-        public static void AddDiaggram(Diagramm diagramm)
+        public static void AddDiagramm(ref Diagramm diagramm)
         {
-            Diagramm.NewID(diagramm);
-            Diagramm temp = new Diagramm();
-            temp = diagramm.Clone(diagramm.ID);
-            Diagramms.Add(temp);
+            //Модификатор ref на тот случай, если в будущем предется при добавлении диаграммы в список, менять что-то в существующей
+            //Изменяем список
+            //Находим индекс старой диаграммы
             
+            int indexOfDiagramm = -1;
+            int DiagrammCount = Diagramms.Count;
+            for (int i = 0; i < Diagramms.Count; i++)
+            {
+                if (Diagramms[i].ID == diagramm.ID)
+                {
+                    indexOfDiagramm = i;
+                }
+            }
+            
+
+            if ((indexOfDiagramm < DiagrammCount - 1)&&(indexOfDiagramm > -1))
+            {
+
+                for (int i = Diagramms.Count - 1; i > indexOfDiagramm; i--)
+                {
+                    Diagramms.RemoveAt(i);
+                }
+            }
+            //Добавляем новую диаграмму
+            Diagramm.NewID(diagramm);
+            Diagramm temp = diagramm.Clone(diagramm.ID);
+            Diagramms.Add(temp);
+
+
         }
         /// <summary>
         /// Метод, возвращающий диаграмму, предшествующую этой
@@ -39,20 +63,23 @@ namespace Interface_1._0
         public static void Prev(ref Diagramm diagramm, out bool flag)
         {
             flag = true;
-            int indexOfDiagramm = 0;
+            int indexOfDiagramm = -1;
+            bool end = true;
             for (int i = 0; i < Diagramms.Count; i++)
             {
-                if (Diagramms[i].ID == diagramm.ID)
+                if ((Diagramms[i].ID == diagramm.ID)&&(end))
                 {
                     indexOfDiagramm = i;
+                    end = false;
                 }
 
             }
             if (indexOfDiagramm - 1 > -1)
-                diagramm = Diagramms[indexOfDiagramm - 1];
+                diagramm = Diagramms[indexOfDiagramm - 1].Clone(Diagramms[indexOfDiagramm - 1].ID);
             else
                 flag = false;
             
+
         }
         /// <summary>
         /// Метод, возвращающий диаграмму, идущую после этой
@@ -61,7 +88,7 @@ namespace Interface_1._0
         public static void Next(ref Diagramm diagramm, out bool flag)
         {
             flag = true;
-            int indexOfDiagramm = 0;
+            int indexOfDiagramm = -1;
             for (int i = 0; i < Diagramms.Count; i++)
             {
                 if (Diagramms[i].ID == diagramm.ID)
@@ -70,9 +97,10 @@ namespace Interface_1._0
                 }
             }
             if (indexOfDiagramm + 1 < Diagramms.Count)
-                diagramm = Diagramms[indexOfDiagramm + 1];
+                diagramm = Diagramms[indexOfDiagramm + 1].Clone(Diagramms[indexOfDiagramm + 1].ID);
             else
                 flag = false;
+
         }
 
         /// <summary>
@@ -81,6 +109,7 @@ namespace Interface_1._0
         public static void Clear()
         {
             Diagramms = new List<Diagramm>{ new Diagramm()};
+
         }
 
        

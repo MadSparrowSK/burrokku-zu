@@ -127,7 +127,9 @@ namespace Interface_1._0
         //Булевые переменные, необходимые для всплывающего окна
         private bool isLoaded = false;
         private bool isChangde = false;
+        //Булевые переменные, необходимые для работы PrevNext
         private bool isPrevNext = false;
+        private bool PrevNextTextChanged = false;
         //Данные, необходимые для сериализации
         private OpenFileDialog _openDialog = new OpenFileDialog();
         private SaveFileDialog _safeDialog = new SaveFileDialog();
@@ -269,6 +271,11 @@ namespace Interface_1._0
                     counterForName++;
                 }
             }
+        }
+        //Изменение булевой переменной для PrevNext
+        private void Txt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            PrevNextTextChanged = true;
         }
         #endregion
 
@@ -435,6 +442,7 @@ namespace Interface_1._0
         //Добавление и обработка логики фигур
         private void RectangleAdd(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
         {
+            
             //Операция для поддержания нормальной инедксации
             //Считывание данных о фигуре
             Point LeftTop = new Point()
@@ -458,15 +466,22 @@ namespace Interface_1._0
             //Сохранение текста внутри фигуры
             
             txt.MouseLeave += Txt_MouseLeave;
+            txt.TextChanged += Txt_TextChanged;
+
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 int index = GetIndexOfShape(Shapes.Rekt, polygon.Name);
                 Keyboard.ClearFocus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
-                PrevNext.AddDiaggram(diagramm);
+                if (PrevNextTextChanged)
+                {
+                    PrevNext.AddDiagramm(ref diagramm);
+                    PrevNextTextChanged = false;
+                }
+                    
             }
             if (!isPrevNext)
-                PrevNext.AddDiaggram(diagramm);
+                PrevNext.AddDiagramm(ref diagramm);
             polygon.MouseDown += IntoCanvasDownPolylineRectangle;
 
 
@@ -518,7 +533,7 @@ namespace Interface_1._0
                         }
                     //Повторный нейминг всех фигур
                     ReName();
-                    PrevNext.AddDiaggram(diagramm);
+                    PrevNext.AddDiagramm(ref diagramm);
 
                 }
                 #endregion
@@ -669,7 +684,7 @@ namespace Interface_1._0
                         Cursor = Cursors.Arrow;
                         Canvas.SetLeft(anchor, Canvas.GetLeft(polygon));
                         Canvas.SetTop(anchor, Canvas.GetTop(polygon));
-                        PrevNext.AddDiaggram(diagramm);
+                        PrevNext.AddDiagramm(ref diagramm);
                     }
 
                     #endregion
@@ -686,6 +701,9 @@ namespace Interface_1._0
                 RectangleIntoCanvasMouseMove(polygon, txt, rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
             }
         }
+
+        
+
         private void RectangleIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
         {
             polygon.MouseMove += IntoCanvasMove;
@@ -755,18 +773,26 @@ namespace Interface_1._0
                     diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, shapesCounter - 1, txt.Text));
                 diagramm.ShapesCounter++;
             }
-            
+
             //Сохранение текста внутри фигуры
+            
+
             txt.MouseLeave += Txt_MouseLeave;
+            txt.TextChanged += Txt_TextChanged;
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 int index = GetIndexOfShape(Shapes.Parrabellum, polygon.Name);
                 Keyboard.ClearFocus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
+                if (PrevNextTextChanged)
+                {
+                    PrevNext.AddDiagramm(ref diagramm);
+                    PrevNextTextChanged = false;
+                }
             }
 
             if (!isPrevNext)
-                PrevNext.AddDiaggram(diagramm);
+                PrevNext.AddDiagramm(ref diagramm);
 
             polygon.MouseDown += IntoCanvasDownPolylineParrabellum;
 
@@ -819,7 +845,7 @@ namespace Interface_1._0
                     if (diagramm.ShapesCounter == 0) isChangde = false;
                     //Повторный нейминг всех фигур
                     ReName();
-                    PrevNext.AddDiaggram(diagramm);
+                    PrevNext.AddDiagramm(ref diagramm);
                 }
                 #endregion
 
@@ -964,7 +990,7 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(anchor, Canvas.GetLeft(polygon));
                         Canvas.SetTop(anchor, Canvas.GetTop(polygon));
-                        PrevNext.AddDiaggram(diagramm);
+                        PrevNext.AddDiagramm(ref diagramm);
                     }
 
                     #endregion
@@ -1053,14 +1079,20 @@ namespace Interface_1._0
             
             //Сохранение текста внутри фигуры
             txt.MouseLeave += Txt_MouseLeave;
+            txt.TextChanged += Txt_TextChanged;
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 int index = GetIndexOfShape(Shapes.Rhomb, polygon.Name);
                 Keyboard.ClearFocus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
+                if (PrevNextTextChanged)
+                {
+                    PrevNext.AddDiagramm(ref diagramm);
+                    PrevNextTextChanged = false;
+                }
             }
             if (!isPrevNext)
-                PrevNext.AddDiaggram(diagramm);
+                PrevNext.AddDiagramm(ref diagramm);
             polygon.MouseDown += IntoCanvasDownPolylineRhomb;
 
             void IntoCanvasDownPolylineRhomb(object sender, MouseButtonEventArgs e)
@@ -1180,7 +1212,7 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(anchor, Canvas.GetLeft(polygon));
                         Canvas.SetTop(anchor, Canvas.GetTop(polygon));
-                        PrevNext.AddDiaggram(diagramm);
+                        PrevNext.AddDiagramm(ref diagramm);
                     }
 
                     #endregion
@@ -1236,7 +1268,7 @@ namespace Interface_1._0
                     if (diagramm.ShapesCounter == 0) isChangde = false;
                     //Повторный нейминг всех фигур
                     ReName();
-                    PrevNext.AddDiaggram(diagramm);
+                    PrevNext.AddDiagramm(ref diagramm);
                 }
                 #endregion
 
@@ -1312,15 +1344,21 @@ namespace Interface_1._0
             
             //Сохранение текста внутри фигуры
             txt.MouseLeave += Txt_MouseLeave;
+            txt.TextChanged += Txt_TextChanged;
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 int index = GetIndexOfShape(Shapes.Cycle, polygon.Name);
                 Keyboard.ClearFocus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
+                if (PrevNextTextChanged)
+                {
+                    PrevNext.AddDiagramm(ref diagramm);
+                    PrevNextTextChanged = false;
+                }
             }
 
             if (!isPrevNext)
-                PrevNext.AddDiaggram(diagramm);
+                PrevNext.AddDiagramm(ref diagramm);
 
             polygon.MouseDown += IntoCanvasDownPolylineCycle;
 
@@ -1471,7 +1509,7 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(anchor, Canvas.GetLeft(smt));
                         Canvas.SetTop(anchor, Canvas.GetTop(smt));
-                        PrevNext.AddDiaggram(diagramm);
+                        PrevNext.AddDiagramm(ref diagramm);
                     }
 
                     #endregion
@@ -1526,7 +1564,7 @@ namespace Interface_1._0
                     if (diagramm.ShapesCounter == 0) isChangde = false;
                     //Повторный нейминг всех фигур
                     ReName();
-                    PrevNext.AddDiaggram(diagramm);
+                    PrevNext.AddDiagramm(ref diagramm);
                 }
                 #endregion
 
@@ -1605,14 +1643,20 @@ namespace Interface_1._0
             
             //Сохранение текста внутри фигуры
             txt.MouseLeave += Txt_MouseLeave;
+            txt.TextChanged += Txt_TextChanged;
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 int index = GetIndexOfShape(Shapes.Ellipse, polygon.Name);
                 Keyboard.ClearFocus();
                 diagramm.blocks[index].TextIntoTextBox = txt.Text;
+                if (PrevNextTextChanged)
+                {
+                    PrevNext.AddDiagramm(ref diagramm);
+                    PrevNextTextChanged = false;
+                }
             }
             if (!isPrevNext)
-                PrevNext.AddDiaggram(diagramm);
+                PrevNext.AddDiagramm(ref diagramm);
             polygon.MouseDown += IntoCanvasMouseDownRectangle;
 
             void IntoCanvasMouseDownRectangle(object sender, MouseButtonEventArgs e)
@@ -1712,7 +1756,7 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(anchor, Canvas.GetLeft(polygon));
                         Canvas.SetTop(anchor, Canvas.GetTop(polygon));
-                        PrevNext.AddDiaggram(diagramm);
+                        PrevNext.AddDiagramm(ref diagramm);
                     }
 
                     #endregion
@@ -1767,7 +1811,7 @@ namespace Interface_1._0
                     if (diagramm.ShapesCounter == 0) isChangde = false;
                     //Повторный нейминг всех фигур
                     ReName();
-                    PrevNext.AddDiaggram(diagramm);
+                    PrevNext.AddDiagramm(ref diagramm);
                 }
                 #endregion
 
@@ -1820,7 +1864,7 @@ namespace Interface_1._0
         {
             var smt = (UIElement)sender;
             smt.ReleaseMouseCapture();
-            PrevNext.AddDiaggram(diagramm);
+            PrevNext.AddDiagramm(ref diagramm);
         }
         #endregion
         //Метод, происходящий при сбросе фигуры в Canvas №2
@@ -2151,6 +2195,7 @@ namespace Interface_1._0
                 diagramm = new Diagramm();
             }
             shapesCounter = 0;
+
         }
         #endregion
         #region save and load files
@@ -2751,6 +2796,7 @@ namespace Interface_1._0
             PrevNext.Prev(ref diagramm, out isCanBeLoaded);
             if (isCanBeLoaded)
                 CutDownLoad(diagramm);
+
         }
     }
 }
