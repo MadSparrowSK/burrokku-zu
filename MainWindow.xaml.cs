@@ -522,6 +522,7 @@ namespace Interface_1._0
                     if (diagramm.blocks.Count > 1)
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
+                    {
                         try
                         {
                             diagramm.blocks.RemoveAt(0);
@@ -532,6 +533,7 @@ namespace Interface_1._0
                             diagramm = new Diagramm();
                             shapesCounter = 0;
                         }
+                    }
                     //Повторный нейминг всех фигур
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
@@ -829,6 +831,7 @@ namespace Interface_1._0
                     if (diagramm.blocks.Count > 1)
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
+                    {
                         try
                         {
                             diagramm.blocks.RemoveAt(0);
@@ -839,6 +842,7 @@ namespace Interface_1._0
                             diagramm = new Diagramm();
                             shapesCounter = 0;
                         }
+                    }
 
                     if (diagramm.ShapesCounter == 0) isChangde = false;
                     //Повторный нейминг всех фигур
@@ -1253,6 +1257,7 @@ namespace Interface_1._0
                     if (diagramm.blocks.Count > 1)
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
+                    {
                         try
                         {
                             diagramm.blocks.RemoveAt(0);
@@ -1263,6 +1268,7 @@ namespace Interface_1._0
                             diagramm = new Diagramm();
                             shapesCounter = 0;
                         }
+                    }
 
                     if (diagramm.ShapesCounter == 0) isChangde = false;
                     //Повторный нейминг всех фигур
@@ -1550,6 +1556,8 @@ namespace Interface_1._0
                     if (diagramm.blocks.Count > 1)
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
+                    {
+                        PrevNext.Clear();
                         try
                         {
                             diagramm.blocks.RemoveAt(0);
@@ -1560,6 +1568,10 @@ namespace Interface_1._0
                             diagramm = new Diagramm();
                             shapesCounter = 0;
                         }
+                    }
+
+                        
+                    
                     if (diagramm.ShapesCounter == 0) isChangde = false;
                     //Повторный нейминг всех фигур
                     ReName();
@@ -1797,6 +1809,7 @@ namespace Interface_1._0
                     if (diagramm.blocks.Count > 1)
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
+                    {
                         try
                         {
                             diagramm.blocks.RemoveAt(0);
@@ -1807,6 +1820,7 @@ namespace Interface_1._0
                             diagramm = new Diagramm();
                             shapesCounter = 0;
                         }
+                    }
                     if (diagramm.ShapesCounter == 0) isChangde = false;
                     //Повторный нейминг всех фигур
                     ReName();
@@ -2502,6 +2516,8 @@ namespace Interface_1._0
             //Прорисовываем десериализованные фигуры
             foreach (Block block in tempDiagramm.blocks)
             {
+                if (block.IndexNumber < 0)
+                    block.IndexNumber = 0;
                 if (block.Shape == Shapes.Rekt)
                 {
                     Point rectangleNW = block.NW;

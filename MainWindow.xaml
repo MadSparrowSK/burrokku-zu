@@ -20,7 +20,7 @@
         >
     <Border Name="Border" >
 
-        <Grid ShowGridLines="False" Name="test">
+        <Grid ShowGridLines="False">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition></RowDefinition>
