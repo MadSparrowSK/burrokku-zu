@@ -137,7 +137,8 @@ namespace Interface_1._0
         private Diagramm diagramm = new Diagramm();
         private Diagramm tempDiagramm = new Diagramm();
         private int shapesCounter = 0;
-        public string path = "";
+        public string tempPath = "";
+        private string pathForSaving = "";
         //Метод для реализации отката данных (ctrl+z, ctrl+shift+z)
         //метод для извелчения индекса из имени объекта
         private int GetIndexOfShape(Shapes shape, string name)
@@ -473,7 +474,8 @@ namespace Interface_1._0
             {
                 int index = GetIndexOfShape(Shapes.Rekt, polygon.Name);
                 CanvasPos.Focus();
-                diagramm.blocks[index].TextIntoTextBox = txt.Text;
+                if (diagramm.blocks.Count != 0)
+                    diagramm.blocks[index].TextIntoTextBox = txt.Text;
                 if (PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
@@ -783,7 +785,8 @@ namespace Interface_1._0
             {
                 int index = GetIndexOfShape(Shapes.Parrabellum, polygon.Name);
                 CanvasPos.Focus();
-                diagramm.blocks[index].TextIntoTextBox = txt.Text;
+                if (diagramm.blocks.Count !=0)
+                    diagramm.blocks[index].TextIntoTextBox = txt.Text;
                 if (PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
@@ -1087,7 +1090,8 @@ namespace Interface_1._0
             {
                 int index = GetIndexOfShape(Shapes.Rhomb, polygon.Name);
                 CanvasPos.Focus();
-                diagramm.blocks[index].TextIntoTextBox = txt.Text;
+                if (diagramm.blocks.Count != 0)
+                    diagramm.blocks[index].TextIntoTextBox = txt.Text;
                 if (PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
@@ -1354,7 +1358,8 @@ namespace Interface_1._0
             {
                 int index = GetIndexOfShape(Shapes.Cycle, polygon.Name);
                 CanvasPos.Focus();
-                diagramm.blocks[index].TextIntoTextBox = txt.Text;
+                if (diagramm.blocks.Count != 0)
+                    diagramm.blocks[index].TextIntoTextBox = txt.Text;
                 if (PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
@@ -1659,7 +1664,8 @@ namespace Interface_1._0
             {
                 int index = GetIndexOfShape(Shapes.Ellipse, polygon.Name);
                 CanvasPos.Focus();
-                diagramm.blocks[index].TextIntoTextBox = txt.Text ;
+                if (diagramm.blocks.Count != 0)
+                    diagramm.blocks[index].TextIntoTextBox = txt.Text ;
                 if (PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
@@ -2244,11 +2250,11 @@ namespace Interface_1._0
                 //Обнуляем основную диаграмму и счетчик фигур, запоминаем путь и закрываем поток   
                 diagramm = new Diagramm();
                 shapesCounter = 0;
-                path = _openDialog.FileName;
+                tempPath = _openDialog.FileName;
                 reader.Close();
             }
 
-            if (path != "")
+            if (tempPath != "")
                 inTrash(sender, e);
             //Прорисовываем десериализованные фигуры
             foreach (Block block in tempDiagramm.blocks)
@@ -2485,11 +2491,11 @@ namespace Interface_1._0
                 }
                 shapesCounter++;
             }
-            path = _openDialog.FileName;
+            tempPath = _openDialog.FileName;
             
             //Булевая переменная, необходимая для сохранения индексации
             isLoaded = false;
-            path = "";
+            tempPath = "";
             //Операции с PrevNext
             PrevNext.Clear();
             if (!isEmpty)
@@ -2773,17 +2779,44 @@ namespace Interface_1._0
                 StreamWriter writer = new StreamWriter(_safeDialog.FileName);
                 //Передаем в поток данные с нашего текстбокса
                 writer.WriteLine(json);
-                
                 writer.Close();
             }
-            //Проверяем на изменения
-            path = _safeDialog.FileName;
-            if (path == "")
+            //Запоминаем путь и проверяем на изменения
+            pathForSaving = _safeDialog.FileName;
+            tempPath = _safeDialog.FileName;
+            if (tempPath == "")
                 isChangde = true;
             if (this.Title.ToString() == title)
-                path = "";
-
-
+                tempPath = "";
+        }
+        /// <summary>
+        /// Перезаписываеие последнего сохраненного файла
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void CutDownSave(object sender, MouseButtonEventArgs e)
+        {
+            if (pathForSaving == "")
+            {
+                DownSave(null, null);
+            }
+            else
+            {
+                isChangde = false;
+                string json = JsonSerializer.Serialize<Diagramm>(diagramm);
+                //Запускаем поток и передаем в него путь
+                StreamWriter writer = new StreamWriter(pathForSaving);
+                //Передаем в поток данные с нашего текстбокса
+                writer.WriteLine(json);
+                writer.Close();
+                tempPath = _safeDialog.FileName;
+                if (tempPath == "")
+                    isChangde = true;
+                if (this.Title.ToString() == title)
+                    tempPath = "";
+            }
+            
+            
         }
         /// <summary>
         /// Вызов окна, которое напоминает о сохранении
@@ -2802,7 +2835,7 @@ namespace Interface_1._0
                 }
             }   
         }
-        #endregion
+        
         /// <summary>
         /// Перейти к следующей сохраненной итерации блок-схемы
         /// </summary>
@@ -2835,17 +2868,16 @@ namespace Interface_1._0
         /// <param name="e"></param>
         private void KeyBinding(object sender, KeyEventArgs e)
         {
-
-            if ((e.Key == Key.S) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))         
+            if (e.KeyboardDevice.IsKeyDown(Key.C)&&(e.KeyboardDevice.Modifiers == ModifierKeys.Alt))
+                inTrash(null, null);
+            if ((e.Key == Key.S) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
                 DownSave(null, null);
-    
             if ((e.Key == Key.L) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
                 DownLoad(null, null);
             if ((e.Key == Key.Z) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
                 prev(null, null);
-            if (((e.Key == Key.Y) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control)))
-                next(null, null);
+            
         }
-
+        #endregion
     }
 }

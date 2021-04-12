@@ -120,7 +120,7 @@
                            MouseDown="DownLoad"/>
                     <Label Content="Save" MouseEnter="Header_Mouse_Enter"
                            MouseLeave="Header_Mouse_Leave"
-                           MouseDown="DownSave"
+                           MouseDown="CutDownSave"
                            Foreground="Gray" Padding="10,5,10,0"/>
                     <Label Content="prev" Foreground="Gray" Padding="10,5,10,0"
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
