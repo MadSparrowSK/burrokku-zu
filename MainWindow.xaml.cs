@@ -124,22 +124,11 @@ namespace Interface_1._0
         }
 
         #region Data for serialization
-        //Булевые переменные, необходимые для всплывающего окна
-        private bool isLoaded = false;
-        private bool isChangde = false;
-        //Булевые переменные, необходимые для работы PrevNext
-        private bool isPrevNext = false;
-        private bool PrevNextTextChanged = false;
-        private bool isEmpty = false;
         //Данные, необходимые для сериализации
         private OpenFileDialog _openDialog = new OpenFileDialog();
         private SaveFileDialog _safeDialog = new SaveFileDialog();
         private Diagramm diagramm = new Diagramm();
         private Diagramm tempDiagramm = new Diagramm();
-        private int shapesCounter = 0;
-        public string tempPath = "";
-        private string pathForSaving = "";
-        //Метод для реализации отката данных (ctrl+z, ctrl+shift+z)
         //метод для извелчения индекса из имени объекта
         private int GetIndexOfShape(Shapes shape, string name)
         {
@@ -277,7 +266,7 @@ namespace Interface_1._0
         //Изменение булевой переменной для PrevNext
         private void Txt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            PrevNextTextChanged = true;
+            DiagrammAnalyzer.PrevNextTextChanged = true;
         }
         #endregion
 
@@ -439,7 +428,6 @@ namespace Interface_1._0
         Point lastPoint;
         Point lastPoint_anchor;
         Point current_anchor_postion;
-
         bool is_anchor_create = false;
         //Добавление и обработка логики фигур
         private void RectangleAdd(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
@@ -456,12 +444,12 @@ namespace Interface_1._0
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
             //Переписываем данные в диаграмме - происходит только если мы не передвигаемся по PrevNext
-            if (!isPrevNext)
+            if (!DiagrammAnalyzer.isPrevNext)
             {
-                if (isLoaded)
-                    diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, shapesCounter, txt.Text));
+                if (DiagrammAnalyzer.isLoaded)
+                    diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, DiagrammAnalyzer.shapesCounter, txt.Text));
                 else
-                    diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, shapesCounter - 1, txt.Text));
+                    diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rectangleNW, rectnagleNE, rectangleSW, rectangleSE, DiagrammAnalyzer.shapesCounter - 1, txt.Text));
                 diagramm.ShapesCounter++;
             }
             
@@ -476,14 +464,14 @@ namespace Interface_1._0
                 CanvasPos.Focus();
                 if (diagramm.blocks.Count != 0)
                     diagramm.blocks[index].TextIntoTextBox = txt.Text;
-                if (PrevNextTextChanged)
+                if (DiagrammAnalyzer.PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
-                    PrevNextTextChanged = false;
+                    DiagrammAnalyzer.PrevNextTextChanged = false;
                 }
                     
             }
-            if (!isPrevNext)
+            if (!DiagrammAnalyzer.isPrevNext)
                 PrevNext.AddDiagramm(ref diagramm);
             polygon.MouseDown += IntoCanvasDownPolylineRectangle;
 
@@ -497,16 +485,16 @@ namespace Interface_1._0
                 #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    isChangde = true;
+                    DiagrammAnalyzer.isChanged = true;
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
                     bool isCanBeLower = false;
                     bool indexNotFound = true;
                     int indexForDeleting = GetIndexOfShape(Shapes.Rekt, polygon.Name);
-                    shapesCounter--;
+                    DiagrammAnalyzer.shapesCounter--;
                     diagramm.ShapesCounter--;
-                    if (diagramm.ShapesCounter == 0) isChangde = false;
+                    if (diagramm.ShapesCounter == 0) DiagrammAnalyzer.isChanged = false;
 
                     foreach (Block block in diagramm.blocks)
                     {
@@ -528,12 +516,12 @@ namespace Interface_1._0
                         try
                         {
                             diagramm.blocks.RemoveAt(0);
-                            shapesCounter = 0;
+                            DiagrammAnalyzer.shapesCounter = 0;
                         }
                         catch
                         {
                             diagramm = new Diagramm();
-                            shapesCounter = 0;
+                            DiagrammAnalyzer.shapesCounter = 0;
                         }
                     }
                     //Повторный нейминг всех фигур
@@ -576,7 +564,7 @@ namespace Interface_1._0
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-                            isChangde = true;
+                            DiagrammAnalyzer.isChanged = true;
                             var anchor = (Polyline)sndr;
                             anchor.CaptureMouse();
                             anchor.Stroke = Brushes.Transparent;
@@ -706,6 +694,7 @@ namespace Interface_1._0
                 RectangleIntoCanvasMouseMove(polygon, txt, rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
             }
         }
+
         private void RectangleIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
         {
             polygon.MouseMove += IntoCanvasMove;
@@ -714,7 +703,7 @@ namespace Interface_1._0
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
-                    isChangde = true;
+                    DiagrammAnalyzer.isChanged = true;
                     if (is_anchor_create)
                     {
                         is_anchor_create = false;
@@ -767,12 +756,12 @@ namespace Interface_1._0
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
             //Переписываем данные в диаграмме - происходит только если мы не передвигаемся по PrevNext
-            if (!isPrevNext)
+            if (!DiagrammAnalyzer.isPrevNext)
             {
-                if (isLoaded)
-                    diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, shapesCounter, txt.Text));
+                if (DiagrammAnalyzer.isLoaded)
+                    diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, DiagrammAnalyzer.shapesCounter, txt.Text));
                 else
-                    diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, shapesCounter - 1, txt.Text));
+                    diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, parabellumNW, parabellumNE, parabellumSW, parabellumSE, DiagrammAnalyzer.shapesCounter - 1, txt.Text));
                 diagramm.ShapesCounter++;
             }
 
@@ -787,14 +776,14 @@ namespace Interface_1._0
                 CanvasPos.Focus();
                 if (diagramm.blocks.Count !=0)
                     diagramm.blocks[index].TextIntoTextBox = txt.Text;
-                if (PrevNextTextChanged)
+                if (DiagrammAnalyzer.PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
-                    PrevNextTextChanged = false;
+                    DiagrammAnalyzer.PrevNextTextChanged = false;
                 }
             }
 
-            if (!isPrevNext)
+            if (!DiagrammAnalyzer.isPrevNext)
                 PrevNext.AddDiagramm(ref diagramm);
 
             polygon.MouseDown += IntoCanvasDownPolylineParrabellum;
@@ -807,16 +796,16 @@ namespace Interface_1._0
                 #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    isChangde = true;
+                    DiagrammAnalyzer.isChanged = true;
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
                     bool isCanBeLower = false;
                     bool indexNotFound = true;
                     int indexForDeleting = GetIndexOfShape(Shapes.Parrabellum, polygon.Name);
-                    shapesCounter--;
+                    DiagrammAnalyzer.shapesCounter--;
                     diagramm.ShapesCounter--;
-                    if (diagramm.ShapesCounter == 0) isChangde = false;
+                    if (diagramm.ShapesCounter == 0) DiagrammAnalyzer.isChanged = false;
 
                     foreach (Block block in diagramm.blocks)
                     {
@@ -838,16 +827,16 @@ namespace Interface_1._0
                         try
                         {
                             diagramm.blocks.RemoveAt(0);
-                            shapesCounter = 0;
+                            DiagrammAnalyzer.shapesCounter = 0;
                         }
                         catch
                         {
                             diagramm = new Diagramm();
-                            shapesCounter = 0;
+                            DiagrammAnalyzer.shapesCounter = 0;
                         }
                     }
 
-                    if (diagramm.ShapesCounter == 0) isChangde = false;
+                    if (diagramm.ShapesCounter == 0) DiagrammAnalyzer.isChanged = false;
                     //Повторный нейминг всех фигур
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
@@ -885,7 +874,7 @@ namespace Interface_1._0
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-                            isChangde = true;
+                            DiagrammAnalyzer.isChanged = true;
                             var anchor = (Polyline)sndr;
                             anchor.CaptureMouse();
 
@@ -1021,7 +1010,7 @@ namespace Interface_1._0
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
-                    isChangde = true;
+                    DiagrammAnalyzer.isChanged = true;
                     if (is_anchor_create)
                     {
                         is_anchor_create = false;
@@ -1074,12 +1063,12 @@ namespace Interface_1._0
             };
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            if (!isPrevNext)
+            if (!DiagrammAnalyzer.isPrevNext)
             {
-                if (isLoaded)
-                    diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, shapesCounter, txt.Text));
+                if (DiagrammAnalyzer.isLoaded)
+                    diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, DiagrammAnalyzer.shapesCounter, txt.Text));
                 else
-                    diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, shapesCounter - 1, txt.Text));
+                    diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rhombN, rhombW, rhombS, rhombE, DiagrammAnalyzer.shapesCounter - 1, txt.Text));
                 diagramm.ShapesCounter++;
             }    
             
@@ -1092,13 +1081,13 @@ namespace Interface_1._0
                 CanvasPos.Focus();
                 if (diagramm.blocks.Count != 0)
                     diagramm.blocks[index].TextIntoTextBox = txt.Text;
-                if (PrevNextTextChanged)
+                if (DiagrammAnalyzer.PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
-                    PrevNextTextChanged = false;
+                    DiagrammAnalyzer.PrevNextTextChanged = false;
                 }
             }
-            if (!isPrevNext)
+            if (!DiagrammAnalyzer.isPrevNext)
                 PrevNext.AddDiagramm(ref diagramm);
             polygon.MouseDown += IntoCanvasDownPolylineRhomb;
 
@@ -1131,7 +1120,7 @@ namespace Interface_1._0
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-                            isChangde = true;
+                            DiagrammAnalyzer.isChanged = true;
                             var anchor = (Polyline)sndr;
                             anchor.CaptureMouse();
 
@@ -1236,14 +1225,14 @@ namespace Interface_1._0
                 #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    isChangde = true;
+                    DiagrammAnalyzer.isChanged = true;
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
                     bool isCanBeLower = false;
                     bool indexNotFound = true;
                     int indexForDeleting = GetIndexOfShape(Shapes.Rhomb, polygon.Name);
-                    shapesCounter--;
+                    DiagrammAnalyzer.shapesCounter--;
                     diagramm.ShapesCounter--;
                     foreach (Block block in diagramm.blocks)
                     {
@@ -1265,16 +1254,16 @@ namespace Interface_1._0
                         try
                         {
                             diagramm.blocks.RemoveAt(0);
-                            shapesCounter = 0;
+                            DiagrammAnalyzer.shapesCounter = 0;
                         }
                         catch
                         {
                             diagramm = new Diagramm();
-                            shapesCounter = 0;
+                            DiagrammAnalyzer.shapesCounter = 0;
                         }
                     }
 
-                    if (diagramm.ShapesCounter == 0) isChangde = false;
+                    if (diagramm.ShapesCounter == 0) DiagrammAnalyzer.isChanged = false;
                     //Повторный нейминг всех фигур
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
@@ -1292,7 +1281,7 @@ namespace Interface_1._0
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
-                    isChangde = true;
+                    DiagrammAnalyzer.isChanged = true;
                     if (is_anchor_create)
                     {
                         is_anchor_create = false;
@@ -1342,12 +1331,12 @@ namespace Interface_1._0
 
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
-            if (!isPrevNext)
+            if (!DiagrammAnalyzer.isPrevNext)
             {
-                if (isLoaded)
-                    diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, shapesCounter, txt.Text));
+                if (DiagrammAnalyzer.isLoaded)
+                    diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, DiagrammAnalyzer.shapesCounter, txt.Text));
                 else
-                    diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, shapesCounter - 1, txt.Text));
+                    diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, cycleNW, cycleNE, cycleSW, cycleSE, cycleW, cycleE, DiagrammAnalyzer.shapesCounter - 1, txt.Text));
                 diagramm.ShapesCounter++;
             }
             
@@ -1360,14 +1349,14 @@ namespace Interface_1._0
                 CanvasPos.Focus();
                 if (diagramm.blocks.Count != 0)
                     diagramm.blocks[index].TextIntoTextBox = txt.Text;
-                if (PrevNextTextChanged)
+                if (DiagrammAnalyzer.PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
-                    PrevNextTextChanged = false;
+                    DiagrammAnalyzer.PrevNextTextChanged = false;
                 }
             }
 
-            if (!isPrevNext)
+            if (!DiagrammAnalyzer.isPrevNext)
                 PrevNext.AddDiagramm(ref diagramm);
 
             polygon.MouseDown += IntoCanvasDownPolylineCycle;
@@ -1402,7 +1391,7 @@ namespace Interface_1._0
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-                            isChangde = true;
+                            DiagrammAnalyzer.isChanged = true;
                             var anchor = (Polyline)sndr;
                             anchor.CaptureMouse();
 
@@ -1536,14 +1525,14 @@ namespace Interface_1._0
                 #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    isChangde = true;
+                    DiagrammAnalyzer.isChanged = true;
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
                     bool isCanBeLower = false;
                     bool indexNotFound = true;
                     int indexForDeleting = GetIndexOfShape(Shapes.Cycle, polygon.Name);
-                    shapesCounter--;
+                    DiagrammAnalyzer.shapesCounter--;
                     diagramm.ShapesCounter--;
                     foreach (Block block in diagramm.blocks)
                     {
@@ -1562,22 +1551,21 @@ namespace Interface_1._0
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
                     {
+                        DiagrammAnalyzer.shapesCounter = 0;
                         PrevNext.Clear();
                         try
                         {
                             diagramm.blocks.RemoveAt(0);
-                            shapesCounter = 0;
                         }
                         catch
                         {
                             diagramm = new Diagramm();
-                            shapesCounter = 0;
                         }
                     }
 
                         
                     
-                    if (diagramm.ShapesCounter == 0) isChangde = false;
+                    if (diagramm.ShapesCounter == 0) DiagrammAnalyzer.isChanged = false;
                     //Повторный нейминг всех фигур
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
@@ -1595,7 +1583,7 @@ namespace Interface_1._0
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
-                    isChangde = true;
+                    DiagrammAnalyzer.isChanged = true;
                     if (is_anchor_create)
                     {
                         is_anchor_create = false;
@@ -1648,12 +1636,12 @@ namespace Interface_1._0
             LeftTop.X = Canvas.GetLeft(polygon);
             LeftTop.Y = Canvas.GetTop(polygon);
             //Изменение данных в диаграмме
-            if (!isPrevNext)
+            if (!DiagrammAnalyzer.isPrevNext)
             {
-                if (isLoaded)
-                    diagramm.blocks.Add(new Block(Shapes.Ellipse, LeftTop, width, height, shapesCounter, txt.Text));
+                if (DiagrammAnalyzer.isLoaded)
+                    diagramm.blocks.Add(new Block(Shapes.Ellipse, LeftTop, width, height, DiagrammAnalyzer.shapesCounter, txt.Text));
                 else
-                    diagramm.blocks.Add(new Block(Shapes.Ellipse, LeftTop, width, height, shapesCounter - 1, txt.Text));
+                    diagramm.blocks.Add(new Block(Shapes.Ellipse, LeftTop, width, height, DiagrammAnalyzer.shapesCounter - 1, txt.Text));
                 diagramm.ShapesCounter++;
             }
             
@@ -1666,13 +1654,13 @@ namespace Interface_1._0
                 CanvasPos.Focus();
                 if (diagramm.blocks.Count != 0)
                     diagramm.blocks[index].TextIntoTextBox = txt.Text ;
-                if (PrevNextTextChanged)
+                if (DiagrammAnalyzer.PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
-                    PrevNextTextChanged = false;
+                    DiagrammAnalyzer.PrevNextTextChanged = false;
                 }
             }
-            if (!isPrevNext)
+            if (!DiagrammAnalyzer.isPrevNext)
                 PrevNext.AddDiagramm(ref diagramm);
             polygon.MouseDown += IntoCanvasMouseDownRectangle;
 
@@ -1706,7 +1694,7 @@ namespace Interface_1._0
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-                            isChangde = true;
+                            DiagrammAnalyzer.isChanged = true;
                             var anchor = (Polyline)sndr;
                             anchor.CaptureMouse();
 
@@ -1790,14 +1778,14 @@ namespace Interface_1._0
                 #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    isChangde = true;
+                    DiagrammAnalyzer.isChanged = true;
                     CanvasPos.Children.Remove(smt);
                     CanvasPos.Children.Remove(anchor_size);
                     CanvasPos.Children.Remove(txt);
                     bool isCanBeLower = false;
                     bool indexNotFound = true;
                     int indexForDeleting = GetIndexOfShape(Shapes.Ellipse, polygon.Name);
-                    shapesCounter--;
+                    DiagrammAnalyzer.shapesCounter--;
                     diagramm.ShapesCounter--;
                     foreach (Block block in diagramm.blocks)
                     {
@@ -1816,18 +1804,17 @@ namespace Interface_1._0
                         diagramm.blocks.RemoveAt(indexForDeleting);
                     else
                     {
+                        DiagrammAnalyzer.shapesCounter = 0;
                         try
                         {
                             diagramm.blocks.RemoveAt(0);
-                            shapesCounter = 0;
                         }
                         catch
                         {
                             diagramm = new Diagramm();
-                            shapesCounter = 0;
                         }
                     }
-                    if (diagramm.ShapesCounter == 0) isChangde = false;
+                    if (diagramm.ShapesCounter == 0) DiagrammAnalyzer.isChanged = false;
                     //Повторный нейминг всех фигур
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
@@ -1845,7 +1832,7 @@ namespace Interface_1._0
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
-                    isChangde = true;
+                    DiagrammAnalyzer.isChanged = true;
                     if (is_anchor_create)
                     {
                         is_anchor_create = false;
@@ -1890,8 +1877,8 @@ namespace Interface_1._0
         private void DnD_Drop(object sender, DragEventArgs e)
         {
             
-            if (shapesCounter < 0) shapesCounter = 0;
-            isChangde = true;
+            if (DiagrammAnalyzer.shapesCounter < 0) DiagrammAnalyzer.shapesCounter = 0;
+            DiagrammAnalyzer.isChanged = true;
 
             #region points
             //Создание точек для всех возможных фигур
@@ -1992,8 +1979,8 @@ namespace Interface_1._0
                 Polygon polyline = new Polygon();
                 TextBox text_into_shapes = new TextBox();
                 //Индексация фигур              
-                polyline.Name = "Rect_" + shapesCounter.ToString();
-                shapesCounter++;
+                polyline.Name = "Rect_" + DiagrammAnalyzer.shapesCounter.ToString();
+                DiagrammAnalyzer.shapesCounter++;
 
                 Rectangle_Check = false;
                 polyline.Points = Rekt.Points;
@@ -2035,8 +2022,8 @@ namespace Interface_1._0
                 TextBox text_into_shapes = new TextBox();
 
                 //Индексация фигур              
-                polyline.Name = "Parrabullem_" + shapesCounter.ToString();
-                shapesCounter++;
+                polyline.Name = "Parrabullem_" + DiagrammAnalyzer.shapesCounter.ToString();
+                DiagrammAnalyzer.shapesCounter++;
 
                 Parrabullem_Check = false;
                 polyline.Points = Parrabellum.Points;
@@ -2076,8 +2063,8 @@ namespace Interface_1._0
                 TextBox text_into_shapes = new TextBox();
 
                 //Индексация фигур              
-                polyline.Name = "Rhomb_" + shapesCounter.ToString();
-                shapesCounter++;
+                polyline.Name = "Rhomb_" + DiagrammAnalyzer.shapesCounter.ToString();
+                DiagrammAnalyzer.shapesCounter++;
 
                 Parrabullem_Check = false;
                 polyline.Points = Rhomb.Points;
@@ -2115,8 +2102,8 @@ namespace Interface_1._0
                 TextBox text_into_shapes = new TextBox();
 
                 //Индексация фигур              
-                polyline.Name = "Cycle_" + shapesCounter.ToString();
-                shapesCounter++;
+                polyline.Name = "Cycle_" + DiagrammAnalyzer.shapesCounter.ToString();
+                DiagrammAnalyzer.shapesCounter++;
 
 
                 Parrabullem_Check = false;
@@ -2157,8 +2144,8 @@ namespace Interface_1._0
                 TextBox text_into_shapes = new TextBox();
 
                 //Индексация фигур
-                rectangle.Name = "Ellipse_" + shapesCounter.ToString();
-                shapesCounter++;
+                rectangle.Name = "Ellipse_" + DiagrammAnalyzer.shapesCounter.ToString();
+                DiagrammAnalyzer.shapesCounter++;
 
                 rectangle.Width = Ellipse.Width;
                 rectangle.Height = Ellipse.Height;
@@ -2206,17 +2193,18 @@ namespace Interface_1._0
         /// <param name="e"></param>
         private void inTrash(object sender, RoutedEventArgs e)
         {
-            isChangde = false;
+            DiagrammAnalyzer.isChanged = false;
             CanvasPos.Children.Clear();
-            if (!isPrevNext)
+            if (!DiagrammAnalyzer.isPrevNext)
             {
                 PrevNext.Clear();
                 diagramm = new Diagramm();
             }
-            shapesCounter = 0;
+            DiagrammAnalyzer.shapesCounter = 0;
 
         }
         #endregion
+
         #region save and load files
         /// <summary>
         /// Загрузка диаграммы из проводника
@@ -2225,9 +2213,9 @@ namespace Interface_1._0
         /// <param name="e"></param>
         private void DownLoad(object sender, MouseButtonEventArgs e)
         {
-            isLoaded = true;
-            isChangde = false;
-            isEmpty = false;
+            DiagrammAnalyzer.isLoaded = true;
+            DiagrammAnalyzer.isChanged = false;
+            DiagrammAnalyzer.isEmpty = false;
             //Фильтр расширений при загрузке
             _openDialog.Filter = "JSON files (*.json)|*.json";
             if (_openDialog.ShowDialog() == true)
@@ -2245,16 +2233,16 @@ namespace Interface_1._0
                 catch (Exception)
                 {
                     tempDiagramm = new Diagramm();
-                    isEmpty = true;
+                    DiagrammAnalyzer.isEmpty = true;
                 }
                 //Обнуляем основную диаграмму и счетчик фигур, запоминаем путь и закрываем поток   
                 diagramm = new Diagramm();
-                shapesCounter = 0;
-                tempPath = _openDialog.FileName;
+                DiagrammAnalyzer.shapesCounter = 0;
+                DiagrammAnalyzer.tempPath = _openDialog.FileName;
                 reader.Close();
             }
 
-            if (tempPath != "")
+            if (DiagrammAnalyzer.tempPath != "")
                 inTrash(sender, e);
             //Прорисовываем десериализованные фигуры
             foreach (Block block in tempDiagramm.blocks)
@@ -2489,36 +2477,97 @@ namespace Interface_1._0
 
                     EllipseAdd(rectangle, text_into_shapes, rectangle.Width, rectangle.Height);
                 }
-                shapesCounter++;
+                DiagrammAnalyzer.shapesCounter++;
             }
-            tempPath = _openDialog.FileName;
-            
+            DiagrammAnalyzer.tempPath = _openDialog.FileName;
+
             //Булевая переменная, необходимая для сохранения индексации
-            isLoaded = false;
-            tempPath = "";
+            DiagrammAnalyzer.isLoaded = false;
+            DiagrammAnalyzer.tempPath = "";
             //Операции с PrevNext
             PrevNext.Clear();
-            if (!isEmpty)
+            if (!DiagrammAnalyzer.isEmpty)
                 PrevNext.AddDiagramm(ref diagramm);
-            isEmpty = false;
+            DiagrammAnalyzer.isEmpty = false;
             
 
         }
+        
+        /// <summary>
+        /// Сохранение данных с вызовом проводника
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void DownSave(object sender, MouseButtonEventArgs e)
+        {
+            DiagrammAnalyzer.isChanged = false;
+            //Настраиваем диалоговое окно для сохранения файлов. Указываем два фильтра для расширений файлов (В скобках видимое)
+            _safeDialog.Filter = "JSON Files (*.json)|*.json";
+            string json = JsonSerializer.Serialize<Diagramm>(diagramm);
+            if (_safeDialog.ShowDialog() == true)
+            {
+                //Запускаем поток и передаем в него путь
+                StreamWriter writer = new StreamWriter(_safeDialog.FileName);
+                //Передаем в поток данные с нашего текстбокса
+                writer.WriteLine(json);
+                writer.Close();
+            }
+            //Запоминаем путь и проверяем на изменения
+            DiagrammAnalyzer.pathForSaving = _safeDialog.FileName;
+            DiagrammAnalyzer.tempPath = _safeDialog.FileName;
+            if (DiagrammAnalyzer.tempPath == "")
+                DiagrammAnalyzer.isChanged = true;
+            if (this.Title.ToString() == title)
+                DiagrammAnalyzer.tempPath = "";
+        }
+       
+        /// <summary>
+        /// Перезаписываеие последнего сохраненного файла
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void CutDownSave(object sender, MouseButtonEventArgs e)
+        {
+            if (DiagrammAnalyzer.pathForSaving == "")
+            {
+                DownSave(null, null);
+            }
+            else
+            {
+                DiagrammAnalyzer.isChanged = false;
+                string json = JsonSerializer.Serialize<Diagramm>(diagramm);
+                //Запускаем поток и передаем в него путь
+                StreamWriter writer = new StreamWriter(DiagrammAnalyzer.pathForSaving);
+                //Передаем в поток данные с нашего текстбокса
+                writer.WriteLine(json);
+                writer.Close();
+                DiagrammAnalyzer.tempPath = _safeDialog.FileName;
+                if (DiagrammAnalyzer.tempPath == "")
+                    DiagrammAnalyzer.isChanged = true;
+                if (this.Title.ToString() == title)
+                    DiagrammAnalyzer.tempPath = "";
+            }
+            
+            
+        }
+        #endregion
+
+        #region PrevNextActions
         /// <summary>
         /// Отрисовка диаграммы при откате
         /// </summary>
         /// <param name="diagramm"></param>
         private void CutDownLoad(Diagramm diagramm)
         {
-            isLoaded = true;
-            isPrevNext = true;
+            DiagrammAnalyzer.isLoaded = true;
+            DiagrammAnalyzer.isPrevNext = true;
             inTrash(null, null);
             tempDiagramm = diagramm.Clone(diagramm.ID);
             //Обнуляем основную диаграмму и счетчик фигур    
-            
+
             diagramm = new Diagramm();
-                shapesCounter = 0;
-            
+            DiagrammAnalyzer.shapesCounter = 0;
+
             //Прорисовываем десериализованные фигуры
             foreach (Block block in tempDiagramm.blocks)
             {
@@ -2754,70 +2803,45 @@ namespace Interface_1._0
 
                     EllipseAdd(rectangle, text_into_shapes, rectangle.Width, rectangle.Height);
                 }
-                shapesCounter++;
+                DiagrammAnalyzer.shapesCounter++;
             }
             //Булевые переменные, необходимые для сохранения индексации
-            isLoaded = false;
-            isPrevNext = false;
+            DiagrammAnalyzer.isLoaded = false;
+            DiagrammAnalyzer.isPrevNext = false;
             diagramm.ID = tempDiagramm.ID;
             tempDiagramm = new Diagramm();
         }
+
         /// <summary>
-        /// Сохранение данных с вызовом проводника
+        /// Перейти к следующей сохраненной итерации блок-схемы
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void DownSave(object sender, MouseButtonEventArgs e)
+        private void next(object sender, MouseButtonEventArgs e)
         {
-            isChangde = false;
-            //Настраиваем диалоговое окно для сохранения файлов. Указываем два фильтра для расширений файлов (В скобках видимое)
-            _safeDialog.Filter = "JSON Files (*.json)|*.json";
-            string json = JsonSerializer.Serialize<Diagramm>(diagramm);
-            if (_safeDialog.ShowDialog() == true)
-            {
-                //Запускаем поток и передаем в него путь
-                StreamWriter writer = new StreamWriter(_safeDialog.FileName);
-                //Передаем в поток данные с нашего текстбокса
-                writer.WriteLine(json);
-                writer.Close();
-            }
-            //Запоминаем путь и проверяем на изменения
-            pathForSaving = _safeDialog.FileName;
-            tempPath = _safeDialog.FileName;
-            if (tempPath == "")
-                isChangde = true;
-            if (this.Title.ToString() == title)
-                tempPath = "";
+            DiagrammAnalyzer.isCanBeLoaded = true;
+            PrevNext.Next(ref diagramm, DiagrammAnalyzer.isCanBeLoaded);
+            if (DiagrammAnalyzer.isCanBeLoaded)
+                CutDownLoad(diagramm);
+            DiagrammAnalyzer.isChanged = true;
         }
         /// <summary>
-        /// Перезаписываеие последнего сохраненного файла
+        /// Перейти к предыдущей сохраненной итерации блок-схемы
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void CutDownSave(object sender, MouseButtonEventArgs e)
+        private void prev(object sender, MouseButtonEventArgs e)
         {
-            if (pathForSaving == "")
-            {
-                DownSave(null, null);
-            }
-            else
-            {
-                isChangde = false;
-                string json = JsonSerializer.Serialize<Diagramm>(diagramm);
-                //Запускаем поток и передаем в него путь
-                StreamWriter writer = new StreamWriter(pathForSaving);
-                //Передаем в поток данные с нашего текстбокса
-                writer.WriteLine(json);
-                writer.Close();
-                tempPath = _safeDialog.FileName;
-                if (tempPath == "")
-                    isChangde = true;
-                if (this.Title.ToString() == title)
-                    tempPath = "";
-            }
-            
-            
+            DiagrammAnalyzer.isCanBeLoaded = true;
+            PrevNext.Prev(ref diagramm, DiagrammAnalyzer.isCanBeLoaded);
+            if (DiagrammAnalyzer.isCanBeLoaded) CutDownLoad(diagramm);
+            DiagrammAnalyzer.isChanged = true;
         }
+
+        #endregion
+
+        #region windowsActions
+
         /// <summary>
         /// Вызов окна, которое напоминает о сохранении
         /// </summary>
@@ -2827,39 +2851,14 @@ namespace Interface_1._0
         {
             SaveWindow _window = new SaveWindow();
             _window.Owner = this;
-            if(isChangde)
+            if (DiagrammAnalyzer.isChanged)
             {
                 if (_window.ShowDialog() == false)
                 {
                     e.Cancel = true; // Отмена закрытия окна 
+                    DiagrammAnalyzer.isChanged = false;
                 }
-            }   
-        }
-        
-        /// <summary>
-        /// Перейти к следующей сохраненной итерации блок-схемы
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void next(object sender, MouseButtonEventArgs e)
-        {
-            bool isCanBeLoaded = true;
-            PrevNext.Next(ref diagramm, out isCanBeLoaded);
-            if (isCanBeLoaded)
-                CutDownLoad(diagramm);
-        }
-        /// <summary>
-        /// Перейти к предыдущей сохраненной итерации блок-схемы
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void prev(object sender, MouseButtonEventArgs e)
-        {
-            bool isCanBeLoaded = true;
-            PrevNext.Prev(ref diagramm, out isCanBeLoaded);
-            if (isCanBeLoaded)
-                CutDownLoad(diagramm);
-
+            }
         }
         /// <summary>
         /// Событие, в котором прописаны все комбинации клавиш
@@ -2868,7 +2867,7 @@ namespace Interface_1._0
         /// <param name="e"></param>
         private void KeyBinding(object sender, KeyEventArgs e)
         {
-            if (e.KeyboardDevice.IsKeyDown(Key.C)&&(e.KeyboardDevice.Modifiers == ModifierKeys.Alt))
+            if (e.KeyboardDevice.IsKeyDown(Key.C) && (e.KeyboardDevice.Modifiers == ModifierKeys.Alt))
                 inTrash(null, null);
             if ((e.Key == Key.S) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
                 DownSave(null, null);
@@ -2876,7 +2875,9 @@ namespace Interface_1._0
                 DownLoad(null, null);
             if ((e.Key == Key.Z) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
                 prev(null, null);
-            
+            if ((e.Key == Key.Y) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
+                next(null, null);
+
         }
         #endregion
     }

@@ -60,9 +60,8 @@ namespace Interface_1._0
         /// Метод, возвращающий диаграмму, предшествующую этой
         /// </summary>
         /// <param name="diagramm"></param>
-        public static void Prev(ref Diagramm diagramm, out bool flag)
+        public static void Prev(ref Diagramm diagramm, bool flag)
         {
-            flag = true;
             int indexOfDiagramm = -1;
             bool end = true;
             for (int i = 0; i < Diagramms.Count; i++)
@@ -85,9 +84,8 @@ namespace Interface_1._0
         /// Метод, возвращающий диаграмму, идущую после этой
         /// </summary>
         /// <param name="diagramm"></param>
-        public static void Next(ref Diagramm diagramm, out bool flag)
+        public static void Next(ref Diagramm diagramm,  bool flag)
         {
-            flag = true;
             int indexOfDiagramm = -1;
             for (int i = 0; i < Diagramms.Count; i++)
             {
