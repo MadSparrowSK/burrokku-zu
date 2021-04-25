@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+
+using Shapes;
+using Anchors;
+using TxTnShapes;
 
 namespace Interface_1._0
 {
@@ -156,2171 +152,1572 @@ namespace Interface_1._0
 
         #region Interaction_With_Shapes_Into_Canvas
 
-        Polyline anchor_size;
-        Polyline anchor_left;
-        Polyline anchor_top;
-
         Point lastPoint;
         Point lastPoint_anchor;
         Point current_anchor_postion;
 
-        bool is_anchor_create = false;
-
-        private void TextMethodSee(UIElement polygon,TextBox txt, Point pointW, Point pointE)
+        public void AddRP_Shape(RP_Shapes rPR_Shapes, TXT txt, Anchor anchor)
         {
-            Canvas.SetZIndex(txt, 1);
-            txt.CaretBrush = Brushes.Red;
-            txt.BorderBrush = Brushes.Gray;
+            rPR_Shapes.shape.MouseDown += RPR_MouseDown;
 
-            double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(pointW.X, 2)) - Math.Sqrt(Math.Pow(pointE.X, 2))) / 2;
-
-            txt.KeyDown += EnterDown;
-
-            void EnterDown(object sender, KeyEventArgs e)
+            void RPR_MouseDown(object sender, MouseButtonEventArgs e)
             {
-                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
-
-                if (Keyboard.IsKeyDown(Key.Enter))
-                {
-                    Canvas.SetZIndex(txt, -1);
-                    txt.CaretBrush = Brushes.Transparent;
-                    txt.BorderBrush = Brushes.Transparent;
-                }
-            }
-        }
-        private void TextMethodSee(Rectangle polygon, TextBox txt)
-        {
-            Canvas.SetZIndex(txt, 1);
-            txt.CaretBrush = Brushes.Red;
-            txt.BorderBrush = Brushes.Gray;
-
-            txt.KeyDown += EnterDown;
-
-            void EnterDown(object sender, KeyEventArgs e)
-            {
-                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.ActualWidth/2 - txt.ActualWidth / 2.5 + 7);
-
-                if (Keyboard.IsKeyDown(Key.Enter))
-                {
-                    Canvas.SetZIndex(txt, -1);
-                    txt.CaretBrush = Brushes.Transparent;
-                    txt.BorderBrush = Brushes.Transparent;
-                }
-            }
-        }
-
-        private void RectangleAdd(Polygon polygon, TextBox txt,Ellipse ellipse, Line line,Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
-        {
-            polygon.MouseDown += IntoCanvasDownPolylineRectangle;
-
-            void IntoCanvasDownPolylineRectangle(object sender, MouseButtonEventArgs e)
-            {
-                var smt = (Polygon)sender;
-                lastPoint = e.GetPosition(smt);
-
-                #region delete shape
-                if (e.RightButton == MouseButtonState.Pressed)
-                {
-                    CanvasPos.Children.Remove(smt);
-                    CanvasPos.Children.Remove(txt);
-                    CanvasPos.Children.Remove(anchor_size);
-                    CanvasPos.Children.Remove(anchor_left);
-                    CanvasPos.Children.Remove(anchor_top);
-                    CanvasPos.Children.Remove(ellipse);
-                    CanvasPos.Children.Remove(line);
-                }
-                #endregion
-
-                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) - Math.Sqrt(Math.Pow(rectnagleNE.X, 2))) / 2;
-                double anchor_top_indent =  Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) - Math.Sqrt(Math.Pow(rectangleSW.Y, 2))) / 2;
-
-                if(e.ClickCount == 2)
-                    TextMethodSee(polygon ,txt, rectangleNW, rectnagleNE);
-
-                #region anchor
-                if (!is_anchor_create)
-                {
-                    #region points_anchors
-
-                    anchor_size = new Polyline();
-                    anchor_size.Points = Anchor.Points;
-                    anchor_size.Stroke = Brushes.Red;
-                    anchor_size.Fill = Brushes.Transparent;
-
-                    anchor_size.MouseDown += AnchorMouseDown;
-                    anchor_size.MouseMove += AnchorMouseMove;
-                    anchor_size.MouseUp   += AnchorMouseUp;
-
-                    anchor_left = new Polyline();
-                    anchor_left.Points = anchor_Left.Points;
-                    anchor_left.Stroke = Brushes.Red;
-                    anchor_left.Fill   = Brushes.Transparent;
-
-                    anchor_left.MouseDown += AnchorMouseDown;
-                    anchor_left.MouseMove += AnchorLeftMouseMove;
-                    anchor_left.MouseUp   += AnchorMouseUp;
-
-                    anchor_top = new Polyline();
-                    anchor_top.Points = anchor_Top.Points;
-                    anchor_top.Stroke = Brushes.Red;
-                    anchor_top.Fill   = Brushes.Transparent;
-
-                    anchor_top.MouseDown += AnchorMouseDown;
-                    anchor_top.MouseMove += AnchorTopMouseMove;
-                    anchor_top.MouseUp   += AnchorMouseUp;
-
-                    #endregion
-
-                    #region anchor_action
-
-                    void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
-                    {
-                        var anchor = (UIElement)sndr;
-                        lastPoint_anchor = evnt.GetPosition(anchor);
-                        current_anchor_postion = evnt.GetPosition(CanvasPos);
-                    }
-                    void AnchorLeftMouseMove(object sndr, MouseEventArgs evnt)
-                    {
-                        if(evnt.LeftButton == MouseButtonState.Pressed)
-                        {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
-
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke  = Brushes.Transparent;
-
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) - Math.Sqrt(Math.Pow(rectnagleNE.X, 2))) / 2;
-                            anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) - Math.Sqrt(Math.Pow(rectangleSW.Y, 2))) / 2;                            
-                            
-                            Cursor = Cursors.SizeWE;
-
-                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) + Math.Sqrt(Math.Pow(rectnagleNE.X, 2)));
-
-                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
-
-                            if (pos.X < current_anchor_postion.X)
-                            {
-
-                                rectangleSE.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                rectnagleNE.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(rectangleNW);
-                                points.Add(rectangleSW);
-                                points.Add(rectangleSE);
-                                points.Add(rectnagleNE);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) + Math.Sqrt(Math.Pow(rectnagleNE.X, 2)));
-                            }
-                            else if (point_summ_second_X > 60)
-                            {
-                                rectangleSE.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                rectnagleNE.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(rectangleNW);
-                                points.Add(rectangleSW);
-                                points.Add(rectangleSE);
-                                points.Add(rectnagleNE);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) + Math.Sqrt(Math.Pow(rectnagleNE.X, 2)));
-                            }
-                        }
-                    }
-                    void AnchorTopMouseMove(object sndr, MouseEventArgs evnt)
-                    {
-                        if(evnt.LeftButton == MouseButtonState.Pressed)
-                        {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
-
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke = Brushes.Transparent;
-
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) - Math.Sqrt(Math.Pow(rectnagleNE.X, 2))) / 2;
-                            anchor_top_indent =  Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) - Math.Sqrt(Math.Pow(rectangleSW.Y, 2))) / 2;
-                            
-                            Cursor = Cursors.SizeNS;
-
-                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) + Math.Sqrt(Math.Pow(rectangleSW.Y, 2)));
-
-                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
-
-                            if (pos.Y < current_anchor_postion.Y)
-                            {
-                                rectangleSW.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                rectangleSE.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(rectangleNW);
-                                points.Add(rectangleSW);
-                                points.Add(rectangleSE);
-                                points.Add(rectnagleNE);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) + Math.Sqrt(Math.Pow(rectangleSW.Y, 2)));
-                            }
-                            else if(point_summ_second_Y > 40)
-                            {
-                                rectangleSW.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                rectangleSE.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(rectangleNW);
-                                points.Add(rectangleSW);
-                                points.Add(rectangleSE);
-                                points.Add(rectnagleNE);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) + Math.Sqrt(Math.Pow(rectangleSW.Y, 2)));
-                            }
-
-                        }
-                    }
-                    void AnchorMouseMove(object sndr, MouseEventArgs evnt)
-                    {
-                        if (evnt.LeftButton == MouseButtonState.Pressed)
-                        {
-
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
-
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke  = Brushes.Transparent;
-
-                            Cursor = Cursors.SizeNWSE;
-
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) - Math.Sqrt(Math.Pow(rectnagleNE.X, 2))) / 2;
-                            anchor_top_indent =  Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) - Math.Sqrt(Math.Pow(rectangleSW.Y, 2))) / 2;
-
-                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) + Math.Sqrt(Math.Pow(rectangleSW.Y, 2)));
-                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) + Math.Sqrt(Math.Pow(rectnagleNE.X, 2)));
-
-                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
-
-                            if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
-                            {
-                                rectangleSW.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                rectangleSE.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-                                rectangleSE.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                rectnagleNE.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(rectangleNW);
-                                points.Add(rectangleSW);
-                                points.Add(rectangleSE);
-                                points.Add(rectnagleNE);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) + Math.Sqrt(Math.Pow(rectangleSW.Y, 2)));
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) + Math.Sqrt(Math.Pow(rectnagleNE.X, 2)));
-                            }
-                            else if (point_summ_second_X >= 60 && point_summ_second_Y >= 40)
-                            {
-                                rectangleSW.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                rectangleSE.X -= Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-                                rectangleSE.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                rectnagleNE.X -= Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(rectangleNW);
-                                points.Add(rectangleSW);
-                                points.Add(rectangleSE);
-                                points.Add(rectnagleNE);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 2);
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth / 2.5 + 7);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) + Math.Sqrt(Math.Pow(rectangleSW.Y, 2)));
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) + Math.Sqrt(Math.Pow(rectnagleNE.X, 2)));
-                            }
-                        }
-                    }
-                    void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
-                    {
-                        var anchor = (Polyline)sndr;
-                        anchor.ReleaseMouseCapture();
-
-                        anchor_size.Stroke = Brushes.Red;
-                        anchor_left.Stroke = Brushes.Red;
-                        anchor_top.Stroke  = Brushes.Red;
-
-                        Cursor = Cursors.Arrow;
-
-                        Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt) + 7);
-                        Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
-
-                        Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt));
-                        Canvas.SetTop(anchor_left, Canvas.GetTop(smt) + anchor_top_indent - 5);
-
-                        Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + anchor_left_indent - 3);
-                        Canvas.SetTop(anchor_top, Canvas.GetTop(smt) - 3);
-                    }
-
-                    #endregion
-
-                    CanvasPos.Children.Add(anchor_size);
-                    CanvasPos.Children.Add(anchor_left);
-                    CanvasPos.Children.Add(anchor_top);
-
-                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt) + 7);
-                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
-
-                    Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt));
-                    Canvas.SetTop(anchor_left, Canvas.GetTop(smt) + anchor_top_indent - 5);
-
-                    Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + anchor_left_indent - 3);
-                    Canvas.SetTop(anchor_top, Canvas.GetTop(smt) - 3);
-
-                    is_anchor_create = true;
-                }
-                #endregion
-
-                RectangleIntoCanvasMouseMove(polygon, txt,ellipse,line ,rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
-            }
-        }
-        private void RectangleIntoCanvasMouseMove(Polygon polygon, TextBox txt, Ellipse ellipse, Line line,Point rectangleNW, Point rectangleSE, Point rectangleSW, Point rectnagleNE)
-        {
-            polygon.MouseMove += IntoCanvasMove;
-
-            void IntoCanvasMove(object sender, MouseEventArgs e)
-            {
-                if (e.LeftButton == MouseButtonState.Pressed)
-                {
-                    if (is_anchor_create)
-                    {
-                        is_anchor_create = false;
-                        CanvasPos.Children.Remove(anchor_size);
-                        CanvasPos.Children.Remove(anchor_left);
-                        CanvasPos.Children.Remove(anchor_top);
-                    }
-
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) - Math.Sqrt(Math.Pow(rectnagleNE.X, 2))) / 2;
-                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) - Math.Sqrt(Math.Pow(rectangleSW.Y, 2))) / 2;
-
-                    var smt = (UIElement)sender;
-                    smt.CaptureMouse();
-
-                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
-                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
-
-                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + anchor_left_indent - txt.ActualWidth/2.5 + 7);
-                    Canvas.SetTop(txt, Canvas.GetTop(smt) + anchor_top_indent - 5);
-
-                    Canvas.SetLeft(ellipse, Canvas.GetLeft(smt) - anchor_left_indent);
-                    Canvas.SetTop(ellipse, Canvas.GetTop(smt) + anchor_top_indent);
-
-
-                    if(line.X1 != 0)
-                    {
-                        line.X1 = Canvas.GetLeft(ellipse);
-                        line.Y1 = Canvas.GetTop(ellipse);
-                    }
-                }
-            }
-        }
-
-        private void ParrabellumAdd(Polygon polygon, TextBox txt, Point parabellumNW, Point parabellumSW, Point parabellumSE, Point parabellumNE)
-        {
-            polygon.MouseDown += IntoCanvasDownPolylineParrabellum;
-
-            void IntoCanvasDownPolylineParrabellum(object sender, MouseButtonEventArgs e)
-            {
-                var smt = (Polygon)sender;
-                lastPoint = e.GetPosition(smt);
-
-                #region delete shape
-                if (e.RightButton == MouseButtonState.Pressed)
-                {
-                    CanvasPos.Children.Remove(smt);
-                    CanvasPos.Children.Remove(txt);
-                    CanvasPos.Children.Remove(anchor_size);
-                    CanvasPos.Children.Remove(anchor_left);
-                    CanvasPos.Children.Remove(anchor_top);
-                }
-                #endregion
-
-                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) - Math.Sqrt(Math.Pow(parabellumNE.X, 2))) / 2;
-                double anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) - Math.Sqrt(Math.Pow(parabellumSW.Y, 2))) / 2;
+                var obj = (UIElement)sender;
+                lastPoint = e.GetPosition(obj);
 
                 if (e.ClickCount == 2)
-                    TextMethodSee(polygon, txt, parabellumNW, parabellumNE);
+                    TextMethodSee(rPR_Shapes, txt, anchor);
 
-                #region anchor
-                if (!is_anchor_create)
+                if (!anchor.is_anchor_create)
                 {
-                    #region points_anchors
+                    anchor.is_anchor_create = true;
 
-                    anchor_size = new Polyline();
-                    anchor_size.Points = Anchor.Points;
-                    anchor_size.Stroke = Brushes.Red;
-                    anchor_size.Fill   = Brushes.Transparent;
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2))) / 2;
+                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2))) / 2;
 
-                    anchor_size.MouseDown += AnchorMouseDown;
-                    anchor_size.MouseMove += AnchorMouseMove;
-                    anchor_size.MouseUp   += AnchorMouseUp;
+                    anchor.SetParametrs();
 
-                    anchor_left = new Polyline();
-                    anchor_left.Points = anchor_Left.Points;
-                    anchor_left.Stroke = Brushes.Red;
-                    anchor_left.Fill   = Brushes.Transparent;
+                    anchor.anchor_WE.MouseDown += AnchorMouseDown;
+                    anchor.anchor_WE.MouseMove += AnchorWE_MouseMove;
+                    anchor.anchor_WE.MouseUp += AnchorMouseUp;
 
-                    anchor_left.MouseDown += AnchorMouseDown;
-                    anchor_left.MouseMove += AnchorLeftMouseMove;
-                    anchor_left.MouseUp   += AnchorMouseUp;
+                    anchor.anchor_NS.MouseDown += AnchorMouseDown;
+                    anchor.anchor_NS.MouseMove += AnchorNS_MouseMove;
+                    anchor.anchor_NS.MouseUp += AnchorMouseUp;
 
-                    anchor_top = new Polyline();
-                    anchor_top.Points = anchor_Top.Points;
-                    anchor_top.Stroke = Brushes.Red;
-                    anchor_top.Fill   = Brushes.Transparent;
-
-                    anchor_top.MouseDown += AnchorMouseDown;
-                    anchor_top.MouseMove += AnchorTopMouseMove;
-                    anchor_top.MouseUp   += AnchorMouseUp;
-
-                    #endregion
-
-                    #region anchor_action
+                    anchor.anchor_NWSE.MouseDown += AnchorMouseDown;
+                    anchor.anchor_NWSE.MouseMove += AnchorNWSE_MouseMove;
+                    anchor.anchor_NWSE.MouseUp += AnchorMouseUp;
 
                     void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
                     {
-                        var anchor = (UIElement)sndr;
-                        lastPoint_anchor = evnt.GetPosition(anchor);
+                        var obj_anchor = (UIElement)sndr;
+                        lastPoint_anchor = evnt.GetPosition(obj_anchor);
                         current_anchor_postion = evnt.GetPosition(CanvasPos);
                     }
-                    void AnchorTopMouseMove(object sndr, MouseEventArgs evnt)
+                    void AnchorNS_MouseMove(object sndr, MouseEventArgs evnt)
                     {
-                        if(evnt.LeftButton == MouseButtonState.Pressed)
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
+                            var obj_anchor = (Polyline)sndr;
+                            obj_anchor.CaptureMouse();
 
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke = Brushes.Transparent;
-
+                            anchor.ResetParametrs();
                             Cursor = Cursors.SizeNS;
 
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) - Math.Sqrt(Math.Pow(parabellumNE.X, 2))) / 2;
-                            anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) - Math.Sqrt(Math.Pow(parabellumSW.Y, 2))) / 2;
+                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2))) / 2;
+                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2))) / 2;
 
-                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) + Math.Sqrt(Math.Pow(parabellumSW.Y, 2)));
+                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
 
                             if (pos.Y < current_anchor_postion.Y)
                             {
-                                parabellumSW.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
+                                rPR_Shapes.SW_point.Y += Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4;
 
-                                parabellumSE.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(parabellumNW);
-                                points.Add(parabellumSW);
-                                points.Add(parabellumSE);
-                                points.Add(parabellumNE);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) + Math.Sqrt(Math.Pow(parabellumSW.Y, 2)));
-                            }
-                            else if(point_summ_second_Y >= 40)
-                            {
-                                parabellumSW.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                parabellumSE.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
+                                rPR_Shapes.SE_point.Y += Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4;
 
                                 PointCollection points = new PointCollection();
-                                points.Add(parabellumNW);
-                                points.Add(parabellumSW);
-                                points.Add(parabellumSE);
-                                points.Add(parabellumNE);
+                                points.Add(rPR_Shapes.NW_point);
+                                points.Add(rPR_Shapes.SW_point);
+                                points.Add(rPR_Shapes.SE_point);
+                                points.Add(rPR_Shapes.NE_point);
 
-                                smt.Points = points;
+                                rPR_Shapes.shape.Points = points;
 
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(rPR_Shapes.shape);
 
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
+                                Canvas.SetTop(rPR_Shapes.shape, Canvas.GetTop(rPR_Shapes.shape) - Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2 + 7);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
 
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) + Math.Sqrt(Math.Pow(parabellumSW.Y, 2)));
-                            }
-                        }
-                    }
-                    void AnchorLeftMouseMove(object sndr, MouseEventArgs evnt)
-                    {
-                        if(evnt.LeftButton == MouseButtonState.Pressed) 
-                        {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
-
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke = Brushes.Transparent;
-
-                            Cursor = Cursors.SizeWE;
-
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) - Math.Sqrt(Math.Pow(parabellumNE.X, 2))) / 2;
-                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) - Math.Sqrt(Math.Pow(parabellumSW.Y, 2))) / 2;
-
-                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) + Math.Sqrt(Math.Pow(parabellumNE.X, 2)));
-
-                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
-
-                            if (pos.X < current_anchor_postion.X)
-                            {
-                                parabellumSE.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                parabellumNE.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(parabellumNW);
-                                points.Add(parabellumSW);
-                                points.Add(parabellumSE);
-                                points.Add(parabellumNE);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) + Math.Sqrt(Math.Pow(parabellumNE.X, 2)));
-                            }
-                            else if(point_summ_second_X > 60)
-                            {
-                                parabellumSE.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                parabellumNE.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(parabellumNW);
-                                points.Add(parabellumSW);
-                                points.Add(parabellumSE);
-                                points.Add(parabellumNE);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) + Math.Sqrt(Math.Pow(parabellumNE.X, 2)));
-                            }
-                        }
-                    }
-                    void AnchorMouseMove(object sndr, MouseEventArgs evnt)
-                    {
-                        if (evnt.LeftButton == MouseButtonState.Pressed)
-                        {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
-
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke  = Brushes.Transparent;
-
-                            Cursor = Cursors.SizeNWSE;
-
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) - Math.Sqrt(Math.Pow(parabellumNE.X, 2))) / 2;
-                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) - Math.Sqrt(Math.Pow(parabellumSW.Y, 2))) / 2;
-
-                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
-
-                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) + Math.Sqrt(Math.Pow(parabellumNE.X, 2)));
-                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) + Math.Sqrt(Math.Pow(parabellumSW.Y, 2)));
-
-                            if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
-                            {
-                                parabellumSW.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                parabellumSE.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-                                parabellumSE.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                parabellumNE.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(parabellumNW);
-                                points.Add(parabellumSW);
-                                points.Add(parabellumSE);
-                                points.Add(parabellumNE);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) + Math.Sqrt(Math.Pow(parabellumNE.X, 2)));
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) + Math.Sqrt(Math.Pow(parabellumSW.Y, 2)));
-                            }
-                            else if (point_summ_second_X > 60 && point_summ_second_Y > 40)
-                            {
-                                parabellumSW.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                parabellumSE.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-                                parabellumSE.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                parabellumNE.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(parabellumNW);
-                                points.Add(parabellumSW);
-                                points.Add(parabellumSE);
-                                points.Add(parabellumNE);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) + Math.Sqrt(Math.Pow(parabellumNE.X, 2)));
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) + Math.Sqrt(Math.Pow(parabellumSW.Y, 2)));
-                            }
-                        }
-                    }
-                    void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
-                    {
-                        var anchor = (Polyline)sndr;
-                        anchor.ReleaseMouseCapture();
-
-                        anchor_size.Stroke = Brushes.Red;
-                        anchor_left.Stroke = Brushes.Red;
-                        anchor_top.Stroke = Brushes.Red;
-
-                        Cursor = Cursors.Arrow;
-
-                        Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt) + 8);
-                        Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
-
-                        Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt) - 5);
-                        Canvas.SetTop(anchor_left, Canvas.GetTop(smt) + anchor_top_indent - 3);
-
-                        Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + anchor_left_indent - 3);
-                        Canvas.SetTop(anchor_top, Canvas.GetTop(smt) - 6);
-                    }
-
-                    #endregion
-
-                    CanvasPos.Children.Add(anchor_size);
-                    CanvasPos.Children.Add(anchor_left);
-                    CanvasPos.Children.Add(anchor_top);
-
-                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt) + 8);
-                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
-
-                    Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt) - 5);
-                    Canvas.SetTop(anchor_left, Canvas.GetTop(smt) + anchor_top_indent - 3);
-
-                    Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + anchor_left_indent - 3);
-                    Canvas.SetTop(anchor_top, Canvas.GetTop(smt) - 6);
-
-                    is_anchor_create = true;
-                }
-                #endregion
-
-                ParrabellumIntoCanvasMouseMove(polygon, txt, parabellumNW, parabellumSE, parabellumSE, parabellumNE);
-            }
-        }
-        private void ParrabellumIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point parabellumNW, Point parabellumSW, Point parabellumSE, Point parabellumNE)
-        {
-            polygon.MouseMove += IntoCanvasMove;
-
-            void IntoCanvasMove(object sender, MouseEventArgs e)
-            {
-                if (e.LeftButton == MouseButtonState.Pressed)
-                {
-                    if (is_anchor_create)
-                    {
-                        is_anchor_create = false;
-                        CanvasPos.Children.Remove(anchor_size);
-                        CanvasPos.Children.Remove(anchor_left);
-                        CanvasPos.Children.Remove(anchor_top);
-                    }
-
-                    var smt = (Polygon)sender;
-                    smt.CaptureMouse();
-
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) - Math.Sqrt(Math.Pow(parabellumNE.X, 2))) / 2;
-                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) - Math.Sqrt(Math.Pow(parabellumSW.Y, 2))) / 2;
-
-                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
-                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
-
-                    Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
-                    Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-                }
-            }
-        }
-
-        private void RhombAdd(Polygon polygon, TextBox txt, Point rhombN, Point rhombW, Point rhombS, Point rhombE)
-        {
-            polygon.MouseDown += IntoCanvasDownPolylineRhomb;
-
-            void IntoCanvasDownPolylineRhomb(object sender, MouseButtonEventArgs e)
-            {
-                var smt = (Polygon)sender;
-                lastPoint = e.GetPosition(smt);
-
-                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) + Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
-                double anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;
-
-                if (e.ClickCount == 2)
-                    TextMethodSee(polygon, txt, rhombW, rhombE);
-
-                #region anchor
-                if (!is_anchor_create)
-                {
-                    #region points_anchors
-
-                    anchor_size = new Polyline();
-                    anchor_size.Points = Anchor.Points;
-                    anchor_size.Stroke = Brushes.Red;
-                    anchor_size.Fill   = Brushes.Transparent;
-
-                    anchor_size.MouseDown += AnchorMouseDown;
-                    anchor_size.MouseMove += AnchorMouseMove;
-                    anchor_size.MouseUp   += AnchorMouseUp;
-
-                    anchor_left = new Polyline();
-                    anchor_left.Points = anchor_Left.Points;
-                    anchor_left.Stroke = Brushes.Red;
-                    anchor_left.Fill   = Brushes.Transparent;
-
-                    anchor_left.MouseDown += AnchorMouseDown;
-                    anchor_left.MouseMove += AnchorLeftMouseMove;
-                    anchor_left.MouseUp   += AnchorMouseUp;
-
-                    anchor_top = new Polyline();
-                    anchor_top.Points = anchor_Top.Points;
-                    anchor_top.Stroke = Brushes.Red;
-                    anchor_top.Fill   = Brushes.Transparent;
-
-                    anchor_top.MouseDown += AnchorMouseDown;
-                    anchor_top.MouseMove += AnchorTopMouseMove;
-                    anchor_top.MouseUp   += AnchorMouseUp;
-
-                    #endregion
-
-                    #region anchor_action
-
-                    void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
-                    {
-                        var anchor = (UIElement)sndr;
-                        lastPoint_anchor = evnt.GetPosition(anchor);
-                        current_anchor_postion = evnt.GetPosition(CanvasPos);
-                    }
-                    void AnchorTopMouseMove(object sndr, MouseEventArgs evnt)
-                    {
-                        if (evnt.LeftButton == MouseButtonState.Pressed)
-                        {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
-
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke  = Brushes.Transparent;
-
-                            Cursor = Cursors.SizeNS;
-
-                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
-
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) - Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
-                            anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) - Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;
-
-                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2)));
-
-                            if (pos.Y < current_anchor_postion.Y)
-                            {
-                                rhombN.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-                                
-                                rhombS.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-                                
-                                PointCollection points = new PointCollection();
-                                points.Add(rhombW);
-                                points.Add(rhombS);
-                                points.Add(rhombE);
-                                points.Add(rhombN);
-
-                                smt.Points = points;
-
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon) + anchor_top_indent;
-
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2)));
-                            }
-                            else if(point_summ_second_Y > 30)
-                            {
-                                rhombN.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-
-                                rhombS.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-                                
-                                PointCollection points = new PointCollection();
-                                points.Add(rhombW);
-                                points.Add(rhombS);
-                                points.Add(rhombE);
-                                points.Add(rhombN);
-
-                                smt.Points = points;
-
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon) + anchor_top_indent;
-
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2)));
-                            }
-                        }
-                    }
-                    void AnchorLeftMouseMove(object sndr, MouseEventArgs evnt)
-                    {
-                        if (evnt.LeftButton == MouseButtonState.Pressed)
-                        {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
-
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke = Brushes.Transparent;
-
-                            Cursor = Cursors.SizeWE;
-
-                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
-
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) + Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
-                            anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;
-
-                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) + Math.Sqrt(Math.Pow(rhombE.X, 2)));
-
-                            if (pos.X < current_anchor_postion.X)
-                            {
-                                rhombN.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-                             
-                                rhombS.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                rhombE.X += Math.Abs(pos.X - current_anchor_postion.X);
-
-                                PointCollection points = new PointCollection();
-                                points.Add(rhombW);
-                                points.Add(rhombS);
-                                points.Add(rhombE);
-                                points.Add(rhombN);
-
-                                smt.Points = points;
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) + Math.Sqrt(Math.Pow(rhombE.X, 2)));
-                            }
-                            else if(point_summ_second_X > 70)
-                            {
-                                rhombN.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                rhombS.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                rhombE.X -= Math.Abs(pos.X - current_anchor_postion.X);
-
-                                PointCollection points = new PointCollection();
-                                points.Add(rhombW);
-                                points.Add(rhombS);
-                                points.Add(rhombE);
-                                points.Add(rhombN);
-
-                                smt.Points = points;
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) + Math.Sqrt(Math.Pow(rhombE.X, 2)));
-                            }
-                        }
-                    }
-                    void AnchorMouseMove(object sndr, MouseEventArgs evnt)
-                    {
-                        if (evnt.LeftButton == MouseButtonState.Pressed)
-                        {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
-
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke = Brushes.Transparent;
-
-                            Cursor = Cursors.SizeNWSE;
-
-                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
-
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) - Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
-                            anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) - Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;
-
-                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) + Math.Sqrt(Math.Pow(rhombE.X, 2)));
-                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2)));
-
-                            if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
-                            {
-                                rhombN.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-                                rhombN.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-
-                                rhombS.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-                                rhombS.X += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                rhombE.X += Math.Abs(pos.X - current_anchor_postion.X);
-
-                                PointCollection points = new PointCollection();
-                                points.Add(rhombW);
-                                points.Add(rhombS);
-                                points.Add(rhombE);
-                                points.Add(rhombN);
-
-                                smt.Points = points;
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) + Math.Sqrt(Math.Pow(rhombE.X, 2)));
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2)));
-                            }
-                            else if (point_summ_second_X > 50 && point_summ_second_Y > 25)
-                            {
-                                rhombN.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-                                rhombN.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-
-                                rhombS.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 20;
-                                rhombS.X -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                rhombE.X -= Math.Abs(pos.X - current_anchor_postion.X);
-
-                                PointCollection points = new PointCollection();
-                                points.Add(rhombW);
-                                points.Add(rhombS);
-                                points.Add(rhombE);
-                                points.Add(rhombN);
-
-                                smt.Points = points;
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 20);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon));
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rhombE.X, 2)) + Math.Sqrt(Math.Pow(rhombW.X, 2)));
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2)));
-                            }
-                        }
-                    }
-                    void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
-                    {
-                        var anchor = (Polyline)sndr;
-                        anchor.ReleaseMouseCapture();
-
-                        anchor_size.Stroke = Brushes.Red;
-                        anchor_left.Stroke = Brushes.Red;
-                        anchor_top.Stroke  = Brushes.Red;
-
-                        Cursor = Cursors.Arrow;
-
-                        anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) - Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
-                        anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) - Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;
-
-                        Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt));
-                        Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
-
-                        Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt) - anchor_top_indent - 3);
-                        Canvas.SetTop(anchor_left, Canvas.GetTop(smt));
-
-                        Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + anchor_left_indent - 10);
-                        Canvas.SetTop(anchor_top, Canvas.GetTop(polygon) - anchor_top_indent);
-                    }
-
-                    #endregion
-
-                    CanvasPos.Children.Add(anchor_size);
-                    CanvasPos.Children.Add(anchor_left);
-                    CanvasPos.Children.Add(anchor_top);
-
-                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt));
-                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
-
-                    Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt) - anchor_top_indent - 3);
-                    Canvas.SetTop(anchor_left, Canvas.GetTop(smt));
-
-                    Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + anchor_left_indent - 10);
-                    Canvas.SetTop(anchor_top, Canvas.GetTop(polygon) - anchor_top_indent);
-
-                    is_anchor_create = true;
-                }
-                #endregion
-
-                #region delete shape
-                if (e.RightButton == MouseButtonState.Pressed)
-                {
-                    CanvasPos.Children.Remove(smt);
-                    CanvasPos.Children.Remove(txt);
-                    CanvasPos.Children.Remove(anchor_size);
-                    CanvasPos.Children.Remove(anchor_left);
-                    CanvasPos.Children.Remove(anchor_top);
-                }
-                #endregion
-
-                RhombIntoCanvasMouseMove(polygon, txt,rhombN,rhombW,rhombS,rhombE);
-            }
-        }
-        private void RhombIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point rhombN, Point rhombW, Point rhombS, Point rhombE)
-        {
-            polygon.MouseMove += IntoCanvasMove;
-
-            void IntoCanvasMove(object sender, MouseEventArgs e)
-            {
-                if (e.LeftButton == MouseButtonState.Pressed)
-                {
-                    if (is_anchor_create)
-                    {
-                        is_anchor_create = false;
-                        CanvasPos.Children.Remove(anchor_size);
-                        CanvasPos.Children.Remove(anchor_left);
-                        CanvasPos.Children.Remove(anchor_top);
-                    }
-
-                    var smt = (UIElement)sender;
-                    smt.CaptureMouse();
-
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) + Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
-                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;
-
-                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
-                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
-
-                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + anchor_left_indent - txt.ActualWidth/2.5 + 4);
-                    Canvas.SetTop(txt, Canvas.GetTop(smt));
-                }
-            }
-        }
-
-        private void CycleAdd(Polygon polygon, TextBox txt, Point cycleNW, Point cycleW, Point cycleSW, Point cycleSE, Point cycleE, Point cycleNE)
-        {
-            polygon.MouseDown += IntoCanvasDownPolylineCycle;
-
-            void IntoCanvasDownPolylineCycle(object sender, MouseButtonEventArgs e)
-            {
-                var smt = (Polygon)sender;
-                lastPoint = e.GetPosition(smt);
-
-                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) - Math.Sqrt(Math.Pow(cycleNE.X, 2))) / 2;
-                double anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) - Math.Sqrt(Math.Pow(cycleSW.Y, 2))) / 2;
-
-                if (e.ClickCount == 2)
-                    TextMethodSee(polygon, txt, cycleW, cycleE);
-
-                #region anchor
-                if (!is_anchor_create)
-                {
-                    #region creating anchors
-
-                    anchor_size = new Polyline();
-                    anchor_size.Points = Anchor.Points;
-                    anchor_size.Stroke = Brushes.Red;
-                    anchor_size.Fill   = Brushes.Transparent;
-
-                    anchor_size.MouseDown += AnchorMouseDown;
-                    anchor_size.MouseMove += AnchorMouseMove;
-                    anchor_size.MouseUp   += AnchorMouseUp;
-
-                    anchor_left = new Polyline();
-                    anchor_left.Points = anchor_Left.Points;
-                    anchor_left.Stroke = Brushes.Red;
-                    anchor_left.Fill   = Brushes.Transparent;
-
-                    anchor_left.MouseDown += AnchorMouseDown;
-                    anchor_left.MouseMove += AnchorLeftMouseMove;
-                    anchor_left.MouseUp   += AnchorMouseUp;
-
-                    anchor_top = new Polyline();
-                    anchor_top.Points = anchor_Top.Points;
-                    anchor_top.Stroke = Brushes.Red;
-                    anchor_top.Fill   = Brushes.Transparent;
-
-                    anchor_top.MouseDown += AnchorMouseDown;
-                    anchor_top.MouseMove += AnchorTopMouseMove;
-                    anchor_top.MouseUp   += AnchorMouseUp;
-                    #endregion
-
-                    #region anchor_action
-
-                    void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
-                    {
-                        var anchor = (UIElement)sndr;
-                        lastPoint_anchor = evnt.GetPosition(anchor);
-                        current_anchor_postion = evnt.GetPosition(CanvasPos);
-                    }
-                    void AnchorTopMouseMove(object sndr,MouseEventArgs evnt) 
-                    {
-                        if(evnt.LeftButton == MouseButtonState.Pressed) 
-                        {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
-
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke  = Brushes.Transparent;
-
-                            Cursor = Cursors.SizeNS;
-
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) - Math.Sqrt(Math.Pow(cycleNE.X, 2))) / 2;
-                            anchor_top_indent  = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) - Math.Sqrt(Math.Pow(cycleSW.Y, 2))) / 2;
-
-                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) + Math.Sqrt(Math.Pow(cycleSW.Y, 2)));
-
-                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
-
-                            if (pos.Y < current_anchor_postion.Y)
-                            {
-                                cycleW.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 8;
-
-                                cycleSW.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                cycleSE.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                cycleE.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 8;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(cycleW);
-                                points.Add(cycleSW);
-                                points.Add(cycleSE);
-                                points.Add(cycleE);
-                                points.Add(cycleNE);
-                                points.Add(cycleNW);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) + Math.Sqrt(Math.Pow(cycleSW.Y, 2)));
-
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
                             }
                             else if (point_summ_second_Y > 40)
                             {
-                                cycleW.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
+                                rPR_Shapes.SW_point.Y -= Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4;
 
-                                cycleSW.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-
-                                cycleSE.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-
-                                cycleE.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
+                                rPR_Shapes.SE_point.Y -= Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4;
 
                                 PointCollection points = new PointCollection();
-                                points.Add(cycleW);
-                                points.Add(cycleSW);
-                                points.Add(cycleSE);
-                                points.Add(cycleE);
-                                points.Add(cycleNE);
-                                points.Add(cycleNW);
+                                points.Add(rPR_Shapes.NW_point);
+                                points.Add(rPR_Shapes.SW_point);
+                                points.Add(rPR_Shapes.SE_point);
+                                points.Add(rPR_Shapes.NE_point);
 
-                                smt.Points = points;
+                                rPR_Shapes.shape.Points = points;
 
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+                                current_anchor_postion.Y = Canvas.GetTop(rPR_Shapes.shape);
 
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) + Math.Sqrt(Math.Pow(cycleSW.Y, 2)));
+                                Canvas.SetTop(rPR_Shapes.shape, Canvas.GetTop(rPR_Shapes.shape) + Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4);
 
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2 + 7);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
                             }
                         }
                     }
-                    void AnchorLeftMouseMove(object sndr, MouseEventArgs evnt)
-                    {
-                        if(evnt.LeftButton == MouseButtonState.Pressed)
-                        {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
-
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke = Brushes.Transparent;
-
-                            Cursor = Cursors.SizeWE;
-
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) - Math.Sqrt(Math.Pow(cycleNE.X, 2))) / 2;
-                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) - Math.Sqrt(Math.Pow(cycleSW.Y, 2))) / 2;
-
-                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
-
-                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) + Math.Sqrt(Math.Pow(cycleNE.X, 2)));
-
-                            if (pos.X < current_anchor_postion.X)
-                            {
-                                cycleW.X -= Math.Abs(pos.Y - current_anchor_postion.Y) / 10;
-
-                                cycleSE.X += Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-
-                                cycleE.X += Math.Abs(pos.Y - current_anchor_postion.Y) / 1.65;
-
-                                cycleNE.X += Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(cycleW);
-                                points.Add(cycleSW);
-                                points.Add(cycleSE);
-                                points.Add(cycleE);
-                                points.Add(cycleNE);
-                                points.Add(cycleNW);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) + Math.Sqrt(Math.Pow(cycleNE.X, 2)));
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 2);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-                            }
-                            else if(point_summ_second_X > 80)
-                            {
-                                cycleW.X += Math.Abs(pos.Y - current_anchor_postion.Y) / 10;
-
-                                cycleSE.X -= Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-
-                                cycleE.X -= Math.Abs(pos.Y - current_anchor_postion.Y) / 1.65;
-
-                                cycleNE.X -= Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-
-                                PointCollection points = new PointCollection();
-                                points.Add(cycleW);
-                                points.Add(cycleSW);
-                                points.Add(cycleSE);
-                                points.Add(cycleE);
-                                points.Add(cycleNE);
-                                points.Add(cycleNW);
-
-                                smt.Points = points;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) + Math.Sqrt(Math.Pow(cycleNE.X, 2)));
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 2);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
-                            }
-                        }
-                    }
-                    void AnchorMouseMove(object sndr, MouseEventArgs evnt)
+                    void AnchorWE_MouseMove(object sndr, MouseEventArgs evnt)
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
+                            var obj_anchor = (Polyline)sndr;
+                            obj_anchor.CaptureMouse();
 
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke  = Brushes.Transparent;
+                            anchor.ResetParametrs();
+                            Cursor = Cursors.SizeWE;
 
+                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2))) / 2;
+                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2))) / 2;
+
+                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
+
+                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            if (pos.X < current_anchor_postion.X)
+                            {
+
+                                rPR_Shapes.SE_point.X += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                rPR_Shapes.NE_point.X += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(rPR_Shapes.NW_point);
+                                points.Add(rPR_Shapes.SW_point);
+                                points.Add(rPR_Shapes.SE_point);
+                                points.Add(rPR_Shapes.NE_point);
+
+                                rPR_Shapes.shape.Points = points;
+
+                                current_anchor_postion.X = Canvas.GetLeft(rPR_Shapes.shape);
+
+                                Canvas.SetLeft(rPR_Shapes.shape, Canvas.GetLeft(rPR_Shapes.shape) - Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2);
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
+                            }
+                            else if (point_summ_second_X > 80)
+                            {
+                                rPR_Shapes.SE_point.X -= Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                rPR_Shapes.NE_point.X -= Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(rPR_Shapes.NW_point);
+                                points.Add(rPR_Shapes.SW_point);
+                                points.Add(rPR_Shapes.SE_point);
+                                points.Add(rPR_Shapes.NE_point);
+
+                                rPR_Shapes.shape.Points = points;
+
+                                current_anchor_postion.X = Canvas.GetLeft(rPR_Shapes.shape);
+
+                                Canvas.SetLeft(rPR_Shapes.shape, Canvas.GetLeft(rPR_Shapes.shape) + Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2);
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
+                            }
+                        }
+                    }
+                    void AnchorNWSE_MouseMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
+                        {
+
+                            var obj_anchor = (Polyline)sndr;
+                            obj_anchor.CaptureMouse();
+
+                            anchor.ResetParametrs();
                             Cursor = Cursors.SizeNWSE;
 
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) - Math.Sqrt(Math.Pow(cycleNE.X, 2))) / 2;
-                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) - Math.Sqrt(Math.Pow(cycleSW.Y, 2))) / 2;
+                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2))) / 2;
+                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2))) / 2;
 
-                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) + Math.Sqrt(Math.Pow(cycleNE.X, 2)));
-                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) + Math.Sqrt(Math.Pow(cycleSW.Y, 2)));
+                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
+                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
 
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
-                                cycleW.X -= Math.Abs(pos.Y - current_anchor_postion.Y) / 10;
-                                cycleW.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 8;
+                                rPR_Shapes.SW_point.Y += 10;
 
-                                cycleSW.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
+                                rPR_Shapes.SE_point.X += 10;
+                                rPR_Shapes.SE_point.Y += 10;
 
-                                cycleSE.X += Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-                                cycleSE.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                cycleE.X += Math.Abs(pos.Y - current_anchor_postion.Y) / 1.65;
-                                cycleE.Y += Math.Abs(pos.Y - current_anchor_postion.Y) / 8;
-
-                                cycleNE.X += Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
+                                rPR_Shapes.NE_point.X += 10;
 
                                 PointCollection points = new PointCollection();
-                                points.Add(cycleW);
-                                points.Add(cycleSW);
-                                points.Add(cycleSE);
-                                points.Add(cycleE);
-                                points.Add(cycleNE);
-                                points.Add(cycleNW);
+                                points.Add(rPR_Shapes.NW_point);
+                                points.Add(rPR_Shapes.SW_point);
+                                points.Add(rPR_Shapes.SE_point);
+                                points.Add(rPR_Shapes.NE_point);
 
-                                smt.Points = points;
+                                rPR_Shapes.shape.Points = points;
 
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+                                current_anchor_postion.X = Canvas.GetLeft(rPR_Shapes.shape);
+                                current_anchor_postion.Y = Canvas.GetTop(rPR_Shapes.shape);
 
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) + Math.Sqrt(Math.Pow(cycleNE.X, 2)));
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) + Math.Sqrt(Math.Pow(cycleSW.Y, 2)));
+                                Canvas.SetLeft(rPR_Shapes.shape, Canvas.GetLeft(rPR_Shapes.shape) - 10);
+                                Canvas.SetTop(rPR_Shapes.shape, Canvas.GetTop(rPR_Shapes.shape) - 10);
 
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 2);
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
                             }
-                            else if (point_summ_second_X > 60 && point_summ_second_Y > 40)
+                            else if (point_summ_second_X > 70 && point_summ_second_Y > 40)
                             {
-                                cycleW.X += Math.Abs(pos.Y - current_anchor_postion.Y) / 10;
-                                cycleW.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 8;
+                                rPR_Shapes.SW_point.Y -= 10;
 
-                                cycleSW.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
+                                rPR_Shapes.SE_point.X -= 10;
+                                rPR_Shapes.SE_point.Y -= 10;
 
-                                cycleSE.X -= Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
-                                cycleSE.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
-
-                                cycleE.X -= Math.Abs(pos.Y - current_anchor_postion.Y) / 1.65;
-                                cycleE.Y -= Math.Abs(pos.Y - current_anchor_postion.Y) / 8;
-
-                                cycleNE.X -= Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
+                                rPR_Shapes.NE_point.X -= 10;
 
                                 PointCollection points = new PointCollection();
-                                points.Add(cycleW);
-                                points.Add(cycleSW);
-                                points.Add(cycleSE);
-                                points.Add(cycleE);
-                                points.Add(cycleNE);
-                                points.Add(cycleNW);
+                                points.Add(rPR_Shapes.NW_point);
+                                points.Add(rPR_Shapes.SW_point);
+                                points.Add(rPR_Shapes.SE_point);
+                                points.Add(rPR_Shapes.NE_point);
 
-                                smt.Points = points;
+                                rPR_Shapes.shape.Points = points;
 
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+                                current_anchor_postion.X = Canvas.GetLeft(rPR_Shapes.shape);
+                                current_anchor_postion.Y = Canvas.GetTop(rPR_Shapes.shape);
 
-                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) + Math.Sqrt(Math.Pow(cycleNE.X, 2)));
-                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) + Math.Sqrt(Math.Pow(cycleSW.Y, 2)));
+                                Canvas.SetLeft(rPR_Shapes.shape, Canvas.GetLeft(rPR_Shapes.shape) + 10);
+                                Canvas.SetTop(rPR_Shapes.shape, Canvas.GetTop(rPR_Shapes.shape) + 10);
 
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 2);
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + anchor_left_indent + txt.ActualWidth/2.5 - 14);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + anchor_top_indent - 5);
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
                             }
                         }
                     }
                     void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
                     {
-                        var anchor = (Polyline)sndr;
-                        anchor.ReleaseMouseCapture();
+                        var obj_anchor = (UIElement)sndr;
+                        obj_anchor.ReleaseMouseCapture();
 
-                        anchor_size.Stroke = Brushes.Red;
-                        anchor_left.Stroke = Brushes.Red;
-                        anchor_top.Stroke = Brushes.Red;
-
+                        anchor.SetParametrs();
                         Cursor = Cursors.Arrow;
 
-                        Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt) + 8);
-                        Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
+                        Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + anchor_left_indent);
+                        Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - anchor.shiftTop);
 
-                        Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt));
-                        Canvas.SetTop(anchor_left, Canvas.GetTop(smt) + anchor_top_indent - 5);
+                        Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(obj));
+                        Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj) + anchor_top_indent - anchor.shiftTop);
 
-                        Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + anchor_left_indent - 3);
-                        Canvas.SetTop(anchor_top, Canvas.GetTop(smt) - 6);
+                        Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj) + anchor.shiftLeft);
+                        Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
                     }
 
-                    #endregion
+                    Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + anchor_left_indent);
+                    Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - anchor.shiftTop);
 
-                    CanvasPos.Children.Add(anchor_size);
-                    CanvasPos.Children.Add(anchor_left);
-                    CanvasPos.Children.Add(anchor_top);
+                    Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(obj));
+                    Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj) + anchor_top_indent - anchor.shiftTop);
 
-                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt) + 8);
-                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
-
-                    Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt));
-                    Canvas.SetTop(anchor_left, Canvas.GetTop(smt) + anchor_top_indent - 5);
-
-                    Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + anchor_left_indent - 3);
-                    Canvas.SetTop(anchor_top, Canvas.GetTop(smt) - 6);
-
-                    is_anchor_create = true;
+                    Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj) + anchor.shiftLeft);
+                    Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
                 }
-                #endregion
 
-                #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    CanvasPos.Children.Remove(smt);
-                    CanvasPos.Children.Remove(txt);
-                    CanvasPos.Children.Remove(anchor_size);
-                    CanvasPos.Children.Remove(anchor_left);
-                    CanvasPos.Children.Remove(anchor_top);
-                }
-                #endregion
+                    CanvasPos.Children.Remove(txt.txtbx);
+                    CanvasPos.Children.Remove(rPR_Shapes.shape);
 
-                CycleIntoCanvasMouseMove(polygon, txt, cycleNW, cycleW, cycleSW, cycleSE, cycleE, cycleNE);
+                    CanvasPos.Children.Remove(anchor.anchor_NS);
+                    CanvasPos.Children.Remove(anchor.anchor_WE);
+                    CanvasPos.Children.Remove(anchor.anchor_NWSE);
+                }
+
+                RPC_Shape_Move(rPR_Shapes, txt, anchor);
             }
         }
-        private void CycleIntoCanvasMouseMove(Polygon polygon, TextBox txt, Point cycleNW, Point cycleW, Point cycleSW, Point cycleSE, Point cycleE, Point cycleNE)
+        public void AddRh_Shape(Rh_Shape shape, TXT txt, Anchor anchor)
         {
-            polygon.MouseMove += IntoCanvasMove;
+            shape.shape.MouseDown += Rh_MouseDown;
 
-            void IntoCanvasMove(object sender, MouseEventArgs e)
+            void Rh_MouseDown(object sender, MouseButtonEventArgs e)
             {
-                if (e.LeftButton == MouseButtonState.Pressed)
-                {
-                    if (is_anchor_create)
-                    {
-                        is_anchor_create = false;
-                        CanvasPos.Children.Remove(anchor_size);
-                        CanvasPos.Children.Remove(anchor_left);
-                        CanvasPos.Children.Remove(anchor_top);
-                    }
-
-                    var smt = (UIElement)sender;
-                    smt.CaptureMouse();
-
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) - Math.Sqrt(Math.Pow(cycleNE.X, 2))) / 2;
-                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) - Math.Sqrt(Math.Pow(cycleSW.Y, 2))) / 2;
-
-                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
-                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
-
-                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + anchor_left_indent - txt.ActualWidth/2.5 + 5);
-                    Canvas.SetTop(txt, Canvas.GetTop(smt) + anchor_top_indent - 5);
-                }
-            }
-        }
-
-        private void EllipseAdd(Rectangle polygon, TextBox txt)
-        {
-            polygon.MouseDown += IntoCanvasMouseDownRectangle;
-
-            void IntoCanvasMouseDownRectangle(object sender, MouseButtonEventArgs e)
-            {
-                var smt = (Rectangle)sender;
-                lastPoint = e.GetPosition(smt);
+                var obj = (UIElement)sender;
+                lastPoint = e.GetPosition(obj);
 
                 if (e.ClickCount == 2)
-                    TextMethodSee(polygon, txt);
+                    TextMethodSee(shape, txt, anchor);
 
-                #region anchor
-                if (!is_anchor_create)
+                if (!anchor.is_anchor_create)
                 {
-                    #region points_anhcors
+                    anchor.is_anchor_create = true;
 
-                    anchor_size = new Polyline();
-                    anchor_size.Points = Anchor.Points;
-                    anchor_size.Stroke = Brushes.Red;
-                    anchor_size.Fill   = Brushes.Transparent;
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_Point.X, 2))) / 2;
+                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.S_Point.Y, 2))) / 2;
 
-                    anchor_size.MouseDown += AnchorMouseDown;
-                    anchor_size.MouseMove += AnchorMouseMove;
-                    anchor_size.MouseUp   += AnchorMouseUp;
+                    double special_anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.W_Point.Y, 2)));
 
-                    anchor_left = new Polyline();
-                    anchor_left.Points = anchor_Left.Points;
-                    anchor_left.Stroke = Brushes.Red;
-                    anchor_left.Fill   = Brushes.Transparent;
+                    anchor.SetParametrs();
 
-                    anchor_left.MouseDown += AnchorMouseDown;
-                    anchor_left.MouseMove += AnchorLeftMouseMove;
-                    anchor_left.MouseUp   += AnchorMouseUp;
+                    anchor.anchor_WE.MouseDown += AnchorMouseDown;
+                    anchor.anchor_WE.MouseMove += AnchorWE_MouseMove;
+                    anchor.anchor_WE.MouseUp += AnchorMouseUp;
 
-                    anchor_top = new Polyline();
-                    anchor_top.Points = anchor_Top.Points;
-                    anchor_top.Stroke = Brushes.Red;
-                    anchor_top.Fill   = Brushes.Transparent;
+                    anchor.anchor_NS.MouseDown += AnchorMouseDown;
+                    anchor.anchor_NS.MouseMove += AnchorNS_MouseMove;
+                    anchor.anchor_NS.MouseUp += AnchorMouseUp;
 
-                    anchor_top.MouseDown += AnchorMouseDown;
-                    anchor_top.MouseMove += AnchorTopMouseMove;
-                    anchor_top.MouseUp   += AnchorMouseUp;
-
-                    #endregion
-
-                    #region anchor_action
+                    anchor.anchor_NWSE.MouseDown += AnchorMouseDown;
+                    anchor.anchor_NWSE.MouseMove += AnchorNWSE_MouseMove;
+                    anchor.anchor_NWSE.MouseUp += AnchorMouseUp;
 
                     void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
                     {
-                        var anchor = (UIElement)sndr;
-                        lastPoint_anchor = evnt.GetPosition(anchor);
+                        var obj_anchor = (UIElement)sndr;
+                        lastPoint_anchor = evnt.GetPosition(obj_anchor);
                         current_anchor_postion = evnt.GetPosition(CanvasPos);
                     }
-                    void AnchorTopMouseMove(object sndr, MouseEventArgs evnt) 
+                    void AnchorWE_MouseMove(object sndr, MouseEventArgs evnt)
                     {
-                        if(evnt.LeftButton == MouseButtonState.Pressed)
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
+                            var obj_anchor = (Polyline)sndr;
+                            obj_anchor.CaptureMouse();
 
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke  = Brushes.Transparent;
+                            anchor.ResetParametrs();
+                            Cursor = Cursors.SizeWE;
 
+                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_Point.X, 2))) / 2;
+                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.S_Point.Y, 2))) / 2;
+
+                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
+
+                            if (pos.X < current_anchor_postion.X)
+                            {
+                                shape.N_Point.X += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                shape.S_Point.X += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                shape.E_Point.X += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2)));
+
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_Point);
+                                points.Add(shape.S_Point);
+                                points.Add(shape.E_Point);
+                                points.Add(shape.N_Point);
+
+                                shape.shape.Points = points;
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2);
+
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + 27);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape);
+
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
+                            }
+                            else if (point_summ_second_X > 70)
+                            {
+                                shape.N_Point.X -= Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                shape.S_Point.X -= Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                shape.E_Point.X -= Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2)));
+
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_Point);
+                                points.Add(shape.S_Point);
+                                points.Add(shape.E_Point);
+                                points.Add(shape.N_Point);
+
+                                shape.shape.Points = points;
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) + Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2);
+
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + 27);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape);
+
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
+                            }
+                        }
+                    }
+                    void AnchorNS_MouseMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
+                        {
+                            var obj_anchor = (Polyline)sndr;
+                            obj_anchor.CaptureMouse();
+
+                            anchor.ResetParametrs();
                             Cursor = Cursors.SizeNS;
+
+                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_Point.X, 2))) / 2;
+                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.S_Point.Y, 2))) / 2;
+
+                            special_anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.W_Point.Y, 2)));
+
+                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) + Math.Sqrt(Math.Pow(shape.S_Point.Y, 2)));
+
+                            if (pos.Y < current_anchor_postion.Y)
+                            {
+                                shape.N_Point.Y -= Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2)));
+
+                                shape.S_Point.Y += Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2)));
+
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_Point);
+                                points.Add(shape.S_Point);
+                                points.Add(shape.E_Point);
+                                points.Add(shape.N_Point);
+
+                                shape.shape.Points = points;
+
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) - Math.Abs(pos.Y - current_anchor_postion.Y));
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + 27);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
+
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape) - special_anchor_top_indent - 5;
+
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) + Math.Sqrt(Math.Pow(shape.S_Point.Y, 2)));
+                            }
+                            else if (point_summ_second_Y > 30)
+                            {
+                                shape.N_Point.Y += Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2)));
+
+                                shape.S_Point.Y -= Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2)));
+
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_Point);
+                                points.Add(shape.S_Point);
+                                points.Add(shape.E_Point);
+                                points.Add(shape.N_Point);
+
+                                shape.shape.Points = points;
+
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) + Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))));
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + 27);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
+
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape) - special_anchor_top_indent - 5;
+
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) + Math.Sqrt(Math.Pow(shape.S_Point.Y, 2)));
+                            }
+                        }
+                    }
+                    void AnchorNWSE_MouseMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
+                        {
+                            var obj_anchor = (Polyline)sndr;
+                            obj_anchor.CaptureMouse();
+
+                            anchor.ResetParametrs();
+                            Cursor = Cursors.SizeNWSE;
+
+                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_Point.X, 2))) / 2;
+                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.S_Point.Y, 2))) / 2;
+
+                            special_anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.W_Point.Y, 2)));
+
+                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
+                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) + Math.Sqrt(Math.Pow(shape.S_Point.Y, 2)));
+
+                            if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
+                            {
+                                shape.N_Point.X += 10;
+                                shape.N_Point.Y -= 10;
+
+                                shape.S_Point.X += 10;
+                                shape.S_Point.Y += 10;
+
+                                shape.E_Point.X += 20;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_Point);
+                                points.Add(shape.S_Point);
+                                points.Add(shape.E_Point);
+                                points.Add(shape.N_Point);
+
+                                shape.shape.Points = points;
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - 10);
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) - 10);
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + 27);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape);
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape) - anchor_top_indent;
+
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) + Math.Sqrt(Math.Pow(shape.S_Point.Y, 2)));
+                            }
+                            else if (point_summ_second_X > 70 && point_summ_second_Y > 35)
+                            {
+                                shape.N_Point.X -= 10;
+                                shape.N_Point.Y += 10;
+
+                                shape.S_Point.X -= 10;
+                                shape.S_Point.Y -= 10;
+
+                                shape.E_Point.X -= 20;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_Point);
+                                points.Add(shape.S_Point);
+                                points.Add(shape.E_Point);
+                                points.Add(shape.N_Point);
+
+                                shape.shape.Points = points;
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) + 10);
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) + 10);
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + 27);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape);
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape);
+
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) + Math.Sqrt(Math.Pow(shape.S_Point.Y, 2)));
+                            }
+                        }
+                    }
+                    void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var obj_anchor = (UIElement)sndr;
+                        obj_anchor.ReleaseMouseCapture();
+
+                        anchor.SetParametrs();
+                        Cursor = Cursors.Arrow;
+
+                        Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + anchor_left_indent - anchor.shiftLeft);
+                        Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - special_anchor_top_indent - 5);
+
+                        Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(obj) - anchor.shiftLeft);
+                        Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj));
+
+                        Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj));
+                        Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
+                    }
+
+                    Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + anchor_left_indent - anchor.shiftLeft);
+                    Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - special_anchor_top_indent - 5);
+
+                    Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(obj) - anchor.shiftLeft);
+                    Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj));
+
+                    Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj));
+                    Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
+                }
+
+                if (e.RightButton == MouseButtonState.Pressed)
+                {
+                    CanvasPos.Children.Remove(txt.txtbx);
+                    CanvasPos.Children.Remove(shape.shape);
+
+                    CanvasPos.Children.Remove(anchor.anchor_NS);
+                    CanvasPos.Children.Remove(anchor.anchor_WE);
+                    CanvasPos.Children.Remove(anchor.anchor_NWSE);
+                }
+
+                Rh_Shape_Move(shape, txt, anchor);
+            }
+        }
+        public void AddCy_Shape(Cy_Shape shape, TXT txt, Anchor anchor)
+        {
+            shape.shape.MouseDown += RPR_MouseDown;
+
+            void RPR_MouseDown(object sender, MouseButtonEventArgs e)
+            {
+                var obj = (UIElement)sender;
+                lastPoint = e.GetPosition(obj);
+
+                if (e.ClickCount == 2)
+                    TextMethodSee(shape, txt, anchor);
+
+                if (!anchor.is_anchor_create)
+                {
+                    anchor.is_anchor_create = true;
+
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
+                    double special_acnhor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_point.X, 2))) / 5;
+
+                    anchor.SetParametrs();
+
+                    anchor.anchor_WE.MouseDown += AnchorMouseDown;
+                    anchor.anchor_WE.MouseMove += AnchorWE_MouseMove;
+                    anchor.anchor_WE.MouseUp += AnchorMouseUp;
+
+                    anchor.anchor_NS.MouseDown += AnchorMouseDown;
+                    anchor.anchor_NS.MouseMove += AnchorNS_MouseMove;
+                    anchor.anchor_NS.MouseUp += AnchorMouseUp;
+
+                    anchor.anchor_NWSE.MouseDown += AnchorMouseDown;
+                    anchor.anchor_NWSE.MouseMove += AnchorNWSE_MouseMove;
+                    anchor.anchor_NWSE.MouseUp += AnchorMouseUp;
+
+                    void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var obj_anchor = (UIElement)sndr;
+                        lastPoint_anchor = evnt.GetPosition(obj_anchor);
+                        current_anchor_postion = evnt.GetPosition(CanvasPos);
+                    }
+                    void AnchorNS_MouseMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
+                        {
+                            var obj_anchor = (Polyline)sndr;
+                            obj_anchor.CaptureMouse();
+
+                            anchor.ResetParametrs();
+                            Cursor = Cursors.SizeNS;
+
+                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
+                            special_acnhor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_point.X, 2))) / 5;
+
+                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(shape.SW_point.Y, 2)));
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
 
                             if (pos.Y < current_anchor_postion.Y)
                             {
-                                smt.Height += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
+                                shape.W_point.Y += Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4;
 
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+                                shape.SW_point.Y += Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 2;
 
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
+                                shape.SE_point.Y += Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 2;
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
+                                shape.E_point.Y += Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_point);
+                                points.Add(shape.SW_point);
+                                points.Add(shape.SE_point);
+                                points.Add(shape.E_point);
+                                points.Add(shape.NE_point);
+                                points.Add(shape.NW_point);
+
+                                shape.shape.Points = points;
+
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape);
+
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(shape.SW_point.Y, 2)));
+
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) - Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))));
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.3);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
                             }
-                            else if (polygon.Height > 40)
+                            else if (point_summ_second_Y > 40)
                             {
-                                polygon.Height -= Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
+                                shape.W_point.Y -= Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4;
 
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+                                shape.SW_point.Y -= Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 2;
 
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
+                                shape.SE_point.Y -= Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 2;
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
+                                shape.E_point.Y -= Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4;
 
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_point);
+                                points.Add(shape.SW_point);
+                                points.Add(shape.SE_point);
+                                points.Add(shape.E_point);
+                                points.Add(shape.NE_point);
+                                points.Add(shape.NW_point);
+
+                                shape.shape.Points = points;
+
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape);
+
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(shape.SW_point.Y, 2)));
+
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) + Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))));
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.3);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
                             }
                         }
                     }
-                    void AnchorLeftMouseMove(object sndr, MouseEventArgs evnt)
-                    {
-                        if(evnt.LeftButton == MouseButtonState.Pressed)
-                        {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
-
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke = Brushes.Transparent;
-
-                            Cursor = Cursors.SizeWE;
-
-                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
-
-                            if (pos.X < current_anchor_postion.X)
-                            {
-                                smt.Width += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
-                            }
-                            else if (polygon.Width > 75)
-                            {
-                                smt.Width -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
-
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
-
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
-                            }
-                        }
-                    }
-                    void AnchorMouseMove(object sndr, MouseEventArgs evnt)
+                    void AnchorWE_MouseMove(object sndr, MouseEventArgs evnt)
                     {
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-                            var anchor = (Polyline)sndr;
-                            anchor.CaptureMouse();
+                            var obj_anchor = (Polyline)sndr;
+                            obj_anchor.CaptureMouse();
 
-                            anchor_size.Stroke = Brushes.Transparent;
-                            anchor_left.Stroke = Brushes.Transparent;
-                            anchor_top.Stroke = Brushes.Transparent;
+                            anchor.ResetParametrs();
+                            Cursor = Cursors.SizeWE;
 
+                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
+                            special_acnhor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_point.X, 2))) / 5;
+
+                            var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) + Math.Sqrt(Math.Pow(shape.NE_point.X, 2)));
+
+                            if (pos.X < current_anchor_postion.X)
+                            {
+                                shape.W_point.X -= Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 10;
+
+                                shape.SE_point.X += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                shape.E_point.X += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 1.65;
+
+                                shape.NE_point.X += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_point);
+                                points.Add(shape.SW_point);
+                                points.Add(shape.SE_point);
+                                points.Add(shape.E_point);
+                                points.Add(shape.NE_point);
+                                points.Add(shape.NW_point);
+
+                                shape.shape.Points = points;
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape) - anchor_left_indent / 3;
+
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) + Math.Sqrt(Math.Pow(shape.NE_point.X, 2)));
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2);
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2 + 7);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+                            }
+                            else if (point_summ_second_X > 80)
+                            {
+                                shape.W_point.X += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 10;
+
+                                shape.SE_point.X -= Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                shape.E_point.X -= Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 1.65;
+
+                                shape.NE_point.X -= Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_point);
+                                points.Add(shape.SW_point);
+                                points.Add(shape.SE_point);
+                                points.Add(shape.E_point);
+                                points.Add(shape.NE_point);
+                                points.Add(shape.NW_point);
+
+                                shape.shape.Points = points;
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape) - anchor_left_indent / 3;
+
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) + Math.Sqrt(Math.Pow(shape.NE_point.X, 2)));
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) + Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2);
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2 + 7);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+                            }
+                        }
+                    }
+                    void AnchorNWSE_MouseMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (evnt.LeftButton == MouseButtonState.Pressed)
+                        {
+                            var obj_anchor = (Polyline)sndr;
+                            obj_anchor.CaptureMouse();
+
+                            anchor.ResetParametrs();
                             Cursor = Cursors.SizeNWSE;
+
+                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
+                            special_acnhor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_point.X, 2))) / 5;
+
+                            double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) + Math.Sqrt(Math.Pow(shape.NE_point.X, 2)));
+                            double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(shape.SW_point.Y, 2)));
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
 
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
-                                smt.Width += Math.Abs(pos.X - current_anchor_postion.X) / 2;
-                                smt.Height += Math.Abs(pos.Y - current_anchor_postion.Y) / 4;
+                                shape.W_point.X -= 3;
+                                shape.W_point.Y += 2.5;
 
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+                                shape.SW_point.Y += 5;
 
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) - Math.Abs(pos.X - current_anchor_postion.X) / 2);
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) - Math.Abs(pos.Y - current_anchor_postion.Y) / 4);
+                                shape.SE_point.X += 10;
+                                shape.SE_point.Y += 5;
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
+                                shape.E_point.X += 13;
+                                shape.E_point.Y += 2.5;
+
+                                shape.NE_point.X += 10;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_point);
+                                points.Add(shape.SW_point);
+                                points.Add(shape.SE_point);
+                                points.Add(shape.E_point);
+                                points.Add(shape.NE_point);
+                                points.Add(shape.NW_point);
+
+                                shape.shape.Points = points;
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape);
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape);
+
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) + Math.Sqrt(Math.Pow(shape.NE_point.X, 2)));
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(shape.SW_point.Y, 2)));
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - 10);
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) - 5);
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2 + 7);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
                             }
-                            else if (polygon.Width > 75 && polygon.Height > 40)
+                            else if (point_summ_second_X > 70 && point_summ_second_Y > 40)
                             {
-                                smt.Width  -= Math.Abs(pos.X - current_anchor_postion.X) / 2;
-                                smt.Height -= Math.Abs(pos.Y - current_anchor_postion.Y) / 2;
+                                shape.W_point.X += 3;
+                                shape.W_point.Y -= 2.5;
 
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
-                                current_anchor_postion.Y = Canvas.GetTop(polygon);
+                                shape.SW_point.Y -= 5;
 
-                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 2);
-                                Canvas.SetTop(polygon, Canvas.GetTop(polygon) + Math.Abs(pos.X - current_anchor_postion.X) / 4);
+                                shape.SE_point.X -= 10;
+                                shape.SE_point.Y -= 5;
 
-                                Canvas.SetLeft(txt, Canvas.GetLeft(polygon) + polygon.Width / 2 - txt.ActualWidth/2.5);
-                                Canvas.SetTop(txt, Canvas.GetTop(polygon) + polygon.Height / 2 - 10);
+                                shape.E_point.X -= 13;
+                                shape.E_point.Y -= 2.5;
+
+                                shape.NE_point.X -= 10;
+
+                                PointCollection points = new PointCollection();
+                                points.Add(shape.W_point);
+                                points.Add(shape.SW_point);
+                                points.Add(shape.SE_point);
+                                points.Add(shape.E_point);
+                                points.Add(shape.NE_point);
+                                points.Add(shape.NW_point);
+
+                                shape.shape.Points = points;
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape);
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape);
+
+                                point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) + Math.Sqrt(Math.Pow(shape.NE_point.X, 2)));
+                                point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(shape.SW_point.Y, 2)));
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) + 10);
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) + 5);
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2 + 7);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+                            }
+                        }
+                    }
+                    void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var obj_anchor = (UIElement)sndr;
+                        obj_anchor.ReleaseMouseCapture();
+
+                        anchor.SetParametrs();
+                        Cursor = Cursors.Arrow;
+
+                        Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + anchor_left_indent);
+                        Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - anchor.shiftTop);
+
+                        Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(obj) - special_acnhor_left_indent + 5);
+                        Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj) + anchor_top_indent - anchor.shiftTop * 2);
+
+                        Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj) + anchor.shiftLeft);
+                        Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
+                    }
+
+                    Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + anchor_left_indent);
+                    Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - anchor.shiftTop);
+
+                    Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(obj) - special_acnhor_left_indent + 5);
+                    Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj) + anchor_top_indent - anchor.shiftTop * 2);
+
+                    Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj) + anchor.shiftLeft);
+                    Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
+                }
+
+                if (e.RightButton == MouseButtonState.Pressed)
+                {
+                    CanvasPos.Children.Remove(txt.txtbx);
+                    CanvasPos.Children.Remove(shape.shape);
+
+                    CanvasPos.Children.Remove(anchor.anchor_NS);
+                    CanvasPos.Children.Remove(anchor.anchor_WE);
+                    CanvasPos.Children.Remove(anchor.anchor_NWSE);
+                }
+
+                RPC_Shape_Move(shape, txt, anchor);
+            }
+        }
+        public void AddEll_Shape(Ell_Shape shape, TXT txt, Anchor anchor)
+        {
+            shape.shape.MouseDown += Ell_MouseDown;
+
+            void Ell_MouseDown(object sender, MouseButtonEventArgs e)
+            {
+                var obj = (Rectangle)sender;
+                lastPoint = e.GetPosition(obj);
+
+                if (e.ClickCount == 2)
+                    TextMethodSee(shape, txt, anchor);
+
+                if (!anchor.is_anchor_create)
+                {
+                    anchor.is_anchor_create = true;
+
+                    anchor.SetParametrs();
+
+                    anchor.anchor_NS.MouseDown += AnchorMouseDown;
+                    anchor.anchor_NS.MouseMove += AnchorTopMove;
+                    anchor.anchor_NS.MouseUp += AnchorMouseUp;
+
+                    anchor.anchor_WE.MouseDown += AnchorMouseDown;
+                    anchor.anchor_WE.MouseMove += AnchorLeftMove;
+                    anchor.anchor_WE.MouseUp += AnchorMouseUp;
+
+                    anchor.anchor_NWSE.MouseDown += AnchorMouseDown;
+                    anchor.anchor_NWSE.MouseMove += AnchorMouseMove;
+                    anchor.anchor_NWSE.MouseUp += AnchorMouseUp;
+
+                    void AnchorMouseDown(object sndr, MouseButtonEventArgs evnt)
+                    {
+                        var obj_anchor = (UIElement)sndr;
+                        lastPoint_anchor = evnt.GetPosition(obj_anchor);
+
+                        current_anchor_postion = e.GetPosition(CanvasPos);
+                    }
+                    void AnchorTopMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (e.LeftButton == MouseButtonState.Pressed)
+                        {
+                            var obj_anchor = (UIElement)sndr;
+                            obj_anchor.CaptureMouse();
+
+                            anchor.ResetParametrs();
+                            Cursor = Cursors.SizeNS;
+
+                            var pos = evnt.GetPosition(CanvasPos) - lastPoint;
+
+                            current_anchor_postion.Y = Canvas.GetTop(shape.shape) - anchor.shiftTop * 1.5;
+
+                            if (pos.Y < current_anchor_postion.Y)
+                            {
+                                shape.shape.Height += Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2)));
+
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) - Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))));
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - txt.txtbx.ActualWidth / 2);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - txt.text_top_indent);
+
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape) - anchor.shiftTop * 1.5;
+                            }
+                            else if (shape.shape.Height > 30)
+                            {
+                                shape.shape.Height -= Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2)));
+
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) + Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))));
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - txt.txtbx.ActualWidth / 2);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - txt.text_top_indent);
+
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape) - anchor.shiftTop * 1.5;
+                            }
+                        }
+                    }
+                    void AnchorLeftMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (e.LeftButton == MouseButtonState.Pressed)
+                        {
+                            var obj_anchor = (UIElement)sndr;
+                            obj_anchor.CaptureMouse();
+
+                            anchor.ResetParametrs();
+                            Cursor = Cursors.SizeWE;
+
+                            var pos = evnt.GetPosition(CanvasPos) - lastPoint;
+
+                            current_anchor_postion.X = Canvas.GetLeft(shape.shape) - shape.shape.ActualWidth / 5;
+
+                            if (pos.X < current_anchor_postion.X)
+                            {
+                                shape.shape.Width += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2)));
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))));
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - txt.txtbx.ActualWidth / 2);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - txt.text_top_indent);
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape) - anchor.shiftLeft;
+                            }
+                            else if (shape.shape.Width > 70)
+                            {
+                                shape.shape.Width -= Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2)));
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) + Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))));
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - txt.txtbx.ActualWidth / 2);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - txt.text_top_indent);
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape) - shape.shape.ActualWidth / 5;
+                            }
+                        }
+                    }
+                    void AnchorMouseMove(object sndr, MouseEventArgs evnt)
+                    {
+                        if (e.LeftButton == MouseButtonState.Pressed)
+                        {
+                            var obj_anchor = (UIElement)sndr;
+                            obj_anchor.CaptureMouse();
+
+                            anchor.ResetParametrs();
+                            Cursor = Cursors.SizeNWSE;
+
+                            var pos = e.GetPosition(CanvasPos) - lastPoint;
+
+                            if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
+                            {
+                                shape.shape.Width += 10;
+                                shape.shape.Height += 10;
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - 10);
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) - 10);
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - txt.txtbx.ActualWidth / 2);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - txt.text_top_indent);
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape);
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape);
+                            }
+                            else if (shape.shape.Width > 70 && shape.shape.Height > 40)
+                            {
+                                shape.shape.Width -= 10;
+                                shape.shape.Height -= 10;
+
+                                Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) + 10);
+                                Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) + 10);
+
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - txt.txtbx.ActualWidth / 2);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - txt.text_top_indent);
+
+                                current_anchor_postion.X = Canvas.GetLeft(shape.shape);
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape);
 
                             }
                         }
                     }
                     void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
                     {
-                        var anchor = (Polyline)sndr;
-                        anchor.ReleaseMouseCapture();
+                        var obj_anchor = (UIElement)sndr;
+                        obj_anchor.ReleaseMouseCapture();
 
+                        anchor.SetParametrs();
                         Cursor = Cursors.Arrow;
 
-                        anchor_size.Stroke = Brushes.Red;
-                        anchor_left.Stroke = Brushes.Red;
-                        anchor_top.Stroke = Brushes.Red;
+                        Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - anchor.shiftLeft);
+                        Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(shape.shape) - anchor.shiftTop);
 
+                        Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(shape.shape) - anchor.shiftLeft);
+                        Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - anchor.shiftTop - 2.5);
 
-                        Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt) + 5);
-                        Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
-
-                        Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt) - 6);
-                        Canvas.SetTop(anchor_left, Canvas.GetTop(smt) + polygon.Height / 2 - 8);
-
-                        Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + polygon.Width / 2 - 8);
-                        Canvas.SetTop(anchor_top, Canvas.GetTop(smt) - 6);
+                        Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(shape.shape));
+                        Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(shape.shape));
                     }
 
-                    #endregion
+                    Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - anchor.shiftLeft);
+                    Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(shape.shape) - anchor.shiftTop);
 
-                    CanvasPos.Children.Add(anchor_size);
-                    CanvasPos.Children.Add(anchor_left);
-                    CanvasPos.Children.Add(anchor_top);
+                    Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(shape.shape) - anchor.shiftLeft);
+                    Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - anchor.shiftTop - 2.5);
 
-                    Canvas.SetLeft(anchor_size, Canvas.GetLeft(smt) + 5);
-                    Canvas.SetTop(anchor_size, Canvas.GetTop(smt));
-
-                    Canvas.SetLeft(anchor_left, Canvas.GetLeft(smt) - 6);
-                    Canvas.SetTop(anchor_left, Canvas.GetTop(smt) + polygon.Height/2 - 8);
-
-                    Canvas.SetLeft(anchor_top, Canvas.GetLeft(smt) + polygon.Width/2 - 8);
-                    Canvas.SetTop(anchor_top, Canvas.GetTop(smt) - 6);
-
-                    is_anchor_create = true;
+                    Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(shape.shape));
+                    Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(shape.shape));
                 }
-                #endregion
 
-                #region delete shape
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    CanvasPos.Children.Remove(smt);
-                    CanvasPos.Children.Remove(txt);
-                    CanvasPos.Children.Remove(anchor_size);
-                    CanvasPos.Children.Remove(anchor_left);
-                    CanvasPos.Children.Remove(anchor_top);
-                }
-                #endregion
+                    CanvasPos.Children.Remove(txt.txtbx);
+                    CanvasPos.Children.Remove(shape.shape);
 
-                EllipseIntoCanvasMouseMove(polygon, txt);
+                    CanvasPos.Children.Remove(anchor.anchor_NS);
+                    CanvasPos.Children.Remove(anchor.anchor_WE);
+                    CanvasPos.Children.Remove(anchor.anchor_NWSE);
+                }
+
+                Ell_Shape_Move(shape, txt, anchor);
             }
         }
-        private void EllipseIntoCanvasMouseMove(Rectangle polygon, TextBox txt)
-        {
-            polygon.MouseMove += IntoCanvasMove;
 
-            void IntoCanvasMove(object sender, MouseEventArgs e)
+        public void RPC_Shape_Move(PrimaryShape shape, TXT txt, Anchor anchor)
+        {
+            shape.shape.MouseMove += RPR_Move;
+
+            void RPR_Move(object sender, MouseEventArgs e)
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
-                    if (is_anchor_create)
+                    if (anchor.is_anchor_create)
                     {
-                        is_anchor_create = false;
-                        CanvasPos.Children.Remove(anchor_size);
-                        CanvasPos.Children.Remove(anchor_left);
-                        CanvasPos.Children.Remove(anchor_top);
+                        anchor.is_anchor_create = false;
+
+                        anchor.ResetParametrs();
                     }
 
-                    var smt = (UIElement)sender;
-                    smt.CaptureMouse();
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_NE.X, 2))) / 2;
+                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.Y, 2)) - Math.Sqrt(Math.Pow(shape.Point_SW.Y, 2))) / 2;
 
-                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
-                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+                    var obj = (UIElement)sender;
+                    obj.CaptureMouse();
 
-                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + polygon.Width / 2 - txt.ActualWidth/2.5);
-                    Canvas.SetTop(txt, Canvas.GetTop(smt) + polygon.Height / 2 - 10);
+                    Canvas.SetLeft(obj, e.GetPosition(CanvasPos).X - lastPoint.X);
+                    Canvas.SetTop(obj, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2 + 7);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
                 }
             }
         }
-
-        public void IntoCanvasUp(object sender, MouseButtonEventArgs e)
+        public void Rh_Shape_Move(Rh_Shape shape, TXT txt, Anchor anchor)
         {
-            var smt = (UIElement)sender;
-            smt.ReleaseMouseCapture();
-        }
-        #endregion
+            shape.shape.MouseMove += ShapeMove;
 
-        void DrawLine(Ellipse ellipse, Line line)
-        {
-            ellipse.MouseDown += EllipseDown;
-
-            line.MouseMove += LineMouseMove;
-            line.MouseUp   += LineMouseUp;
-
-            void EllipseDown(object sender, MouseButtonEventArgs e)
+            void ShapeMove(object sndr, MouseEventArgs evnt)
             {
-                line.X1 = Canvas.GetLeft(ellipse);   
-                line.Y1 = Canvas.GetTop(ellipse);
-                line.CaptureMouse();
-            }
-            void LineMouseMove(object sender, MouseEventArgs e)
-            {
-                if(e.LeftButton == MouseButtonState.Pressed)
+                if (evnt.LeftButton == MouseButtonState.Pressed)
                 {
-                    line.CaptureMouse();
-                    line.X2 = e.GetPosition(CanvasPos).X;
-                    line.Y2 = e.GetPosition(CanvasPos).Y;
+                    if (anchor.is_anchor_create)
+                    {
+                        anchor.is_anchor_create = false;
+                        anchor.ResetParametrs();
+                    }
+
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_W.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_E.X, 2))) / 2;
+
+                    var obj = (UIElement)sndr;
+                    obj.CaptureMouse();
+
+                    Canvas.SetLeft(obj, evnt.GetPosition(CanvasPos).X - lastPoint.X);
+                    Canvas.SetTop(obj, evnt.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + 27);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
                 }
             }
-            void LineMouseUp(object sender, MouseButtonEventArgs e)
+        }
+        public void Ell_Shape_Move(Ell_Shape shape, TXT txt, Anchor anchor)
+        {
+            shape.shape.MouseMove += ShapeMove;
+
+            void ShapeMove(object sender, MouseEventArgs e)
             {
-                line.ReleaseMouseCapture();
-                line.X2 = e.GetPosition(CanvasPos).X;
-                line.Y2 = e.GetPosition(CanvasPos).Y;
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    var obj = (UIElement)sender;
+                    obj.CaptureMouse();
+
+                    if (anchor.is_anchor_create)
+                    {
+                        anchor.is_anchor_create = false;
+                        anchor.ResetParametrs();
+                    }
+
+                    Canvas.SetLeft(shape.shape, e.GetPosition(CanvasPos).X - lastPoint.X);
+                    Canvas.SetTop(shape.shape, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - txt.txtbx.ActualWidth / 2);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - txt.text_top_indent);
+                }
+            }
+        }
+
+        public void UIElements_Mouse_Up(object sender, MouseButtonEventArgs e)
+        {
+            var obj = (UIElement)sender;
+            obj.ReleaseMouseCapture();
+        }
+
+
+        public void TextMethodSee(RP_Shapes shape, TXT txt, Anchor anchor)
+        {
+            txt.PrepareToWriting();
+            Canvas.SetZIndex(txt.txtbx, 1);
+
+            double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_NE.X, 2))) / 2;
+            double left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(shape.Point_NE.X, 2)));
+
+            txt.txtbx.KeyDown += Writing;
+
+            void Writing(object sender, KeyEventArgs e)
+            {
+                anchor.ResetParametrs();
+                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - anchor_left_indent / 2 - 5);
+
+                left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(shape.Point_NE.X, 2)));
+
+                if (txt.txtbx.ActualWidth > left_size)
+                {
+                    shape.NE_point.X += Math.Abs(txt.txtbx.ActualWidth - left_size);
+
+                    shape.SE_point.X += Math.Abs(txt.txtbx.ActualWidth - left_size);
+
+                    PointCollection points = new PointCollection();
+                    points.Add(shape.NW_point);
+                    points.Add(shape.SW_point);
+                    points.Add(shape.SE_point);
+                    points.Add(shape.NE_point);
+
+                    shape.shape.Points = points;
+
+                    Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - Math.Abs(txt.txtbx.ActualWidth - left_size) / 2);
+                }
+
+                if (Keyboard.IsKeyDown(Key.Enter))
+                {
+                    txt.ResetParametrs();
+                    Canvas.SetZIndex(txt.txtbx, -1);
+
+                    if (txt.txtbx.ActualWidth > left_size)
+                    {
+                        shape.NE_point.X += 20;
+
+                        shape.SE_point.X += 20;
+
+                        PointCollection points = new PointCollection();
+                        points.Add(shape.NW_point);
+                        points.Add(shape.SW_point);
+                        points.Add(shape.SE_point);
+                        points.Add(shape.NE_point);
+
+                        shape.shape.Points = points;
+
+                        Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - Math.Abs(txt.txtbx.ActualWidth - left_size) / 2);
+                    }
+                }
+            }
+        }
+        public void TextMethodSee(Rh_Shape shape, TXT txt, Anchor anchor)
+        {
+            txt.PrepareToWriting();
+            Canvas.SetZIndex(txt.txtbx, 1);
+
+            double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_Point.X, 2))) / 2;
+            double left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
+
+            txt.txtbx.KeyDown += Writing;
+
+            void Writing(object sender, KeyEventArgs e)
+            {
+                anchor.ResetParametrs();
+                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + 25);
+
+                left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
+
+                if (txt.txtbx.ActualWidth > left_size)
+                {
+                    shape.N_Point.X += 3;
+
+                    shape.E_Point.X += 6;
+
+                    shape.S_Point.X += 3;
+
+                    PointCollection points = new PointCollection();
+                    points.Add(shape.W_Point);
+                    points.Add(shape.S_Point);
+                    points.Add(shape.E_Point);
+                    points.Add(shape.N_Point);
+
+                    shape.shape.Points = points;
+
+                    Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - 3);
+                }
+
+                if (Keyboard.IsKeyDown(Key.Enter))
+                {
+                    txt.ResetParametrs();
+                    Canvas.SetZIndex(txt.txtbx, -1);
+
+                    if (txt.txtbx.ActualWidth > left_size)
+                    {
+                        shape.N_Point.X += 20;
+
+                        shape.E_Point.X += 40;
+
+                        shape.S_Point.X += 20;
+
+                        PointCollection points = new PointCollection();
+                        points.Add(shape.W_Point);
+                        points.Add(shape.S_Point);
+                        points.Add(shape.E_Point);
+                        points.Add(shape.N_Point);
+
+                        shape.shape.Points = points;
+
+                        Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - 3);
+                    }
+                }
+            }
+        }
+        public void TextMethodSee(Cy_Shape shape, TXT txt, Anchor anchor)
+        {
+            txt.PrepareToWriting();
+            Canvas.SetZIndex(txt.txtbx, 1);
+
+            double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_NE.X, 2))) / 2;
+            double left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(shape.Point_NE.X, 2)));
+
+            txt.txtbx.KeyDown += Writing;
+
+            void Writing(object sender, KeyEventArgs e)
+            {
+                anchor.ResetParametrs();
+                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - anchor_left_indent / 2 - 5);
+
+                left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(shape.Point_NE.X, 2)));
+
+                if (txt.txtbx.ActualWidth > left_size)
+                {
+                    shape.W_point.X -= 3;
+
+                    shape.SE_point.X += 10;
+
+                    shape.E_point.X += 13;
+
+                    shape.NE_point.X += 10;
+
+                    PointCollection points = new PointCollection();
+                    points.Add(shape.W_point);
+                    points.Add(shape.SW_point);
+                    points.Add(shape.SE_point);
+                    points.Add(shape.E_point);
+                    points.Add(shape.NE_point);
+                    points.Add(shape.NW_point);
+
+                    shape.shape.Points = points;
+
+                    Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - Math.Abs(txt.txtbx.ActualWidth - left_size) / 2);
+                }
+
+                if (Keyboard.IsKeyDown(Key.Enter))
+                {
+                    txt.ResetParametrs();
+                    Canvas.SetZIndex(txt.txtbx, -1);
+                }
+            }
+        }
+        public void TextMethodSee(Ell_Shape shape, TXT txt, Anchor anchor)
+        {
+            txt.PrepareToWriting();
+            Canvas.SetZIndex(txt.txtbx, 1);
+
+            txt.txtbx.KeyDown += Writing;
+
+            void Writing(object sender, KeyEventArgs e)
+            {
+                anchor.ResetParametrs();
+                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.ActualWidth / 2 - txt.txtbx.ActualWidth / 2);
+
+                if (txt.txtbx.ActualWidth > shape.shape.Width)
+                {
+                    shape.shape.Width += Math.Abs(txt.txtbx.ActualWidth - shape.shape.Width) * 1.5;
+                    Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - Math.Abs(txt.txtbx.ActualWidth - shape.shape.Width) * 1.5);
+                }
+
+                if (Keyboard.IsKeyDown(Key.Enter))
+                {
+                    txt.ResetParametrs();
+                    Canvas.SetZIndex(txt.txtbx, -1);
+                }
             }
         }
 
         private void DnD_Drop(object sender, DragEventArgs e)
         {
-            #region points
-
-            Point rectangleNW = new Point();
-            Point rectangleSW = new Point();
-            Point rectangleSE = new Point();
-            Point rectnagleNE = new Point();
-
-            Point parabellumNW = new Point();
-            Point parabellumSW = new Point();
-            Point parabellumSE = new Point();
-            Point parabellumNE = new Point();
-
-            Point rhombN = new Point();
-            Point rhombW = new Point();
-            Point rhombS = new Point();
-            Point rhombE = new Point();
-
-            Point cycleNW = new Point();
-            Point cycleW = new Point();
-            Point cycleSW = new Point();
-            Point cycleSE = new Point();
-            Point cycleE = new Point();
-            Point cycleNE = new Point();
-
-            #endregion
-
-            #region initialized shapes points
-
-            #region rectangle points
-            rectangleNW.X = 8;
-            rectangleNW.Y = 1;
-
-            rectangleSW.X = 8;
-            rectangleSW.Y = 30;
-
-            rectangleSE.X = 60;
-            rectangleSE.Y = 30;
-
-            rectnagleNE.X = 60;
-            rectnagleNE.Y = 1;
-            #endregion
-
-            #region parrabellum points
-            parabellumNW.X = 8;
-            parabellumNW.Y = 1;
-
-            parabellumSW.X = 0;
-            parabellumSW.Y = 30;
-
-            parabellumSE.X = 60;
-            parabellumSE.Y = 30;
-
-            parabellumNE.X = 68;
-            parabellumNE.Y = 1;
-            #endregion
-
-            #region rhomb points
-            rhombW.X = 0;
-            rhombW.Y = 8;
-
-            rhombS.X = 40;
-            rhombS.Y = 20;
-
-            rhombE.X = 80;
-            rhombE.Y = 8;
-
-            rhombN.X = 40;
-            rhombN.Y = -4;
-            #endregion
-
-            #region cycle points
-
-            cycleW.X = -1;
-            cycleW.Y = 15;
-
-            cycleSW.X = 8;
-            cycleSW.Y = 30;
-
-            cycleSE.X = 60;
-            cycleSE.Y = 30;
-
-            cycleE.X = 69;
-            cycleE.Y = 15;
-
-            cycleNE.X = 60;
-            cycleNE.Y = 1;
-
-            cycleNW.X = 8;
-            cycleNW.Y = 1;
-            #endregion
-
-            #endregion
-
             if (Rectangle_Check)
             {
-                Polygon polyline = new Polygon();
-                TextBox text_into_shapes = new TextBox();
-                Ellipse line_button = new Ellipse();
-                Line line = new Line();
-
                 Rectangle_Check = false;
-                polyline.Points = Rekt.Points;
 
-                text_into_shapes.Text = "Text";
-                text_into_shapes.MinWidth = 40;
-                text_into_shapes.MinHeight = 20;
-                text_into_shapes.FontSize = 10;
-                text_into_shapes.BorderBrush = Brushes.Transparent;
-                text_into_shapes.Foreground = Brushes.White;
-                text_into_shapes.Background = Brushes.Transparent;
-                Canvas.SetZIndex(text_into_shapes, -1);
+                RP_Shapes shape = new RP_Shapes(Rekt, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1));
 
-                polyline.Stroke = Brushes.White;
-                polyline.Fill = Brushes.Transparent;
+                TXT txt = new TXT(7, 5);
+                Canvas.SetZIndex(txt.txtbx, -1);
 
-                polyline.MouseUp += IntoCanvasUp;
+                Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
-                line_button.Width = 5;
-                line_button.Height = 5;
-                line_button.Fill = Brushes.Green;
+                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
 
-                line.Stroke = Brushes.Yellow;
+                shape.shape.MouseUp += UIElements_Mouse_Up;
 
-                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.X, 2)) - Math.Sqrt(Math.Pow(rectnagleNE.X, 2))) / 2;
-                double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rectangleNW.Y, 2)) - Math.Sqrt(Math.Pow(rectangleSW.Y, 2))) / 2;
+                CanvasPos.Children.Add(shape.shape);
+                CanvasPos.Children.Add(txt.txtbx);
 
-                CanvasPos.Children.Add(line);
-                CanvasPos.Children.Add(line_button);
-                CanvasPos.Children.Add(polyline);
-                CanvasPos.Children.Add(text_into_shapes);
+                CanvasPos.Children.Add(anchor.anchor_NS);
+                CanvasPos.Children.Add(anchor.anchor_WE);
+                CanvasPos.Children.Add(anchor.anchor_NWSE);
 
-                Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
-                Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+                Canvas.SetLeft(shape.shape, e.GetPosition(CanvasPos).X - lastPoint.X);
+                Canvas.SetTop(shape.shape, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + anchor_left_indent - 10);
-                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + anchor_top_indent - 5);
+                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent * 2.3);
+                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
 
-                Canvas.SetLeft(line_button, Canvas.GetLeft(polyline) - anchor_left_indent);
-                Canvas.SetTop(line_button, Canvas.GetTop(polyline) + anchor_top_indent);
-
-                RectangleAdd(polyline, text_into_shapes, line_button,line,rectangleNW, rectangleSE, rectangleSW, rectnagleNE);
-                DrawLine(line_button, line);
+                AddRP_Shape(shape, txt, anchor);
             }
             if (Parrabullem_Check)
             {
-                Polygon polyline = new Polygon();
-                TextBox text_into_shapes = new TextBox();
-
                 Parrabullem_Check = false;
-                polyline.Points = Parrabellum.Points;
 
-                text_into_shapes.Text = "Text";
-                text_into_shapes.MinWidth = 40;
-                text_into_shapes.MinHeight = 20;
-                text_into_shapes.FontSize = 10;
-                text_into_shapes.BorderBrush = Brushes.Transparent;
-                text_into_shapes.Foreground = Brushes.White;
-                text_into_shapes.Background = Brushes.Transparent;
-                Canvas.SetZIndex(text_into_shapes, -1);
+                RP_Shapes shape = new RP_Shapes(Parrabellum, new Point(8, 1), new Point(0, 30), new Point(60, 30), new Point(68, 1));
 
-                polyline.Stroke = Brushes.White;
-                polyline.Fill   = Brushes.Transparent;
+                TXT txt = new TXT(7, 5);
+                Canvas.SetZIndex(txt.txtbx, -1);
 
-                polyline.MouseUp += IntoCanvasUp;
+                Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
-                CanvasPos.Children.Add(polyline);
-                CanvasPos.Children.Add(text_into_shapes);
+                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
 
-                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.X, 2)) - Math.Sqrt(Math.Pow(parabellumNE.X, 2))) / 2;
-                double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(parabellumNW.Y, 2)) - Math.Sqrt(Math.Pow(parabellumSW.Y, 2))) / 2;
+                shape.shape.MouseUp += UIElements_Mouse_Up;
 
-                Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
-                Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+                CanvasPos.Children.Add(shape.shape);
+                CanvasPos.Children.Add(txt.txtbx);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + anchor_left_indent - text_into_shapes.ActualWidth/2.5 - 10);
-                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + anchor_top_indent - 5);
+                CanvasPos.Children.Add(anchor.anchor_NS);
+                CanvasPos.Children.Add(anchor.anchor_WE);
+                CanvasPos.Children.Add(anchor.anchor_NWSE);
 
-                ParrabellumAdd(polyline, text_into_shapes, parabellumNW, parabellumSW, parabellumSE, parabellumNE);
+                Canvas.SetLeft(shape.shape, e.GetPosition(CanvasPos).X - lastPoint.X);
+                Canvas.SetTop(shape.shape, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent * 2.3);
+                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+
+                AddRP_Shape(shape, txt, anchor);
             }
             if (Rhomb_Check)
             {
                 Rhomb_Check = false;
 
-                Polygon polyline = new Polygon();
-                TextBox text_into_shapes = new TextBox();
+                Rh_Shape shape = new Rh_Shape(Rhomb, new Point(0, 8), new Point(40, 20), new Point(80, 8), new Point(40, -4));
 
-                Parrabullem_Check = false;
-                polyline.Points = Rhomb.Points;
+                TXT txt = new TXT(10, 7);
+                Canvas.SetZIndex(txt.txtbx, -1);
 
-                text_into_shapes.Text = "Text";
-                text_into_shapes.MinWidth = 40;
-                text_into_shapes.MinHeight = 20;
-                text_into_shapes.FontSize = 10;
-                text_into_shapes.BorderBrush = Brushes.Transparent;
-                text_into_shapes.Foreground = Brushes.White;
-                text_into_shapes.Background = Brushes.Transparent;
-                Canvas.SetZIndex(text_into_shapes, -1);
+                Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 5);
 
-                polyline.Stroke = Brushes.White;
-                polyline.Fill = Brushes.Transparent;
+                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_E.X, 2))) / 2;
 
-                polyline.MouseUp += IntoCanvasUp;
+                shape.shape.MouseUp += UIElements_Mouse_Up;
 
-                CanvasPos.Children.Add(polyline);
-                CanvasPos.Children.Add(text_into_shapes);
+                CanvasPos.Children.Add(shape.shape);
+                CanvasPos.Children.Add(txt.txtbx);
 
-                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombW.X, 2)) + Math.Sqrt(Math.Pow(rhombE.X, 2))) / 2;
-                double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rhombN.Y, 2)) + Math.Sqrt(Math.Pow(rhombS.Y, 2))) / 2;
+                CanvasPos.Children.Add(anchor.anchor_NS);
+                CanvasPos.Children.Add(anchor.anchor_WE);
+                CanvasPos.Children.Add(anchor.anchor_NWSE);
 
-                Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
-                Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+                Canvas.SetLeft(shape.shape, e.GetPosition(CanvasPos).X - lastPoint.X);
+                Canvas.SetTop(shape.shape, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + anchor_left_indent - text_into_shapes.ActualWidth/2.5 - 14);
-                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline));
+                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.3 - txt.text_left_indent);
+                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
 
-                RhombAdd(polyline, text_into_shapes, rhombN, rhombW, rhombS, rhombE);
+                AddRh_Shape(shape, txt, anchor);
             }
             if (Cycle_Check)
             {
                 Cycle_Check = false;
 
-                Polygon polyline = new Polygon();
-                TextBox text_into_shapes = new TextBox();
+                Rectangle_Check = false;
 
-                Parrabullem_Check = false;
-                polyline.Points = Cycle.Points;
+                Cy_Shape shape = new Cy_Shape(Cycle, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1), new Point(-1, 15), new Point(69, 15));
 
-                text_into_shapes.Text = "Text";
-                text_into_shapes.MinWidth = 40;
-                text_into_shapes.MinHeight = 20;
-                text_into_shapes.FontSize = 10;
-                text_into_shapes.BorderBrush = Brushes.Transparent;
-                text_into_shapes.Foreground = Brushes.White;
-                text_into_shapes.Background = Brushes.Transparent;
-                Canvas.SetZIndex(text_into_shapes, -1);
+                TXT txt = new TXT(30, 5);
+                Canvas.SetZIndex(txt.txtbx, -1);
 
-                polyline.Stroke = Brushes.White;
-                polyline.Fill = Brushes.Transparent;
+                Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
-                polyline.MouseUp += IntoCanvasUp;
+                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
 
-                CanvasPos.Children.Add(polyline);
-                CanvasPos.Children.Add(text_into_shapes);
+                shape.shape.MouseUp += UIElements_Mouse_Up;
 
-                double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.X, 2)) - Math.Sqrt(Math.Pow(cycleNE.X, 2))) / 2;
-                double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(cycleNW.Y, 2)) - Math.Sqrt(Math.Pow(cycleSW.Y, 2))) / 2;
+                CanvasPos.Children.Add(shape.shape);
+                CanvasPos.Children.Add(txt.txtbx);
 
-                Canvas.SetLeft(polyline, e.GetPosition(CanvasPos).X - lastPoint.X);
-                Canvas.SetTop(polyline, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+                CanvasPos.Children.Add(anchor.anchor_NS);
+                CanvasPos.Children.Add(anchor.anchor_WE);
+                CanvasPos.Children.Add(anchor.anchor_NWSE);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(polyline) + anchor_left_indent - text_into_shapes.ActualWidth/2.5 - 10);
-                Canvas.SetTop(text_into_shapes, Canvas.GetTop(polyline) + anchor_top_indent - 5);
+                Canvas.SetLeft(shape.shape, e.GetPosition(CanvasPos).X - lastPoint.X);
+                Canvas.SetTop(shape.shape, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                CycleAdd(polyline, text_into_shapes, cycleNW, cycleW, cycleSW, cycleSE, cycleE, cycleNE);
+                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - 15);
+                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+
+                AddCy_Shape(shape, txt, anchor);
             }
             if (Ellipse_Check)
             {
                 Ellipse_Check = false;
 
-                Rectangle rectangle = new Rectangle();
-                TextBox text_into_shapes = new TextBox();
+                Ell_Shape shape = new Ell_Shape(Ellipse);
 
-                rectangle.Width = Ellipse.Width;
-                rectangle.Height = Ellipse.Height;
-                rectangle.RadiusX = Ellipse.RadiusX;
-                rectangle.RadiusY = Ellipse.RadiusY;
-                rectangle.Fill = Brushes.Transparent;
-                rectangle.Stroke = Brushes.White;
+                TXT txt = new TXT(15, 6);
+                Canvas.SetZIndex(txt.txtbx, -1);
 
-                text_into_shapes.Text = "Text";
-                text_into_shapes.MinWidth = 40;
-                text_into_shapes.MinHeight = 20;
-                text_into_shapes.FontSize = 10;
-                text_into_shapes.BorderBrush = Brushes.Transparent;
-                text_into_shapes.Foreground = Brushes.White;
-                text_into_shapes.Background = Brushes.Transparent;
-                Canvas.SetZIndex(text_into_shapes, -1);
+                Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 6);
 
-                rectangle.MouseUp += IntoCanvasUp;
+                shape.shape.MouseUp += UIElements_Mouse_Up;
 
-                CanvasPos.Children.Add(rectangle);
-                CanvasPos.Children.Add(text_into_shapes);
+                CanvasPos.Children.Add(txt.txtbx);
+                CanvasPos.Children.Add(shape.shape);
 
-                Canvas.SetLeft(rectangle, e.GetPosition(CanvasPos).X - lastPoint.X);
-                Canvas.SetTop(rectangle, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+                CanvasPos.Children.Add(anchor.anchor_NS);
+                CanvasPos.Children.Add(anchor.anchor_WE);
+                CanvasPos.Children.Add(anchor.anchor_NWSE);
 
-                Canvas.SetLeft(text_into_shapes, Canvas.GetLeft(rectangle) + rectangle.Width / 2 - 15);
-                Canvas.SetTop(text_into_shapes, Canvas.GetTop(rectangle) + rectangle.Height / 2 - 10);
+                Canvas.SetLeft(shape.shape, e.GetPosition(CanvasPos).X - lastPoint.X);
+                Canvas.SetTop(shape.shape, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                EllipseAdd(rectangle, text_into_shapes);
+                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - txt.text_left_indent);
+                Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - txt.text_top_indent);
+
+                AddEll_Shape(shape, txt, anchor);
             }
         }
+
+        #endregion
 
         private void Clear_Mouse_Enter(object sender, RoutedEventArgs e)
         {

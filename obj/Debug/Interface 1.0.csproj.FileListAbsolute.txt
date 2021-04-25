@@ -13,3 +13,18 @@ F:\Burrokku-zu\obj\Debug\Interface 1.0.exe
 F:\Burrokku-zu\obj\Debug\Interface 1.0.pdb
 F:\Burrokku-zu\bin\Debug\Interface 1.0.pdb
 F:\Burrokku-zu\obj\Debug\Interface 1.0.csprojAssemblyReference.cache
+C:\ForAll\ForLocalRepository\Burrokku-zu\bin\Debug\Interface 1.0.exe.config
+C:\ForAll\ForLocalRepository\Burrokku-zu\bin\Debug\Interface 1.0.exe
+C:\ForAll\ForLocalRepository\Burrokku-zu\bin\Debug\Interface 1.0.pdb
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\Interface 1.0.csprojAssemblyReference.cache
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\MainWindow.g.cs
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\App.g.cs
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\Interface 1.0_MarkupCompile.cache
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\Interface 1.0_MarkupCompile.lref
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\MainWindow.baml
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\Interface 1.0.g.resources
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\Interface_1._0.Properties.Resources.resources
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\Interface 1.0.csproj.GenerateResource.cache
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\Interface 1.0.csproj.CoreCompileInputs.cache
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\Interface 1.0.exe
+C:\ForAll\ForLocalRepository\Burrokku-zu\obj\Debug\Interface 1.0.pdb
