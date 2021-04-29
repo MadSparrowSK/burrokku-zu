@@ -57,6 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Additional Gears\AnchorClass.cs" />
+    <Compile Include="Additional Gears\connection_line.cs" />
     <Compile Include="Additional Gears\TextIntoShapes.cs" />
     <Compile Include="Shapes\Rhomb_Shape.cs" />
     <Compile Include="Shapes\RP_Shape.cs" />
