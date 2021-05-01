@@ -10,8 +10,6 @@ namespace Connect
 
         public Line line_1;
 
-        public bool is_line_create = false;
-
         public ConnectionLine()
         {
             circle_left = new Ellipse();
@@ -21,6 +19,11 @@ namespace Connect
             circle_left.Fill = Brushes.LightGreen;
 
             line_1 = new Line();
+        }
+
+        public void Reset(Line line) 
+        {
+            line.Stroke = Brushes.Transparent;
         }
     }
 }
