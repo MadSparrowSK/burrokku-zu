@@ -7,8 +7,14 @@ namespace Connect
     public class ConnectionLine
     {
         public Ellipse circle_left;
+        public Ellipse circle_right;
+        public Ellipse circle_top;
+        public Ellipse circle_bottom;
 
-        public Line line_1;
+        public Line line_left;
+        public Line line_right;
+        public Line line_top;
+        public Line line_bottom;
 
         public ConnectionLine()
         {
@@ -16,14 +22,9 @@ namespace Connect
 
             circle_left.Height = 5;
             circle_left.Width  = 5;
-            circle_left.Fill = Brushes.LightGreen;
+            circle_left.Fill = Brushes.Green;
 
-            line_1 = new Line();
-        }
-
-        public void Reset(Line line) 
-        {
-            line.Stroke = Brushes.Transparent;
+            line_left = new Line();
         }
     }
 }
