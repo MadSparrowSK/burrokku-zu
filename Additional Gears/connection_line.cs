@@ -16,6 +16,11 @@ namespace Connect
         public Line line_top;
         public Line line_bottom;
 
+        public Polygon arrow_left;
+        public Polygon arrow_right;
+        public Polygon arrow_top;
+        public Polygon arrow_bottom;
+
         public ConnectionLine()
         {
             circle_left = new Ellipse();
@@ -42,6 +47,11 @@ namespace Connect
             line_right = new Line();
             line_bottom = new Line();
             line_top = new Line();
+
+            arrow_left = new Polygon();
+            arrow_right = new Polygon();
+            arrow_top = new Polygon();
+            arrow_bottom = new Polygon();
         }
     }
 }

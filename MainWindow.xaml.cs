@@ -232,9 +232,8 @@ namespace Interface_1._0
             line.Stroke = Brushes.Transparent;
             line.IsEnabled = false;
         }
-        void CouplingLines(Ellipse ellipse, Line line, Point mouse_postion)
+        void CouplingLines(Ellipse ellipse, Line line, Polygon polygon,Point mouse_postion)
         {
-            Polygon arrow = new Polygon();
             for (int i = 0; i < CanvasPos.Children.Count; ++i)
                 if (CanvasPos.Children[i] is Ellipse && CanvasPos.Children[i] != ellipse)
                     if (Math.Abs(mouse_postion.X - Canvas.GetLeft(CanvasPos.Children[i])) < 5 &&
@@ -245,9 +244,7 @@ namespace Interface_1._0
                         line.X2 = Canvas.GetLeft(CanvasPos.Children[i]);
                         line.Y2 = Canvas.GetTop(CanvasPos.Children[i]);
 
-                        CanvasPos.Children.Add(arrow);
-
-                        arrow.Fill = Brushes.White;
+                        polygon.Fill = Brushes.White;
 
                         Point main = new Point(5, 5);
                         Point additin = new Point(0, 0);
@@ -258,16 +255,16 @@ namespace Interface_1._0
                         points.Add(additin);
                         points.Add(additin2);
 
-                        arrow.Points = points;
+                        polygon.Points = points;
 
-                        Canvas.SetLeft(arrow, Canvas.GetLeft(CanvasPos.Children[i]) - 3);
-                        Canvas.SetTop(arrow, Canvas.GetTop(CanvasPos.Children[i]) - 3);
+                        Canvas.SetLeft(polygon, Canvas.GetLeft(CanvasPos.Children[i]) - 3);
+                        Canvas.SetTop(polygon, Canvas.GetTop(CanvasPos.Children[i]) - 3);
 
                         break;
                     }
         }
 
-        public void AddRP_Shape(RP_Shapes rPR_Shapes,ConnectionLine connectionLine ,TXT txt, Anchor anchor)
+        void LineAction(ConnectionLine connectionLine)
         {
             connectionLine.circle_left.MouseDown += CircleMouseDownLeft;
             connectionLine.circle_right.MouseDown += CircleMouseDownRight;
@@ -302,7 +299,7 @@ namespace Interface_1._0
 
                     connectionLine.line_left.X2 = pos.X;
                     connectionLine.line_left.Y2 = pos.Y;
-                                        
+
                     connectionLine.line_left.Stroke = Brushes.Yellow;
                 }
             }
@@ -318,11 +315,11 @@ namespace Interface_1._0
 
                     connectionLine.line_right.X2 = pos.X;
                     connectionLine.line_right.Y2 = pos.Y;
-                                        
+
                     connectionLine.line_right.Stroke = Brushes.Yellow;
                 }
             }
-            void CircleMouseDownTop(object sndr, MouseButtonEventArgs evnt) 
+            void CircleMouseDownTop(object sndr, MouseButtonEventArgs evnt)
             {
                 if (shape_count > 1)
                 {
@@ -334,11 +331,11 @@ namespace Interface_1._0
 
                     connectionLine.line_top.X2 = pos.X;
                     connectionLine.line_top.Y2 = pos.Y;
-                                        
+
                     connectionLine.line_top.Stroke = Brushes.Yellow;
                 }
             }
-            void CircleMouseDownBottom(object sndr, MouseButtonEventArgs evnt) 
+            void CircleMouseDownBottom(object sndr, MouseButtonEventArgs evnt)
             {
                 if (shape_count > 1)
                 {
@@ -350,7 +347,7 @@ namespace Interface_1._0
 
                     connectionLine.line_bottom.X2 = pos.X;
                     connectionLine.line_bottom.Y2 = pos.Y;
-                                        
+
                     connectionLine.line_bottom.Stroke = Brushes.Yellow;
                 }
             }
@@ -378,7 +375,7 @@ namespace Interface_1._0
                         obj_line.X2 = pos.X;
                         obj_line.Y2 = pos.Y;
 
-                        CouplingLines(connectionLine.circle_left, obj_line, pos);
+                        CouplingLines(connectionLine.circle_left, obj_line, connectionLine.arrow_left, pos);
                     }
                 }
             }
@@ -398,7 +395,7 @@ namespace Interface_1._0
                         obj_line.X2 = pos.X;
                         obj_line.Y2 = pos.Y;
 
-                        CouplingLines(connectionLine.circle_right, obj_line, pos);
+                        CouplingLines(connectionLine.circle_right, obj_line, connectionLine.arrow_right, pos);
                     }
                 }
             }
@@ -418,7 +415,7 @@ namespace Interface_1._0
                         obj_line.X2 = pos.X;
                         obj_line.Y2 = pos.Y;
 
-                        CouplingLines(connectionLine.circle_top, obj_line, pos);
+                        CouplingLines(connectionLine.circle_top, obj_line, connectionLine.arrow_top, pos);
                     }
                 }
             }
@@ -438,7 +435,7 @@ namespace Interface_1._0
                         obj_line.X2 = pos.X;
                         obj_line.Y2 = pos.Y;
 
-                        CouplingLines(connectionLine.circle_bottom, obj_line, pos);
+                        CouplingLines(connectionLine.circle_bottom, obj_line, connectionLine.arrow_bottom, pos);
                     }
                 }
             }
@@ -448,6 +445,10 @@ namespace Interface_1._0
                 var obj_line = (UIElement)sndr;
                 obj_line.ReleaseMouseCapture();
             }
+        }
+        public void AddRP_Shape(RP_Shapes rPR_Shapes,ConnectionLine connectionLine ,TXT txt, Anchor anchor)
+        {
+            LineAction(connectionLine);
 
             rPR_Shapes.shape.MouseDown += RPR_MouseDown;
 
@@ -1125,6 +1126,11 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(connectionLine.line_top);
                     CanvasPos.Children.Remove(connectionLine.line_bottom);
 
+                    CanvasPos.Children.Remove(connectionLine.arrow_left);
+                    CanvasPos.Children.Remove(connectionLine.arrow_right);
+                    CanvasPos.Children.Remove(connectionLine.arrow_top);
+                    CanvasPos.Children.Remove(connectionLine.arrow_bottom);
+
                     CanvasPos.Children.Remove(anchor.anchor_NS);
                     CanvasPos.Children.Remove(anchor.anchor_WE);
                     CanvasPos.Children.Remove(anchor.anchor_NWSE);
@@ -1137,185 +1143,7 @@ namespace Interface_1._0
         }
         public void AddRh_Shape(Rh_Shape shape,ConnectionLine connectionLine ,TXT txt ,Anchor anchor)
         {
-            connectionLine.circle_left.MouseDown += CircleMouseDownLeft;
-            connectionLine.circle_right.MouseDown += CircleMouseDownRight;
-            connectionLine.circle_top.MouseDown += CircleMouseDownTop;
-            connectionLine.circle_bottom.MouseDown += CircleMouseDownBottom;
-
-            connectionLine.line_left.MouseDown += LineMouseDown;
-            connectionLine.line_left.MouseMove += LineMouseMoveLeft;
-            connectionLine.line_left.MouseUp += LineMouseUp;
-
-            connectionLine.line_right.MouseDown += LineMouseDown;
-            connectionLine.line_right.MouseMove += LineMouseMoveRight;
-            connectionLine.line_right.MouseUp += LineMouseUp;
-
-            connectionLine.line_top.MouseDown += LineMouseDown;
-            connectionLine.line_top.MouseMove += LineMouseMoveTop;
-            connectionLine.line_top.MouseUp += LineMouseUp;
-
-            connectionLine.line_bottom.MouseDown += LineMouseDown;
-            connectionLine.line_bottom.MouseMove += LineMouseMoveBottom;
-            connectionLine.line_bottom.MouseUp += LineMouseUp;
-
-            void CircleMouseDownLeft(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_left.IsEnabled = true;
-                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_left.X2 = pos.X;
-                    connectionLine.line_left.Y2 = pos.Y;
-
-                    connectionLine.line_left.Stroke = Brushes.Yellow;
-                }
-            }
-            void CircleMouseDownRight(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_right.IsEnabled = true;
-                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_right.X2 = pos.X;
-                    connectionLine.line_right.Y2 = pos.Y;
-
-                    connectionLine.line_right.Stroke = Brushes.Yellow;
-                }
-            }
-            void CircleMouseDownTop(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_top.IsEnabled = true;
-                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_top.X2 = pos.X;
-                    connectionLine.line_top.Y2 = pos.Y;
-
-                    connectionLine.line_top.Stroke = Brushes.Yellow;
-                }
-            }
-            void CircleMouseDownBottom(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_bottom.IsEnabled = true;
-                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_bottom.X2 = pos.X;
-                    connectionLine.line_bottom.Y2 = pos.Y;
-
-                    connectionLine.line_bottom.Stroke = Brushes.Yellow;
-                }
-            }
-
-            void LineMouseDown(object sndr, MouseButtonEventArgs evnt)
-            {
-                var obj_line = (Line)sndr;
-                if (evnt.RightButton == MouseButtonState.Pressed)
-                    HideLines(obj_line);
-            }
-
-            void LineMouseMoveLeft(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_left, obj_line, pos);
-                    }
-                }
-            }
-            void LineMouseMoveRight(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_right, obj_line, pos);
-                    }
-                }
-            }
-            void LineMouseMoveTop(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_top, obj_line, pos);
-                    }
-                }
-            }
-            void LineMouseMoveBottom(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_bottom, obj_line, pos);
-                    }
-                }
-            }
-
-            void LineMouseUp(object sndr, MouseEventArgs evnt)
-            {
-                var obj_line = (UIElement)sndr;
-                obj_line.ReleaseMouseCapture();
-            }
+            LineAction(connectionLine);
 
             shape.shape.MouseDown += Rh_MouseDown;
 
@@ -2014,185 +1842,7 @@ namespace Interface_1._0
         }
         public void AddCy_Shape(Cy_Shape shape, ConnectionLine connectionLine,TXT txt, Anchor anchor)
         {
-            connectionLine.circle_left.MouseDown += CircleMouseDownLeft;
-            connectionLine.circle_right.MouseDown += CircleMouseDownRight;
-            connectionLine.circle_top.MouseDown += CircleMouseDownTop;
-            connectionLine.circle_bottom.MouseDown += CircleMouseDownBottom;
-
-            connectionLine.line_left.MouseDown += LineMouseDown;
-            connectionLine.line_left.MouseMove += LineMouseMoveLeft;
-            connectionLine.line_left.MouseUp += LineMouseUp;
-
-            connectionLine.line_right.MouseDown += LineMouseDown;
-            connectionLine.line_right.MouseMove += LineMouseMoveRight;
-            connectionLine.line_right.MouseUp += LineMouseUp;
-
-            connectionLine.line_top.MouseDown += LineMouseDown;
-            connectionLine.line_top.MouseMove += LineMouseMoveTop;
-            connectionLine.line_top.MouseUp += LineMouseUp;
-
-            connectionLine.line_bottom.MouseDown += LineMouseDown;
-            connectionLine.line_bottom.MouseMove += LineMouseMoveBottom;
-            connectionLine.line_bottom.MouseUp += LineMouseUp;
-
-            void CircleMouseDownLeft(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_left.IsEnabled = true;
-                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_left.X2 = pos.X;
-                    connectionLine.line_left.Y2 = pos.Y;
-
-                    connectionLine.line_left.Stroke = Brushes.Yellow;
-                }
-            }
-            void CircleMouseDownRight(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_right.IsEnabled = true;
-                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_right.X2 = pos.X;
-                    connectionLine.line_right.Y2 = pos.Y;
-
-                    connectionLine.line_right.Stroke = Brushes.Yellow;
-                }
-            }
-            void CircleMouseDownTop(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_top.IsEnabled = true;
-                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_top.X2 = pos.X;
-                    connectionLine.line_top.Y2 = pos.Y;
-
-                    connectionLine.line_top.Stroke = Brushes.Yellow;
-                }
-            }
-            void CircleMouseDownBottom(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_bottom.IsEnabled = true;
-                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_bottom.X2 = pos.X;
-                    connectionLine.line_bottom.Y2 = pos.Y;
-
-                    connectionLine.line_bottom.Stroke = Brushes.Yellow;
-                }
-            }
-
-            void LineMouseDown(object sndr, MouseButtonEventArgs evnt)
-            {
-                var obj_line = (Line)sndr;
-                if (evnt.RightButton == MouseButtonState.Pressed)
-                    HideLines(obj_line);
-            }
-
-            void LineMouseMoveLeft(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_left, obj_line, pos);
-                    }
-                }
-            }
-            void LineMouseMoveRight(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_right, obj_line, pos);
-                    }
-                }
-            }
-            void LineMouseMoveTop(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_top, obj_line, pos);
-                    }
-                }
-            }
-            void LineMouseMoveBottom(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_bottom, obj_line, pos);
-                    }
-                }
-            }
-
-            void LineMouseUp(object sndr, MouseEventArgs evnt)
-            {
-                var obj_line = (UIElement)sndr;
-                obj_line.ReleaseMouseCapture();
-            }
+            LineAction(connectionLine);
 
             shape.shape.MouseDown += RPR_MouseDown;
 
@@ -2927,185 +2577,7 @@ namespace Interface_1._0
         }
         public void AddEll_Shape(Ell_Shape shape, ConnectionLine connectionLine,TXT txt, Anchor anchor)
         {
-            connectionLine.circle_left.MouseDown += CircleMouseDownLeft;
-            connectionLine.circle_right.MouseDown += CircleMouseDownRight;
-            connectionLine.circle_top.MouseDown += CircleMouseDownTop;
-            connectionLine.circle_bottom.MouseDown += CircleMouseDownBottom;
-
-            connectionLine.line_left.MouseDown += LineMouseDown;
-            connectionLine.line_left.MouseMove += LineMouseMoveLeft;
-            connectionLine.line_left.MouseUp += LineMouseUp;
-
-            connectionLine.line_right.MouseDown += LineMouseDown;
-            connectionLine.line_right.MouseMove += LineMouseMoveRight;
-            connectionLine.line_right.MouseUp += LineMouseUp;
-
-            connectionLine.line_top.MouseDown += LineMouseDown;
-            connectionLine.line_top.MouseMove += LineMouseMoveTop;
-            connectionLine.line_top.MouseUp += LineMouseUp;
-
-            connectionLine.line_bottom.MouseDown += LineMouseDown;
-            connectionLine.line_bottom.MouseMove += LineMouseMoveBottom;
-            connectionLine.line_bottom.MouseUp += LineMouseUp;
-
-            void CircleMouseDownLeft(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_left.IsEnabled = true;
-                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_left.X2 = pos.X;
-                    connectionLine.line_left.Y2 = pos.Y;
-
-                    connectionLine.line_left.Stroke = Brushes.Yellow;
-                }
-            }
-            void CircleMouseDownRight(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_right.IsEnabled = true;
-                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_right.X2 = pos.X;
-                    connectionLine.line_right.Y2 = pos.Y;
-
-                    connectionLine.line_right.Stroke = Brushes.Yellow;
-                }
-            }
-            void CircleMouseDownTop(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_top.IsEnabled = true;
-                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_top.X2 = pos.X;
-                    connectionLine.line_top.Y2 = pos.Y;
-
-                    connectionLine.line_top.Stroke = Brushes.Yellow;
-                }
-            }
-            void CircleMouseDownBottom(object sndr, MouseButtonEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    connectionLine.line_bottom.IsEnabled = true;
-                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
-
-                    var pos = evnt.GetPosition(CanvasPos);
-
-                    connectionLine.line_bottom.X2 = pos.X;
-                    connectionLine.line_bottom.Y2 = pos.Y;
-
-                    connectionLine.line_bottom.Stroke = Brushes.Yellow;
-                }
-            }
-
-            void LineMouseDown(object sndr, MouseButtonEventArgs evnt)
-            {
-                var obj_line = (Line)sndr;
-                if (evnt.RightButton == MouseButtonState.Pressed)
-                    HideLines(obj_line);
-            }
-
-            void LineMouseMoveLeft(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_left, obj_line, pos);
-                    }
-                }
-            }
-            void LineMouseMoveRight(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_right, obj_line, pos);
-                    }
-                }
-            }
-            void LineMouseMoveTop(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_top, obj_line, pos);
-                    }
-                }
-            }
-            void LineMouseMoveBottom(object sndr, MouseEventArgs evnt)
-            {
-                if (shape_count > 1)
-                {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
-                    {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
-
-                        obj_line.Stroke = Brushes.Yellow;
-
-                        var pos = evnt.GetPosition(CanvasPos);
-
-                        obj_line.X2 = pos.X;
-                        obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_bottom, obj_line, pos);
-                    }
-                }
-            }
-
-            void LineMouseUp(object sndr, MouseEventArgs evnt)
-            {
-                var obj_line = (UIElement)sndr;
-                obj_line.ReleaseMouseCapture();
-            }
+            LineAction(connectionLine);
 
             shape.shape.MouseDown += Ell_MouseDown;
 
@@ -3974,7 +3446,7 @@ namespace Interface_1._0
                     Canvas.SetLeft(obj, evnt.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(obj, evnt.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + 27);
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent);
                     Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
 
                     Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent + 3);
@@ -4319,6 +3791,11 @@ namespace Interface_1._0
                 CanvasPos.Children.Add(connectionLine.line_top);
                 CanvasPos.Children.Add(connectionLine.line_bottom);
 
+                CanvasPos.Children.Add(connectionLine.arrow_left);
+                CanvasPos.Children.Add(connectionLine.arrow_right);
+                CanvasPos.Children.Add(connectionLine.arrow_top);
+                CanvasPos.Children.Add(connectionLine.arrow_bottom);
+
                 CanvasPos.Children.Add(anchor.anchor_NS);
                 CanvasPos.Children.Add(anchor.anchor_WE);
                 CanvasPos.Children.Add(anchor.anchor_NWSE);
@@ -4400,6 +3877,11 @@ namespace Interface_1._0
                 CanvasPos.Children.Add(connectionLine.line_top);
                 CanvasPos.Children.Add(connectionLine.line_bottom);
 
+                CanvasPos.Children.Add(connectionLine.arrow_left);
+                CanvasPos.Children.Add(connectionLine.arrow_right);
+                CanvasPos.Children.Add(connectionLine.arrow_top);
+                CanvasPos.Children.Add(connectionLine.arrow_bottom);
+
                 CanvasPos.Children.Add(anchor.anchor_NS);
                 CanvasPos.Children.Add(anchor.anchor_WE);
                 CanvasPos.Children.Add(anchor.anchor_NWSE);
@@ -4480,6 +3962,11 @@ namespace Interface_1._0
                 CanvasPos.Children.Add(connectionLine.line_right);
                 CanvasPos.Children.Add(connectionLine.line_top);
                 CanvasPos.Children.Add(connectionLine.line_bottom);
+
+                CanvasPos.Children.Add(connectionLine.arrow_left);
+                CanvasPos.Children.Add(connectionLine.arrow_right);
+                CanvasPos.Children.Add(connectionLine.arrow_top);
+                CanvasPos.Children.Add(connectionLine.arrow_bottom);
 
                 CanvasPos.Children.Add(anchor.anchor_NS);
                 CanvasPos.Children.Add(anchor.anchor_WE);
@@ -4563,6 +4050,11 @@ namespace Interface_1._0
                 CanvasPos.Children.Add(connectionLine.line_top);
                 CanvasPos.Children.Add(connectionLine.line_bottom);
 
+                CanvasPos.Children.Add(connectionLine.arrow_left);
+                CanvasPos.Children.Add(connectionLine.arrow_right);
+                CanvasPos.Children.Add(connectionLine.arrow_top);
+                CanvasPos.Children.Add(connectionLine.arrow_bottom);
+
                 CanvasPos.Children.Add(anchor.anchor_NS);
                 CanvasPos.Children.Add(anchor.anchor_WE);
                 CanvasPos.Children.Add(anchor.anchor_NWSE);
@@ -4640,6 +4132,11 @@ namespace Interface_1._0
                 CanvasPos.Children.Add(connectionLine.line_right);
                 CanvasPos.Children.Add(connectionLine.line_top);
                 CanvasPos.Children.Add(connectionLine.line_bottom);
+
+                CanvasPos.Children.Add(connectionLine.arrow_left);
+                CanvasPos.Children.Add(connectionLine.arrow_right);
+                CanvasPos.Children.Add(connectionLine.arrow_top);
+                CanvasPos.Children.Add(connectionLine.arrow_bottom);
 
                 CanvasPos.Children.Add(anchor.anchor_NS);
                 CanvasPos.Children.Add(anchor.anchor_WE);
