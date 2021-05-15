@@ -21,26 +21,28 @@ namespace Connect
         public Polygon arrow_top;
         public Polygon arrow_bottom;
 
+        public bool leftCheck = false;
+
         public ConnectionLine()
         {
             circle_left = new Ellipse();
-            circle_left.Height = 5;
-            circle_left.Width  = 5;
+            circle_left.Height = 6.5;
+            circle_left.Width  = 6.5;
             circle_left.Fill = Brushes.Green;
 
             circle_right = new Ellipse();
-            circle_right.Height = 5;
-            circle_right.Width = 5;
+            circle_right.Height = 6.5;
+            circle_right.Width = 6.5;
             circle_right.Fill = Brushes.Green;
 
             circle_top = new Ellipse();
-            circle_top.Height = 5;
-            circle_top.Width = 5;
+            circle_top.Height = 6.5;
+            circle_top.Width = 6.5;
             circle_top.Fill = Brushes.Green;
 
             circle_bottom = new Ellipse();
-            circle_bottom.Height = 5;
-            circle_bottom.Width = 5;
+            circle_bottom.Height = 6.5;
+            circle_bottom.Width = 6.5;
             circle_bottom.Fill = Brushes.Green;
 
             line_left = new Line();

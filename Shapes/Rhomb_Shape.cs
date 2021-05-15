@@ -31,16 +31,9 @@ namespace Shapes
             N_Point.Y = top.Y;
         }
 
-        public override Point Point_N { get => N_Point; set { N_Point = value; } }
-        public override Point Point_W { get => W_Point; set { W_Point = value; } }
-        public override Point Point_S { get => S_Point; set { S_Point = value; } }
-        public override Point Point_E { get => E_Point; set { E_Point = value; } }
-        
-
-        public override Point Point_NW { get; set; }
-        public override Point Point_SW { get; set; }
-        public override Point Point_SE { get; set; }
-        public override Point Point_NE { get; set; }
-
+        public Point Point_N { get => N_Point; set { N_Point = value; } }
+        public Point Point_W { get => W_Point; set { W_Point = value; } }
+        public Point Point_S { get => S_Point; set { S_Point = value; } }
+        public Point Point_E { get => E_Point; set { E_Point = value; } }
     }
 }

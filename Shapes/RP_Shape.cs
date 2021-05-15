@@ -20,22 +20,14 @@ namespace Shapes
             NE_point = new Point();
 
             NW_point = left;
-
             SW_point = bottom;
-
             SE_point  = right;
-
             NE_point  = top;
         }
 
-        public override Point Point_NW { get => NW_point; set { NW_point = value; } }
-        public override Point Point_SW { get => SW_point; set { SW_point = value; } }
-        public override Point Point_SE { get => SE_point; set { SE_point = value; } }
-        public override Point Point_NE { get => NE_point; set { NE_point = value; } }
-
-        public override Point Point_N { get; set; }
-        public override Point Point_W { get; set; }
-        public override Point Point_S { get; set; }
-        public override Point Point_E { get; set; }
+        public Point Point_NW { get => NW_point; set { NW_point = value; } }
+        public Point Point_SW { get => SW_point; set { SW_point = value; } }
+        public Point Point_SE { get => SE_point; set { SE_point = value; } }
+        public Point Point_NE { get => NE_point; set { NE_point = value; } }
     }
 }

@@ -4,26 +4,30 @@ using System.Windows.Shapes;
 
 namespace Shapes
 {
-    public abstract class PrimaryShape
+    public class PrimaryShape
     {
-        public Polygon shape;
+        public Shape shape;
 
         public PrimaryShape(Polygon copy_shape)
         {
             shape = new Polygon();
 
-            shape.Points = copy_shape.Points;
-            shape.Stroke = Brushes.White;
-            shape.Fill   = Brushes.Transparent;
+            (shape as Polygon).Points = copy_shape.Points;
+            (shape as Polygon).Stroke = Brushes.White;
+            shape.Fill = Brushes.Transparent;
         }
+        public PrimaryShape(Rectangle copy_tangle)
+        {
+            shape = new Rectangle();
 
-        public abstract Point Point_N   { get; set; }
-        public abstract Point Point_NW  { get; set; }
-        public abstract Point Point_W   { get; set; }
-        public abstract Point Point_SW  { get; set; }
-        public abstract Point Point_S   { get; set; }
-        public abstract Point Point_SE  { get; set; }
-        public abstract Point Point_E   { get; set; }
-        public abstract Point Point_NE  { get; set; }
+            shape.Width = copy_tangle.Width;
+            shape.Height = copy_tangle.Height;
+
+            (shape as Rectangle).RadiusX = copy_tangle.RadiusX;
+            (shape as Rectangle).RadiusY = copy_tangle.RadiusY;
+
+            shape.Stroke = Brushes.White;
+            shape.Fill = Brushes.Transparent;
+        }
     }
 }

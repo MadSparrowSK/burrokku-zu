@@ -174,8 +174,8 @@
                    AllowDrop="True"
                    Drop="DnD_Drop"
                    Name="CanvasPos">
-                 
-           </Canvas>
+
+            </Canvas>
             <!--#endregion-->
 
            <!--#region left side bar-->
@@ -288,7 +288,7 @@
                        Grid.Row="2"
                        Grid.Column="0">
                 <Border.Background>
-                    <SolidColorBrush Color="Purple" Opacity="0.4"></SolidColorBrush>
+                    <SolidColorBrush Color="Purple" Opacity="0.5"></SolidColorBrush>
                 </Border.Background>
            </Border>
 
