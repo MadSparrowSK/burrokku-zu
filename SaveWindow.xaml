@@ -9,52 +9,57 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Title="Save your diagramm!" Height="150" Width="550" 
-        Background="#FF323238">
+        Title="Сохраните диаграмму!" Height="150" Width="550" 
+        Background="#FFBEBEBE">
 
     <Window.Resources>
-        
-            <Style x:Key="CmbButton" TargetType="Button">
-                
-                <Setter Property="OverridesDefaultStyle" Value="True"/>
-                <Setter Property="Background" Value="#FF2E2E30"/>
-                <Setter Property="Foreground" Value="Gray"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Width" Value="150"/>
-                <Setter Property="Height" Value="20"/>
+
+        <Style x:Key="CmbButton" TargetType="Button">
+
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="#FFB9B3BF"/>
+            <Setter Property="Foreground" Value="#FF303030"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Width" Value="110"/>
+            <Setter Property="Height" Value="24"/>
             <Setter Property="Template">
                 <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <!--Работа с границей кнопки-->
-                            <Border Name="border" BorderThickness="0" 
-                                Background="{TemplateBinding Background}">
-                                <!--Настройка расположения объекта внутри кнопки-->
-                                <ContentPresenter
+                    <ControlTemplate TargetType="Button">
+                        <!--Работа с границей кнопки-->
+                        <Border Name="border" BorderThickness="1"
+                                    CornerRadius="5" 
+                                
+                                Background="{TemplateBinding Background}" OpacityMask="Black"
+                                    >
+
+                            <Border.BorderBrush>
+                                <LinearGradientBrush EndPoint="0.5,1"   StartPoint="0.3,0" Opacity="0.5">
+                                    <GradientStop Color="#00069B" Offset="0"/>
+                                    <GradientStop Color="#BA48B6" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                            <!--Настройка расположения объекта внутри кнопки-->
+                            <ContentPresenter
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
                                               Margin="0,0,0,0"/>
 
-                            </Border>
-                            <!--Работа с тригерами кнопки -->
-                            <ControlTemplate.Triggers>
-                                <!--При наведении на кнопку...-->
+                        </Border>
+                        <!--Работа с тригерами кнопки -->
+                        <ControlTemplate.Triggers>
+                            <!--При наведении на кнопку...-->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <!--Изменение заливки и цвета текста-->
-                                <Setter Property="Background" Value="#FF35353A"/>
-                                <Setter Property="Foreground" Value="#FFDECFCF"/>
+                                <Setter Property="Background" Value="#FFECECEC"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#FF2E2E30"/>
-                                <Setter Property="Foreground" Value="Gray"/>
-                            </Trigger>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter Property="Foreground" Value="#FFDECFCF"/>
+                                <Setter Property="Background" Value="#FF9B979E"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Grid Height="150" Width="550"
           HorizontalAlignment="Center"
@@ -69,10 +74,10 @@
             Background="#FF2E2E30"
             MouseLeftButtonDown="DnDWindow"
             >
-            
+
             <TextBlock Name="title"
                        
-                       MaxWidth="200"
+                       MaxWidth="220"
                        Foreground="Gray"
                        FontSize="20"
                        Padding="0"
@@ -87,7 +92,7 @@
                            Name="lbl_Close"
                            Width="30"
                            Height="30"
-                           Margin="327.5,0,0,0"
+                           Margin="307,0,0,0"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Top"
                            Panel.ZIndex="20"
@@ -103,36 +108,37 @@
 
             </Label>
         </StackPanel>
+        <Image Source="Resources/questionMark.png" Width="30" Margin="0,0,500,25"/>
         <TextBlock
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="Are you sure you want to exit without saving? All unsaved data will be deleted"
-            Foreground="White"
-            FontSize="18"
+            Text="Сохранить изменения в документе?"
+            Foreground="#FF303030"
+            FontSize="14"
             TextWrapping="Wrap"
             Height="50"
-            Width="470"
-            Margin="0,0,0,30"/>
+            Width="460"
+            Margin="0,45,0,30"/>
         <Button  Style="{StaticResource CmbButton}"
 
                  HorizontalAlignment="Left"
-                  Margin="20,80,0,0"
+                  Margin="45,80,0,0"
                  Click="Save">
-            <TextBlock Text="Save"
-                       Margin="60,0,0,0"/>
+            <TextBlock Text="Сохранить"
+                       Margin="20,0,0,0"/>
         </Button>
         <Button  Style="{StaticResource CmbButton}"
-                 Margin="0,80,0,0"
+                 Margin="0,80,10,0"
                  Click="notSave">
-            <TextBlock Text="Don`t save"
-                       Margin="40,0,0,0"/>
+            <TextBlock Text="Не сохранять"
+                       Margin="10,0,0,0"/>
         </Button>
         <Button  Style="{StaticResource CmbButton}"
                  HorizontalAlignment="Right"
-                 Margin="0,80,20,0"
+                 Margin="0,80,55,0"
                  Click="cancel">
-            <TextBlock Text="canсel"
-                       Margin="55,0,0,0"/>
+            <TextBlock Text="Отмена"
+                       Margin="30,0,0,0"/>
         </Button>
     </Grid>
 </Window>

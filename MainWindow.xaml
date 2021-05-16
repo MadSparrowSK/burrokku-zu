@@ -18,67 +18,179 @@
         PreviewKeyDown="KeyBinding"
         
         >
-    <Border Name="Border" >
+    <Window.Resources>
+        <Style x:Key="Elipse" TargetType="Rectangle">
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.5">
+                        <GradientStop Color="#CCB7EE" Offset="0"/>
+                        <GradientStop Color="#C8CAF1" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
+                        <GradientStop Color="#00069B" Offset="0"/>
+                        <GradientStop Color="#BA48B6" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="70"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="RadiusX" Value="13"/>
+            <Setter Property="RadiusY" Value="20"/>
+        </Style>
+        <Style x:Key="Rect" TargetType="Polygon">
+            <Setter Property="Points" Value="8,1 8,30 60,30 60,1 8,1"/>
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.5">
+                        <GradientStop Color="#CCB7EE" Offset="0"/>
+                        <GradientStop Color="#C8CAF1" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.1,0.4"   StartPoint="1.2,0">
+                        <GradientStop Color="#00069B" Offset="0"/>
+                        <GradientStop Color="#BA48B6" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Parrabullem" TargetType="Polygon">
+            <Setter Property="Points" Value="8,1 0,30 60,30 68,1 8,1"/>
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.5">
+                        <GradientStop Color="#CCB7EE" Offset="0"/>
+                        <GradientStop Color="#C8CAF1" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.9,0.3"   StartPoint="0.2,0">
+                        <GradientStop Color="#00069B" Offset="0"/>
+                        <GradientStop Color="#BA48B6" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Rhomb" TargetType="Polygon">
+            <Setter Property="Points" Value="0,8 40,20 80,8 40,-4 0,8"/>
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.5">
+                        <GradientStop Color="#CCB7EE" Offset="0"/>
+                        <GradientStop Color="#C8CAF1" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.1,0.4"   StartPoint="1.2,0">
+                        <GradientStop Color="#00069B" Offset="0"/>
+                        <GradientStop Color="#BA48B6" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Cycle" TargetType="Polygon">
+            <Setter Property="Points" Value="1,8 7,20 60,20 67,8 60,-6 7,-6 1,8"/>
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.5">
+                        <GradientStop Color="#CCB7EE" Offset="0"/>
+                        <GradientStop Color="#C8CAF1" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.1,0.4"   StartPoint="1.2,0">
+                        <GradientStop Color="#00069B" Offset="0"/>
+                        <GradientStop Color="#BA48B6" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Button" TargetType="Label">
+            <Setter Property="Height" Value="14"/>
+            <Setter Property="Width" Value="95"/>
+            <Setter Property="Margin" Value="1,2,1,0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="7"/>
+            <Setter Property="Padding" Value="1,3,0,0"/>
+            <Setter Property="Background" Value="#FF3E3C39"/>
 
-        <Grid ShowGridLines="False">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="110"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+        </Style>
+        
+    </Window.Resources>
+    
+        <Border Name="Border" >
+        <Grid>
+            <Grid ShowGridLines="False">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
 
-            <!--#region  Header-->
-            <DockPanel Grid.Column="2"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <!--#region  Header-->
+                <DockPanel Grid.Column="2"
                        Grid.Row="0"
-                       Grid.ColumnSpan="2"
                        MouseLeftButtonDown="Mouse_Drag_Window" Name="RHDP"
                        KeyDown="KeyBinding">
-                <DockPanel.Background>
-                    <SolidColorBrush Color="#2d2d30">
-                    </SolidColorBrush>
-                </DockPanel.Background>
+                    <DockPanel.Background>
+                        <SolidColorBrush Color="#FF5D5D5D">
+                        </SolidColorBrush>
+                    </DockPanel.Background>
 
-                <StackPanel
+                    <StackPanel
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         KeyDown="KeyBinding">
-                    <Label Width="44"
+                        <Label Width="44"
                            MouseEnter="Mouse_Enter"
                            MouseLeave="Mouse_Leave"
                            MouseLeftButtonDown="Roll_Up"
                            Padding="14.55,18,0,0">
 
-                        <Polyline Stroke="White" Points=" 0,0 15,0" Name="RollUp"></Polyline>
-                    </Label>
+                            <Polyline Stroke="White" Points=" 0,0 15,0" Name="RollUp"></Polyline>
+                        </Label>
 
-                    <Label Foreground="White"
+                        <Label Foreground="White"
                            Width="44"
                            MouseEnter="Mouse_Enter"
                            MouseLeave="Mouse_Leave"
                            Padding="17,12,5,5"
                            MouseLeftButtonDown="Resize_Wondow"
                            >
-                        <Canvas >
-                            <Rectangle Stroke="White"
+                            <Canvas >
+                                <Rectangle Stroke="White"
                                        Height="10"
                                        Width="10"
                                        Panel.ZIndex="1"
                                        Fill="#2d2d30"></Rectangle>
 
-                            <Rectangle Stroke="White"
+                                <Rectangle Stroke="White"
                                        Width="10"
                                        Height="10"
                                        Canvas.Top="-2"
                                        Canvas.Right="-12"></Rectangle>
-                        </Canvas>
-                    </Label>
+                            </Canvas>
+                        </Label>
 
-                    <Label MouseEnter="Mouse_Enter_Close"
+                        <Label MouseEnter="Mouse_Enter_Close"
                            MouseLeave="Mouse_Leave_Close"
                            MouseLeftButtonDown="Close_Click" 
                            Foreground="White"
@@ -86,165 +198,195 @@
                            Padding="28,9,7,5"
                            Width="44">
 
-                        <Canvas>
-                            <Polyline Stroke="White" Points="0,0 -12,12"></Polyline>
-                            <Polyline Stroke="White" Points=" 0,12 -12,0"></Polyline>
-                        </Canvas>
-                    </Label>
+                            <Canvas>
+                                <Polyline Stroke="White" Points="0,0 -12,12"></Polyline>
+                                <Polyline Stroke="White" Points=" 0,12 -12,0"></Polyline>
+                            </Canvas>
+                        </Label>
 
-                </StackPanel>
-            </DockPanel>
-            <!--#endregion-->
+                    </StackPanel>
+                </DockPanel>
+                <!--#endregion-->
 
-            <!--#region left_side-->
-            <DockPanel Grid.Column="0"
+                <!--#region left_side-->
+                <DockPanel Grid.Column="0"
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
-                       MouseLeftButtonDown="Mouse_Drag_Window">
-                <DockPanel.Background>
-                    <SolidColorBrush Color="#2d2d30" ></SolidColorBrush>
-                </DockPanel.Background>
+                       MouseLeftButtonDown="Mouse_Drag_Window"
+                       >
+                    <DockPanel.Background>
+                        <SolidColorBrush Color="#FF5D5D5D" ></SolidColorBrush>
+                    </DockPanel.Background>
 
-            </DockPanel>
-            <!--#endregion-->
+                </DockPanel>
+                <!--#endregion-->
 
-            <!--#region menu_bar-->
+                <!--#region menu_bar-->
 
-            <DockPanel Grid.Column="0"
+                <DockPanel Grid.Column="0"
                        Grid.ColumnSpan="2"
-                       Grid.Row="0" HorizontalAlignment="Left" Width="454">
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Load" Foreground="Gray" Padding="10,5,10,0" 
+                       Grid.Row="0" HorizontalAlignment="Left" Width="454" Margin="0,2"
+                       >
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Height="18" Margin="0,5,0,0">
+                            <Label Content="Файл" Foreground="White" Padding="10,0,10,0" 
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
                            MouseDown="DownLoad"/>
-                    <Label Content="Save" MouseEnter="Header_Mouse_Enter"
+                            <Label Content="Редактировать" MouseEnter="Header_Mouse_Enter"
                            MouseLeave="Header_Mouse_Leave"
                            MouseDown="CutDownSave"
-                           Foreground="Gray" Padding="10,5,10,0"/>
-                    <Label Content="prev" Foreground="Gray" Padding="10,5,10,0"
+                           Foreground="White" Padding="10,0,10,0"/>
+                            <Label Content="Помощь" Foreground="White" Padding="10,0,10,0"
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
                            MouseDown="prev"/>
 
-                    
-                    <Label Content="next" MouseEnter="Header_Mouse_Enter"
-                           MouseLeave="Header_Mouse_Leave"
-                           MouseDown="next"
-                           Foreground="Gray" Padding="10,5,10,0"/>
 
-                </StackPanel>
 
-            </DockPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Resources\Grid_3.png" Width="12" Margin="8,2,0,0"></Image>
+                        </StackPanel>
+                    </StackPanel>
 
-            <!--#endregion-->
 
-            <!--#region  main field-->
+
+                </DockPanel>
+
+                <!--#endregion-->
+
+                <!--#region  main field-->
                 <Canvas Grid.Row="1"
                             Grid.Column="1"
-                            Background="#2b2b2b"
+                            Background="#FFBEBEBE"
                             AllowDrop="True"
                             Drop="DnD_Drop"
                             Name="CanvasPos"
-                            Width="2099"
-                            Height="2099"
-                            Focusable="True"
+                            Focusable="True" Grid.ColumnSpan="2" Margin="0,0,-1209,-1528"
                         >
                     <Polyline Stroke="Transparent" Points="8,0 0,0 0,8 8,0" Name="Anchor"/>
                 </Canvas>
-               
-            <!--#endregion-->
 
-            <!--#region left_side_bar -->
-            
-            <Border    Grid.Column="0"
+                <!--#endregion-->
+
+                <!--#region left_side_bar -->
+
+                <Border    Grid.Column="0"
                        Grid.Row="1"
-                       BorderBrush="#c0c0c0" BorderThickness="0,0,2,0">
-                <Border.Background>
-                    <SolidColorBrush Color="#2d2d30" ></SolidColorBrush>
-                </Border.Background>
-            </Border>
+                       BorderBrush="#c0c0c0" BorderThickness="0,0,2,0"
+                       >
+                    <Border.Background>
+                        <SolidColorBrush Color="#FFD0D0D0" ></SolidColorBrush>
+                    </Border.Background>
+                </Border>
 
-            <DockPanel
+                <DockPanel
                     Grid.Column="0"
                     Grid.Row="1"
-                    VerticalAlignment="Bottom">
-                <StackPanel Orientation="Vertical">
-                    <Label Content="Clear" Foreground="Gray" Padding="33,0,0,5" 
+                    VerticalAlignment="Bottom" Height="32">
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="Clear" Foreground="Gray" Padding="33,0,0,5" 
                            MouseDown="inTrash" MouseEnter="Clear_Mouse_Enter" 
                            MouseLeave="Clear_Mouse_Leave" Name="Clear" FontSize="20"/>
-                </StackPanel>
-            </DockPanel>
+                    </StackPanel>
+                </DockPanel>
 
-            <DockPanel Grid.Column="0"
+                <DockPanel Grid.Column="0"
                        Grid.Row="1"
-                       VerticalAlignment="Top">
-                <StackPanel Orientation="Vertical">
+                       VerticalAlignment="Top" Height="239">
+                    <StackPanel Orientation="Vertical">
 
-                    <Label Padding="20,10,0,10"
+                        <Label Padding="20,15,0,10"
                            MouseEnter="SideBar_Mouse_Enter"
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Ellipse">
-                        <Rectangle Width="70"
-                                   Height="25"
-                                   Fill="Transparent"
-                                   Stroke="Gray"
-                                   RadiusX="13"
-                                   RadiusY="20"
+                            <Rectangle Style="{StaticResource Elipse}"
                                    Name="Ellipse"
                                    MouseDown="DragDrop_MD"/>
-                    </Label>
+                        </Label>
 
-                    <Label Padding="20,10,0,10"
+                        <Label Padding="20,10,0,10"
                            MouseEnter="SideBar_Mouse_Enter"
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Rect">
 
-                        <Polyline Stroke="Gray" Fill="Transparent" 
-                                 Points="8,1 8,30 60,30 60,1 8,1"
+                            <Polygon Style="{StaticResource Rect}"
                                  Name="Rekt" MouseDown="DragDrop_MD"/>
 
-                    </Label>
+                        </Label>
 
-                    <Label Padding="19,10,0,10"
+                        <Label Padding="19,10,0,10"
                            MouseEnter="SideBar_Mouse_Enter"
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Parrabellum">
 
-                        <Polyline Stroke="Gray" Points="8,1 0,30 60,30 68,1 8,1"
-                                 Name="Parrabellum" Fill="Transparent"
-                                 MouseDown="DragDrop_MD"></Polyline>
+                            <Polygon Style="{StaticResource Parrabullem}"
+                                 Name="Parrabellum" 
+                                 MouseDown="DragDrop_MD"></Polygon>
 
-                    </Label>
+                        </Label>
 
-                    <Label Padding="14,12,0,8"
+                        <Label Padding="14,12,0,8"
                            MouseEnter="SideBar_Mouse_Enter"
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Rhomb">
 
-                        <Polyline Stroke="Gray" Points="0,8 40,20 80,8 40,-4 0,8"
-                                 Name="Rhomb" Fill="Transparent"
+                            <Polygon Style="{StaticResource Rhomb}"
+                            Name="Rhomb" 
                                  MouseDown="DragDrop_MD"/>
 
-                    </Label>
+                        </Label>
 
-                    <Label Padding="9,12,0,-1"
+                        <Label Padding="9,12,0,-1"
                            MouseEnter="SideBar_Mouse_Enter"
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_RWL">
-                    </Label>
+                        </Label>
 
-                    <Label Padding="20,16,0,12"
+                        <Label Padding="20,16,0,12"
                            MouseEnter="SideBar_Mouse_Enter"
                            MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Cylce">
 
-                        <Polyline Stroke="Gray" Points="1,8 7,20 60,20 67,8 60,-6 7,-6 1,8"
-                                 Name="Cycle" Fill="Transparent" MouseDown="DragDrop_MD"></Polyline>
+                            <Polygon Style="{StaticResource Cycle}"
+                            
+                                 Name="Cycle"  MouseDown="DragDrop_MD"></Polygon>
 
+                        </Label>
+                    </StackPanel>
+                </DockPanel>
+                <!--#endregion-->
+            </Grid>
+            <Grid Name="ButtonsZone" Background="#FF41403E" Height="50" Width="100" Margin="0,0,880,500">
+                <StackPanel Orientation="Vertical">
+                    <Label   Style="{StaticResource Button}">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Загрузить"/>
+                                <TextBlock Text="ctrl+L" Margin="40,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
+                    </Label>
+                    <Label  Style="{StaticResource Button}">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Сохранить"/>
+                                <TextBlock Text="ctrl+S" Margin="36,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
+                    </Label>
+                    <Label  Style="{StaticResource Button}">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Сохранить как"/>
+                                <TextBlock Text="ctrl+Shift+S" Margin="6,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
                     </Label>
                 </StackPanel>
-            </DockPanel>
-            <!--#endregion-->
+            </Grid>
         </Grid>
     </Border>
+        
+    
+    
 </Window>

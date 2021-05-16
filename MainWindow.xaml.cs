@@ -50,7 +50,6 @@ namespace Interface_1._0
         Point startCycleE = new Point();
         Point startCycleNE = new Point();
         #endregion
-        
         public MainWindow()
         {
             InitializeComponent();
@@ -1982,8 +1981,8 @@ namespace Interface_1._0
                 polyline.Name = "Rect_" + DiagrammAnalyzer.shapesCounter.ToString();
                 DiagrammAnalyzer.shapesCounter++;
 
+                polyline.Style = (Style)FindResource("Rect");
                 Rectangle_Check = false;
-                polyline.Points = Rekt.Points;
 
                 text_into_shapes.Text = "Text";
                 text_into_shapes.MinWidth = 40;
@@ -1992,9 +1991,6 @@ namespace Interface_1._0
                 text_into_shapes.BorderBrush = Brushes.Transparent;
                 text_into_shapes.Foreground = Brushes.White;
                 text_into_shapes.Background = Brushes.Transparent;
-
-                polyline.Stroke = Brushes.White;
-                polyline.Fill = Brushes.Transparent;
 
                 polyline.MouseUp += IntoCanvasUp;
 
@@ -2026,8 +2022,7 @@ namespace Interface_1._0
                 DiagrammAnalyzer.shapesCounter++;
 
                 Parrabullem_Check = false;
-                polyline.Points = Parrabellum.Points;
-
+                polyline.Style = (Style)FindResource("Parrabullem");
                 text_into_shapes.Text = "Text";
                 text_into_shapes.MinWidth = 40;
                 text_into_shapes.MinHeight = 20;
@@ -2035,10 +2030,6 @@ namespace Interface_1._0
                 text_into_shapes.BorderBrush = Brushes.Transparent;
                 text_into_shapes.Foreground = Brushes.White;
                 text_into_shapes.Background = Brushes.Transparent;
-
-                polyline.Stroke = Brushes.White;
-                polyline.Fill = Brushes.Transparent;
-
                 polyline.MouseUp += IntoCanvasUp;
 
                 CanvasPos.Children.Add(polyline);
@@ -2067,8 +2058,7 @@ namespace Interface_1._0
                 DiagrammAnalyzer.shapesCounter++;
 
                 Parrabullem_Check = false;
-                polyline.Points = Rhomb.Points;
-
+                polyline.Style = (Style)FindResource("Rhomb");
                 text_into_shapes.Text = "Text";
                 text_into_shapes.MinWidth = 40;
                 text_into_shapes.MinHeight = 20;
@@ -2077,8 +2067,6 @@ namespace Interface_1._0
                 text_into_shapes.Foreground = Brushes.White;
                 text_into_shapes.Background = Brushes.Transparent;
 
-                polyline.Stroke = Brushes.White;
-                polyline.Fill = Brushes.Transparent;
 
                 polyline.MouseUp += IntoCanvasUp;
 
@@ -2107,8 +2095,7 @@ namespace Interface_1._0
 
 
                 Parrabullem_Check = false;
-                polyline.Points = Cycle.Points;
-
+                polyline.Style = (Style)FindResource("Cycle");
                 text_into_shapes.Text = "Text";
                 text_into_shapes.MinWidth = 40;
                 text_into_shapes.MinHeight = 20;
@@ -2117,8 +2104,6 @@ namespace Interface_1._0
                 text_into_shapes.Foreground = Brushes.White;
                 text_into_shapes.Background = Brushes.Transparent;
 
-                polyline.Stroke = Brushes.White;
-                polyline.Fill = Brushes.Transparent;
 
                 polyline.MouseUp += IntoCanvasUp;
 
@@ -2146,13 +2131,7 @@ namespace Interface_1._0
                 //Индексация фигур
                 rectangle.Name = "Ellipse_" + DiagrammAnalyzer.shapesCounter.ToString();
                 DiagrammAnalyzer.shapesCounter++;
-
-                rectangle.Width = Ellipse.Width;
-                rectangle.Height = Ellipse.Height;
-                rectangle.RadiusX = Ellipse.RadiusX;
-                rectangle.RadiusY = Ellipse.RadiusY;
-                rectangle.Fill = Brushes.Transparent;
-                rectangle.Stroke = Brushes.White;
+                rectangle.Style = (Style)FindResource("Elipse");
 
                 text_into_shapes.Text = "Text";
                 text_into_shapes.MinWidth = 40;

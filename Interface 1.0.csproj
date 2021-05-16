@@ -118,5 +118,14 @@
   <ItemGroup>
     <Resource Include="Icon\Icon.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\csross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\questionMark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Grid_3.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
