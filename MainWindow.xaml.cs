@@ -177,33 +177,11 @@ namespace Interface_1._0
 
         void HideLines(Line line)
         {
-            /* for(int i = 0; i < CanvasPos.Children.Count; ++i)
-                 if(CanvasPos.Children[i] is Ellipse)
-                 {
-                     Ellipse temp = CanvasPos.Children[i] as Ellipse;
-                     if (Math.Abs(line.X2 - Canvas.GetLeft(temp)) < 2 &&
-                         Math.Abs(line.Y2 - Canvas.GetTop(temp)) < 2)
-                         for (int j = 0; j < CanvasPos.Children.Count; ++j)
-                             if (CanvasPos.Children[j] is Polygon)
-                             {
-                                 Polygon search_pol = CanvasPos.Children[j] as Polygon;
-                                 if (Math.Abs(Canvas.GetLeft(search_pol) - Canvas.GetLeft(temp)) < 5 &&
-                                     Math.Abs(Canvas.GetTop(search_pol) - Canvas.GetTop(temp)) < 5)
-                                 {
-                                     search_pol.Fill = Brushes.Transparent;
-                                     Canvas.SetLeft(search_pol, 0);
-                                     Canvas.SetTop(search_pol, 0);
-                                     break;
-                                 }
-                             }
-                 }*/
-
-            /*for(int i = 0; i < CanvasPos.Children.Count; ++i)
-                if()*/
-
             Line delLine = line;
             bool check = false;
-            for(int i = 0; i < CanvasPos.Children.Count; ++i)
+
+            #region topLine or oneMainLine
+            for (int i = 0; i < CanvasPos.Children.Count; ++i)
                 if(CanvasPos.Children[i] is Ellipse)
                 {
                     Ellipse temp = CanvasPos.Children[i] as Ellipse;
@@ -214,9 +192,30 @@ namespace Interface_1._0
                         {
                             for (int j = 0; j < CanvasPos.Children.Count; ++j)
                                 if (CanvasPos.Children[j] is Line)
-                                    if (Math.Abs((CanvasPos.Children[j] as Line).X1 - delLine.X2) < 4
-                                        && Math.Abs((CanvasPos.Children[j] as Line).Y1 - delLine.Y2) < 4)
+                                    if (Math.Abs((CanvasPos.Children[j] as Line).X1 - delLine.X2) < 2
+                                        && Math.Abs((CanvasPos.Children[j] as Line).Y1 - delLine.Y2) < 2)
                                     {
+                                        for(int q = 0; q < CanvasPos.Children.Count; ++q)
+                                            if(CanvasPos.Children[q] is Ellipse && Math.Abs(delLine.X2 - Canvas.GetLeft(CanvasPos.Children[q])) < 4
+                                                && Math.Abs(delLine.Y2 - Canvas.GetTop(CanvasPos.Children[q])) < 4)
+                                                for(int t = 0; t < CanvasPos.Children.Count; ++t)
+                                                    if(CanvasPos.Children[t] is Polygon && Math.Abs(Canvas.GetLeft(CanvasPos.Children[t]) - Canvas.GetLeft(CanvasPos.Children[q])) < 4
+                                                        && Math.Abs(Canvas.GetTop(CanvasPos.Children[t]) - Canvas.GetTop(CanvasPos.Children[q])) < 4)
+                                                    {
+                                                        (CanvasPos.Children[t] as Polygon).Fill = Brushes.Transparent;
+
+                                                        delLine.X2 = 0;
+                                                        delLine.Y2 = 0;
+                                                        delLine.Stroke = Brushes.Transparent;
+                                                        delLine.IsEnabled = false;
+
+                                                        check = true;
+                                                        break;
+                                                    }
+
+                                        if (check)
+                                            break;
+
                                         delLine.X2 = 0;
                                         delLine.Y2 = 0;
                                         delLine.Stroke = Brushes.Transparent;
@@ -259,69 +258,409 @@ namespace Interface_1._0
                         break;
                             
                 }
+            #endregion
 
+            #region bottomLine or oneMainLine
 
-            line.Stroke = Brushes.Transparent;
-            line.X2 = 0;
-            line.Y2 = 0;
-            line.IsEnabled = false;
+            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                if (CanvasPos.Children[i] is Ellipse && Math.Abs(delLine.X2 - Canvas.GetLeft(CanvasPos.Children[i])) < 4
+                    && Math.Abs(delLine.Y2 - Canvas.GetTop(CanvasPos.Children[i])) < 4)
+                {
+                    for (int k = 0; k < CanvasPos.Children.Count; ++k)
+                        if (CanvasPos.Children[k] is Ellipse && Math.Abs(delLine.X1 - Canvas.GetLeft(CanvasPos.Children[k])) < 4
+                            && Math.Abs(delLine.Y1 - Canvas.GetTop(CanvasPos.Children[k])) < 4)
+                        {
+                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                if (CanvasPos.Children[q] is Polygon && Math.Abs(Canvas.GetLeft(CanvasPos.Children[i]) - Canvas.GetLeft(CanvasPos.Children[k])) < 4
+                                    && Math.Abs(Canvas.GetTop(CanvasPos.Children[i]) - Canvas.GetTop(CanvasPos.Children[k])) < 4)
+                                {
+                                    (CanvasPos.Children[q] as Polygon).Fill = Brushes.Transparent;
+
+                                    line.X1 = Canvas.GetLeft(CanvasPos.Children[k]);
+                                    line.Y1 = Canvas.GetTop(CanvasPos.Children[k]);
+
+                                    line.X2 = 0;
+                                    line.Y2 = 0;
+
+                                    line.Stroke = Brushes.Transparent;
+                                    line.IsEnabled = false;
+
+                                    check = true;
+                                    break;
+                                }
+
+                            if (check)
+                                break;
+                        }
+
+                    if (check)
+                        break;
+
+                    while (true)
+                    {
+                        for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            if (CanvasPos.Children[j] is Line && Math.Abs((CanvasPos.Children[j] as Line).X2 - delLine.X1) < 2
+                                && Math.Abs((CanvasPos.Children[j] as Line).Y2 - delLine.Y1) < 2)
+                            {
+                                for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                    if (CanvasPos.Children[q] is Polygon && Math.Abs(Canvas.GetLeft(CanvasPos.Children[i]) - line.X2) < 4
+                                        && Math.Abs(Canvas.GetTop(CanvasPos.Children[i]) - line.Y2) < 4)
+                                        (CanvasPos.Children[q] as Polygon).Fill = Brushes.Transparent;
+
+                                delLine.X1 = 0;
+                                delLine.Y1 = 0;
+                                delLine.X2 = 0;
+                                delLine.Y2 = 0;
+
+                                delLine.Stroke = Brushes.Transparent;
+                                delLine.IsEnabled = false;
+
+                                delLine = (CanvasPos.Children[j] as Line);
+
+                                for (int n = 0; n < CanvasPos.Children.Count; ++n)
+                                    if (CanvasPos.Children[n] is Ellipse && Math.Abs(delLine.X1 - Canvas.GetLeft(CanvasPos.Children[n])) < 4
+                                        && Math.Abs(delLine.Y1 - Canvas.GetTop(CanvasPos.Children[n])) < 4)
+                                    {
+                                        delLine.X1 = 0;
+                                        delLine.Y1 = 0;
+                                        delLine.X2 = 0;
+                                        delLine.Y2 = 0;
+
+                                        delLine.Stroke = Brushes.Transparent;
+                                        delLine.IsEnabled = false;
+
+                                        line.X1 = Canvas.GetLeft(CanvasPos.Children[n]);
+                                        line.Y1 = Canvas.GetTop(CanvasPos.Children[n]);
+
+                                        check = true;
+                                        break;
+                                    }
+
+                                if (check)
+                                    break;
+                            }
+
+                        if (check)
+                            break;
+                    }
+
+                    if (check)
+                        break;
+                }
+
+            #endregion
+
+            #region middleLine
+
+            if (!check)
+            {
+                bool checkBack = false;
+                bool checkStraight = false;
+                Line delLine2 = line;
+                Ellipse srEll = null;
+
+                #region goBack
+                while (true)
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && Math.Abs(delLine.X1 - (CanvasPos.Children[i] as Line).X2) < 2
+                            && Math.Abs(delLine.Y1 - (CanvasPos.Children[i] as Line).Y2) < 2)
+                        {
+                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                if (CanvasPos.Children[q] is Line && Math.Abs(delLine.X2 - (CanvasPos.Children[q] as Line).X1) < 2
+                                    && Math.Abs(delLine.X2 - (CanvasPos.Children[q] as Line).X1) < 2)
+                                {
+                                    delLine2 = CanvasPos.Children[q] as Line;
+                                    break;
+                                }
+                            delLine.X1 = 0;
+                            delLine.Y1 = 0;
+                            delLine.X2 = 0;
+                            delLine.Y2 = 0;
+
+                            delLine.Stroke = Brushes.Transparent;
+                            delLine.IsEnabled = false;
+
+                            delLine = CanvasPos.Children[i] as Line;
+
+                            for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                                if (CanvasPos.Children[j] is Ellipse && Math.Abs(delLine.X1 - Canvas.GetLeft(CanvasPos.Children[j])) < 4
+                                    && Math.Abs(delLine.Y1 - Canvas.GetTop(CanvasPos.Children[j])) < 4)
+                                {
+                                    srEll = CanvasPos.Children[j] as Ellipse;
+
+                                    delLine.X1 = 0;
+                                    delLine.Y1 = 0;
+                                    delLine.X2 = 0;
+                                    delLine.Y2 = 0;
+
+                                    delLine.Stroke = Brushes.Transparent;
+                                    delLine.IsEnabled = false;
+
+                                    checkBack = true;
+                                    break;
+                                }
+                            if (checkBack)
+                                break;
+                        }
+                    if (checkBack)
+                        break;
+                }
+                #endregion
+
+                #region goStraight
+
+                for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                    if (CanvasPos.Children[i] is Ellipse && Math.Abs(delLine2.X2 - Canvas.GetLeft(CanvasPos.Children[i])) < 4
+                        && Math.Abs(delLine2.Y2 - Canvas.GetTop(CanvasPos.Children[i])) < 4)
+                    {
+                        for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            if (CanvasPos.Children[j] is Polygon && Math.Abs(Canvas.GetLeft(CanvasPos.Children[j]) - Canvas.GetLeft(CanvasPos.Children[i])) < 4
+                                && Math.Abs(Canvas.GetTop(CanvasPos.Children[j]) - Canvas.GetTop(CanvasPos.Children[i])) < 4)
+                            {
+                                (CanvasPos.Children[j] as Polygon).Fill = Brushes.Transparent;
+
+                                delLine2.X1 = Canvas.GetLeft(srEll);
+                                delLine2.Y1 = Canvas.GetTop(srEll);
+                                delLine2.X2 = 0;
+                                delLine2.Y2 = 0;
+
+                                delLine2.Stroke = Brushes.Transparent;
+                                delLine2.IsEnabled = false;
+
+                                checkStraight = true;
+                                break;
+                            }
+
+                        if (checkStraight)
+                            break;
+                    }
+
+                if (!checkStraight)
+                {
+                    while (true)
+                    {
+                        for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                            if (CanvasPos.Children[i] is Line && Math.Abs(delLine2.X2 - (CanvasPos.Children[i] as Line).X1) < 2
+                                && Math.Abs(delLine2.Y2 - (CanvasPos.Children[i] as Line).Y1) < 2)
+                            {
+                                delLine2.X1 = 0;
+                                delLine2.Y1 = 0;
+                                delLine2.X2 = 0;
+                                delLine2.Y2 = 0;
+
+                                delLine2.Stroke = Brushes.Transparent;
+                                delLine2.IsEnabled = false;
+
+                                delLine2 = CanvasPos.Children[i] as Line;
+
+                                for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                                    if (CanvasPos.Children[j] is Ellipse && Math.Abs(delLine2.X2 - Canvas.GetLeft(CanvasPos.Children[j])) < 4
+                                        && Math.Abs(delLine2.Y2 - Canvas.GetTop(CanvasPos.Children[j])) < 4)
+                                    {
+                                        for (int k = 0; k < CanvasPos.Children.Count; ++k)
+                                            if (CanvasPos.Children[k] is Polygon && Math.Abs(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(CanvasPos.Children[j])) < 4
+                                                && Math.Abs(Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(CanvasPos.Children[j])) < 4)
+                                                (CanvasPos.Children[k] as Polygon).Fill = Brushes.Transparent;
+
+                                        delLine2.X1 = Canvas.GetLeft(srEll);
+                                        delLine2.Y1 = Canvas.GetTop(srEll);
+                                        delLine2.X2 = 0;
+                                        delLine2.Y2 = 0;
+
+                                        delLine2.Stroke = Brushes.Transparent;
+                                        delLine2.IsEnabled = false;
+
+                                        checkStraight = true;
+                                        break;
+                                    }
+                                if (checkStraight)
+                                    break;
+                            }
+                        if (checkStraight)
+                            break;
+                    }
+                }
+
+                #endregion
+            }
+
+            #endregion
+
+           
         }
         void HideLines(Ellipse ellipse,Line line)
         {
+            bool check = false;
+            Line delLine = null;
+
+            #region pizdec ne lez suda(delete line from connected shape)
             for (int i = 0; i < CanvasPos.Children.Count; ++i)
+            {
                 if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != line)
-                {
-                    Line search_line = CanvasPos.Children[i] as Line;
-                    if (Math.Abs(search_line.X2 - Canvas.GetLeft(ellipse)) < 2 &&
-                        Math.Abs(search_line.Y2 - Canvas.GetTop(ellipse)) < 2)
+                    for (int j = 0; j < CanvasPos.Children.Count; ++j)
                     {
-                        search_line.Stroke = Brushes.Transparent;
-                        search_line.X2 = 0;
-                        search_line.Y2 = 0;
-                        search_line.IsEnabled = false;
-
-                        break;
-                    }
-                }
-            for (int i = 0; i < CanvasPos.Children.Count; ++i)
-                if (CanvasPos.Children[i] is Polygon)
-                {
-                    Polygon search_arrow = CanvasPos.Children[i] as Polygon;
-                    if (Math.Abs(Canvas.GetLeft(search_arrow) - Canvas.GetLeft(ellipse)) < 5 &&
-                        Math.Abs(Canvas.GetTop(search_arrow) - Canvas.GetTop(ellipse)) < 5)
-                    {
-                        search_arrow.Fill = Brushes.Transparent;
-                        Canvas.SetLeft(search_arrow, 0);
-                        Canvas.SetTop(search_arrow, 0);
-                        break;
-                    }
-                }
-            for(int i = 0; i < CanvasPos.Children.Count; ++i)
-                if(CanvasPos.Children[i] is Ellipse && CanvasPos.Children[i] != ellipse)
-                {
-                    Ellipse temp = CanvasPos.Children[i] as Ellipse;
-                    if(Math.Abs(line.X2 - Canvas.GetLeft(temp)) < 2 &&
-                        Math.Abs(line.Y2 - Canvas.GetTop(temp)) < 2)
-                        for(int j = 0; j < CanvasPos.Children.Count; ++j)
-                            if(CanvasPos.Children[j] is Polygon)
+                        if (Math.Abs((CanvasPos.Children[i] as Line).X2 - Canvas.GetLeft(ellipse)) < 4
+                            && Math.Abs((CanvasPos.Children[i] as Line).Y2 - Canvas.GetTop(ellipse)) < 4)
+                        {
+                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
                             {
-                                Polygon search_pol = CanvasPos.Children[j] as Polygon;
-                                if(Math.Abs(Canvas.GetLeft(search_pol) - Canvas.GetLeft(temp)) < 5 &&
-                                    Math.Abs(Canvas.GetTop(search_pol) - Canvas.GetTop(temp)) < 5)
+                                if (CanvasPos.Children[q] is Ellipse && CanvasPos.Children[q] != ellipse
+                                    && Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(CanvasPos.Children[q])) < 4
+                                    && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[q])) < 4)
                                 {
-                                    search_pol.Fill = Brushes.Transparent;
-                                    Canvas.SetLeft(search_pol, 0);
-                                    Canvas.SetTop(search_pol, 0);
-                                    break;
+                                    for (int n = 0; n < CanvasPos.Children.Count; ++n)
+                                        if (CanvasPos.Children[n] is Polygon && Math.Abs(Canvas.GetLeft(CanvasPos.Children[n]) - Canvas.GetLeft(ellipse)) < 4
+                                            && Math.Abs(Canvas.GetTop(CanvasPos.Children[n]) - Canvas.GetTop(ellipse)) < 4)
+                                        {
+                                            (CanvasPos.Children[n] as Polygon).Fill = Brushes.Transparent;
+
+                                            (CanvasPos.Children[i] as Line).X1 = Canvas.GetLeft(CanvasPos.Children[q]);
+                                            (CanvasPos.Children[i] as Line).Y1 = Canvas.GetTop(CanvasPos.Children[q]);
+                                            (CanvasPos.Children[i] as Line).X2 = 0;
+                                            (CanvasPos.Children[i] as Line).Y2 = 0;
+
+                                            (CanvasPos.Children[i] as Line).Stroke = Brushes.Transparent;
+                                            (CanvasPos.Children[i] as Line).IsEnabled = false;
+
+                                            check = true;
+                                            break;
+                                        }
                                 }
+                                if (check)
+                                    break;
                             }
-                }
+                            if (check)
+                                break;
 
+                            delLine = CanvasPos.Children[i] as Line;
+                            while (true)
+                            {
+                                for (int z = 0; z < CanvasPos.Children.Count; ++z)
+                                    if (CanvasPos.Children[z] is Line && Math.Abs((CanvasPos.Children[z] as Line).X2 - delLine.X1) < 2
+                                        && Math.Abs((CanvasPos.Children[z] as Line).Y2 - delLine.Y1) < 2)
+                                    {
+                                        delLine.X1 = 0;
+                                        delLine.Y1 = 0;
+                                        delLine.X2 = 0;
+                                        delLine.Y2 = 0;
 
-            line.Stroke = Brushes.Transparent;
-            line.X2 = 0;
-            line.Y2 = 0;
-            line.IsEnabled = false;
+                                        delLine.Stroke = Brushes.Transparent;
+                                        delLine.IsEnabled = false;
+
+                                        delLine = CanvasPos.Children[z] as Line;
+
+                                        for (int s = 0; s < CanvasPos.Children.Count; ++s)
+                                        {
+                                            if (CanvasPos.Children[s] is Ellipse && Math.Abs(delLine.X1 - Canvas.GetLeft(CanvasPos.Children[s])) < 4
+                                                && Math.Abs(delLine.Y1 - Canvas.GetTop(CanvasPos.Children[s])) < 4)
+                                            {
+                                                for (int v = 0; v < CanvasPos.Children.Count; ++v)
+                                                    if (CanvasPos.Children[v] is Polygon && Math.Abs(Canvas.GetLeft(CanvasPos.Children[v]) - Canvas.GetLeft(ellipse)) < 4
+                                                        && Math.Abs(Canvas.GetTop(CanvasPos.Children[v]) - Canvas.GetTop(ellipse)) < 4)
+                                                    {
+                                                        (CanvasPos.Children[v] as Polygon).Fill = Brushes.Transparent;
+
+                                                        delLine.X1 = 0;
+                                                        delLine.Y1 = 0;
+                                                        delLine.X2 = 0;
+                                                        delLine.Y2 = 0;
+
+                                                        delLine.Stroke = Brushes.Transparent;
+                                                        delLine.IsEnabled = false;
+
+                                                        (CanvasPos.Children[i] as Line).X1 = Canvas.GetLeft(CanvasPos.Children[s]);
+                                                        (CanvasPos.Children[i] as Line).Y1 = Canvas.GetTop(CanvasPos.Children[s]);
+
+                                                        check = true;
+                                                        break;
+                                                    }
+                                            }
+                                            if (check)
+                                                break;
+                                        }
+                                    }
+                                if (check)
+                                    break;
+                            }
+                            if (check)
+                                break;
+                        }
+                        if (check)
+                            break;
+                    }
+                if (check)
+                    break;
+            }
+            #endregion
+
+            #region pizdec ne lez suda 2.0(delete line from main shape)
+
+            if (Math.Abs(line.X1 - Canvas.GetLeft(ellipse)) < 4 
+                && Math.Abs(line.Y1 - Canvas.GetTop(ellipse)) < 4)
+            {
+                line.X1 = Canvas.GetLeft(ellipse);
+                line.Y1 = Canvas.GetTop(ellipse);
+                line.X2 = 0;
+                line.Y2 = 0;
+
+                line.Stroke = Brushes.Transparent;
+                line.IsEnabled = false;
+            }
+            else
+            {
+                Line temp = null;
+                bool ch = false;
+                for(int i = 0; i < CanvasPos.Children.Count; ++i)
+                    if(CanvasPos.Children[i] is Line && Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(ellipse)) < 4
+                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(ellipse)) < 4)
+                    {
+                        temp = CanvasPos.Children[i] as Line;
+                        while(true)
+                        {
+                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                            {
+                                if (CanvasPos.Children[q] is Line && Math.Abs(temp.X2 - (CanvasPos.Children[q] as Line).X1) < 2
+                                    && Math.Abs(temp.Y2 - (CanvasPos.Children[q] as Line).Y1) < 2)
+                                {
+                                    temp.X1 = 0;
+                                    temp.Y1 = 0;
+                                    temp.X2 = 0;
+                                    temp.Y2 = 0;
+
+                                    temp.Stroke = Brushes.Transparent;
+                                    temp.IsEnabled = false;
+
+                                    temp = CanvasPos.Children[q] as Line;
+
+                                    for (int k = 0; k < CanvasPos.Children.Count; ++k)
+                                        if (CanvasPos.Children[k] is Ellipse && Math.Abs(temp.X2 - Canvas.GetLeft(CanvasPos.Children[k])) < 4
+                                            && Math.Abs(temp.Y2 - Canvas.GetTop(CanvasPos.Children[k])) < 4)
+                                        {
+                                            line.X1 = Canvas.GetLeft(ellipse);
+                                            line.Y1 = Canvas.GetTop(ellipse);
+                                            temp.X2 = 0;
+                                            temp.Y2 = 0;
+
+                                            temp.Stroke = Brushes.Transparent;
+                                            temp.IsEnabled = false;
+
+                                            ch = true;
+                                            break;
+                                        }
+                                }
+                                if (ch)
+                                    break;
+                            }
+                            if (ch)
+                                break;
+                        }
+                        if (ch)
+                            break;
+                    }
+            }
+
+            #endregion
         }
         void CouplingLines(Ellipse ellipse, Line line, Polygon polygon,Point mouse_postion)
         {
@@ -511,6 +850,7 @@ namespace Interface_1._0
                         line.Y2 = obj_line.Y2;
 
                         line.Stroke = Brushes.Yellow;
+                        line.StrokeThickness = 1.5;
                         CanvasPos.Children.Add(line);
 
                         obj_line.X1 = line.X2;

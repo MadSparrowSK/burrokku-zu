@@ -46,9 +46,13 @@ namespace Connect
             circle_bottom.Fill = Brushes.Green;
 
             line_left = new Line();
+            line_left.StrokeThickness = 1.5;
             line_right = new Line();
+            line_right.StrokeThickness = 1.5;
             line_bottom = new Line();
+            line_bottom.StrokeThickness = 1.5;
             line_top = new Line();
+            line_top.StrokeThickness = 1.5;
 
             arrow_left = new Polygon();
             arrow_right = new Polygon();
