@@ -147,6 +147,14 @@ namespace Interface_1._0
         private bool Ellipse_Check = false;
 
         static int shape_count = 0;
+        void ClearCanvas() 
+        {
+            if(shape_count == 0)
+            {
+                for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                    CanvasPos.Children.Remove(CanvasPos.Children[i]);
+            }
+        }
 
         private void DragDrop_MD(object sender, MouseButtonEventArgs e)
         {
@@ -203,6 +211,8 @@ namespace Interface_1._0
                                                         && Math.Abs(Canvas.GetTop(CanvasPos.Children[t]) - Canvas.GetTop(CanvasPos.Children[q])) < 4)
                                                     {
                                                         (CanvasPos.Children[t] as Polygon).Fill = Brushes.Transparent;
+                                                        Canvas.SetLeft(CanvasPos.Children[t], 0);
+                                                        Canvas.SetTop(CanvasPos.Children[t], 0);
 
                                                         delLine.X2 = 0;
                                                         delLine.Y2 = 0;
@@ -218,7 +228,7 @@ namespace Interface_1._0
 
                                         delLine.X2 = 0;
                                         delLine.Y2 = 0;
-                                        delLine.Stroke = Brushes.Transparent;
+                                       delLine.Stroke = Brushes.Transparent;
                                         delLine.IsEnabled = false;
 
                                         delLine = (CanvasPos.Children[j] as Line);
@@ -234,6 +244,9 @@ namespace Interface_1._0
                                                         && Math.Abs(Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(CanvasPos.Children[n])) < 4)
                                                     {
                                                         (CanvasPos.Children[n] as Polygon).Fill = Brushes.Transparent;
+                                                        Canvas.SetLeft(CanvasPos.Children[n], 0);
+                                                        Canvas.SetTop(CanvasPos.Children[n], 0);
+
                                                         break;
                                                     }
 
@@ -449,7 +462,7 @@ namespace Interface_1._0
                                 delLine2.X2 = 0;
                                 delLine2.Y2 = 0;
 
-                                delLine2.Stroke = Brushes.Transparent;
+                                //delLine2.Stroke = Brushes.Transparent;
                                 delLine2.IsEnabled = false;
 
                                 delLine2 = CanvasPos.Children[i] as Line;
@@ -468,7 +481,7 @@ namespace Interface_1._0
                                         delLine2.X2 = 0;
                                         delLine2.Y2 = 0;
 
-                                        delLine2.Stroke = Brushes.Transparent;
+                                        //delLine2.Stroke = Brushes.Transparent;
                                         delLine2.IsEnabled = false;
 
                                         checkStraight = true;
@@ -514,6 +527,8 @@ namespace Interface_1._0
                                             && Math.Abs(Canvas.GetTop(CanvasPos.Children[n]) - Canvas.GetTop(ellipse)) < 4)
                                         {
                                             (CanvasPos.Children[n] as Polygon).Fill = Brushes.Transparent;
+                                            Canvas.SetLeft(CanvasPos.Children[n], 0);
+                                            Canvas.SetTop(CanvasPos.Children[n], 0);
 
                                             (CanvasPos.Children[i] as Line).X1 = Canvas.GetLeft(CanvasPos.Children[q]);
                                             (CanvasPos.Children[i] as Line).Y1 = Canvas.GetTop(CanvasPos.Children[q]);
@@ -560,6 +575,8 @@ namespace Interface_1._0
                                                         && Math.Abs(Canvas.GetTop(CanvasPos.Children[v]) - Canvas.GetTop(ellipse)) < 4)
                                                     {
                                                         (CanvasPos.Children[v] as Polygon).Fill = Brushes.Transparent;
+                                                        Canvas.SetLeft(CanvasPos.Children[v], 0);
+                                                        Canvas.SetTop(CanvasPos.Children[v], 0);
 
                                                         delLine.X1 = 0;
                                                         delLine.Y1 = 0;
@@ -599,6 +616,16 @@ namespace Interface_1._0
             if (Math.Abs(line.X1 - Canvas.GetLeft(ellipse)) < 4 
                 && Math.Abs(line.Y1 - Canvas.GetTop(ellipse)) < 4)
             {
+                for(int i = 0; i < CanvasPos.Children.Count; ++i)
+                    if(CanvasPos.Children[i] is Polygon && Math.Abs(line.X2 - Canvas.GetLeft(CanvasPos.Children[i])) < 4
+                        && Math.Abs(line.Y2 - Canvas.GetTop(CanvasPos.Children[i])) < 4)
+                    {
+                        (CanvasPos.Children[i] as Polygon).Fill = Brushes.Transparent;
+                        Canvas.SetLeft(CanvasPos.Children[i], 0);
+                        Canvas.SetTop(CanvasPos.Children[i], 0);
+                        break;
+                    }
+
                 line.X1 = Canvas.GetLeft(ellipse);
                 line.Y1 = Canvas.GetTop(ellipse);
                 line.X2 = 0;
@@ -637,6 +664,15 @@ namespace Interface_1._0
                                         if (CanvasPos.Children[k] is Ellipse && Math.Abs(temp.X2 - Canvas.GetLeft(CanvasPos.Children[k])) < 4
                                             && Math.Abs(temp.Y2 - Canvas.GetTop(CanvasPos.Children[k])) < 4)
                                         {
+                                            for (int s = 0; s < CanvasPos.Children.Count; ++s)
+                                                if (CanvasPos.Children[s] is Polygon && Math.Abs(line.X2 - Canvas.GetLeft(CanvasPos.Children[s])) < 4
+                                                    && Math.Abs(line.Y2 - Canvas.GetTop(CanvasPos.Children[s])) < 4)
+                                                {
+                                                    (CanvasPos.Children[s] as Polygon).Fill = Brushes.Transparent;
+                                                    Canvas.SetLeft(CanvasPos.Children[s], 0);
+                                                    Canvas.SetTop(CanvasPos.Children[s], 0);
+                                                    break;
+                                                }
                                             line.X1 = Canvas.GetLeft(ellipse);
                                             line.Y1 = Canvas.GetTop(ellipse);
                                             temp.X2 = 0;
@@ -718,11 +754,9 @@ namespace Interface_1._0
         {
             
             connectionLine.circle_left.MouseDown += CircleMouseDownLeft;
-            #region comment
-            /*connectionLine.circle_right.MouseDown += CircleMouseDownRight;
+            connectionLine.circle_right.MouseDown += CircleMouseDownRight;
             connectionLine.circle_top.MouseDown += CircleMouseDownTop;
-            connectionLine.circle_bottom.MouseDown += CircleMouseDownBottom;*/
-            #endregion
+            connectionLine.circle_bottom.MouseDown += CircleMouseDownBottom;
 
             bool click = false;
 
@@ -730,8 +764,7 @@ namespace Interface_1._0
             connectionLine.line_left.MouseMove += LineMouseMoveLeft;
             connectionLine.line_left.MouseUp += LineMouseUp;
 
-            #region comment
-            /*connectionLine.line_right.MouseDown += LineMouseDown;
+            connectionLine.line_right.MouseDown += LineMouseDown;
             connectionLine.line_right.MouseMove += LineMouseMoveRight;
             connectionLine.line_right.MouseUp += LineMouseUp;
 
@@ -741,8 +774,7 @@ namespace Interface_1._0
 
             connectionLine.line_bottom.MouseDown += LineMouseDown;
             connectionLine.line_bottom.MouseMove += LineMouseMoveBottom;
-            connectionLine.line_bottom.MouseUp += LineMouseUp;*/
-            #endregion
+            connectionLine.line_bottom.MouseUp += LineMouseUp;
 
             void CircleMouseDownLeft(object sndr, MouseButtonEventArgs evnt)
             {
@@ -763,58 +795,64 @@ namespace Interface_1._0
                     connectionLine.line_left.CaptureMouse();
                 }
             }
-            #region comment
-            /*void CircleMouseDownRight(object sndr, MouseButtonEventArgs evnt)
+            void CircleMouseDownRight(object sndr, MouseButtonEventArgs evnt)
             {
                 if (shape_count > 1)
                 {
+                    lineMove = true;
+
                     connectionLine.line_right.IsEnabled = true;
                     connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
                     connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
 
-                    var pos = evnt.GetPosition(CanvasPos);
+                    connectionLine.line_right.Stroke = Brushes.Yellow;
 
+                    var pos = evnt.GetPosition(CanvasPos);
                     connectionLine.line_right.X2 = pos.X;
                     connectionLine.line_right.Y2 = pos.Y;
 
-                    connectionLine.line_right.Stroke = Brushes.Yellow;
+                    connectionLine.line_right.CaptureMouse();
                 }
             }
             void CircleMouseDownTop(object sndr, MouseButtonEventArgs evnt)
             {
                 if (shape_count > 1)
                 {
+                    lineMove = true;
+
                     connectionLine.line_top.IsEnabled = true;
                     connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
                     connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
 
-                    var pos = evnt.GetPosition(CanvasPos);
+                    connectionLine.line_top.Stroke = Brushes.Yellow;
 
+                    var pos = evnt.GetPosition(CanvasPos);
                     connectionLine.line_top.X2 = pos.X;
                     connectionLine.line_top.Y2 = pos.Y;
 
-                    connectionLine.line_top.Stroke = Brushes.Yellow;
+                    connectionLine.line_top.CaptureMouse();
                 }
             }
             void CircleMouseDownBottom(object sndr, MouseButtonEventArgs evnt)
             {
                 if (shape_count > 1)
                 {
+                    lineMove = true;
+
                     connectionLine.line_bottom.IsEnabled = true;
                     connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
                     connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
 
-                    var pos = evnt.GetPosition(CanvasPos);
+                    connectionLine.line_bottom.Stroke = Brushes.Yellow;
 
+                    var pos = evnt.GetPosition(CanvasPos);
                     connectionLine.line_bottom.X2 = pos.X;
                     connectionLine.line_bottom.Y2 = pos.Y;
 
-                    connectionLine.line_bottom.Stroke = Brushes.Yellow;
+                    connectionLine.line_bottom.CaptureMouse();
                 }
-            }*/
-            #endregion
+            }
 
-           
             void LineMouseDown(object sndr, MouseButtonEventArgs evnt)
             {
                 var obj_line = (Line)sndr;
@@ -868,69 +906,135 @@ namespace Interface_1._0
                     CouplingLines(connectionLine.circle_left, obj_line, connectionLine.arrow_left, pos);
                 }
             }
-            #region comment
-            /*void LineMouseMoveRight(object sndr, MouseEventArgs evnt)
+            void LineMouseMoveRight(object sndr, MouseEventArgs evnt)
             {
-                if (shape_count > 1)
+                if (shape_count > 1 && lineMove)
                 {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
+                    Line obj_line = (Line)sndr;
+                    obj_line.CaptureMouse();
+
+                    obj_line.Stroke = Brushes.Yellow;
+
+                    var pos = evnt.GetPosition(CanvasPos);
+
+                    if (click && Math.Abs(pos.X - Canvas.GetLeft(connectionLine.circle_right)) > 6
+                        && Math.Abs(pos.Y - Canvas.GetTop(connectionLine.circle_right)) > 6)
                     {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
+                        click = false;
 
-                        obj_line.Stroke = Brushes.Yellow;
+                        Line line = new Line();
+                        line.MouseDown += LineMouseDown;
+                        line.X1 = obj_line.X1;
+                        line.Y1 = obj_line.Y1;
 
-                        var pos = evnt.GetPosition(CanvasPos);
+                        line.X2 = obj_line.X2;
+                        line.Y2 = obj_line.Y2;
+
+                        line.Stroke = Brushes.Yellow;
+                        line.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(line);
+
+                        obj_line.X1 = line.X2;
+                        obj_line.Y1 = line.Y2;
 
                         obj_line.X2 = pos.X;
                         obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_right, obj_line, connectionLine.arrow_right, pos);
                     }
+                    else
+                    {
+                        obj_line.X2 = pos.X;
+                        obj_line.Y2 = pos.Y;
+                    }
+
+                    CouplingLines(connectionLine.circle_right, obj_line, connectionLine.arrow_right, pos);
                 }
             }
             void LineMouseMoveTop(object sndr, MouseEventArgs evnt)
             {
-                if (shape_count > 1)
+                if (shape_count > 1 && lineMove)
                 {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
+                    Line obj_line = (Line)sndr;
+                    obj_line.CaptureMouse();
+
+                    obj_line.Stroke = Brushes.Yellow;
+
+                    var pos = evnt.GetPosition(CanvasPos);
+
+                    if (click && Math.Abs(pos.X - Canvas.GetLeft(connectionLine.circle_top)) > 6
+                        && Math.Abs(pos.Y - Canvas.GetTop(connectionLine.circle_top)) > 6)
                     {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
+                        click = false;
 
-                        obj_line.Stroke = Brushes.Yellow;
+                        Line line = new Line();
+                        line.MouseDown += LineMouseDown;
+                        line.X1 = obj_line.X1;
+                        line.Y1 = obj_line.Y1;
 
-                        var pos = evnt.GetPosition(CanvasPos);
+                        line.X2 = obj_line.X2;
+                        line.Y2 = obj_line.Y2;
+
+                        line.Stroke = Brushes.Yellow;
+                        line.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(line);
+
+                        obj_line.X1 = line.X2;
+                        obj_line.Y1 = line.Y2;
 
                         obj_line.X2 = pos.X;
                         obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_top, obj_line, connectionLine.arrow_top, pos);
                     }
+                    else
+                    {
+                        obj_line.X2 = pos.X;
+                        obj_line.Y2 = pos.Y;
+                    }
+
+                    CouplingLines(connectionLine.circle_top, obj_line, connectionLine.arrow_top, pos);
                 }
             }
             void LineMouseMoveBottom(object sndr, MouseEventArgs evnt)
             {
-                if (shape_count > 1)
+                if (shape_count > 1 && lineMove)
                 {
-                    if (evnt.LeftButton == MouseButtonState.Pressed)
+                    Line obj_line = (Line)sndr;
+                    obj_line.CaptureMouse();
+
+                    obj_line.Stroke = Brushes.Yellow;
+
+                    var pos = evnt.GetPosition(CanvasPos);
+
+                    if (click && Math.Abs(pos.X - Canvas.GetLeft(connectionLine.circle_bottom)) > 6
+                        && Math.Abs(pos.Y - Canvas.GetTop(connectionLine.circle_bottom)) > 6)
                     {
-                        var obj_line = (Line)sndr;
-                        obj_line.CaptureMouse();
+                        click = false;
 
-                        obj_line.Stroke = Brushes.Yellow;
+                        Line line = new Line();
+                        line.MouseDown += LineMouseDown;
+                        line.X1 = obj_line.X1;
+                        line.Y1 = obj_line.Y1;
 
-                        var pos = evnt.GetPosition(CanvasPos);
+                        line.X2 = obj_line.X2;
+                        line.Y2 = obj_line.Y2;
+
+                        line.Stroke = Brushes.Yellow;
+                        line.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(line);
+
+                        obj_line.X1 = line.X2;
+                        obj_line.Y1 = line.Y2;
 
                         obj_line.X2 = pos.X;
                         obj_line.Y2 = pos.Y;
-
-                        CouplingLines(connectionLine.circle_bottom, obj_line, connectionLine.arrow_bottom, pos);
                     }
-                }
-            }*/
-            #endregion
+                    else
+                    {
+                        obj_line.X2 = pos.X;
+                        obj_line.Y2 = pos.Y;
+                    }
 
+                    CouplingLines(connectionLine.circle_bottom, obj_line, connectionLine.arrow_bottom, pos);
+                }
+            }
 
             void LineMouseUp(object sndr, MouseEventArgs evnt)
             {
@@ -957,22 +1061,6 @@ namespace Interface_1._0
 
                 if (e.ClickCount == 2)
                     TextMethodSee(rPR_Shapes, txt, anchor);
-
-                Line conected_lineLeft = null;
-                Polygon connected_arrowLeft = null;
-                CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
-
-                Line conected_lineRight = null;
-                Polygon connected_arrowRight = null;
-                CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
-
-                Line conected_lineTop = null;
-                Polygon connected_arrowTop = null;
-                CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
-
-                Line conected_lineBottom = null;
-                Polygon connected_arrowBottom = null;
-                CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
 
                 if (!anchor.is_anchor_create)
                 {
@@ -1003,6 +1091,106 @@ namespace Interface_1._0
                     }
                     void AnchorNS_MouseMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
                             var obj_anchor = (Polyline)sndr;
@@ -1056,17 +1244,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -1139,17 +1359,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -1188,6 +1440,106 @@ namespace Interface_1._0
                     }
                     void AnchorWE_MouseMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
                             var obj_anchor = (Polyline)sndr;
@@ -1244,17 +1596,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -1327,17 +1711,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -1376,6 +1792,106 @@ namespace Interface_1._0
                     }
                     void AnchorNWSE_MouseMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
 
@@ -1439,17 +1955,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -1528,17 +2076,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -1617,8 +2197,8 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(connectionLine.circle_left);
                     CanvasPos.Children.Remove(connectionLine.circle_right);
                     CanvasPos.Children.Remove(connectionLine.circle_top);
-                    CanvasPos.Children.Remove(connectionLine.circle_bottom)
-                        ;
+                    CanvasPos.Children.Remove(connectionLine.circle_bottom);
+
                     CanvasPos.Children.Remove(connectionLine.line_left);
                     CanvasPos.Children.Remove(connectionLine.line_right);
                     CanvasPos.Children.Remove(connectionLine.line_top);
@@ -1634,14 +2214,13 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(anchor.anchor_NWSE);
 
                     --shape_count;
+                    ClearCanvas();
                 }
 
                 RPC_Shape_Move(rPR_Shapes, txt, connectionLine, anchor);
             }
         }
-
-        #region comment
-       /* public void AddRh_Shape(Rh_Shape shape,ConnectionLine connectionLine ,TXT txt ,Anchor anchor)
+        public void AddRh_Shape(Rh_Shape shape,ConnectionLine connectionLine ,TXT txt ,Anchor anchor)
         {
             LineAction(connectionLine);
 
@@ -1654,22 +2233,6 @@ namespace Interface_1._0
 
                 if (e.ClickCount == 2)
                     TextMethodSee(shape, txt, anchor);
-
-                Line conected_lineLeft = null;
-                Polygon connected_arrowLeft = null;
-                CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
-
-                Line conected_lineRight = null;
-                Polygon connected_arrowRight = null;
-                CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
-
-                Line conected_lineTop = null;
-                Polygon connected_arrowTop = null;
-                CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
-
-                Line conected_lineBottom = null;
-                Polygon connected_arrowBottom = null;
-                CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
 
                 if (!anchor.is_anchor_create)
                 {
@@ -1702,6 +2265,106 @@ namespace Interface_1._0
                     }
                     void AnchorWE_MouseMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
                             var obj_anchor = (Polyline)sndr;
@@ -1759,17 +2422,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -1844,17 +2539,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -1893,6 +2620,106 @@ namespace Interface_1._0
                     }
                     void AnchorNS_MouseMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
                             var obj_anchor = (Polyline)sndr;
@@ -1948,17 +2775,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -2031,17 +2890,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -2080,6 +2971,106 @@ namespace Interface_1._0
                     }
                     void AnchorNWSE_MouseMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
                             var obj_anchor = (Polyline)sndr;
@@ -2145,17 +3136,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -2235,17 +3258,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -2335,6 +3390,7 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(anchor.anchor_NWSE);
 
                     --shape_count;
+                    ClearCanvas();
                 }
 
                 Rh_Shape_Move(shape, connectionLine,txt, anchor);
@@ -2353,22 +3409,6 @@ namespace Interface_1._0
 
                 if (e.ClickCount == 2)
                     TextMethodSee(shape, txt, anchor);
-
-                Line conected_lineLeft = null;
-                Polygon connected_arrowLeft = null;
-                CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
-
-                Line conected_lineRight = null;
-                Polygon connected_arrowRight = null;
-                CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
-
-                Line conected_lineTop = null;
-                Polygon connected_arrowTop = null;
-                CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
-
-                Line conected_lineBottom = null;
-                Polygon connected_arrowBottom = null;
-                CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
 
                 if (!anchor.is_anchor_create)
                 {
@@ -2401,6 +3441,106 @@ namespace Interface_1._0
                     }
                     void AnchorNS_MouseMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
                             var obj_anchor = (Polyline)sndr;
@@ -2462,17 +3602,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -2551,17 +3723,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -2600,6 +3804,106 @@ namespace Interface_1._0
                     }
                     void AnchorWE_MouseMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
                             var obj_anchor = (Polyline)sndr;
@@ -2663,17 +3967,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -2752,17 +4088,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -2801,6 +4169,106 @@ namespace Interface_1._0
                     }
                     void AnchorNWSE_MouseMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
                             var obj_anchor = (Polyline)sndr;
@@ -2873,17 +4341,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -2970,17 +4470,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -3070,6 +4602,7 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(anchor.anchor_NWSE);
 
                     --shape_count;
+                    ClearCanvas();
                 }
 
                 Cycle_Shape_Move(shape, txt, connectionLine, anchor);
@@ -3088,22 +4621,6 @@ namespace Interface_1._0
 
                 if (e.ClickCount == 2)
                     TextMethodSee(shape, txt, anchor);
-
-                Line conected_lineLeft = null;
-                Polygon connected_arrowLeft = null;
-                CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
-
-                Line conected_lineRight = null;
-                Polygon connected_arrowRight = null;
-                CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
-
-                Line conected_lineTop = null;
-                Polygon connected_arrowTop = null;
-                CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
-
-                Line conected_lineBottom = null;
-                Polygon connected_arrowBottom = null;
-                CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
 
                 if (!anchor.is_anchor_create)
                 {
@@ -3132,6 +4649,106 @@ namespace Interface_1._0
                     }
                     void AnchorTopMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (e.LeftButton == MouseButtonState.Pressed)
                         {
                             var obj_anchor = (UIElement)sndr;
@@ -3170,17 +4787,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 + 22);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -3241,17 +4890,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 + 22);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -3290,6 +4971,106 @@ namespace Interface_1._0
                     }
                     void AnchorLeftMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (e.LeftButton == MouseButtonState.Pressed)
                         {
                             var obj_anchor = (UIElement)sndr;
@@ -3330,17 +5111,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 + 22);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -3401,17 +5214,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 + 22);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -3450,6 +5295,106 @@ namespace Interface_1._0
                     }
                     void AnchorMouseMove(object sndr, MouseEventArgs evnt)
                     {
+                        Line conected_lineLeft = null;
+                        Polygon connected_arrowLeft = null;
+                        CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                        Line conected_lineRight = null;
+                        Polygon connected_arrowRight = null;
+                        CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                        Line conected_lineTop = null;
+                        Polygon connected_arrowTop = null;
+                        CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                        Line conected_lineBottom = null;
+                        Polygon connected_arrowBottom = null;
+                        CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                        Line mainLeftLine = null;
+                        bool checkLeft = false;
+                        if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                    && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                        {
+                            checkLeft = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                                    {
+                                        mainLeftLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkLeft = true;
+                        }
+
+                        Line mainRightLine = null;
+                        bool checkRight = false;
+                        if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                    && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                        {
+                            checkRight = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                                    {
+                                        mainRightLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkRight = true;
+                        }
+
+                        Line mainTopLine = null;
+                        bool checkTop = false;
+                        if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                    && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                        {
+                            checkTop = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                                    {
+                                        mainTopLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkTop = true;
+                        }
+
+                        Line mainBottomLine = null;
+                        bool checkBottom = false;
+                        if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                    && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                        {
+                            checkBottom = false;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                                if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                                    if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                        && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                                    {
+                                        mainBottomLine = (CanvasPos.Children[i] as Line);
+                                        break;
+                                    }
+
+                            checkBottom = true;
+                        }
+
                         if (e.LeftButton == MouseButtonState.Pressed)
                         {
                             var obj_anchor = (UIElement)sndr;
@@ -3491,17 +5436,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 + 22);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -3565,17 +5542,49 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
                                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 + 22);
 
-                                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                if (!checkLeft)
+                                {
+                                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
+                                else
+                                {
+                                    mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                                    mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                                }
 
-                                connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                                connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                if (!checkRight)
+                                {
+                                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
+                                else
+                                {
+                                    mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                                    mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                                }
 
-                                connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                                connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                if (!checkTop)
+                                {
+                                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
+                                else
+                                {
+                                    mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                                    mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                                }
 
-                                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                if (!checkBottom)
+                                {
+                                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                                else
+                                {
+                                    mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                                    mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
 
                                 if (conected_lineTop != null && connected_arrowTop != null)
                                 {
@@ -3665,12 +5674,12 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(anchor.anchor_NWSE);
 
                     --shape_count;
+                    ClearCanvas();
                 }
 
                 Ell_Shape_Move(shape, connectionLine,txt, anchor);
             }
-        }*/
-       #endregion
+        }
 
         void CouplingLineMove(Ellipse ellipse, Line ellipseLine,ref Line line, ref Polygon polygon)
         {
@@ -3678,8 +5687,8 @@ namespace Interface_1._0
                 if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != ellipseLine)
                 {
                     Line search_line = CanvasPos.Children[i] as Line;
-                    if (Math.Abs(search_line.X2 - Canvas.GetLeft(ellipse)) < 3 &&
-                        Math.Abs(search_line.Y2 - Canvas.GetTop(ellipse)) < 3)
+                    if (Math.Abs(search_line.X2 - Canvas.GetLeft(ellipse)) < 4 &&
+                        Math.Abs(search_line.Y2 - Canvas.GetTop(ellipse)) < 4)
                     {
                         line = search_line;
                       
@@ -3687,7 +5696,7 @@ namespace Interface_1._0
                     }
                 }
             for (int i = 0; i < CanvasPos.Children.Count; ++i)
-                if (CanvasPos.Children[i] is Polygon)
+                if (CanvasPos.Children[i] is Polygon && CanvasPos.Children[i] != polygon)
                 {
                     Polygon search_polygon = CanvasPos.Children[i] as Polygon;
                     if (Math.Abs(Canvas.GetLeft(search_polygon) - Canvas.GetLeft(ellipse)) < 4 &&
@@ -3701,44 +5710,110 @@ namespace Interface_1._0
         }
         public void RPC_Shape_Move(RP_Shapes shape, TXT txt, ConnectionLine connectionLine,Anchor anchor)
         {
-            Line conected_lineLeft = null;
-            Polygon connected_arrowLeft = null;
-            CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
-
-            Line conected_lineRight = null;
-            Polygon connected_arrowRight = null;
-            CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
-
-            Line conected_lineTop = null;
-            Polygon connected_arrowTop = null;
-            CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
-
-            Line conected_lineBottom = null;
-            Polygon connected_arrowBottom = null;
-            CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
-
-
-            Line mainLeftLine = null;
-            if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 5
-                        && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 5)
-            {
-                connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
-            }
-            else
-            {
-                for (int i = 0; i < CanvasPos.Children.Count; ++i)
-                    if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
-                        if(Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
-                            && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
-                                mainLeftLine = (CanvasPos.Children[i] as Line);
-            }
-
-
             shape.shape.MouseMove += RPR_Move;
 
             void RPR_Move(object sender, MouseEventArgs e)
             {
+                Line conected_lineLeft = null;
+                Polygon connected_arrowLeft = null;
+                CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                Line conected_lineRight = null;
+                Polygon connected_arrowRight = null;
+                CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                Line conected_lineTop = null;
+                Polygon connected_arrowTop = null;
+                CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                Line conected_lineBottom = null;
+                Polygon connected_arrowBottom = null;
+                CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                Line mainLeftLine = null;
+                bool checkLeft = false;
+                if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                            && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                {
+                    checkLeft = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                            {
+                                mainLeftLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkLeft = true;
+                }
+
+                Line mainRightLine = null;
+                bool checkRight = false;
+                if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                            && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                {
+                    checkRight = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                            {
+                                mainRightLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkRight = true;
+                }
+
+                Line mainTopLine = null;
+                bool checkTop = false;
+                if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                            && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                {
+                    checkTop = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                            {
+                                mainTopLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkTop = true;
+                }
+
+                Line mainBottomLine = null;
+                bool checkBottom = false;
+                if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                            && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                {
+                    checkBottom = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                            {
+                                mainBottomLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkBottom = true;
+                }
+
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
                     if (anchor.is_anchor_create)
@@ -3775,7 +5850,7 @@ namespace Interface_1._0
                     Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 10);
 
                    
-                    if(mainLeftLine == null)
+                    if(!checkLeft)
                     {
                         connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
                         connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
@@ -3786,17 +5861,40 @@ namespace Interface_1._0
                         mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
                     }
 
+                    if (!checkRight)
+                    {
+                        connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                        connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    }
+                    else
+                    {
+                        mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                        mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    }
 
-                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    if (!checkTop)
+                    {
+                        connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                        connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    }
+                    else
+                    {
+                        mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                        mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    }
 
-                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    if (!checkBottom)
+                    {
+                        connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                        connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                    }
+                    else
+                    {
+                        mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                        mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                    }
 
-                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
-                    
-                    if(conected_lineTop != null && connected_arrowTop != null)
+                    if (conected_lineTop != null && connected_arrowTop != null)
                     {
                         conected_lineTop.X2 = Canvas.GetLeft(connectionLine.circle_top);
                         conected_lineTop.Y2 = Canvas.GetTop(connectionLine.circle_top);
@@ -3831,31 +5929,112 @@ namespace Interface_1._0
                 }
             }
         }
-
-        #region comment
-        /*public void Cycle_Shape_Move(Cy_Shape shape, TXT txt, ConnectionLine connectionLine, Anchor anchor)
+        public void Cycle_Shape_Move(Cy_Shape shape, TXT txt, ConnectionLine connectionLine, Anchor anchor)
         {
-            Line conected_lineLeft = null;
-            Polygon connected_arrowLeft = null;
-            CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
-
-            Line conected_lineRight = null;
-            Polygon connected_arrowRight = null;
-            CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
-
-            Line conected_lineTop = null;
-            Polygon connected_arrowTop = null;
-            CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
-
-            Line conected_lineBottom = null;
-            Polygon connected_arrowBottom = null;
-            CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
-
             shape.shape.MouseMove += RPR_Move;
 
             void RPR_Move(object sender, MouseEventArgs e)
             {
-                
+                Line conected_lineLeft = null;
+                Polygon connected_arrowLeft = null;
+                CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                Line conected_lineRight = null;
+                Polygon connected_arrowRight = null;
+                CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                Line conected_lineTop = null;
+                Polygon connected_arrowTop = null;
+                CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                Line conected_lineBottom = null;
+                Polygon connected_arrowBottom = null;
+                CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                Line mainLeftLine = null;
+                bool checkLeft = false;
+                if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                            && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                {
+                    checkLeft = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                            {
+                                mainLeftLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkLeft = true;
+                }
+
+                Line mainRightLine = null;
+                bool checkRight = false;
+                if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                            && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                {
+                    checkRight = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                            {
+                                mainRightLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkRight = true;
+                }
+
+                Line mainTopLine = null;
+                bool checkTop = false;
+                if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                            && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                {
+                    checkTop = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                            {
+                                mainTopLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkTop = true;
+                }
+
+                Line mainBottomLine = null;
+                bool checkBottom = false;
+                if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                            && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                {
+                    checkBottom = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                            {
+                                mainBottomLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkBottom = true;
+                }
+
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
                     if (anchor.is_anchor_create)
@@ -3892,17 +6071,49 @@ namespace Interface_1._0
                     Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
                     Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
 
-                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                    if (!checkLeft)
+                    {
+                        connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                        connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                    }
+                    else
+                    {
+                        mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                        mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                    }
 
-                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    if (!checkRight)
+                    {
+                        connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                        connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    }
+                    else
+                    {
+                        mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                        mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    }
 
-                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    if (!checkTop)
+                    {
+                        connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                        connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    }
+                    else
+                    {
+                        mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                        mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    }
 
-                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                    if (!checkBottom)
+                    {
+                        connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                        connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                    }
+                    else
+                    {
+                        mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                        mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                    }
 
                     if (conected_lineTop != null && connected_arrowTop != null)
                     {
@@ -3941,27 +6152,109 @@ namespace Interface_1._0
         }
         public void Rh_Shape_Move(Rh_Shape shape,ConnectionLine connectionLine ,TXT txt, Anchor anchor)
         {
-            Line conected_lineLeft = null;
-            Polygon connected_arrowLeft = null;
-            CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
-
-            Line conected_lineRight = null;
-            Polygon connected_arrowRight = null;
-            CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
-
-            Line conected_lineTop = null;
-            Polygon connected_arrowTop = null;
-            CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
-
-            Line conected_lineBottom = null;
-            Polygon connected_arrowBottom = null;
-            CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
-
             shape.shape.MouseMove += ShapeMove;
 
             void ShapeMove(object sndr, MouseEventArgs evnt)
             {
-                
+                Line conected_lineLeft = null;
+                Polygon connected_arrowLeft = null;
+                CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                Line conected_lineRight = null;
+                Polygon connected_arrowRight = null;
+                CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                Line conected_lineTop = null;
+                Polygon connected_arrowTop = null;
+                CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                Line conected_lineBottom = null;
+                Polygon connected_arrowBottom = null;
+                CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                Line mainLeftLine = null;
+                bool checkLeft = false;
+                if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                            && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                {
+                    checkLeft = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                            {
+                                mainLeftLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkLeft = true;
+                }
+
+                Line mainRightLine = null;
+                bool checkRight = false;
+                if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                            && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                {
+                    checkRight = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                            {
+                                mainRightLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkRight = true;
+                }
+
+                Line mainTopLine = null;
+                bool checkTop = false;
+                if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                            && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                {
+                    checkTop = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                            {
+                                mainTopLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkTop = true;
+                }
+
+                Line mainBottomLine = null;
+                bool checkBottom = false;
+                if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                            && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                {
+                    checkBottom = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                            {
+                                mainBottomLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkBottom = true;
+                }
 
                 if (evnt.LeftButton == MouseButtonState.Pressed)
                 {
@@ -3998,17 +6291,49 @@ namespace Interface_1._0
                     Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                     Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
 
-                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                    if (!checkLeft)
+                    {
+                        connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                        connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                    }
+                    else
+                    {
+                        mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                        mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                    }
 
-                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    if (!checkRight)
+                    {
+                        connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                        connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    }
+                    else
+                    {
+                        mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                        mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    }
 
-                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    if (!checkTop)
+                    {
+                        connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                        connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    }
+                    else
+                    {
+                        mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                        mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    }
 
-                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                    if (!checkBottom)
+                    {
+                        connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                        connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                    }
+                    else
+                    {
+                        mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                        mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                    }
 
                     if (conected_lineTop != null && connected_arrowTop != null)
                     {
@@ -4047,26 +6372,110 @@ namespace Interface_1._0
         }
         public void Ell_Shape_Move(Ell_Shape shape,ConnectionLine connectionLine ,TXT txt, Anchor anchor)
         {
-            Line conected_lineLeft = null;
-            Polygon connected_arrowLeft = null;
-            CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
-
-            Line conected_lineRight = null;
-            Polygon connected_arrowRight = null;
-            CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
-
-            Line conected_lineTop = null;
-            Polygon connected_arrowTop = null;
-            CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
-
-            Line conected_lineBottom = null;
-            Polygon connected_arrowBottom = null;
-            CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
-
             shape.shape.MouseMove += ShapeMove;
 
             void ShapeMove(object sender, MouseEventArgs e)
             {
+                Line conected_lineLeft = null;
+                Polygon connected_arrowLeft = null;
+                CouplingLineMove(connectionLine.circle_left, connectionLine.line_left, ref conected_lineLeft, ref connected_arrowLeft);
+
+                Line conected_lineRight = null;
+                Polygon connected_arrowRight = null;
+                CouplingLineMove(connectionLine.circle_right, connectionLine.line_right, ref conected_lineRight, ref connected_arrowRight);
+
+                Line conected_lineTop = null;
+                Polygon connected_arrowTop = null;
+                CouplingLineMove(connectionLine.circle_top, connectionLine.line_top, ref conected_lineTop, ref connected_arrowTop);
+
+                Line conected_lineBottom = null;
+                Polygon connected_arrowBottom = null;
+                CouplingLineMove(connectionLine.circle_bottom, connectionLine.line_bottom, ref conected_lineBottom, ref connected_arrowBottom);
+
+                Line mainLeftLine = null;
+                bool checkLeft = false;
+                if (Math.Abs(connectionLine.line_left.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                            && Math.Abs(connectionLine.line_left.Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                {
+                    checkLeft = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_left)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_left)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_left)) < 4)
+                            {
+                                mainLeftLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkLeft = true;
+                }
+
+                Line mainRightLine = null;
+                bool checkRight = false;
+                if (Math.Abs(connectionLine.line_right.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                            && Math.Abs(connectionLine.line_right.Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                {
+                    checkRight = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_right)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_right)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_right)) < 4)
+                            {
+                                mainRightLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkRight = true;
+                }
+
+                Line mainTopLine = null;
+                bool checkTop = false;
+                if (Math.Abs(connectionLine.line_top.X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                            && Math.Abs(connectionLine.line_top.Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                {
+                    checkTop = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_top)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_top)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_top)) < 4)
+                            {
+                                mainTopLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkTop = true;
+                }
+
+                Line mainBottomLine = null;
+                bool checkBottom = false;
+                if (Math.Abs(connectionLine.line_bottom.X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                            && Math.Abs(connectionLine.line_bottom.Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                {
+                    checkBottom = false;
+                }
+                else
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line && CanvasPos.Children[i] != connectionLine.line_bottom)
+                            if (Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(connectionLine.circle_bottom)) < 4
+                                && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(connectionLine.circle_bottom)) < 4)
+                            {
+                                mainBottomLine = (CanvasPos.Children[i] as Line);
+                                break;
+                            }
+
+                    checkBottom = true;
+                }
+
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
                     var obj = (UIElement)sender;
@@ -4099,17 +6508,49 @@ namespace Interface_1._0
                     Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
                     Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 + 22);
 
-                    connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
-                    connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                    if (!checkLeft)
+                    {
+                        connectionLine.line_left.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                        connectionLine.line_left.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                    }
+                    else
+                    {
+                        mainLeftLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
+                        mainLeftLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                    }
 
-                    connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
-                    connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    if (!checkRight)
+                    {
+                        connectionLine.line_right.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                        connectionLine.line_right.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    }
+                    else
+                    {
+                        mainRightLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
+                        mainRightLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                    }
 
-                    connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                    connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    if (!checkTop)
+                    {
+                        connectionLine.line_top.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                        connectionLine.line_top.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    }
+                    else
+                    {
+                        mainTopLine.X1 = Canvas.GetLeft(connectionLine.circle_top);
+                        mainTopLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                    }
 
-                    connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
-                    connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                    if (!checkBottom)
+                    {
+                        connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                        connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                    }
+                    else
+                    {
+                        mainBottomLine.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                        mainBottomLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
+                    }
 
                     if (conected_lineTop != null && connected_arrowTop != null)
                     {
@@ -4145,9 +6586,8 @@ namespace Interface_1._0
                     }
                 }
             }
-        }*/
-        #endregion
-
+        }
+      
         public void UIElements_Mouse_Up(object sender, MouseButtonEventArgs e)
         {
             var obj = (UIElement)sender;
@@ -4219,9 +6659,7 @@ namespace Interface_1._0
                 }
             }
         }
-
-        #region comment
-        /*public void TextMethodSee(Rh_Shape shape, TXT txt, Anchor anchor)
+        public void TextMethodSee(Rh_Shape shape, TXT txt, Anchor anchor)
         {
             txt.PrepareToWriting();
             Canvas.SetZIndex(txt.txtbx, 1);
@@ -4317,8 +6755,7 @@ namespace Interface_1._0
                     MassiveDisabledEnabled(true);
                 }
             }
-        }*/
-        #endregion
+        }
 
         private void DnD_Drop(object sender, DragEventArgs e)
         {
@@ -4343,7 +6780,6 @@ namespace Interface_1._0
                 shape.shape.MouseUp += UIElements_Mouse_Up;
 
                 CanvasPos.Children.Add(shape.shape);
-
                 CanvasPos.Children.Add(txt.txtbx);
                 CanvasPos.Children.Add(txt.kurwa_txtbox);
 
@@ -4402,16 +6838,14 @@ namespace Interface_1._0
                 connectionLine.line_top.X2 = 0;
                 connectionLine.line_top.Y2 = 0;
 
-                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
                 connectionLine.line_bottom.X2 = 0;
                 connectionLine.line_bottom.Y2 = 0;
 
                 AddRP_Shape(shape, connectionLine,txt, anchor);
             }
-
-            #region comment
-            /* if (Parrabullem_Check)
+            if (Parrabullem_Check)
              {
                  Parrabullem_Check = false;
                  ++shape_count;
@@ -4490,14 +6924,14 @@ namespace Interface_1._0
                  connectionLine.line_top.X2 = 0;
                  connectionLine.line_top.Y2 = 0;
 
-                 connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                 connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                 connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                 connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
                  connectionLine.line_bottom.X2 = 0;
                  connectionLine.line_bottom.Y2 = 0;
 
                  AddRP_Shape(shape, connectionLine, txt, anchor);
              }
-             if (Rhomb_Check)
+            if (Rhomb_Check)
              {
                  Rhomb_Check = false;
                  ++shape_count;
@@ -4576,14 +7010,14 @@ namespace Interface_1._0
                  connectionLine.line_top.X2 = 0;
                  connectionLine.line_top.Y2 = 0;
 
-                 connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                 connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                 connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                 connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
                  connectionLine.line_bottom.X2 = 0;
                  connectionLine.line_bottom.Y2 = 0;
 
                  AddRh_Shape(shape, connectionLine, txt, anchor);
              }
-             if (Cycle_Check)
+            if (Cycle_Check)
              {
                  Cycle_Check = false;
                  ++shape_count;
@@ -4663,14 +7097,14 @@ namespace Interface_1._0
                  connectionLine.line_top.X2 = 0;
                  connectionLine.line_top.Y2 = 0;
 
-                 connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                 connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                 connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                 connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
                  connectionLine.line_bottom.X2 = 0;
                  connectionLine.line_bottom.Y2 = 0;
 
                  AddCy_Shape(shape, connectionLine,txt, anchor);
              }
-             if (Ellipse_Check)
+            if (Ellipse_Check)
              {
                  Ellipse_Check = false;
                  ++shape_count;
@@ -4746,15 +7180,13 @@ namespace Interface_1._0
                  connectionLine.line_top.X2 = 0;
                  connectionLine.line_top.Y2 = 0;
 
-                 connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_top);
-                 connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_top);
+                 connectionLine.line_bottom.X1 = Canvas.GetLeft(connectionLine.circle_bottom);
+                 connectionLine.line_bottom.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
                  connectionLine.line_bottom.X2 = 0;
                  connectionLine.line_bottom.Y2 = 0;
 
                  AddEll_Shape(shape, connectionLine,txt, anchor);
-             }  */
-            #endregion
-
+             }
         }
 
         #endregion
