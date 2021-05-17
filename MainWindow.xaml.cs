@@ -228,7 +228,7 @@ namespace Interface_1._0
 
                                         delLine.X2 = 0;
                                         delLine.Y2 = 0;
-                                       delLine.Stroke = Brushes.Transparent;
+                                        delLine.Stroke = Brushes.Transparent;
                                         delLine.IsEnabled = false;
 
                                         delLine = (CanvasPos.Children[j] as Line);
@@ -288,6 +288,8 @@ namespace Interface_1._0
                                     && Math.Abs(Canvas.GetTop(CanvasPos.Children[i]) - Canvas.GetTop(CanvasPos.Children[k])) < 4)
                                 {
                                     (CanvasPos.Children[q] as Polygon).Fill = Brushes.Transparent;
+                                    Canvas.SetLeft(CanvasPos.Children[q], 0);
+                                    Canvas.SetTop(CanvasPos.Children[q], 0);
 
                                     line.X1 = Canvas.GetLeft(CanvasPos.Children[k]);
                                     line.Y1 = Canvas.GetTop(CanvasPos.Children[k]);
@@ -317,9 +319,13 @@ namespace Interface_1._0
                             {
                                 for (int q = 0; q < CanvasPos.Children.Count; ++q)
                                     if (CanvasPos.Children[q] is Polygon && Math.Abs(Canvas.GetLeft(CanvasPos.Children[i]) - line.X2) < 4
-                                        && Math.Abs(Canvas.GetTop(CanvasPos.Children[i]) - line.Y2) < 4)
-                                        (CanvasPos.Children[q] as Polygon).Fill = Brushes.Transparent;
-
+                                        && Math.Abs(Canvas.GetTop(CanvasPos.Children[i]) - line.Y2) < 4) 
+                                        {
+                                            (CanvasPos.Children[q] as Polygon).Fill = Brushes.Transparent;
+                                            Canvas.SetLeft(CanvasPos.Children[q], 0);
+                                            Canvas.SetTop(CanvasPos.Children[q], 0);
+                                            break;
+                                        }
                                 delLine.X1 = 0;
                                 delLine.Y1 = 0;
                                 delLine.X2 = 0;
@@ -432,6 +438,8 @@ namespace Interface_1._0
                                 && Math.Abs(Canvas.GetTop(CanvasPos.Children[j]) - Canvas.GetTop(CanvasPos.Children[i])) < 4)
                             {
                                 (CanvasPos.Children[j] as Polygon).Fill = Brushes.Transparent;
+                                Canvas.SetLeft(CanvasPos.Children[j], 0);
+                                Canvas.SetTop(CanvasPos.Children[j], 0);
 
                                 delLine2.X1 = Canvas.GetLeft(srEll);
                                 delLine2.Y1 = Canvas.GetTop(srEll);
@@ -462,7 +470,7 @@ namespace Interface_1._0
                                 delLine2.X2 = 0;
                                 delLine2.Y2 = 0;
 
-                                //delLine2.Stroke = Brushes.Transparent;
+                                delLine2.Stroke = Brushes.Transparent;
                                 delLine2.IsEnabled = false;
 
                                 delLine2 = CanvasPos.Children[i] as Line;
@@ -473,15 +481,19 @@ namespace Interface_1._0
                                     {
                                         for (int k = 0; k < CanvasPos.Children.Count; ++k)
                                             if (CanvasPos.Children[k] is Polygon && Math.Abs(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(CanvasPos.Children[j])) < 4
-                                                && Math.Abs(Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(CanvasPos.Children[j])) < 4)
-                                                (CanvasPos.Children[k] as Polygon).Fill = Brushes.Transparent;
-
+                                                && Math.Abs(Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(CanvasPos.Children[j])) < 4) 
+                                                {
+                                                    (CanvasPos.Children[k] as Polygon).Fill = Brushes.Transparent;
+                                                    Canvas.SetLeft(CanvasPos.Children[k], 0);
+                                                    Canvas.SetTop(CanvasPos.Children[k], 0);
+                                                    break;
+                                                }
                                         delLine2.X1 = Canvas.GetLeft(srEll);
                                         delLine2.Y1 = Canvas.GetTop(srEll);
                                         delLine2.X2 = 0;
                                         delLine2.Y2 = 0;
 
-                                        //delLine2.Stroke = Brushes.Transparent;
+                                        delLine2.Stroke = Brushes.Transparent;
                                         delLine2.IsEnabled = false;
 
                                         checkStraight = true;
@@ -856,7 +868,7 @@ namespace Interface_1._0
             void LineMouseDown(object sndr, MouseButtonEventArgs evnt)
             {
                 var obj_line = (Line)sndr;
-                if (evnt.RightButton == MouseButtonState.Pressed)
+                if (evnt.RightButton == MouseButtonState.Pressed && !lineMove)
                     HideLines(obj_line);
 
                 if (evnt.ClickCount == 1 && lineMove)
