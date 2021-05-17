@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None"
-        Background="#FF2D2D30"
+        Background="#FFBEBEBE"
         ResizeMode="CanResizeWithGrip"
         MinHeight="540"
         MinWidth="900"
@@ -19,10 +19,40 @@
         
         >
     <Window.Resources>
-        <Style x:Key="Elipse" TargetType="Rectangle">
+        <SolidColorBrush x:Key="ButtonBrush1" Color="#FF2A2A30"/>
+        <SolidColorBrush x:Key="ButtonBrush2" Color="#FF2E2E30"/>
+        <SolidColorBrush x:Key="CanvasBackground" Color="#FFBEBEBE"/>
+        <DrawingBrush x:Key="gridGeom" Viewport="0,0,10,10" ViewportUnits="Absolute" TileMode="Tile">
+            <DrawingBrush.Drawing>
+                <GeometryDrawing Brush="Black">
+
+                    <GeometryDrawing.Geometry>
+
+                        <GeometryGroup FillRule="EvenOdd">
+
+                            <RectangleGeometry Rect="0,0,50,50" />
+
+                            <RectangleGeometry Rect="0,0,49,49" />
+
+                        </GeometryGroup>
+
+                    </GeometryDrawing.Geometry>
+
+                </GeometryDrawing>
+
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+        <Style x:Key="MainCanvas" TargetType="Canvas">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName= gridPNG, Path=MouseDown }" Value="True">
+                    <Setter Property="Background" Value="{StaticResource CanvasBackground}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="Ellipse" TargetType="Rectangle">
             <Setter Property="Fill">
                 <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.5">
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#CCB7EE" Offset="0"/>
                         <GradientStop Color="#C8CAF1" Offset="1"/>
                     </LinearGradientBrush>
@@ -40,12 +70,27 @@
             <Setter Property="Height" Value="25"/>
             <Setter Property="RadiusX" Value="13"/>
             <Setter Property="RadiusY" Value="20"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Stroke">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
+                                <GradientStop Color="#00069B" Offset="0"/>
+                                <GradientStop Color="#BA48B6" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="Rect" TargetType="Polygon">
             <Setter Property="Points" Value="8,1 8,30 60,30 60,1 8,1"/>
             <Setter Property="Fill">
                 <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.5">
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#CCB7EE" Offset="0"/>
                         <GradientStop Color="#C8CAF1" Offset="1"/>
                     </LinearGradientBrush>
@@ -59,12 +104,27 @@
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Stroke">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
+                                <GradientStop Color="#00069B" Offset="0"/>
+                                <GradientStop Color="#BA48B6" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="Parrabullem" TargetType="Polygon">
             <Setter Property="Points" Value="8,1 0,30 60,30 68,1 8,1"/>
             <Setter Property="Fill">
                 <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.5">
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
                         <GradientStop Color="#CCB7EE" Offset="0"/>
                         <GradientStop Color="#C8CAF1" Offset="1"/>
                     </LinearGradientBrush>
@@ -78,12 +138,27 @@
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Stroke">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
+                                <GradientStop Color="#00069B" Offset="0"/>
+                                <GradientStop Color="#BA48B6" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="Rhomb" TargetType="Polygon">
             <Setter Property="Points" Value="0,8 40,20 80,8 40,-4 0,8"/>
             <Setter Property="Fill">
                 <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.5">
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
                         <GradientStop Color="#CCB7EE" Offset="0"/>
                         <GradientStop Color="#C8CAF1" Offset="1"/>
                     </LinearGradientBrush>
@@ -97,12 +172,27 @@
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Stroke">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
+                                <GradientStop Color="#00069B" Offset="0"/>
+                                <GradientStop Color="#BA48B6" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="Cycle" TargetType="Polygon">
             <Setter Property="Points" Value="1,8 7,20 60,20 67,8 60,-6 7,-6 1,8"/>
             <Setter Property="Fill">
                 <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.5">
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
                         <GradientStop Color="#CCB7EE" Offset="0"/>
                         <GradientStop Color="#C8CAF1" Offset="1"/>
                     </LinearGradientBrush>
@@ -116,6 +206,21 @@
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Stroke">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
+                                <GradientStop Color="#00069B" Offset="0"/>
+                                <GradientStop Color="#BA48B6" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="Button" TargetType="Label">
             <Setter Property="Height" Value="14"/>
@@ -133,10 +238,15 @@
 
 
         </Style>
+        <Style x:Key="ButtonHead" TargetType="Label">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,0,10,0"/>
+            
+        </Style>
         
     </Window.Resources>
-    
-        <Border Name="Border" MouseMove="Border_MouseMove" >
+
+    <Border Name="Border">
         <Grid>
             <Grid ShowGridLines="False">
                 <Grid.RowDefinitions>
@@ -156,7 +266,7 @@
                        MouseLeftButtonDown="Mouse_Drag_Window" Name="RHDP"
                        KeyDown="KeyBinding">
                     <DockPanel.Background>
-                        <SolidColorBrush Color="#FF5D5D5D">
+                        <SolidColorBrush Color="#FF2E2E30">
                         </SolidColorBrush>
                     </DockPanel.Background>
 
@@ -220,7 +330,7 @@
                        MouseLeftButtonDown="Mouse_Drag_Window"
                        >
                     <DockPanel.Background>
-                        <SolidColorBrush Color="#FF5D5D5D" ></SolidColorBrush>
+                        <SolidColorBrush Color="#FF2E2E30" ></SolidColorBrush>
                     </DockPanel.Background>
 
                 </DockPanel>
@@ -232,24 +342,28 @@
                        Grid.ColumnSpan="2"
                        Grid.Row="0" HorizontalAlignment="Left" Width="454" Margin="0,2"
                        >
-                    <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical" MouseLeave="Border_MouseMove">
                         <StackPanel Orientation="Horizontal" Height="18" Margin="0,5,0,0">
-                            <Label Content="Файл" Foreground="White" Padding="10,0,10,0" 
+                            <Label Content="Файл"  Style="{StaticResource ButtonHead}"
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
-                           MouseDown="FileDown" Height="18" VerticalAlignment="Bottom"/>
-                            <Label Content="Редактировать" MouseEnter="Header_Mouse_Enter"
+                           MouseDown="FileDown"
+                                   MouseUp="ButtonUp"/>
+                            <Label Content="Редактировать" Style="{StaticResource ButtonHead}" 
+                                   MouseEnter="Header_Mouse_Enter"
                            MouseLeave="Header_Mouse_Leave"
-                           MouseDown="CutDownSave"
-                           Foreground="White" Padding="10,0,10,0"/>
-                            <Label Content="Помощь" Foreground="White" Padding="10,0,10,0"
+                           MouseDown="EditDown"
+                           MouseUp="ButtonUp"
+                           />
+                            <Label Content="Помощь" Style="{StaticResource ButtonHead}"
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
                            MouseDown="prev"/>
 
 
 
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="Resources\Grid_3.png" Width="12" Margin="8,2,0,0"></Image>
+                        <StackPanel Orientation="Horizontal" Name="gridPNG">
+
+                            <Image Source="Resources\Grid_3.png" Width="12" Margin="8,2,0,0" MouseDown="GridSwitcher"/>
                         </StackPanel>
                     </StackPanel>
 
@@ -262,12 +376,13 @@
                 <!--#region  main field-->
                 <Canvas Grid.Row="1"
                             Grid.Column="1"
-                            Background="#FFBEBEBE"
                             AllowDrop="True"
                             Drop="DnD_Drop"
                             Name="CanvasPos"
                             Focusable="True" Grid.ColumnSpan="2" Margin="0,0,-1209,-1528"
+                        Background="{StaticResource gridGeom}"
                         >
+                    
                     <Polyline Stroke="Transparent" Points="8,0 0,0 0,8 8,0" Name="Anchor"/>
                 </Canvas>
 
@@ -284,44 +399,27 @@
                     </Border.Background>
                 </Border>
 
-                <DockPanel
-                    Grid.Column="0"
-                    Grid.Row="1"
-                    VerticalAlignment="Bottom" Height="32">
-                    <StackPanel Orientation="Vertical">
-                        <Label Content="Clear" Foreground="Gray" Padding="33,0,0,5" 
-                           MouseDown="inTrash" MouseEnter="Clear_Mouse_Enter" 
-                           MouseLeave="Clear_Mouse_Leave" Name="Clear" FontSize="20"/>
-                    </StackPanel>
-                </DockPanel>
-
                 <DockPanel Grid.Column="0"
                        Grid.Row="1"
                        VerticalAlignment="Top" Height="239">
                     <StackPanel Orientation="Vertical">
 
                         <Label Padding="20,15,0,10"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Ellipse">
-                            <Rectangle Style="{StaticResource Elipse}"
+                            <Rectangle Style="{StaticResource Ellipse}"
                                    Name="Ellipse"
                                    MouseDown="DragDrop_MD"/>
                         </Label>
 
                         <Label Padding="20,10,0,10"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
+                        
                            Name="lbl_Rect">
-
                             <Polygon Style="{StaticResource Rect}"
                                  Name="Rekt" MouseDown="DragDrop_MD"/>
 
                         </Label>
 
                         <Label Padding="19,10,0,10"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Parrabellum">
 
                             <Polygon Style="{StaticResource Parrabullem}"
@@ -331,8 +429,6 @@
                         </Label>
 
                         <Label Padding="14,12,0,8"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Rhomb">
 
                             <Polygon Style="{StaticResource Rhomb}"
@@ -342,14 +438,10 @@
                         </Label>
 
                         <Label Padding="9,12,0,-1"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_RWL">
                         </Label>
 
                         <Label Padding="20,16,0,12"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
                            Name="lbl_Cylce">
 
                             <Polygon Style="{StaticResource Cycle}"
@@ -366,11 +458,10 @@
                   VerticalAlignment="Top"
                   HorizontalAlignment="Left"
                   Panel.ZIndex="900"
-                  
                   MouseLeave="FileZone_MouseLeave"
-                  Visibility="Visible">
+                  Visibility="Hidden">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="130">
-                    <Label   Style="{StaticResource Button}" MouseDown="DownLoad">
+                    <Label   Style="{StaticResource Button}" MouseDown="DownLoad" Name="btnLoad">
                         <Label.Content>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Загрузить"/>
@@ -378,7 +469,7 @@
                             </StackPanel>
                         </Label.Content>
                     </Label>
-                    <Label  Style="{StaticResource Button}"  MouseDown="CutDownSave">
+                    <Label  Style="{StaticResource Button}"  MouseDown="CutDownSave" Name="btnShortSave">
                         <Label.Content>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Сохранить"/>
@@ -386,7 +477,7 @@
                             </StackPanel>
                         </Label.Content>
                     </Label>
-                    <Label  Style="{StaticResource Button}" MouseDown="DownSave">
+                    <Label  Style="{StaticResource Button}" MouseDown="DownSave" Name="btnSave">
                         <Label.Content>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Сохранить как"/>
@@ -396,6 +487,43 @@
                     </Label>
                 </StackPanel>
             </Grid>
+            <Grid Name="EditZone" Background="#FF41403E"  Height="50" Width="130" Margin="59,24,0,0"
+                  Grid.Row="1" Grid.Column="1" 
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Left"
+                  Panel.ZIndex="900"
+                  MouseLeave="EditZone_MouseLeave"
+                  Visibility="Hidden">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="130">
+                    <Label  Style="{StaticResource Button}"  Name="btnPrev" MouseDown="prev">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Отменить"/>
+                                <TextBlock Text="Ctrl+Z" Margin="50,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
+                    </Label>
+                    <Label  Style="{StaticResource Button}" Name="btnNext" MouseDown="next">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Восстановить"/>
+                                <TextBlock Text="Ctrl+Y" Margin="33,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
+                    </Label>
+                    <Label  Style="{StaticResource Button}"  Name="btnDelete" MouseDown="inTrash">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Удалить все"/>
+                                <TextBlock Text="Alt+C" Margin="43,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
+                    </Label>
+                    
+                </StackPanel>
+                
+            </Grid>
+            
         </Grid>
     </Border>
         

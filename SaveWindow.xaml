@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Title="Сохраните диаграмму!" Height="150" Width="550" 
+        Title="  Сохраните диаграмму!" Height="150" Width="550" 
         Background="#FFBEBEBE">
 
     <Window.Resources>
@@ -61,10 +61,15 @@
             </Setter>
         </Style>
     </Window.Resources>
+    
     <Grid Height="150" Width="550"
           HorizontalAlignment="Center"
             VerticalAlignment="Top"
+          
            >
+        <Border BorderBrush="Gray" BorderThickness="0.5" Margin="0">
+            <Grid/>
+        </Border>
         <StackPanel 
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
@@ -92,7 +97,7 @@
                            Name="lbl_Close"
                            Width="30"
                            Height="30"
-                           Margin="307,0,0,0"
+                           Margin="296,0,0,0"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Top"
                            Panel.ZIndex="20"

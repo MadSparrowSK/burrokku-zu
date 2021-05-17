@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -122,7 +123,7 @@ namespace Interface_1._0
 
             #endregion
         }
-
+        bool CanvasSwitcher = false;
         #region Data for serialization
         //Данные, необходимые для сериализации
         private OpenFileDialog _openDialog = new OpenFileDialog();
@@ -315,50 +316,38 @@ namespace Interface_1._0
             ((Label)sender).Foreground = Brushes.White;
            
         }
-        /*
+        
         private void Border_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.MouseDevice.DirectlyOver != FileZone)
-        {
-                { FileZone.Visibility = Visibility.Hidden}
-                return;
+
+            if ((e.MouseDevice.DirectlyOver == FileZone)||(e.MouseDevice.DirectlyOver is Label)||(e.MouseDevice.DirectlyOver is StackPanel))
+            {
+                FileZone.Visibility = Visibility.Visible;
             }
+            else
+            {
+                FileZone.Visibility = Visibility.Hidden;
+
+            }
+            if ((e.MouseDevice.DirectlyOver == EditZone) || (e.MouseDevice.DirectlyOver is Label) || (e.MouseDevice.DirectlyOver is StackPanel))
+            {
+                EditZone.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                EditZone.Visibility = Visibility.Hidden;
+
+            }
+
+            return;
         }
-        */
-    }
+        
+        
+        
+    
     #endregion
 
     #endregion
-
-    #region Interactions with SideBar
-    private void SideBar_Mouse_Enter(object sender, RoutedEventArgs e)
-        {
-            if (lbl_Ellipse == sender)
-                Ellipse.Stroke = Brushes.White;
-            if (lbl_Cylce == sender)
-                Cycle.Stroke = Brushes.White;
-            if (lbl_Parrabellum == sender)
-                Parrabellum.Stroke = Brushes.White;
-            if (lbl_Rhomb == sender)
-                Rhomb.Stroke = Brushes.White;
-            if (lbl_Rect == sender)
-                Rekt.Stroke = Brushes.White;
-        }
-        private void SideBar_Mouse_Leave(object sender, RoutedEventArgs e)
-        {
-            if (lbl_Ellipse == sender)
-                Ellipse.Stroke = Brushes.Gray;
-            if (lbl_Cylce == sender)
-                Cycle.Stroke = Brushes.Gray;
-            if (lbl_Parrabellum == sender)
-                Parrabellum.Stroke = Brushes.Gray;
-            if (lbl_Rhomb == sender)
-                Rhomb.Stroke = Brushes.Gray;
-            if (lbl_Rect == sender)
-                Rekt.Stroke = Brushes.Gray;
-        }
-        #endregion
-
         #region Show Window with Settings
         private void Change_Window(object sender, RoutedEventArgs e)
         {
@@ -1167,7 +1156,7 @@ namespace Interface_1._0
                                 /*                                Canvas.SetLeft(polygon, Canvas.GetLeft(polygon));
                                                                 Canvas.SetTop(polygon, Canvas.GetTop(polygon));
                                 */
-                                current_anchor_postion.X = Canvas.GetLeft(polygon);
+        current_anchor_postion.X = Canvas.GetLeft(polygon);
                                 current_anchor_postion.Y = Canvas.GetTop(polygon);
                             }
                             else if (startRhombE != rhombE)
@@ -2002,7 +1991,7 @@ namespace Interface_1._0
                 text_into_shapes.MinHeight = 20;
                 text_into_shapes.FontSize = 10;
                 text_into_shapes.BorderBrush = Brushes.Transparent;
-                text_into_shapes.Foreground = Brushes.White;
+                text_into_shapes.Foreground = Brushes.Black;
                 text_into_shapes.Background = Brushes.Transparent;
 
                 polyline.MouseUp += IntoCanvasUp;
@@ -2041,7 +2030,7 @@ namespace Interface_1._0
                 text_into_shapes.MinHeight = 20;
                 text_into_shapes.FontSize = 10;
                 text_into_shapes.BorderBrush = Brushes.Transparent;
-                text_into_shapes.Foreground = Brushes.White;
+                text_into_shapes.Foreground = Brushes.Black;
                 text_into_shapes.Background = Brushes.Transparent;
                 polyline.MouseUp += IntoCanvasUp;
 
@@ -2077,7 +2066,7 @@ namespace Interface_1._0
                 text_into_shapes.MinHeight = 20;
                 text_into_shapes.FontSize = 10;
                 text_into_shapes.BorderBrush = Brushes.Transparent;
-                text_into_shapes.Foreground = Brushes.White;
+                text_into_shapes.Foreground = Brushes.Black;
                 text_into_shapes.Background = Brushes.Transparent;
 
 
@@ -2114,7 +2103,7 @@ namespace Interface_1._0
                 text_into_shapes.MinHeight = 20;
                 text_into_shapes.FontSize = 10;
                 text_into_shapes.BorderBrush = Brushes.Transparent;
-                text_into_shapes.Foreground = Brushes.White;
+                text_into_shapes.Foreground = Brushes.Black;
                 text_into_shapes.Background = Brushes.Transparent;
 
 
@@ -2144,14 +2133,14 @@ namespace Interface_1._0
                 //Индексация фигур
                 rectangle.Name = "Ellipse_" + DiagrammAnalyzer.shapesCounter.ToString();
                 DiagrammAnalyzer.shapesCounter++;
-                rectangle.Style = (Style)FindResource("Elipse");
+                rectangle.Style = (Style)FindResource("Ellipse");
 
                 text_into_shapes.Text = "Text";
                 text_into_shapes.MinWidth = 40;
                 text_into_shapes.MinHeight = 20;
                 text_into_shapes.FontSize = 10;
                 text_into_shapes.BorderBrush = Brushes.Transparent;
-                text_into_shapes.Foreground = Brushes.White;
+                text_into_shapes.Foreground = Brushes.Black;
                 text_into_shapes.Background = Brushes.Transparent;
 
                 rectangle.MouseUp += IntoCanvasUp;
@@ -2263,11 +2252,9 @@ namespace Interface_1._0
                     text_into_shapes.MinHeight = 20;
                     text_into_shapes.FontSize = 10;
                     text_into_shapes.BorderBrush = Brushes.Transparent;
-                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Foreground = Brushes.Black;
                     text_into_shapes.Background = Brushes.Transparent;
-
-                    polyline.Stroke = Brushes.White;
-                    polyline.Fill = Brushes.Transparent;
+                    polyline.Style = (Style)FindResource("Rect");
 
                     polyline.MouseUp += IntoCanvasUp;
 
@@ -2311,11 +2298,10 @@ namespace Interface_1._0
                     text_into_shapes.MinHeight = 20;
                     text_into_shapes.FontSize = 10;
                     text_into_shapes.BorderBrush = Brushes.Transparent;
-                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Foreground = Brushes.Black;
                     text_into_shapes.Background = Brushes.Transparent;
 
-                    polyline.Stroke = Brushes.White;
-                    polyline.Fill = Brushes.Transparent;
+                    polyline.Style = (Style)FindResource("Parrabullem");
 
                     polyline.MouseUp += IntoCanvasUp;
 
@@ -2361,11 +2347,10 @@ namespace Interface_1._0
                     text_into_shapes.MinHeight = 20;
                     text_into_shapes.FontSize = 10;
                     text_into_shapes.BorderBrush = Brushes.Transparent;
-                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Foreground = Brushes.Black;
                     text_into_shapes.Background = Brushes.Transparent;
 
-                    polyline.Stroke = Brushes.White;
-                    polyline.Fill = Brushes.Transparent;
+                    polyline.Style = (Style)FindResource("Rhomb");
 
                     polyline.MouseUp += IntoCanvasUp;
 
@@ -2410,11 +2395,9 @@ namespace Interface_1._0
                     text_into_shapes.MinHeight = 20;
                     text_into_shapes.FontSize = 10;
                     text_into_shapes.BorderBrush = Brushes.Transparent;
-                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Foreground = Brushes.Black;
                     text_into_shapes.Background = Brushes.Transparent;
-
-                    polyline.Stroke = Brushes.White;
-                    polyline.Fill = Brushes.Transparent;
+                    polyline.Style = (Style)FindResource("Cycle");
 
                     polyline.MouseUp += IntoCanvasUp;
 
@@ -2445,15 +2428,14 @@ namespace Interface_1._0
                     rectangle.Height = block.Height;
                     rectangle.RadiusX = Ellipse.RadiusX;
                     rectangle.RadiusY = Ellipse.RadiusY;
-                    rectangle.Fill = Brushes.Transparent;
-                    rectangle.Stroke = Brushes.White;
+                    rectangle.Style = (Style)FindResource("Ellipse");
 
                     text_into_shapes.Text = block.TextIntoTextBox;
                     text_into_shapes.MinWidth = 40;
                     text_into_shapes.MinHeight = 20;
                     text_into_shapes.FontSize = 10;
                     text_into_shapes.BorderBrush = Brushes.Transparent;
-                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Foreground = Brushes.Black;
                     text_into_shapes.Background = Brushes.Transparent;
 
                     rectangle.MouseUp += IntoCanvasUp;
@@ -2589,11 +2571,9 @@ namespace Interface_1._0
                     text_into_shapes.MinHeight = 20;
                     text_into_shapes.FontSize = 10;
                     text_into_shapes.BorderBrush = Brushes.Transparent;
-                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Foreground = Brushes.Black;
                     text_into_shapes.Background = Brushes.Transparent;
-
-                    polyline.Stroke = Brushes.White;
-                    polyline.Fill = Brushes.Transparent;
+                    polyline.Style = (Style)FindResource("Rect");
 
                     polyline.MouseUp += IntoCanvasUp;
 
@@ -2637,11 +2617,10 @@ namespace Interface_1._0
                     text_into_shapes.MinHeight = 20;
                     text_into_shapes.FontSize = 10;
                     text_into_shapes.BorderBrush = Brushes.Transparent;
-                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Foreground = Brushes.Black;
                     text_into_shapes.Background = Brushes.Transparent;
 
-                    polyline.Stroke = Brushes.White;
-                    polyline.Fill = Brushes.Transparent;
+                    polyline.Style = (Style)FindResource("Parrabullem");
 
                     polyline.MouseUp += IntoCanvasUp;
 
@@ -2687,11 +2666,10 @@ namespace Interface_1._0
                     text_into_shapes.MinHeight = 20;
                     text_into_shapes.FontSize = 10;
                     text_into_shapes.BorderBrush = Brushes.Transparent;
-                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Foreground = Brushes.Black;
                     text_into_shapes.Background = Brushes.Transparent;
 
-                    polyline.Stroke = Brushes.White;
-                    polyline.Fill = Brushes.Transparent;
+                    polyline.Style = (Style)FindResource("Rhomb");
 
                     polyline.MouseUp += IntoCanvasUp;
 
@@ -2736,11 +2714,10 @@ namespace Interface_1._0
                     text_into_shapes.MinHeight = 20;
                     text_into_shapes.FontSize = 10;
                     text_into_shapes.BorderBrush = Brushes.Transparent;
-                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Foreground = Brushes.Black;
                     text_into_shapes.Background = Brushes.Transparent;
 
-                    polyline.Stroke = Brushes.White;
-                    polyline.Fill = Brushes.Transparent;
+                    polyline.Style = (Style)FindResource("Cycle");
 
                     polyline.MouseUp += IntoCanvasUp;
 
@@ -2771,15 +2748,14 @@ namespace Interface_1._0
                     rectangle.Height = block.Height;
                     rectangle.RadiusX = Ellipse.RadiusX;
                     rectangle.RadiusY = Ellipse.RadiusY;
-                    rectangle.Fill = Brushes.Transparent;
-                    rectangle.Stroke = Brushes.White;
+                    rectangle.Style = (Style)FindResource("Ellipse");
 
                     text_into_shapes.Text = block.TextIntoTextBox;
                     text_into_shapes.MinWidth = 40;
                     text_into_shapes.MinHeight = 20;
                     text_into_shapes.FontSize = 10;
                     text_into_shapes.BorderBrush = Brushes.Transparent;
-                    text_into_shapes.Foreground = Brushes.White;
+                    text_into_shapes.Foreground = Brushes.Black;
                     text_into_shapes.Background = Brushes.Transparent;
 
                     rectangle.MouseUp += IntoCanvasUp;
@@ -2882,13 +2858,44 @@ namespace Interface_1._0
 
         private void FileDown(object sender, MouseButtonEventArgs e)
         {
-            ((Label)sender).Foreground = Brushes.White;
+            if (EditZone.Visibility == Visibility.Visible) EditZone.Visibility = Visibility.Hidden;
+
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush1");
             FileZone.Visibility = Visibility.Visible;
-            System.Threading.Thread.Sleep(1000);
-           
 
         }
 
-        
+        private void ButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush2");
+
+        }
+
+        private void EditDown(object sender, MouseButtonEventArgs e)
+        {
+            if (FileZone.Visibility == Visibility.Visible) FileZone.Visibility = Visibility.Hidden;
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush1");
+            EditZone.Visibility = Visibility.Visible;
+        }
+
+        private void EditZone_MouseLeave(object sender, MouseEventArgs e)
+        {
+            EditZone.Visibility = Visibility.Hidden; 
+        }
+
+        private void GridSwitcher(object sender, MouseButtonEventArgs e)
+        {
+            if (!CanvasSwitcher)
+            {
+                CanvasPos.Background = (Brush)Application.Current.MainWindow.FindResource("CanvasBackground");
+                CanvasSwitcher = true;
+            }
+            else
+            {
+                CanvasPos.Background = (Brush)Application.Current.MainWindow.FindResource("gridGeom");
+                CanvasSwitcher = false;
+            }
+
+        }
     }
 }
