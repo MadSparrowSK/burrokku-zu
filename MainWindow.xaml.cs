@@ -19,6 +19,7 @@ using System.Runtime.Serialization.Json;
 
 namespace Interface_1._0
 {
+
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
@@ -307,18 +308,30 @@ namespace Interface_1._0
         private void Help_Window(object sender, RoutedEventArgs e) { }
         private void Header_Mouse_Enter(object sender, RoutedEventArgs e)
         {
-            ((Label)sender).Foreground = Brushes.White;
+            ((Label)sender).Foreground = Brushes.Gray;
         }
         private void Header_Mouse_Leave(object sender, RoutedEventArgs e)
         {
-            ((Label)sender).Foreground = Brushes.Gray;
+            ((Label)sender).Foreground = Brushes.White;
+           
         }
-        #endregion
+        /*
+        private void Border_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.MouseDevice.DirectlyOver != FileZone)
+        {
+                { FileZone.Visibility = Visibility.Hidden}
+                return;
+            }
+        }
+        */
+    }
+    #endregion
 
-        #endregion
+    #endregion
 
-        #region Interactions with SideBar
-        private void SideBar_Mouse_Enter(object sender, RoutedEventArgs e)
+    #region Interactions with SideBar
+    private void SideBar_Mouse_Enter(object sender, RoutedEventArgs e)
         {
             if (lbl_Ellipse == sender)
                 Ellipse.Stroke = Brushes.White;
@@ -2856,8 +2869,26 @@ namespace Interface_1._0
                 prev(null, null);
             if ((e.Key == Key.Y) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
                 next(null, null);
+            if (e.KeyboardDevice.IsKeyDown(Key.S) && (e.KeyboardDevice.Modifiers == ModifierKeys.Alt))
+                CutDownSave(null, null);
 
         }
         #endregion
+
+        private void FileZone_MouseLeave(object sender, MouseEventArgs e)
+        {
+            FileZone.Visibility = Visibility.Hidden;
+        }
+
+        private void FileDown(object sender, MouseButtonEventArgs e)
+        {
+            ((Label)sender).Foreground = Brushes.White;
+            FileZone.Visibility = Visibility.Visible;
+            System.Threading.Thread.Sleep(1000);
+           
+
+        }
+
+        
     }
 }

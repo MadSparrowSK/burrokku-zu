@@ -119,19 +119,24 @@
         </Style>
         <Style x:Key="Button" TargetType="Label">
             <Setter Property="Height" Value="14"/>
-            <Setter Property="Width" Value="95"/>
-            <Setter Property="Margin" Value="1,2,1,0"/>
+            <Setter Property="Width" Value="130"/>
+            <Setter Property="Margin" Value="0,2,1,0"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="7"/>
-            <Setter Property="Padding" Value="1,3,0,0"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Padding" Value="2,0,0,0"/>
             <Setter Property="Background" Value="#FF3E3C39"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF474643"/>
+                </Trigger>
+            </Style.Triggers>
 
 
         </Style>
         
     </Window.Resources>
     
-        <Border Name="Border" >
+        <Border Name="Border" MouseMove="Border_MouseMove" >
         <Grid>
             <Grid ShowGridLines="False">
                 <Grid.RowDefinitions>
@@ -231,7 +236,7 @@
                         <StackPanel Orientation="Horizontal" Height="18" Margin="0,5,0,0">
                             <Label Content="Файл" Foreground="White" Padding="10,0,10,0" 
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
-                           MouseDown="DownLoad"/>
+                           MouseDown="FileDown" Height="18" VerticalAlignment="Bottom"/>
                             <Label Content="Редактировать" MouseEnter="Header_Mouse_Enter"
                            MouseLeave="Header_Mouse_Leave"
                            MouseDown="CutDownSave"
@@ -356,29 +361,36 @@
                 </DockPanel>
                 <!--#endregion-->
             </Grid>
-            <Grid Name="ButtonsZone" Background="#FF41403E" Height="50" Width="100" Margin="0,0,880,500">
-                <StackPanel Orientation="Vertical">
-                    <Label   Style="{StaticResource Button}">
+            <Grid Name="FileZone" Background="#FF41403E" Height="50" Width="130" Margin="9,24,0,0"
+                  Grid.Row="1" Grid.Column="1" 
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Left"
+                  Panel.ZIndex="900"
+                  
+                  MouseLeave="FileZone_MouseLeave"
+                  Visibility="Visible">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="130">
+                    <Label   Style="{StaticResource Button}" MouseDown="DownLoad">
                         <Label.Content>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Загрузить"/>
-                                <TextBlock Text="ctrl+L" Margin="40,0,0,0" Foreground="Gray"/>
+                                <TextBlock Text="Ctrl+L" Margin="52,0,0,0" Foreground="Gray"/>
                             </StackPanel>
                         </Label.Content>
                     </Label>
-                    <Label  Style="{StaticResource Button}">
+                    <Label  Style="{StaticResource Button}"  MouseDown="CutDownSave">
                         <Label.Content>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Сохранить"/>
-                                <TextBlock Text="ctrl+S" Margin="36,0,0,0" Foreground="Gray"/>
+                                <TextBlock Text="Alt+S" Margin="48,0,0,0" Foreground="Gray"/>
                             </StackPanel>
                         </Label.Content>
                     </Label>
-                    <Label  Style="{StaticResource Button}">
+                    <Label  Style="{StaticResource Button}" MouseDown="DownSave">
                         <Label.Content>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Сохранить как"/>
-                                <TextBlock Text="ctrl+Shift+S" Margin="6,0,0,0" Foreground="Gray"/>
+                                <TextBlock Text="Ctrl+S" Margin="28,0,0,0" Foreground="Gray"/>
                             </StackPanel>
                         </Label.Content>
                     </Label>
