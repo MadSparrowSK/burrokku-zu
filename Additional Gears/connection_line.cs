@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 using System.Windows.Shapes;
-
+using System.Collections.Generic;
 
 namespace Connect
 {
@@ -11,17 +11,8 @@ namespace Connect
         public Ellipse circle_top;
         public Ellipse circle_bottom;
 
-        public Line line_left;
-        public Line line_right;
-        public Line line_top;
-        public Line line_bottom;
-
-        public Polygon arrow_left;
-        public Polygon arrow_right;
-        public Polygon arrow_top;
-        public Polygon arrow_bottom;
-
-        public bool leftCheck = false;
+        public List<UndefiendLine> undefiendLinesLeftFrom = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesLeftTo = new List<UndefiendLine>();
 
         public ConnectionLine()
         {
@@ -44,20 +35,6 @@ namespace Connect
             circle_bottom.Height = 6.5;
             circle_bottom.Width = 6.5;
             circle_bottom.Fill = Brushes.Green;
-
-            line_left = new Line();
-            line_left.StrokeThickness = 1.5;
-            line_right = new Line();
-            line_right.StrokeThickness = 1.5;
-            line_bottom = new Line();
-            line_bottom.StrokeThickness = 1.5;
-            line_top = new Line();
-            line_top.StrokeThickness = 1.5;
-
-            arrow_left = new Polygon();
-            arrow_right = new Polygon();
-            arrow_top = new Polygon();
-            arrow_bottom = new Polygon();
         }
     }
 }
