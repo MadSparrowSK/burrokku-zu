@@ -319,8 +319,7 @@ namespace Interface_1._0
         
         private void Border_MouseMove(object sender, MouseEventArgs e)
         {
-
-            if ((e.MouseDevice.DirectlyOver == FileZone)||(e.MouseDevice.DirectlyOver is Label)||(e.MouseDevice.DirectlyOver is StackPanel))
+            if (((e.MouseDevice.DirectlyOver == FileZone)||(e.MouseDevice.DirectlyOver is Label)||(e.MouseDevice.DirectlyOver is StackPanel)) && (EditZone.Visibility == Visibility.Hidden))
             {
                 FileZone.Visibility = Visibility.Visible;
             }
@@ -329,7 +328,7 @@ namespace Interface_1._0
                 FileZone.Visibility = Visibility.Hidden;
 
             }
-            if ((e.MouseDevice.DirectlyOver == EditZone) || (e.MouseDevice.DirectlyOver is Label) || (e.MouseDevice.DirectlyOver is StackPanel))
+            if (((e.MouseDevice.DirectlyOver == EditZone) || (e.MouseDevice.DirectlyOver is Label) || (e.MouseDevice.DirectlyOver is StackPanel)) && (FileZone.Visibility == Visibility.Hidden))
             {
                 EditZone.Visibility = Visibility.Visible;
             }
@@ -341,13 +340,63 @@ namespace Interface_1._0
 
             return;
         }
-        
-        
-        
-    
-    #endregion
 
-    #endregion
+
+
+
+        #endregion
+
+        #region top
+
+        private void FileZone_MouseLeave(object sender, MouseEventArgs e)
+        {
+            FileZone.Visibility = Visibility.Hidden;
+        }
+
+        private void FileDown(object sender, MouseButtonEventArgs e)
+        {
+            if (EditZone.Visibility == Visibility.Visible) EditZone.Visibility = Visibility.Hidden;
+
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush1");
+            FileZone.Visibility = Visibility.Visible;
+
+        }
+
+        private void ButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush2");
+
+        }
+
+        private void EditDown(object sender, MouseButtonEventArgs e)
+        {
+            if (FileZone.Visibility == Visibility.Visible) FileZone.Visibility = Visibility.Hidden;
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush1");
+            EditZone.Visibility = Visibility.Visible;
+        }
+
+        private void EditZone_MouseLeave(object sender, MouseEventArgs e)
+        {
+            EditZone.Visibility = Visibility.Hidden;
+        }
+
+        private void GridSwitcher(object sender, MouseButtonEventArgs e)
+        {
+            if (!CanvasSwitcher)
+            {
+                CanvasPos.Background = (Brush)Application.Current.MainWindow.FindResource("CanvasBackground");
+                CanvasSwitcher = true;
+            }
+            else
+            {
+                CanvasPos.Background = (Brush)Application.Current.MainWindow.FindResource("gridGeom");
+                CanvasSwitcher = false;
+            }
+        }
+
+        #endregion
+
+        #endregion
         #region Show Window with Settings
         private void Change_Window(object sender, RoutedEventArgs e)
         {
@@ -2090,7 +2139,7 @@ namespace Interface_1._0
 
                 Polygon polyline = new Polygon();
                 TextBox text_into_shapes = new TextBox();
-
+                
                 //Индексация фигур              
                 polyline.Name = "Cycle_" + DiagrammAnalyzer.shapesCounter.ToString();
                 DiagrammAnalyzer.shapesCounter++;
@@ -2491,8 +2540,6 @@ namespace Interface_1._0
             DiagrammAnalyzer.tempPath = _safeDialog.FileName;
             if (DiagrammAnalyzer.tempPath == "")
                 DiagrammAnalyzer.isChanged = true;
-            if (this.Title.ToString() == title)
-                DiagrammAnalyzer.tempPath = "";
         }
        
         /// <summary>
@@ -2505,6 +2552,7 @@ namespace Interface_1._0
             if (DiagrammAnalyzer.pathForSaving == "")
             {
                 DownSave(null, null);
+                DiagrammAnalyzer.tempPath = "";
             }
             else
             {
@@ -2518,8 +2566,6 @@ namespace Interface_1._0
                 DiagrammAnalyzer.tempPath = _safeDialog.FileName;
                 if (DiagrammAnalyzer.tempPath == "")
                     DiagrammAnalyzer.isChanged = true;
-                if (this.Title.ToString() == title)
-                    DiagrammAnalyzer.tempPath = "";
             }
             
             
@@ -2825,6 +2871,7 @@ namespace Interface_1._0
                 {
                     e.Cancel = true; // Отмена закрытия окна 
                     DiagrammAnalyzer.isChanged = false;
+                    DiagrammAnalyzer.tempPath = "";
                 }
             }
         }
@@ -2838,7 +2885,11 @@ namespace Interface_1._0
             if (e.KeyboardDevice.IsKeyDown(Key.C) && (e.KeyboardDevice.Modifiers == ModifierKeys.Alt))
                 inTrash(null, null);
             if ((e.Key == Key.S) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
+            {
                 DownSave(null, null);
+                DiagrammAnalyzer.tempPath = "";
+            }
+                
             if ((e.Key == Key.L) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
                 DownLoad(null, null);
             if ((e.Key == Key.Z) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
@@ -2850,52 +2901,5 @@ namespace Interface_1._0
 
         }
         #endregion
-
-        private void FileZone_MouseLeave(object sender, MouseEventArgs e)
-        {
-            FileZone.Visibility = Visibility.Hidden;
-        }
-
-        private void FileDown(object sender, MouseButtonEventArgs e)
-        {
-            if (EditZone.Visibility == Visibility.Visible) EditZone.Visibility = Visibility.Hidden;
-
-            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush1");
-            FileZone.Visibility = Visibility.Visible;
-
-        }
-
-        private void ButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush2");
-
-        }
-
-        private void EditDown(object sender, MouseButtonEventArgs e)
-        {
-            if (FileZone.Visibility == Visibility.Visible) FileZone.Visibility = Visibility.Hidden;
-            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush1");
-            EditZone.Visibility = Visibility.Visible;
-        }
-
-        private void EditZone_MouseLeave(object sender, MouseEventArgs e)
-        {
-            EditZone.Visibility = Visibility.Hidden; 
-        }
-
-        private void GridSwitcher(object sender, MouseButtonEventArgs e)
-        {
-            if (!CanvasSwitcher)
-            {
-                CanvasPos.Background = (Brush)Application.Current.MainWindow.FindResource("CanvasBackground");
-                CanvasSwitcher = true;
-            }
-            else
-            {
-                CanvasPos.Background = (Brush)Application.Current.MainWindow.FindResource("gridGeom");
-                CanvasSwitcher = false;
-            }
-
-        }
     }
 }

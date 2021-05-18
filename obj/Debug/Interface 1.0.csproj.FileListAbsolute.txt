@@ -58,3 +58,4 @@ C:\Программирование\проекты\Project_block_diagram\Burrokk
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Interface 1.0.csproj.CopyComplete
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\SaveWindow.g.cs
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\SaveWindow.baml
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\App.baml

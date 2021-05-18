@@ -19,230 +19,7 @@
         
         >
     <Window.Resources>
-        <SolidColorBrush x:Key="ButtonBrush1" Color="#FF2A2A30"/>
-        <SolidColorBrush x:Key="ButtonBrush2" Color="#FF2E2E30"/>
-        <SolidColorBrush x:Key="CanvasBackground" Color="#FFBEBEBE"/>
-        <DrawingBrush x:Key="gridGeom" Viewport="0,0,10,10" ViewportUnits="Absolute" TileMode="Tile">
-            <DrawingBrush.Drawing>
-                <GeometryDrawing Brush="Black">
-
-                    <GeometryDrawing.Geometry>
-
-                        <GeometryGroup FillRule="EvenOdd">
-
-                            <RectangleGeometry Rect="0,0,50,50" />
-
-                            <RectangleGeometry Rect="0,0,49,49" />
-
-                        </GeometryGroup>
-
-                    </GeometryDrawing.Geometry>
-
-                </GeometryDrawing>
-
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
-        <Style x:Key="MainCanvas" TargetType="Canvas">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName= gridPNG, Path=MouseDown }" Value="True">
-                    <Setter Property="Background" Value="{StaticResource CanvasBackground}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="Ellipse" TargetType="Rectangle">
-            <Setter Property="Fill">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#CCB7EE" Offset="0"/>
-                        <GradientStop Color="#C8CAF1" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Stroke">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
-                        <GradientStop Color="#00069B" Offset="0"/>
-                        <GradientStop Color="#BA48B6" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Width" Value="70"/>
-            <Setter Property="Height" Value="25"/>
-            <Setter Property="RadiusX" Value="13"/>
-            <Setter Property="RadiusY" Value="20"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Stroke" Value="White"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Stroke">
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
-                                <GradientStop Color="#00069B" Offset="0"/>
-                                <GradientStop Color="#BA48B6" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="Rect" TargetType="Polygon">
-            <Setter Property="Points" Value="8,1 8,30 60,30 60,1 8,1"/>
-            <Setter Property="Fill">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#CCB7EE" Offset="0"/>
-                        <GradientStop Color="#C8CAF1" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Stroke">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.1,0.4"   StartPoint="1.2,0">
-                        <GradientStop Color="#00069B" Offset="0"/>
-                        <GradientStop Color="#BA48B6" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Stroke" Value="White"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Stroke">
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
-                                <GradientStop Color="#00069B" Offset="0"/>
-                                <GradientStop Color="#BA48B6" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="Parrabullem" TargetType="Polygon">
-            <Setter Property="Points" Value="8,1 0,30 60,30 68,1 8,1"/>
-            <Setter Property="Fill">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
-                        <GradientStop Color="#CCB7EE" Offset="0"/>
-                        <GradientStop Color="#C8CAF1" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Stroke">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.9,0.3"   StartPoint="0.2,0">
-                        <GradientStop Color="#00069B" Offset="0"/>
-                        <GradientStop Color="#BA48B6" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Stroke" Value="White"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Stroke">
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
-                                <GradientStop Color="#00069B" Offset="0"/>
-                                <GradientStop Color="#BA48B6" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="Rhomb" TargetType="Polygon">
-            <Setter Property="Points" Value="0,8 40,20 80,8 40,-4 0,8"/>
-            <Setter Property="Fill">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
-                        <GradientStop Color="#CCB7EE" Offset="0"/>
-                        <GradientStop Color="#C8CAF1" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Stroke">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.1,0.4"   StartPoint="1.2,0">
-                        <GradientStop Color="#00069B" Offset="0"/>
-                        <GradientStop Color="#BA48B6" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Stroke" Value="White"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Stroke">
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
-                                <GradientStop Color="#00069B" Offset="0"/>
-                                <GradientStop Color="#BA48B6" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="Cycle" TargetType="Polygon">
-            <Setter Property="Points" Value="1,8 7,20 60,20 67,8 60,-6 7,-6 1,8"/>
-            <Setter Property="Fill">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
-                        <GradientStop Color="#CCB7EE" Offset="0"/>
-                        <GradientStop Color="#C8CAF1" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Stroke">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.1,0.4"   StartPoint="1.2,0">
-                        <GradientStop Color="#00069B" Offset="0"/>
-                        <GradientStop Color="#BA48B6" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Stroke" Value="White"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Stroke">
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0">
-                                <GradientStop Color="#00069B" Offset="0"/>
-                                <GradientStop Color="#BA48B6" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="Button" TargetType="Label">
-            <Setter Property="Height" Value="14"/>
-            <Setter Property="Width" Value="130"/>
-            <Setter Property="Margin" Value="0,2,1,0"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="Padding" Value="2,0,0,0"/>
-            <Setter Property="Background" Value="#FF3E3C39"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF474643"/>
-                </Trigger>
-            </Style.Triggers>
-
-
-        </Style>
-        <Style x:Key="ButtonHead" TargetType="Label">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="10,0,10,0"/>
-            
-        </Style>
+       
         
     </Window.Resources>
 
@@ -278,7 +55,7 @@
                            MouseEnter="Mouse_Enter"
                            MouseLeave="Mouse_Leave"
                            MouseLeftButtonDown="Roll_Up"
-                           Padding="14.55,18,0,0">
+                           Padding="14.55,20,0,0">
 
                             <Polyline Stroke="White" Points=" 0,0 15,0" Name="RollUp"></Polyline>
                         </Label>
@@ -287,7 +64,7 @@
                            Width="44"
                            MouseEnter="Mouse_Enter"
                            MouseLeave="Mouse_Leave"
-                           Padding="17,12,5,5"
+                           Padding="17,14,5,5"
                            MouseLeftButtonDown="Resize_Wondow"
                            >
                             <Canvas >
@@ -310,10 +87,10 @@
                            MouseLeftButtonDown="Close_Click" 
                            Foreground="White"
                            Name="lbl_Close"
-                           Padding="28,9,7,5"
+                           Padding="28,14,7,5"
                            Width="44">
 
-                            <Canvas>
+                            <Canvas  >
                                 <Polyline Stroke="White" Points="0,0 -12,12"></Polyline>
                                 <Polyline Stroke="White" Points=" 0,12 -12,0"></Polyline>
                             </Canvas>
@@ -460,7 +237,7 @@
                   Panel.ZIndex="900"
                   MouseLeave="FileZone_MouseLeave"
                   Visibility="Hidden">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="130">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="130" Background="#FF2E2E30">
                     <Label   Style="{StaticResource Button}" MouseDown="DownLoad" Name="btnLoad">
                         <Label.Content>
                             <StackPanel Orientation="Horizontal">
@@ -487,7 +264,7 @@
                     </Label>
                 </StackPanel>
             </Grid>
-            <Grid Name="EditZone" Background="#FF41403E"  Height="50" Width="130" Margin="59,24,0,0"
+            <Grid Name="EditZone" Background="#FF2E2E30"  Height="50" Width="130" Margin="59,24,0,0"
                   Grid.Row="1" Grid.Column="1" 
                   VerticalAlignment="Top"
                   HorizontalAlignment="Left"
