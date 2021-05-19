@@ -149,8 +149,12 @@ namespace Interface_1._0
         static int shape_count = 0;
         void ClearCanvas() 
         {
-            if(shape_count == 0)
+            if (shape_count == 0)
                 CanvasPos.Children.Clear();
+            else
+                for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                    if (CanvasPos.Children[i] is Line && (CanvasPos.Children[i] as Line).Stroke == Brushes.Transparent)
+                        CanvasPos.Children.Remove(CanvasPos.Children[i]);
         }
 
         private void DragDrop_MD(object sender, MouseButtonEventArgs e)
@@ -188,14 +192,39 @@ namespace Interface_1._0
                     Math.Abs(line.X2 - Canvas.GetLeft(CanvasPos.Children[i])) < 4
                     && Math.Abs(line.Y2 - Canvas.GetTop(CanvasPos.Children[i])) < 4)
                 {
-                    CanvasPos.Children.Remove(line);
+                    (CanvasPos.Children[i] as Line).Stroke = Brushes.Transparent;
+                    (CanvasPos.Children[i] as Line).IsEnabled = false;
                     stop = true;
                     break;
                 }
 
+            Line delLine = line;
             while(!stop)
             {
+                for(int i = 0; i < CanvasPos.Children.Count; ++i)
+                    if(CanvasPos.Children[i] is Line &&
+                        Math.Abs(delLine.X2 - (CanvasPos.Children[i] as Line).X1) < 2
+                    &&  Math.Abs(delLine.Y2 - (CanvasPos.Children[i] as Line).Y1) < 2)
+                    {
+                        delLine.Stroke = Brushes.Transparent;
+                        delLine.IsEnabled = false;
+                        delLine = CanvasPos.Children[i] as Line;
 
+                        for(int j = 0; j < CanvasPos.Children.Count; ++j)
+                            if(CanvasPos.Children[j] is Ellipse &&
+                                 Math.Abs(delLine.X2 - Canvas.GetLeft(CanvasPos.Children[j])) < 4
+                                && Math.Abs(delLine.Y2 - Canvas.GetTop(CanvasPos.Children[j])) < 4)
+                            {
+                                delLine.Stroke = Brushes.Transparent;
+                                delLine.IsEnabled = false;
+                                stop = true;
+                                break;
+                            }
+                        if (stop)
+                            break;
+                    }
+                if (stop)
+                    break;
             }
         }
         void DeleteLinesBottom(Line line)
@@ -211,7 +240,6 @@ namespace Interface_1._0
         {
             bool checkTop = false;
             bool checkBottom = false;
-            bool checkMiddle = false;
 
         if(Math.Abs(line.X1 - Canvas.GetLeft(circle)) < 4
             && Math.Abs(line.Y1 - Canvas.GetTop(circle)) < 4)
@@ -221,6 +249,19 @@ namespace Interface_1._0
             && Math.Abs(line.Y2 - Canvas.GetTop(circle)) < 4)
             checkBottom = true;
 
+            if (checkTop)
+                DeleteLinesTop(line);
+            if (checkBottom)
+                DeleteLinesBottom(line);
+        }
+        void HideLines(Line line)
+        {
+            bool checkTop = false;
+            bool checkBottom = false;
+            bool checkMiddle = false;
+
+          
+
 
             if (checkTop)
                 DeleteLinesTop(line);
@@ -228,6 +269,8 @@ namespace Interface_1._0
                 DeleteLinesBottom(line);
             if (checkMiddle)
                 DeleteLinesMiddle(line);
+
+            ClearCanvas();
         }
         void CouplingLines(Ellipse ellipse, Line line,Point mouse_postion)
         {
@@ -290,18 +333,18 @@ namespace Interface_1._0
                     lineMove = true;
 
                     Line line = new Line();
+
                     CanvasPos.Children.Add(line);
+                    line.CaptureMouse();
                     line.StrokeThickness = 1.5;
+                    line.Stroke = Brushes.Yellow;
                     line.MouseDown += LineMouseDown;
                     line.MouseMove += LineLeftMM;
-                    line.Stroke = Brushes.Yellow;
-                    line.StrokeThickness = 1.5;
 
                     line.X1 = Canvas.GetLeft(connectionLine.circle_left);
                     line.Y1 = Canvas.GetTop(connectionLine.circle_left);
                     
                     Point pos = e.GetPosition(CanvasPos);
-                    line.MouseDown += LineMouseDown;
 
                     line.X2 = pos.X;
                     line.Y2 = pos.Y;
@@ -310,9 +353,10 @@ namespace Interface_1._0
             }
             void LineMouseDown(object sender, MouseButtonEventArgs e)
             {
+                click = false;
                 var obj_line = (Line)sender;
                 if (e.RightButton == MouseButtonState.Pressed && !lineMove)
-                    //HideLines(obj_line);
+                    HideLines(obj_line);
 
                 if (e.ClickCount == 1 && lineMove)
                     click = true;
@@ -1501,6 +1545,15 @@ namespace Interface_1._0
 
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
+                    foreach (UndefiendLine line in connectionLine.undefiendLinesLeftFrom)
+                        HideLines(line.undefLine, connectionLine.circle_left);
+
+                    foreach (UndefiendLine line in connectionLine.undefiendLinesLeftTo)
+                        HideLines(line.undefLine, connectionLine.circle_left);
+
+                    connectionLine.undefiendLinesLeftFrom.Clear();
+                    connectionLine.undefiendLinesLeftTo.Clear();
+
                     CanvasPos.Children.Remove(txt.kurwa_txtbox);
                     CanvasPos.Children.Remove(txt.txtbx);
                     CanvasPos.Children.Remove(rPR_Shapes.shape);
@@ -1513,15 +1566,6 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(anchor.anchor_NS);
                     CanvasPos.Children.Remove(anchor.anchor_WE);
                     CanvasPos.Children.Remove(anchor.anchor_NWSE);
-
-                    foreach (UndefiendLine line in connectionLine.undefiendLinesLeftFrom)
-                        HideLines(line.undefLine, connectionLine.circle_left);
-
-                    foreach (UndefiendLine line in connectionLine.undefiendLinesLeftTo)
-                        HideLines(line.undefLine, connectionLine.circle_left);
-
-                    connectionLine.undefiendLinesLeftFrom.Clear();
-                    connectionLine.undefiendLinesLeftTo.Clear();
 
                     --shape_count;
                     ClearCanvas();
@@ -6119,6 +6163,8 @@ namespace Interface_1._0
                 connectionLine.line_bottom.X2 = 0;
                 connectionLine.line_bottom.Y2 = 0;*/
                 #endregion
+
+                int count = CanvasPos.Children.Count;
 
                 AddRP_Shape(shape, connectionLine,txt, anchor);
             }
