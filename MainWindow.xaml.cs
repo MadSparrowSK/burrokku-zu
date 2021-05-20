@@ -192,8 +192,12 @@ namespace Interface_1._0
                     Math.Abs(line.X2 - Canvas.GetLeft(CanvasPos.Children[i])) < 4
                     && Math.Abs(line.Y2 - Canvas.GetTop(CanvasPos.Children[i])) < 4)
                 {
-                    (CanvasPos.Children[i] as Line).Stroke = Brushes.Transparent;
-                    (CanvasPos.Children[i] as Line).IsEnabled = false;
+                    line.Stroke = Brushes.Transparent;
+                    line.IsEnabled = false;
+                    line.X1 = 0;
+                    line.Y1 = 0;
+                    line.X2 = 0;
+                    line.Y2 = 0;
                     stop = true;
                     break;
                 }
@@ -208,6 +212,10 @@ namespace Interface_1._0
                     {
                         delLine.Stroke = Brushes.Transparent;
                         delLine.IsEnabled = false;
+                        delLine.X1 = 0;
+                        delLine.Y1 = 0;
+                        delLine.X2 = 0;
+                        delLine.Y2 = 0;
                         delLine = CanvasPos.Children[i] as Line;
 
                         for(int j = 0; j < CanvasPos.Children.Count; ++j)
@@ -217,6 +225,10 @@ namespace Interface_1._0
                             {
                                 delLine.Stroke = Brushes.Transparent;
                                 delLine.IsEnabled = false;
+                                delLine.X1 = 0;
+                                delLine.Y1 = 0;
+                                delLine.X2 = 0;
+                                delLine.Y2 = 0;
                                 stop = true;
                                 break;
                             }
@@ -229,11 +241,173 @@ namespace Interface_1._0
         }
         void DeleteLinesBottom(Line line)
         {
+            bool stop = false;
+            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                if (CanvasPos.Children[i] is Ellipse &&
+                    Math.Abs(line.X1 - Canvas.GetLeft(CanvasPos.Children[i])) < 4
+                    && Math.Abs(line.Y1 - Canvas.GetTop(CanvasPos.Children[i])) < 4)
+                {
+                    line.Stroke = Brushes.Transparent;
+                    line.IsEnabled = false;
+                    line.X1 = 0;
+                    line.Y1 = 0;
+                    line.X2 = 0;
+                    line.Y2 = 0;
+                    stop = true;
+                    break;
+                }
 
+            Line delLine = line;
+            while (!stop)
+            {
+                for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                    if (CanvasPos.Children[i] is Line &&
+                        Math.Abs(delLine.X1 - (CanvasPos.Children[i] as Line).X2) < 2
+                    && Math.Abs(delLine.Y1 - (CanvasPos.Children[i] as Line).Y2) < 2)
+                    {
+                        delLine.Stroke = Brushes.Transparent;
+                        delLine.IsEnabled = false;
+                        delLine.X1 = 0;
+                        delLine.Y1 = 0;
+                        delLine.X2 = 0;
+                        delLine.Y2 = 0;
+                        delLine = CanvasPos.Children[i] as Line;
+
+                        for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            if (CanvasPos.Children[j] is Ellipse &&
+                                 Math.Abs(delLine.X1 - Canvas.GetLeft(CanvasPos.Children[j])) < 4
+                                && Math.Abs(delLine.Y1 - Canvas.GetTop(CanvasPos.Children[j])) < 4)
+                            {
+                                delLine.Stroke = Brushes.Transparent;
+                                delLine.IsEnabled = false;
+                                delLine.X1 = 0;
+                                delLine.Y1 = 0;
+                                delLine.X2 = 0;
+                                delLine.Y2 = 0;
+                                stop = true;
+                                break;
+                            }
+                        if (stop)
+                            break;
+                    }
+                if (stop)
+                    break;
+            }
         }
         void DeleteLinesMiddle(Line line)
         {
+            bool singleLineCheck = false;
 
+            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                if (CanvasPos.Children[i] is Ellipse &&
+                    Math.Abs(line.X1 - Canvas.GetLeft(CanvasPos.Children[i])) < 4
+                    && Math.Abs(line.Y1 - Canvas.GetTop(CanvasPos.Children[i])) < 4)
+                {
+                    for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                        if (CanvasPos.Children[j] is Ellipse &&
+                            Math.Abs(line.X2 - Canvas.GetLeft(CanvasPos.Children[j])) < 4
+                            && Math.Abs(line.Y2 - Canvas.GetTop(CanvasPos.Children[j])) < 4)
+                        {
+                            line.Stroke = Brushes.Transparent;
+                            line.IsEnabled = false;
+                            line.X1 = 0;
+                            line.Y1 = 0;
+                            line.X2 = 0;
+                            line.Y2 = 0;
+
+                            singleLineCheck = true;
+                            break;
+                        }
+                    if (singleLineCheck)
+                        break;
+                }
+
+            Line delLine = line;
+            bool checkTop = false;
+            bool checkBottom = false;
+            if(!singleLineCheck)
+            {
+                while(!checkBottom)
+                {
+                    for(int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if(CanvasPos.Children[i] is Line &&
+                            Math.Abs(delLine.X2 - (CanvasPos.Children[i] as Line).X1) < 4
+                            && Math.Abs(delLine.Y2 - (CanvasPos.Children[i] as Line).Y1) < 4)
+                        {
+                            if(delLine != line)
+                            {
+                                delLine.Stroke = Brushes.Transparent;
+                                delLine.IsEnabled = false;
+                                delLine.X1 = 0;
+                                delLine.Y1 = 0;
+                                delLine.X2 = 0;
+                                delLine.Y2 = 0;
+                            }
+                            delLine = CanvasPos.Children[i] as Line;
+
+                            for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                                if (CanvasPos.Children[j] is Ellipse &&
+                                     Math.Abs(delLine.X2 - Canvas.GetLeft(CanvasPos.Children[j])) < 4
+                                    && Math.Abs(delLine.Y2 - Canvas.GetTop(CanvasPos.Children[j])) < 4)
+                                {
+                                    delLine.Stroke = Brushes.Transparent;
+                                    delLine.IsEnabled = false;
+                                    delLine.X1 = 0;
+                                    delLine.Y1 = 0;
+                                    delLine.X2 = 0;
+                                    delLine.Y2 = 0;
+                                    checkBottom = true;
+                                    break;
+                                }
+                            if (checkBottom)
+                                break;
+                        }
+                }
+                delLine = line;
+                while(!checkTop)
+                {
+                    for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                        if (CanvasPos.Children[i] is Line &&
+                            Math.Abs(delLine.X1 - (CanvasPos.Children[i] as Line).X2) < 2
+                            && Math.Abs(delLine.Y1 - (CanvasPos.Children[i] as Line).Y2) < 2)
+                        {
+                            if (delLine != line)
+                            {
+                                delLine.Stroke = Brushes.Transparent;
+                                delLine.IsEnabled = false;
+                                delLine.X1 = 0;
+                                delLine.Y1 = 0;
+                                delLine.X2 = 0;
+                                delLine.Y2 = 0;
+                            }
+                            delLine = CanvasPos.Children[i] as Line;
+
+                            for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                                if (CanvasPos.Children[j] is Ellipse &&
+                                     Math.Abs(delLine.X1 - Canvas.GetLeft(CanvasPos.Children[j])) < 4
+                                    && Math.Abs(delLine.Y1 - Canvas.GetTop(CanvasPos.Children[j])) < 4)
+                                {
+                                    delLine.Stroke = Brushes.Transparent;
+                                    delLine.IsEnabled = false;
+                                    delLine.X1 = 0;
+                                    delLine.Y1 = 0;
+                                    delLine.X2 = 0;
+                                    delLine.Y2 = 0;
+                                    checkTop = true;
+                                    break;
+                                }
+                            if (checkTop)
+                                break;
+                        }
+                }
+
+                line.Stroke = Brushes.Transparent;
+                line.IsEnabled = false;
+                line.X1 = 0;
+                line.Y1 = 0;
+                line.X2 = 0;
+                line.Y2 = 0;
+            }
         }
 
         void HideLines(Line line, Ellipse circle)
@@ -253,6 +427,8 @@ namespace Interface_1._0
                 DeleteLinesTop(line);
             if (checkBottom)
                 DeleteLinesBottom(line);
+
+            ClearCanvas();
         }
         void HideLines(Line line)
         {
@@ -260,8 +436,43 @@ namespace Interface_1._0
             bool checkBottom = false;
             bool checkMiddle = false;
 
-          
+            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                if (CanvasPos.Children[i] is Ellipse &&
+                    Math.Abs(line.X1 - Canvas.GetLeft(CanvasPos.Children[i])) < 4
+                    && Math.Abs(line.Y1 - Canvas.GetTop(CanvasPos.Children[i])) < 4)
+                {
+                    for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                        if (CanvasPos.Children[j] is Line &&
+                    Math.Abs(line.X2 - (CanvasPos.Children[j] as Line).X1) < 2
+                    && Math.Abs(line.Y2 - (CanvasPos.Children[j] as Line).Y1) < 2)
+                        {
+                            checkTop = true;
+                            break;
+                        }
+                    if (checkTop)
+                        break;
+                }
 
+            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                if (CanvasPos.Children[i] is Ellipse &&
+                    Math.Abs(line.X2 - Canvas.GetLeft(CanvasPos.Children[i])) < 4
+                    && Math.Abs(line.Y2 - Canvas.GetTop(CanvasPos.Children[i])) < 4)
+                {
+                    for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                        if (CanvasPos.Children[j] is Line &&
+                    Math.Abs(line.X1 - (CanvasPos.Children[j] as Line).X2) < 2
+                    && Math.Abs(line.Y1 - (CanvasPos.Children[j] as Line).Y2) < 2)
+                        {
+                            checkBottom = true;
+                            break;
+                        }
+                    if (checkBottom)
+                        break;
+                }
+
+
+            if (!checkTop && !checkBottom)
+                checkMiddle = true;
 
             if (checkTop)
                 DeleteLinesTop(line);
@@ -317,6 +528,24 @@ namespace Interface_1._0
 
                         break;
                     }
+
+        }
+
+        void SearchUndefineLinesFrom(Ellipse circle,ref ConnectionLine connectionLine)
+        {
+            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                if (CanvasPos.Children[i] is Line
+                    && Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(circle)) < 2
+                    && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(circle)) < 2)
+                    connectionLine.undefiendLinesLeftFrom.Add(new UndefiendLine(CanvasPos.Children[i] as Line));
+        }
+        void SearchUndefineLinesTo(Ellipse circle,ref ConnectionLine connectionLine)
+        {
+            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+                if (CanvasPos.Children[i] is Line
+                    && Math.Abs((CanvasPos.Children[i] as Line).X2 - Canvas.GetLeft(circle)) < 2
+                    && Math.Abs((CanvasPos.Children[i] as Line).Y2 - Canvas.GetTop(circle)) < 2)
+                    connectionLine.undefiendLinesLeftTo.Add(new UndefiendLine(CanvasPos.Children[i] as Line));
 
         }
 
@@ -1540,17 +1769,23 @@ namespace Interface_1._0
                 }*/
                 #endregion
 
-                SearchUndefineLinesFrom(connectionLine.circle_left, connectionLine);
-                SearchUndefineLinesTo(connectionLine.circle_left, connectionLine);
+                SearchUndefineLinesFrom(connectionLine.circle_left,ref connectionLine);
+                SearchUndefineLinesTo(connectionLine.circle_left,ref connectionLine);
 
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    foreach (UndefiendLine line in connectionLine.undefiendLinesLeftFrom)
-                        HideLines(line.undefLine, connectionLine.circle_left);
+                    if (shape_count == 1)
+                    {
+                        CanvasPos.Children.Clear();
+                    }
+                    else
+                    {
+                        foreach (UndefiendLine line in connectionLine.undefiendLinesLeftFrom)
+                            HideLines(line.undefLine, connectionLine.circle_left);
 
-                    foreach (UndefiendLine line in connectionLine.undefiendLinesLeftTo)
-                        HideLines(line.undefLine, connectionLine.circle_left);
-
+                        foreach (UndefiendLine line in connectionLine.undefiendLinesLeftTo)
+                            HideLines(line.undefLine, connectionLine.circle_left);
+                    }
                     connectionLine.undefiendLinesLeftFrom.Clear();
                     connectionLine.undefiendLinesLeftTo.Clear();
 
@@ -5037,24 +5272,7 @@ namespace Interface_1._0
         }*/
         #endregion
 
-        void SearchUndefineLinesFrom(Ellipse circle,  ConnectionLine connectionLine)
-        {
-            for (int i = 0; i < CanvasPos.Children.Count; ++i)
-                if (CanvasPos.Children[i] is Line
-                    && Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(circle)) < 2
-                    && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(circle)) < 2)
-                    connectionLine.undefiendLinesLeftFrom.Add(new UndefiendLine(CanvasPos.Children[i] as Line));
-        }
-        void SearchUndefineLinesTo(Ellipse circle, ConnectionLine connectionLine)
-        {
-            for (int i = 0; i < CanvasPos.Children.Count; ++i)
-                if (CanvasPos.Children[i] is Line
-                    && Math.Abs((CanvasPos.Children[i] as Line).X2 - Canvas.GetLeft(circle)) < 2
-                    && Math.Abs((CanvasPos.Children[i] as Line).Y2 - Canvas.GetTop(circle)) < 2)
-                    connectionLine.undefiendLinesLeftTo.Add(new UndefiendLine(CanvasPos.Children[i] as Line));
-
-        }
-
+      
         public void RPC_Shape_Move(RP_Shapes shape, TXT txt, ConnectionLine connectionLine,Anchor anchor)
         {
             shape.shape.MouseMove += RPR_Move;
@@ -5107,8 +5325,8 @@ namespace Interface_1._0
 
                 #endregion
 
-                SearchUndefineLinesFrom(connectionLine.circle_left, connectionLine);
-                SearchUndefineLinesTo(connectionLine.circle_left, connectionLine);
+                SearchUndefineLinesFrom(connectionLine.circle_left,ref connectionLine);
+                SearchUndefineLinesTo(connectionLine.circle_left,ref connectionLine);
 
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
