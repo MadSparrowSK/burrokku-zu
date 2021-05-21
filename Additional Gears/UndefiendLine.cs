@@ -6,7 +6,6 @@ namespace Connect
     public class UndefiendLine
     {
         public Line undefLine = null;
-        public Polygon undefPolygon = null;
 
         public UndefiendLine(Line lineInCanvas)
         {

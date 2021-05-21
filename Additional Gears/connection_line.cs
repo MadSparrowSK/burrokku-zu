@@ -13,7 +13,23 @@ namespace Connect
 
         public List<UndefiendLine> undefiendLinesLeftFrom = new List<UndefiendLine>();
         public List<UndefiendLine> undefiendLinesLeftTo = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesLeftFromY1 = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesLeftToY2 = new List<UndefiendLine>();
 
+        public List<UndefiendLine> undefiendLinesRightFrom = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesRightTo = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesRightFromY1 = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesRightToY2 = new List<UndefiendLine>();
+
+        public List<UndefiendLine> undefiendLinesTopFrom = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesTopTo = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesTopFromY1 = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesTopToY2 = new List<UndefiendLine>();
+
+        public List<UndefiendLine> undefiendLinesBottomFrom = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesBottomTo = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesBottomFromY1 = new List<UndefiendLine>();
+        public List<UndefiendLine> undefiendLinesBottomToY2 = new List<UndefiendLine>();
         public ConnectionLine()
         {
             circle_left = new Ellipse();
