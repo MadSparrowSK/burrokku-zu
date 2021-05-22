@@ -637,15 +637,15 @@ namespace Interface_1._0
 
             if (Canvas.GetLeft(ellFrom) > Canvas.GetLeft(ellTo))
             {
-                if (Canvas.GetLeft(ellFrom) - Canvas.GetLeft(fromGone) > 0
-                    && Canvas.GetTop(ellFrom) - Canvas.GetTop(fromGone) > 0
-                    && Canvas.GetTop(ellFrom) - Canvas.GetTop(fromGone) * 1.2 < 0)
+                if (Canvas.GetLeft(ellFrom) > Canvas.GetLeft(fromGone)
+                    && Canvas.GetTop(ellFrom) > Canvas.GetTop(fromGone)
+                    && Canvas.GetTop(ellFrom) < Canvas.GetTop(fromGone) * 1.4)
                 {
                     //right
 
                     if (Canvas.GetLeft(ellTo) - Canvas.GetLeft(toGone) > 0
                         && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) > 0
-                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) * 1.2 < 0)
+                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) * 1.3 < 0)
                     {
                         //right
 
@@ -682,44 +682,1370 @@ namespace Interface_1._0
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
                     }
-                    if (Canvas.GetLeft(ellTo) - Canvas.GetLeft(toGone) < 0
-                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) > 0)
+
+                    if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone))
                     {
                         //left
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo) / 1.4;
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo) - 30;
+                        lineThree.Y2 = lineTwo.Y2;
+
+                        Line lineFour = new Line();
+                        lineFour.Stroke = Brushes.Yellow;
+                        lineFour.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineFour);
+
+                        lineFour.X1 = lineThree.X2;
+                        lineFour.Y1 = lineThree.Y2;
+
+                        lineFour.X2 = lineThree.X2;
+                        lineFour.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineFive = new Line();
+                        lineFive.Stroke = Brushes.Yellow;
+                        lineFive.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineFive);
+
+                        lineFive.X1 = lineFour.X2;
+                        lineFive.Y1 = lineFour.Y2;
+
+                        lineFive.X2 = Canvas.GetLeft(ellTo);
+                        lineFive.Y2 = Canvas.GetTop(ellTo);
                     }
-                    if (Canvas.GetLeft(ellTo) - Canvas.GetLeft(toGone) > 0
-                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) < 0)
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) < Canvas.GetTop(toGone))
                     {
                         //top
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
                     }
-                    if (Canvas.GetLeft(ellTo) - Canvas.GetLeft(toGone) > 0
-                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) > 0
-                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) * 1.2 > 0)
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone) 
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone) * 1.3)
                     {
                         //bottom
+
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
                     }
 
                 }
+
                 if (Canvas.GetLeft(ellFrom) < Canvas.GetLeft(fromGone)
                     && Canvas.GetTop(ellFrom) > Canvas.GetTop(fromGone))
                 {
                     //left
+
+
+                    if (Canvas.GetLeft(ellTo) - Canvas.GetLeft(toGone) > 0
+                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) > 0
+                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) * 1.3 < 0)
+                    {
+                        //right
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone))
+                    {
+                        //left
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellTo) - Canvas.GetLeft(ellTo) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) < Canvas.GetTop(toGone))
+                    {
+                        //top
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone) * 1.3)
+                    {
+                        //bottom
+
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
                 }
+
                 if (Canvas.GetLeft(ellFrom) > Canvas.GetLeft(fromGone)
                     && Canvas.GetTop(ellFrom) < Canvas.GetTop(fromGone))
                 {
                     //top
+                    if (Canvas.GetLeft(ellTo) - Canvas.GetLeft(toGone) > 0
+                       && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) > 0
+                       && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) * 1.3 < 0)
+                    {
+                        //right
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellTo) + Canvas.GetLeft(ellTo) / 5;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone))
+                    {
+                        //left
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellTo) - Canvas.GetLeft(ellTo) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) < Canvas.GetTop(toGone))
+                    {
+                        //top
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 2;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone) * 1.3)
+                    {
+                        //bottom
+
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
                 }
+
                 if (Canvas.GetLeft(ellFrom) > Canvas.GetLeft(fromGone)
                     && Canvas.GetTop(ellFrom) > Canvas.GetTop(fromGone)
-                    && Canvas.GetTop(ellFrom) > Canvas.GetTop(fromGone) * 1.5)
+                    && Canvas.GetTop(ellFrom) > Canvas.GetTop(fromGone) * 1.4)
                 {
                     //bottom
+
+                    if (Canvas.GetLeft(ellTo) - Canvas.GetLeft(toGone) > 0
+                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) > 0
+                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) * 1.3 < 0)
+                    {
+                        //right
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone))
+                    {
+                        //left
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo) / 1.4;
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo) - 30;
+                        lineThree.Y2 = lineTwo.Y2;
+
+                        Line lineFour = new Line();
+                        lineFour.Stroke = Brushes.Yellow;
+                        lineFour.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineFour);
+
+                        lineFour.X1 = lineThree.X2;
+                        lineFour.Y1 = lineThree.Y2;
+
+                        lineFour.X2 = lineThree.X2;
+                        lineFour.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineFive = new Line();
+                        lineFive.Stroke = Brushes.Yellow;
+                        lineFive.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineFive);
+
+                        lineFive.X1 = lineFour.X2;
+                        lineFive.Y1 = lineFour.Y2;
+
+                        lineFive.X2 = Canvas.GetLeft(ellTo);
+                        lineFive.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) < Canvas.GetTop(toGone))
+                    {
+                        //top
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone) * 1.3)
+                    {
+                        //bottom
+
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
                 }
             }
             else
             {
+                if (Canvas.GetLeft(ellFrom) > Canvas.GetLeft(fromGone)
+                    && Canvas.GetTop(ellFrom) > Canvas.GetTop(fromGone)
+                    && Canvas.GetTop(ellFrom) < Canvas.GetTop(fromGone) * 1.4)
+                {
+                    //right
 
+                    if (Canvas.GetLeft(ellTo) - Canvas.GetLeft(toGone) > 0
+                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) > 0
+                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) * 1.3 < 0)
+                    {
+                        //right
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellTo) + Canvas.GetLeft(ellTo) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone))
+                    {
+                        //left
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo) / 1.4;
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo) - 30;
+                        lineThree.Y2 = lineTwo.Y2;
+
+                        Line lineFour = new Line();
+                        lineFour.Stroke = Brushes.Yellow;
+                        lineFour.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineFour);
+
+                        lineFour.X1 = lineThree.X2;
+                        lineFour.Y1 = lineThree.Y2;
+
+                        lineFour.X2 = lineThree.X2;
+                        lineFour.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineFive = new Line();
+                        lineFive.Stroke = Brushes.Yellow;
+                        lineFive.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineFive);
+
+                        lineFive.X1 = lineFour.X2;
+                        lineFive.Y1 = lineFour.Y2;
+
+                        lineFive.X2 = Canvas.GetLeft(ellTo);
+                        lineFive.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) < Canvas.GetTop(toGone))
+                    {
+                        //top
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone) * 1.3)
+                    {
+                        //bottom
+
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                }
+
+                if (Canvas.GetLeft(ellFrom) < Canvas.GetLeft(fromGone)
+                    && Canvas.GetTop(ellFrom) > Canvas.GetTop(fromGone))
+                {
+                    //left
+
+
+                    if (Canvas.GetLeft(ellTo) - Canvas.GetLeft(toGone) > 0
+                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) > 0
+                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) * 1.3 < 0)
+                    {
+                        //right
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone))
+                    {
+                        //left
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellTo) - Canvas.GetLeft(ellTo) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) < Canvas.GetTop(toGone))
+                    {
+                        //top
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone) * 1.3)
+                    {
+                        //bottom
+
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+                }
+
+                if (Canvas.GetLeft(ellFrom) > Canvas.GetLeft(fromGone)
+                    && Canvas.GetTop(ellFrom) < Canvas.GetTop(fromGone))
+                {
+                    //top
+                    if (Canvas.GetLeft(ellTo) - Canvas.GetLeft(toGone) > 0
+                       && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) > 0
+                       && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) * 1.3 < 0)
+                    {
+                        //right
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellTo) + Canvas.GetLeft(ellTo) / 5;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone))
+                    {
+                        //left
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellTo) - Canvas.GetLeft(ellTo) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) < Canvas.GetTop(toGone))
+                    {
+                        //top
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 2;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone) * 1.3)
+                    {
+                        //bottom
+
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                }
+
+                if (Canvas.GetLeft(ellFrom) > Canvas.GetLeft(fromGone)
+                    && Canvas.GetTop(ellFrom) > Canvas.GetTop(fromGone)
+                    && Canvas.GetTop(ellFrom) > Canvas.GetTop(fromGone) * 1.4)
+                {
+                    //bottom
+
+                    if (Canvas.GetLeft(ellTo) - Canvas.GetLeft(toGone) > 0
+                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) > 0
+                        && Canvas.GetTop(ellTo) - Canvas.GetTop(toGone) * 1.3 < 0)
+                    {
+                        //right
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone))
+                    {
+                        //left
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo) / 1.4;
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo) - 30;
+                        lineThree.Y2 = lineTwo.Y2;
+
+                        Line lineFour = new Line();
+                        lineFour.Stroke = Brushes.Yellow;
+                        lineFour.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineFour);
+
+                        lineFour.X1 = lineThree.X2;
+                        lineFour.Y1 = lineThree.Y2;
+
+                        lineFour.X2 = lineThree.X2;
+                        lineFour.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineFive = new Line();
+                        lineFive.Stroke = Brushes.Yellow;
+                        lineFive.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineFive);
+
+                        lineFive.X1 = lineFour.X2;
+                        lineFive.Y1 = lineFour.Y2;
+
+                        lineFive.X2 = Canvas.GetLeft(ellTo);
+                        lineFive.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) < Canvas.GetTop(toGone))
+                    {
+                        //top
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+
+                    if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
+                        && Canvas.GetTop(ellTo) > Canvas.GetTop(toGone) * 1.3)
+                    {
+                        //bottom
+
+
+                        Line lineOne = new Line();
+                        lineOne.Stroke = Brushes.Yellow;
+                        lineOne.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineOne);
+
+                        lineOne.X1 = Canvas.GetLeft(ellFrom);
+                        lineOne.Y1 = Canvas.GetTop(ellFrom);
+
+                        lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
+                        lineOne.Y2 = lineOne.Y1;
+
+                        Line lineTwo = new Line();
+                        lineTwo.Stroke = Brushes.Yellow;
+                        lineTwo.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineTwo);
+
+                        lineTwo.X1 = lineOne.X2;
+                        lineTwo.Y1 = lineOne.Y2;
+
+                        lineTwo.X2 = lineOne.X2;
+                        lineTwo.Y2 = Canvas.GetTop(ellTo);
+
+                        Line lineThree = new Line();
+                        lineThree.Stroke = Brushes.Yellow;
+                        lineThree.MouseDown += LineMouseDown;
+                        CanvasPos.Children.Add(lineThree);
+
+                        lineThree.X1 = lineTwo.X2;
+                        lineThree.Y1 = lineTwo.Y2;
+
+                        lineThree.X2 = Canvas.GetLeft(ellTo);
+                        lineThree.Y2 = Canvas.GetTop(ellTo);
+                    }
+                }
             }
         }
 
