@@ -175,6 +175,8 @@
                    Drop="DnD_Drop"
                    Name="CanvasPos">
 
+              
+
             </Canvas>
             <!--#endregion-->
 
@@ -307,6 +309,8 @@
                     <Polyline Stroke="Transparent" Points="8,0 0,0 0,8 8,0" Name="Anchor"/>
                     <Polyline Points="4,0 0,10 4,20 4,0" Stroke="Transparent" Name="anchor_Left"/>
                     <Polyline Points="0,4 10,0 20,4 0,4" Stroke="Transparent" Name="anchor_Top"/>
+                    
+                    
                 </StackPanel>
                 
            </DockPanel> 
