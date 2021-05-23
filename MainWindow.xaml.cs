@@ -683,6 +683,14 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 4;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline polyline = new Polyline();
+                        polyline.Stroke = Brushes.Yellow;
+                        polyline.Points = rightArray.Points;
+                        CanvasPos.Children.Add(polyline);
+
+                        Canvas.SetLeft(polyline, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(polyline, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -3715,26 +3723,6 @@ namespace Interface_1._0
                 }*/
                 #endregion
 
-                SearchUndefineLinesFrom(connectionLine.circle_left, ref connectionLine.undefiendLinesLeftFrom);
-                SearchUndefineLinesTo(connectionLine.circle_left, ref connectionLine.undefiendLinesLeftTo);
-                SearchAdditionLinesFromY(connectionLine.circle_left, ref connectionLine.undefiendLinesLeftFromY1);
-                SearchAdditionLinesToY(connectionLine.circle_left, ref connectionLine.undefiendLinesLeftToY2);
-
-                SearchUndefineLinesFrom(connectionLine.circle_right, ref connectionLine.undefiendLinesRightFrom);
-                SearchUndefineLinesTo(connectionLine.circle_right, ref connectionLine.undefiendLinesRightTo);
-                SearchAdditionLinesFromY(connectionLine.circle_right, ref connectionLine.undefiendLinesRightFromY1);
-                SearchAdditionLinesToY(connectionLine.circle_right, ref connectionLine.undefiendLinesRightToY2);
-
-                SearchUndefineLinesFrom(connectionLine.circle_top, ref connectionLine.undefiendLinesTopFrom);
-                SearchUndefineLinesTo(connectionLine.circle_top, ref connectionLine.undefiendLinesTopTo);
-                SearchAdditionLinesFromY(connectionLine.circle_top, ref connectionLine.undefiendLinesTopFromY1);
-                SearchAdditionLinesToY(connectionLine.circle_top, ref connectionLine.undefiendLinesTopToY2);
-
-                SearchUndefineLinesFrom(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomFrom);
-                SearchUndefineLinesTo(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomTo);
-                SearchAdditionLinesFromY(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomFromY1);
-                SearchAdditionLinesToY(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomToY2);
-
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
                     if (shape_count == 1)
@@ -3745,6 +3733,26 @@ namespace Interface_1._0
                     }
                     else
                     {
+                        SearchUndefineLinesFrom(connectionLine.circle_left, ref connectionLine.undefiendLinesLeftFrom);
+                        SearchUndefineLinesTo(connectionLine.circle_left, ref connectionLine.undefiendLinesLeftTo);
+                        SearchAdditionLinesFromY(connectionLine.circle_left, ref connectionLine.undefiendLinesLeftFromY1);
+                        SearchAdditionLinesToY(connectionLine.circle_left, ref connectionLine.undefiendLinesLeftToY2);
+
+                        SearchUndefineLinesFrom(connectionLine.circle_right, ref connectionLine.undefiendLinesRightFrom);
+                        SearchUndefineLinesTo(connectionLine.circle_right, ref connectionLine.undefiendLinesRightTo);
+                        SearchAdditionLinesFromY(connectionLine.circle_right, ref connectionLine.undefiendLinesRightFromY1);
+                        SearchAdditionLinesToY(connectionLine.circle_right, ref connectionLine.undefiendLinesRightToY2);
+
+                        SearchUndefineLinesFrom(connectionLine.circle_top, ref connectionLine.undefiendLinesTopFrom);
+                        SearchUndefineLinesTo(connectionLine.circle_top, ref connectionLine.undefiendLinesTopTo);
+                        SearchAdditionLinesFromY(connectionLine.circle_top, ref connectionLine.undefiendLinesTopFromY1);
+                        SearchAdditionLinesToY(connectionLine.circle_top, ref connectionLine.undefiendLinesTopToY2);
+
+                        SearchUndefineLinesFrom(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomFrom);
+                        SearchUndefineLinesTo(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomTo);
+                        SearchAdditionLinesFromY(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomFromY1);
+                        SearchAdditionLinesToY(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomToY2);
+
                         foreach (UndefiendLine line in connectionLine.undefiendLinesLeftFrom)
                             HideLines(line.undefLine, connectionLine.circle_left);
                         foreach (UndefiendLine line in connectionLine.undefiendLinesLeftTo)
@@ -7275,6 +7283,21 @@ namespace Interface_1._0
             SearchAdditionLinesFromY(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomFromY1);
             SearchAdditionLinesToY(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomToY2);
 
+            Polyline polyline = null;
+
+            for(int i = 0; i < CanvasPos.Children.Count; ++i)
+                if(CanvasPos.Children[i] is Line &&
+                    (CanvasPos.Children[i] as Line).X1 == Canvas.GetLeft(connectionLine.circle_right))
+                {
+                    for(int j = 0; j < CanvasPos.Children.Count; ++j)
+                        if(CanvasPos.Children[j] is Polyline && (CanvasPos.Children[j] as Polyline).Stroke == Brushes.Yellow)
+                        {
+                            polyline = CanvasPos.Children[j] as Polyline;
+                            break;
+                        }
+
+                }
+
             shape.shape.MouseMove += RPR_Move;
 
             void RPR_Move(object sender, MouseEventArgs e)
@@ -7353,7 +7376,10 @@ namespace Interface_1._0
                             line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
                             if (connectionLine.undefiendLinesRightFromY1.Count > 0)
                                 line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_right);
+
+                            Canvas.SetTop(polyline, Canvas.GetTop(connectionLine.circle_left) - 5);
                         }
+                        
                     }
                     if (connectionLine.undefiendLinesRightTo.Count > 0)
                     {

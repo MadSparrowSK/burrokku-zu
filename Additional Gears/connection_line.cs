@@ -30,6 +30,7 @@ namespace Connect
         public List<UndefiendLine> undefiendLinesBottomTo = new List<UndefiendLine>();
         public List<UndefiendLine> undefiendLinesBottomFromY1 = new List<UndefiendLine>();
         public List<UndefiendLine> undefiendLinesBottomToY2 = new List<UndefiendLine>();
+
         public ConnectionLine()
         {
             circle_left = new Ellipse();
