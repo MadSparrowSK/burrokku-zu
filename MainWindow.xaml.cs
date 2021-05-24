@@ -683,13 +683,14 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 4;
                         lineOne.Y2 = lineOne.Y1;
 
-                        Polyline polyline = new Polyline();
-                        polyline.Stroke = Brushes.Yellow;
-                        polyline.Points = rightArray.Points;
-                        CanvasPos.Children.Add(polyline);
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
 
-                        Canvas.SetLeft(polyline, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
-                        Canvas.SetTop(polyline, Canvas.GetTop(ellFrom) - 5);
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
 
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
@@ -712,6 +713,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
@@ -730,6 +740,15 @@ namespace Interface_1._0
 
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 5;
                         lineOne.Y2 = lineOne.Y1;
+
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
 
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
@@ -774,6 +793,15 @@ namespace Interface_1._0
 
                         lineFive.X2 = Canvas.GetLeft(ellTo);
                         lineFive.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = rightArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineFive.X1 - lineFive.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -791,6 +819,15 @@ namespace Interface_1._0
 
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
                         lineOne.Y2 = lineOne.Y1;
+
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
 
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
@@ -813,6 +850,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone) 
@@ -832,6 +878,15 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -853,6 +908,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                 }
@@ -880,6 +944,15 @@ namespace Interface_1._0
 
                         lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 5;
                         lineOne.Y2 = lineOne.Y1;
+
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = leftArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) - Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
 
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
@@ -924,6 +997,15 @@ namespace Interface_1._0
 
                         lineFive.X2 = Canvas.GetLeft(ellTo);
                         lineFive.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineFive.X1 - lineFive.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
@@ -939,8 +1021,17 @@ namespace Interface_1._0
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
-                        lineOne.X2 = Canvas.GetLeft(ellTo) - Canvas.GetLeft(ellTo) / 10;
+                        lineOne.X2 = Canvas.GetLeft(ellTo) - Canvas.GetLeft(ellTo) / 7;
                         lineOne.Y2 = lineOne.Y1;
+
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = leftArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) - Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
 
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
@@ -963,6 +1054,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = rightArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -981,6 +1081,15 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 10;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = leftArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) - Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -1002,6 +1111,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -1021,6 +1139,15 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 10;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = leftArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) - Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -1042,6 +1169,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
                 }
 
@@ -1066,6 +1202,15 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellTo) + Canvas.GetLeft(ellTo) / 5;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = leftArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) - Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -1087,6 +1232,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
@@ -1105,6 +1259,15 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellTo) - Canvas.GetLeft(ellTo) / 10;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = leftArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) - Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -1126,6 +1289,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = rightArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -1144,6 +1316,15 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellFrom) - Canvas.GetLeft(ellFrom) / 2;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = leftArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) - Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -1165,6 +1346,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = rightArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -1184,6 +1374,15 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -1205,6 +1404,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                 }
@@ -1232,6 +1440,15 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -1253,6 +1470,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
@@ -1270,6 +1496,15 @@ namespace Interface_1._0
 
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
                         lineOne.Y2 = lineOne.Y1;
+
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
 
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
@@ -1314,6 +1549,15 @@ namespace Interface_1._0
 
                         lineFive.X2 = Canvas.GetLeft(ellTo);
                         lineFive.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = rightArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineFive.X1 - lineFive.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -1331,6 +1575,15 @@ namespace Interface_1._0
 
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
                         lineOne.Y2 = lineOne.Y1;
+
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
 
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
@@ -1353,6 +1606,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -1372,6 +1634,15 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -1393,6 +1664,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
                 }
             }
@@ -1421,6 +1701,15 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellTo) + Canvas.GetLeft(ellTo) / 10;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -1442,6 +1731,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = leftArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
@@ -1459,6 +1757,15 @@ namespace Interface_1._0
 
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 2;
                         lineOne.Y2 = lineOne.Y1;
+
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
 
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
@@ -1503,6 +1810,15 @@ namespace Interface_1._0
 
                         lineFive.X2 = Canvas.GetLeft(ellTo);
                         lineFive.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = rightArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineFive.X1 - lineFive.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -1520,6 +1836,15 @@ namespace Interface_1._0
 
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 4;
                         lineOne.Y2 = lineOne.Y1;
+
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
 
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
@@ -1542,6 +1867,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = rightArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -1561,6 +1895,15 @@ namespace Interface_1._0
                         lineOne.X2 = Canvas.GetLeft(ellFrom) + Canvas.GetLeft(ellFrom) / 10;
                         lineOne.Y2 = lineOne.Y1;
 
+                        Polyline arrOne = new Polyline();
+                        arrOne.Stroke = Brushes.Yellow;
+                        arrOne.Points = rightArray.Points;
+                        arrOne.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrOne);
+
+                        Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
+                        Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
+
                         Line lineTwo = new Line();
                         lineTwo.Stroke = Brushes.Yellow;
                         lineTwo.MouseDown += LineMouseDown;
@@ -1582,6 +1925,15 @@ namespace Interface_1._0
 
                         lineThree.X2 = Canvas.GetLeft(ellTo);
                         lineThree.Y2 = Canvas.GetTop(ellTo);
+
+                        Polyline arrTwo = new Polyline();
+                        arrTwo.Stroke = Brushes.Yellow;
+                        arrTwo.Points = rightArray.Points;
+                        arrTwo.StrokeThickness = 1.5;
+                        CanvasPos.Children.Add(arrTwo);
+
+                        Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
+                        Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
 
                 }
@@ -2110,7 +2462,33 @@ namespace Interface_1._0
                 if (CanvasPos.Children[i] is Line && CanvasPos.Children[i].IsEnabled == true
                     && Math.Abs((CanvasPos.Children[i] as Line).X1 - Canvas.GetLeft(circle)) == 0
                     && Math.Abs((CanvasPos.Children[i] as Line).Y1 - Canvas.GetTop(circle)) == 0)
-                    list.Add(new UndefiendLine(CanvasPos.Children[i] as Line));
+                {
+                    if ((CanvasPos.Children[i] as Line).X1 > (CanvasPos.Children[i] as Line).X2)
+                    {
+                        //left
+                        for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            if (CanvasPos.Children[j] is Polyline && (CanvasPos.Children[j] as Polyline).Stroke == Brushes.Yellow
+                                && Canvas.GetLeft(CanvasPos.Children[j]) == Canvas.GetLeft(circle) -
+                                Math.Abs((CanvasPos.Children[i] as Line).X1 - (CanvasPos.Children[i] as Line).X2) / 2)
+                            {
+                                list.Add(new UndefiendLine(CanvasPos.Children[i] as Line, CanvasPos.Children[j] as Polyline));
+                                break;
+                            }
+                    }
+                    else
+                    {
+                        //right
+                        for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            if (CanvasPos.Children[j] is Polyline && (CanvasPos.Children[j] as Polyline).Stroke == Brushes.Yellow
+                                && Canvas.GetLeft(CanvasPos.Children[j]) == Canvas.GetLeft(circle) +
+                                Math.Abs((CanvasPos.Children[i] as Line).X1 - (CanvasPos.Children[i] as Line).X2) / 2)
+                            {
+                                list.Add(new UndefiendLine(CanvasPos.Children[i] as Line, CanvasPos.Children[j] as Polyline));
+                                break;
+                            }
+                    }
+                }
+                    
         }
         void SearchUndefineLinesTo(Ellipse circle,ref List<UndefiendLine> list)
         {
@@ -2118,7 +2496,33 @@ namespace Interface_1._0
                 if (CanvasPos.Children[i] is Line
                     && Math.Abs((CanvasPos.Children[i] as Line).X2 - Canvas.GetLeft(circle)) == 0
                     && Math.Abs((CanvasPos.Children[i] as Line).Y2 - Canvas.GetTop(circle)) == 0)
-                    list.Add(new UndefiendLine(CanvasPos.Children[i] as Line));
+                {
+                    if ((CanvasPos.Children[i] as Line).X1 < (CanvasPos.Children[i] as Line).X2)
+                    {
+                        //left
+                        for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            if (CanvasPos.Children[j] is Polyline && (CanvasPos.Children[j] as Polyline).Stroke == Brushes.Yellow
+                                && Canvas.GetLeft(CanvasPos.Children[j]) == Canvas.GetLeft(circle) -
+                                Math.Abs((CanvasPos.Children[i] as Line).X1 - (CanvasPos.Children[i] as Line).X2) / 2)
+                            {
+                                list.Add(new UndefiendLine(CanvasPos.Children[i] as Line, CanvasPos.Children[j] as Polyline));
+                                break;
+                            }
+                    }
+                    else
+                    {
+                        //right
+                        for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            if (CanvasPos.Children[j] is Polyline && (CanvasPos.Children[j] as Polyline).Stroke == Brushes.Yellow
+                                && Canvas.GetLeft(CanvasPos.Children[j]) == Canvas.GetLeft(circle) +
+                                Math.Abs((CanvasPos.Children[i] as Line).X1 - (CanvasPos.Children[i] as Line).X2) / 2)
+                            {
+                                list.Add(new UndefiendLine(CanvasPos.Children[i] as Line, CanvasPos.Children[j] as Polyline));
+                                break;
+                            }
+                    }
+                }
+                    
 
         }
 
@@ -7283,21 +7687,6 @@ namespace Interface_1._0
             SearchAdditionLinesFromY(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomFromY1);
             SearchAdditionLinesToY(connectionLine.circle_bottom, ref connectionLine.undefiendLinesBottomToY2);
 
-            Polyline polyline = null;
-
-            for(int i = 0; i < CanvasPos.Children.Count; ++i)
-                if(CanvasPos.Children[i] is Line &&
-                    (CanvasPos.Children[i] as Line).X1 == Canvas.GetLeft(connectionLine.circle_right))
-                {
-                    for(int j = 0; j < CanvasPos.Children.Count; ++j)
-                        if(CanvasPos.Children[j] is Polyline && (CanvasPos.Children[j] as Polyline).Stroke == Brushes.Yellow)
-                        {
-                            polyline = CanvasPos.Children[j] as Polyline;
-                            break;
-                        }
-
-                }
-
             shape.shape.MouseMove += RPR_Move;
 
             void RPR_Move(object sender, MouseEventArgs e)
@@ -7343,7 +7732,10 @@ namespace Interface_1._0
                         {
                             line.undefLine.X1 = Canvas.GetLeft(connectionLine.circle_left);
                             line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
-                            if(connectionLine.undefiendLinesLeftFromY1.Count > 0)
+                            Canvas.SetLeft(line.undefArrow, Canvas.GetLeft(connectionLine.circle_left)
+                               - Math.Abs(line.undefLine.X2 - line.undefLine.X1) / 2);
+                            Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_left) - 5);
+                            if (connectionLine.undefiendLinesLeftFromY1.Count > 0)
                                 line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_left);
                         }
                     }
@@ -7353,7 +7745,10 @@ namespace Interface_1._0
                         {
                             line.undefLine.X2 = Canvas.GetLeft(connectionLine.circle_left);
                             line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_left);
-                            if(connectionLine.undefiendLinesLeftToY2.Count > 0)
+                            Canvas.SetLeft(line.undefArrow, Canvas.GetLeft(connectionLine.circle_left)
+                               - Math.Abs(line.undefLine.X2 - line.undefLine.X1) / 2);
+                            Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_left) - 5);
+                            if (connectionLine.undefiendLinesLeftToY2.Count > 0)
                                 line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
                         }
                     }
@@ -7374,10 +7769,11 @@ namespace Interface_1._0
                         {
                             line.undefLine.X1 = Canvas.GetLeft(connectionLine.circle_right);
                             line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                            Canvas.SetLeft(line.undefArrow, Canvas.GetLeft(connectionLine.circle_right) 
+                                + Math.Abs(line.undefLine.X2 - line.undefLine.X1) / 2);
+                            Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_right) - 5);
                             if (connectionLine.undefiendLinesRightFromY1.Count > 0)
                                 line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_right);
-
-                            Canvas.SetTop(polyline, Canvas.GetTop(connectionLine.circle_left) - 5);
                         }
                         
                     }
@@ -7387,6 +7783,9 @@ namespace Interface_1._0
                         {
                             line.undefLine.X2 = Canvas.GetLeft(connectionLine.circle_right);
                             line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_right);
+                            Canvas.SetLeft(line.undefArrow, Canvas.GetLeft(connectionLine.circle_right)
+                                + Math.Abs(line.undefLine.X2 - line.undefLine.X1) / 2);
+                            Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_right) - 5);
                             if (connectionLine.undefiendLinesRightToY2.Count > 0)
                                 line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
                         }
@@ -7420,6 +7819,8 @@ namespace Interface_1._0
                             line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_top);
                             if (connectionLine.undefiendLinesTopToY2.Count > 0)
                                 line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
+
+
                         }
                     }
                     if (connectionLine.undefiendLinesTopFromY1.Count > 0)
