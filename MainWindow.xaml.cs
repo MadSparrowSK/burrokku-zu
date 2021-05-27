@@ -8377,6 +8377,8 @@ namespace Interface_1._0
                             Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_left) - 5);
                             if (connectionLine.undefiendLinesLeftFromY1.Count > 0)
                                 line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_left);
+                            if (Math.Abs(line.undefLine.X2 - Canvas.GetLeft(connectionLine.circle_left)) < 10)
+                                line.undefLine.X2 = Canvas.GetLeft(connectionLine.circle_left) - 10;
                         }
                     }
                     if (connectionLine.undefiendLinesLeftTo.Count > 0)
@@ -8390,17 +8392,28 @@ namespace Interface_1._0
                             Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_left) - 5);
                             if (connectionLine.undefiendLinesLeftToY2.Count > 0)
                                 line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                            if (Math.Abs(line.undefLine.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 10)
+                                line.undefLine.X1 = Canvas.GetLeft(connectionLine.circle_left) - 10;
                         }
                     }
                     if(connectionLine.undefiendLinesLeftFromY1.Count > 0)
                     {
                         foreach(UndefiendLine line in connectionLine.undefiendLinesLeftFromY1)
+                        {
                             line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_left);
+                            if(Math.Abs(line.undefLine.X1 - Canvas.GetLeft(connectionLine.circle_left)) < 10)
+                                line.undefLine.X1 = Canvas.GetLeft(connectionLine.circle_left) - 10;
+                        }
+                            
                     }
                     if (connectionLine.undefiendLinesLeftToY2.Count > 0)
                     {
                         foreach (UndefiendLine line in connectionLine.undefiendLinesLeftToY2)
+                        {
                             line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_left);
+                            if (Math.Abs(line.undefLine.X2 - Canvas.GetLeft(connectionLine.circle_left)) < 10)
+                                line.undefLine.X2 = Canvas.GetLeft(connectionLine.circle_left) - 10;
+                        }
                     }
 
                     if (connectionLine.undefiendLinesRightFrom.Count > 0)
@@ -8414,6 +8427,8 @@ namespace Interface_1._0
                             Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_right) - 5);
                             if (connectionLine.undefiendLinesRightFromY1.Count > 0)
                                 line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_right);
+                            if (Math.Abs(line.undefLine.X2 - Canvas.GetLeft(connectionLine.circle_right)) < 10)
+                                line.undefLine.X2 = Canvas.GetLeft(connectionLine.circle_right) + 10;
                         }
                         
                     }
@@ -8428,17 +8443,27 @@ namespace Interface_1._0
                             Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_right) - 5);
                             if (connectionLine.undefiendLinesRightToY2.Count > 0)
                                 line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                            if (Math.Abs(line.undefLine.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 10)
+                                line.undefLine.X1 = Canvas.GetLeft(connectionLine.circle_right) + 10;
                         }
                     }
                     if (connectionLine.undefiendLinesRightFromY1.Count > 0)
                     {
                         foreach (UndefiendLine line in connectionLine.undefiendLinesRightFromY1)
+                        { 
                             line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_right);
+                            if (Math.Abs(line.undefLine.X1 - Canvas.GetLeft(connectionLine.circle_right)) < 10)
+                                line.undefLine.X1 = Canvas.GetLeft(connectionLine.circle_right) + 10;
+                        }
                     }
                     if (connectionLine.undefiendLinesRightToY2.Count > 0)
                     {
                         foreach (UndefiendLine line in connectionLine.undefiendLinesRightToY2)
+                        {
                             line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_right);
+                            if (Math.Abs(line.undefLine.X2 - Canvas.GetLeft(connectionLine.circle_right)) < 10)
+                                line.undefLine.X2 = Canvas.GetLeft(connectionLine.circle_right) + 10;
+                        }
                     }
 
                     if (connectionLine.undefiendLinesTopFrom.Count > 0)
@@ -8449,12 +8474,14 @@ namespace Interface_1._0
                             line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_top);
                             if(line.undefLine.X1 > line.undefLine.X2)
                             {
+                                line.undefArrow.Points = leftArray.Points;
                                 Canvas.SetLeft(line.undefArrow, Canvas.GetLeft(connectionLine.circle_top)
                               - Math.Abs(line.undefLine.X2 - line.undefLine.X1) / 2);
                                 Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_top) - 5);
                             }
                             else
                             {
+                                line.undefArrow.Points = rightArray.Points;
                                 Canvas.SetLeft(line.undefArrow, Canvas.GetLeft(connectionLine.circle_top)
                               + Math.Abs(line.undefLine.X2 - line.undefLine.X1) / 2);
                                 Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_top) - 5);
@@ -8471,12 +8498,14 @@ namespace Interface_1._0
                             line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_top);
                             if (line.undefLine.X1 > line.undefLine.X2)
                             {
+                                line.undefArrow.Points = leftArray.Points;
                                 Canvas.SetLeft(line.undefArrow, Canvas.GetLeft(connectionLine.circle_top)
                               + Math.Abs(line.undefLine.X2 - line.undefLine.X1) / 2);
                                 Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_top) - 5);
                             }
                             else
                             {
+                                line.undefArrow.Points = rightArray.Points;
                                 Canvas.SetLeft(line.undefArrow, Canvas.GetLeft(connectionLine.circle_top)
                               - Math.Abs(line.undefLine.X2 - line.undefLine.X1) / 2);
                                 Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_top) - 5);
@@ -8504,12 +8533,14 @@ namespace Interface_1._0
                             line.undefLine.Y1 = Canvas.GetTop(connectionLine.circle_bottom);
                             if (line.undefLine.X1 > line.undefLine.X2)
                             {
+                                line.undefArrow.Points = leftArray.Points;
                                 Canvas.SetLeft(line.undefArrow, Canvas.GetLeft(connectionLine.circle_bottom)
                               - Math.Abs(line.undefLine.X2 - line.undefLine.X1) / 2);
                                 Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_bottom) - 5);
                             }
                             else
                             {
+                                line.undefArrow.Points = rightArray.Points;
                                 Canvas.SetLeft(line.undefArrow, Canvas.GetLeft(connectionLine.circle_bottom)
                               + Math.Abs(line.undefLine.X2 - line.undefLine.X1) / 2);
                                 Canvas.SetTop(line.undefArrow, Canvas.GetTop(connectionLine.circle_bottom) - 5);
