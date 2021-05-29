@@ -167,16 +167,14 @@
             
            <!--#region  main field-->
 
-           <Canvas Grid.Row="1"
+            <Canvas Grid.Row="1"
                    Grid.Column="1"
                    Grid.ColumnSpan="2"
                    Background="Black"
                    AllowDrop="True"
                    Drop="DnD_Drop"
                    Name="CanvasPos">
-
-              
-
+                
             </Canvas>
             <!--#endregion-->
 
@@ -273,13 +271,19 @@
            <DockPanel Grid.Column="0"
                        Grid.Row="1"
                        VerticalAlignment="Bottom">
-                <WrapPanel>
+                <WrapPanel HorizontalAlignment="Left">
                     <Label Content="Clear" Foreground="Gray"
                            MouseEnter="Clear_Mouse_Enter"
                            MouseLeave="Clear_Mouse_Leave"
                            Name="Clear"
                            MouseDown="inTrash"
-                           FontFamily="Clickuper"></Label>
+                           FontFamily="Clickuper"/>
+
+                    <Label Content="Text" Foreground="Gray"
+                           MouseEnter="Clear_Mouse_Enter"
+                           MouseLeave="Clear_Mouse_Leave"
+                           Name="Text"
+                           MouseDown="TextMD"/>
                 </WrapPanel> 
            </DockPanel>
             

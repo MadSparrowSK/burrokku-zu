@@ -37,19 +37,25 @@ namespace TxTnShapes
             kurwa_txtbox.Background  = Brushes.Transparent;
             kurwa_txtbox.IsEnabled = false;
         }
-        public void PrepareToWriting()
+    }
+
+    static class TxTResetClass
+    {
+        public static void SetTxT(this TextBox txt)
         {
-            txtbx.CaretBrush  = Brushes.Red;
-            txtbx.BorderBrush = Brushes.Gray;
-            txtbx.BorderThickness = new Thickness(1);
-            txtbx.IsEnabled = true;
+            txt.CaretBrush = Brushes.Red;
+            txt.BorderBrush = Brushes.Gray;
+            txt.Foreground = Brushes.White;
+            txt.BorderThickness = new Thickness(1);
+            txt.IsEnabled = true;
         }
-        public void ResetParametrs()
+
+        public static void ResetTxT(this TextBox txt)
         {
-            txtbx.CaretBrush  = Brushes.Transparent;
-            txtbx.BorderBrush = Brushes.Transparent;
-            txtbx.BorderThickness = new Thickness(0);
-            txtbx.IsEnabled = false;
-        }
+            txt.CaretBrush = Brushes.Transparent;
+            txt.BorderBrush = Brushes.Transparent;
+            txt.BorderThickness = new Thickness(0);
+            txt.IsEnabled = false;
+        } 
     }
 }

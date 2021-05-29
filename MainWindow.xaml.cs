@@ -163,6 +163,8 @@ namespace Interface_1._0
         private bool Cycle_Check = false;
         private bool Ellipse_Check = false;
 
+        bool textDrop = false;
+
         static int shape_count = 0;
         void ClearCanvas()
         {
@@ -11379,7 +11381,7 @@ namespace Interface_1._0
 
         public void TextMethodSee(RP_Shapes shape, TXT txt, Anchor anchor)
         {
-            txt.PrepareToWriting();
+            txt.txtbx.SetTxT();
             Canvas.SetZIndex(txt.txtbx, 1);
 
             double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_NE.X, 2))) / 2;
@@ -11404,7 +11406,7 @@ namespace Interface_1._0
 
                 if (Keyboard.IsKeyDown(Key.Enter))
                 {
-                    txt.ResetParametrs();
+                    txt.txtbx.ResetTxT();
                     Canvas.SetZIndex(txt.txtbx, -1);
 
                     TextMethod_3Points(txt, left_size);
@@ -11414,7 +11416,7 @@ namespace Interface_1._0
         }
         public void TextMethodSee(Rh_Shape shape, TXT txt, Anchor anchor)
         {
-            txt.PrepareToWriting();
+            txt.txtbx.SetTxT();
             Canvas.SetZIndex(txt.txtbx, 1);
 
             double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_Point.X, 2))) / 2;
@@ -11437,7 +11439,7 @@ namespace Interface_1._0
 
                 if (Keyboard.IsKeyDown(Key.Enter))
                 {
-                    txt.ResetParametrs();
+                    txt.txtbx.ResetTxT();
                     Canvas.SetZIndex(txt.txtbx, -1);
 
                     TextMethod_3Points(txt, left_size);
@@ -11447,7 +11449,7 @@ namespace Interface_1._0
         }
         public void TextMethodSee(Cy_Shape shape, TXT txt, Anchor anchor)
         {
-            txt.PrepareToWriting();
+            txt.txtbx.SetTxT();
             Canvas.SetZIndex(txt.txtbx, 1);
 
             double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_NE.X, 2))) / 2;
@@ -11470,7 +11472,7 @@ namespace Interface_1._0
 
                 if (Keyboard.IsKeyDown(Key.Enter))
                 {
-                    txt.ResetParametrs();
+                    txt.txtbx.ResetTxT();
                     Canvas.SetZIndex(txt.txtbx, -1);
 
                     TextMethod_3Points(txt, left_size);
@@ -11480,7 +11482,7 @@ namespace Interface_1._0
         }
         public void TextMethodSee(Ell_Shape shape, TXT txt, Anchor anchor)
         {
-            txt.PrepareToWriting();
+            txt.txtbx.SetTxT();
             Canvas.SetZIndex(txt.txtbx, 1);
 
             txt.txtbx.Foreground = Brushes.White;
@@ -11501,7 +11503,7 @@ namespace Interface_1._0
 
                 if (Keyboard.IsKeyDown(Key.Enter))
                 {
-                    txt.ResetParametrs();
+                    txt.txtbx.ResetTxT();
                     Canvas.SetZIndex(txt.txtbx, -1);
 
                     TextMethod_3Points(txt, shape.shape.ActualWidth);
@@ -11794,11 +11796,108 @@ namespace Interface_1._0
 
         #endregion
 
+
+        void TxTWrite(Rectangle rectangle, TextBox txt)
+        {
+            rectangle.MouseDown += RtxtMD;
+
+            void RtxtMD(object sender, MouseButtonEventArgs e)
+            {
+                if (e.ClickCount == 2)
+                    TxTWriting(rectangle, txt);
+
+                if(e.RightButton == MouseButtonState.Pressed)
+                {
+                    CanvasPos.Children.Remove(txt);
+                    CanvasPos.Children.Remove(rectangle);
+                }
+
+                UIElement smt = (UIElement)sender;
+                lastPoint = e.GetPosition(smt);
+
+                TxTMove(rectangle, txt);
+            }
+        } 
+        void TxTWriting(Rectangle rectangle, TextBox txt)
+        {
+            txt.SetTxT();
+            Canvas.SetZIndex(txt, 1);
+
+            txt.KeyDown += Writing;
+
+            void Writing(object sender, KeyEventArgs e)
+            {
+                MassiveDisabledEnabled(false);
+                txt.IsEnabled = true;
+
+                Canvas.SetLeft(txt, Canvas.GetLeft(rectangle) + rectangle.ActualWidth / 2 - txt.ActualWidth / 2);
+                Canvas.SetTop(txt, Canvas.GetTop(rectangle) + 5);
+
+                if(Keyboard.IsKeyDown(Key.Enter))
+                {
+                    txt.ResetTxT();
+                    Canvas.SetZIndex(txt, -1);
+
+                    rectangle.Width = txt.ActualWidth + 10;
+
+                    MassiveDisabledEnabled(true);
+                }
+            }
+        }
+        void TxTMove(Rectangle rectangle, TextBox txt)
+        {
+            rectangle.MouseMove += RtxtMove;
+
+            void RtxtMove(object sender, MouseEventArgs e)
+            {
+                if(e.LeftButton == MouseButtonState.Pressed)
+                {
+                    UIElement smt = (UIElement)sender;
+                    smt.CaptureMouse();
+
+                    Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
+                    Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 5);
+                    Canvas.SetTop(txt, Canvas.GetTop(smt) + 5);
+                }
+            }
+        }
+
         private void FreeClick(object sender, MouseButtonEventArgs e)
         {
             for (int i = 0; i < CanvasPos.Children.Count; ++i)
                 if (CanvasPos.Children[i] is Polyline && (CanvasPos.Children[i] as Polyline).Stroke == Brushes.Red)
                     (CanvasPos.Children[i] as Polyline).Reset();
+
+            if(textDrop)
+            {
+                textDrop = false;
+
+                Rectangle txtTangle = new Rectangle() 
+                { Width = 40, Height = 20, Fill = Brushes.Transparent, Stroke = Brushes.Transparent };
+                txtTangle.MouseUp += UIElements_Mouse_Up;
+                CanvasPos.Children.Add(txtTangle);
+
+                TextBox txt = new TextBox() 
+                { Text = "Text",  IsEnabled = false, Foreground = Brushes.White, Background = Brushes.Transparent,
+                BorderBrush = Brushes.Transparent};
+                Canvas.SetZIndex(txt, -1);
+                CanvasPos.Children.Add(txt);
+
+                Canvas.SetLeft(txtTangle, Mouse.GetPosition(CanvasPos).X - 8);
+                Canvas.SetTop(txtTangle, Mouse.GetPosition(CanvasPos).Y - 8);
+
+                Canvas.SetLeft(txt, Canvas.GetLeft(txtTangle) + 5);
+                Canvas.SetTop(txt, Canvas.GetTop(txtTangle) + 5);
+
+                TxTWrite(txtTangle, txt);
+            }
+        }
+
+        private void TextMD(object sender, MouseButtonEventArgs e)
+        {
+            textDrop = true;
         }
 
         private void Clear_Mouse_Enter(object sender, RoutedEventArgs e)
