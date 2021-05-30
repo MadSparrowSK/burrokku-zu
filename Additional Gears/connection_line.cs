@@ -11,6 +11,18 @@ namespace Connect
         public Ellipse circle_top;
         public Ellipse circle_bottom;
 
+        public bool left_left = false;
+        public bool left_right = false;
+
+        public bool right_left = false;
+        public bool right_right = false;
+
+        public bool top_left = false;
+        public bool top_right = false;
+
+        public bool bottom_left = false;
+        public bool bottom_right = false;
+
         public List<UndefiendLine> undefiendLinesLeftFrom = new List<UndefiendLine>();
         public List<UndefiendLine> undefiendLinesLeftTo = new List<UndefiendLine>();
         public List<UndefiendLine> undefiendLinesLeftFromY1 = new List<UndefiendLine>();
