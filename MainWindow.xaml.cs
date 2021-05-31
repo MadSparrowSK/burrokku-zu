@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Threading;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -176,7 +177,6 @@ namespace Interface_1._0
             }
             else
             {
-
                 for (int i = 0; i < CanvasPos.Children.Count; ++i)
                     if (CanvasPos.Children[i] is Line &&
                         (CanvasPos.Children[i] as Line).Stroke == Brushes.Transparent)
@@ -2764,7 +2764,6 @@ namespace Interface_1._0
                         && Math.Abs((CanvasPos.Children[i] as Line).Y1 - (CanvasPos.Children[j] as Line).Y2) == 0)
                             list.Add(new UndefiendLine(CanvasPos.Children[j] as Line));
         }
-
         void RemoveLines(List<UndefiendLine> list)
         {
             for(int i = 0; i < list.Count; ++i)
@@ -2773,8 +2772,6 @@ namespace Interface_1._0
                     && (list[i] as UndefiendLine).undefLine.X2 == 0 && (list[i] as UndefiendLine).undefLine.Y2 == 0))
                     list.Remove(list[i]);
         }
-
-
         void LineMouseDown(object sender, MouseButtonEventArgs e)
         {
             click = false;
@@ -5162,6 +5159,7 @@ namespace Interface_1._0
                         foreach (UndefiendLine line in connectionLine.undefiendLinesBottomTo)
                             HideLines(line.undefLine, connectionLine.circle_bottom);
                     }
+
                     connectionLine.undefiendLinesLeftFrom.Clear();
                     connectionLine.undefiendLinesLeftTo.Clear();
                     connectionLine.undefiendLinesLeftFromY1.Clear();
@@ -13176,6 +13174,10 @@ namespace Interface_1._0
             }
         }
 
+        #region FreeMoves
+
+        public Rectangle nw = new Rectangle();
+        public Rectangle test = new Rectangle();
         private void FreeClick(object sender, MouseButtonEventArgs e)
         {
             for (int i = 0; i < CanvasPos.Children.Count; ++i)
@@ -13205,7 +13207,55 @@ namespace Interface_1._0
 
                 TxTWrite(txtTangle, txt);
             }
+
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                CanvasPos.Children.Add(nw);
+
+                CanvasPos.Children.Add(test);
+                test.Stroke = Brushes.Red;
+                test.Width = 10;
+                test.Height = 10;
+
+                Canvas.SetLeft(test, e.GetPosition(CanvasPos).X - 5);
+                Canvas.SetTop(test, e.GetPosition(CanvasPos).Y - 5);
+
+                nw.Fill = new SolidColorBrush(Colors.Blue) { Opacity = .1 };
+                nw.Stroke = Brushes.Blue;
+
+                Canvas.SetLeft(nw, Canvas.GetLeft(test));
+                Canvas.SetTop(nw, Canvas.GetTop(test));
+
+                nw.Width = 5;
+                nw.Height = 5;
+
+                test.MouseMove += MM;
+                test.MouseUp += MU;
+            }
         }
+
+        private void MM(object sender, MouseEventArgs e)
+        {
+            if(Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                test.CaptureMouse();
+
+                Canvas.SetLeft(test, e.GetPosition(CanvasPos).X - 5);
+                Canvas.SetTop(test, e.GetPosition(CanvasPos).Y - 5);
+
+                nw.Width = Canvas.GetLeft(test) + 5 - Canvas.GetLeft(nw);
+                nw.Height = Canvas.GetTop(test) + 5 - Canvas.GetTop(nw);
+            }
+        }
+
+        private void MU(object sender, MouseButtonEventArgs e)
+        {
+            (sender as UIElement).ReleaseMouseCapture();
+            CanvasPos.Children.Remove(nw);
+            CanvasPos.Children.Remove(test);
+        }
+
+        #endregion
 
         private void TextMD(object sender, MouseButtonEventArgs e)
         {

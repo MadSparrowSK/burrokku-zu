@@ -62,6 +62,7 @@
     <Compile Include="Additional Gears\UndefiendLine.cs" />
     <Compile Include="Shapes\Rhomb_Shape.cs" />
     <Compile Include="Shapes\RP_Shape.cs" />
+    <Compile Include="Videlyashka\RememberUIElements.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
