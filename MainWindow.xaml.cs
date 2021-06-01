@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Timers;
 using System.Windows;
-using System.Threading;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Collections.Generic;
 
+using RUIEl;
 using Shapes;
 using Anchors;
+using Emitter;
 using Connect;
 using TxTnShapes;
 
@@ -21,6 +23,12 @@ namespace Interface_1._0
         static readonly Polyline topArray = new Polyline();
         static readonly Polyline rightArray = new Polyline();
         static readonly Polyline leftArray = new Polyline();
+
+        ExcretorySquare ExcretorySquare = null;
+        List<RememberShNTxT> remList = new List<RememberShNTxT>();
+        List<RememberShNTxT> remTxT = new List<RememberShNTxT>();
+        static List<ShapeInfo> shapesInfo = new List<ShapeInfo>();
+        
 
         public MainWindow()
         {
@@ -43,6 +51,16 @@ namespace Interface_1._0
             PointCollection pointsLeft = new PointCollection() { new Point(10, 0), new Point(5, 5), new Point(10, 10) };
             leftArray.Points = pointsLeft;
 
+            ExcretorySquare = new ExcretorySquare(new Point(0, 0), new Point(0, 5), new Point(5, 5), new Point(5, 0));
+            CanvasPos.Children.Add(ExcretorySquare.mainSquare);
+            CanvasPos.Children.Add(ExcretorySquare.additSquare);
+            ExcretorySquare.Reset();
+            ExcretorySquare.ResetColors();
+           
+            remList.Clear();
+            remTxT.Clear();
+            shapesInfo.Clear();
+
             workArea.Width = 5000;
             workArea.Height = 5000;
             workArea.Fill = Brushes.Transparent;
@@ -50,7 +68,7 @@ namespace Interface_1._0
 
             Canvas.SetZIndex(workArea, -5);
             CanvasPos.Children.Add(workArea);
-            
+
             workArea.MouseDown += FreeClick;
         }
 
@@ -12654,8 +12672,7 @@ namespace Interface_1._0
 
         public void UIElements_Mouse_Up(object sender, MouseButtonEventArgs e)
         {
-            var obj = (UIElement)sender;
-            obj.ReleaseMouseCapture();
+            (sender as UIElement).ReleaseMouseCapture();
         }
 
         void TextMethod_3Points(TXT txt, double length)
@@ -12876,6 +12893,9 @@ namespace Interface_1._0
 
                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
                 Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 10);
+
+                shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                    connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx, txt.kurwa_txtbox));
 
                 AddRP_Shape(shape, connectionLine,txt, anchor);
             }
@@ -13106,7 +13126,6 @@ namespace Interface_1._0
 
         #endregion
 
-
         void TxTWrite(Rectangle rectangle, TextBox txt)
         {
             rectangle.MouseDown += RtxtMD;
@@ -13176,8 +13195,8 @@ namespace Interface_1._0
 
         #region FreeMoves
 
-        public Rectangle nw = new Rectangle();
-        public Rectangle test = new Rectangle();
+        bool moving = false;
+
         private void FreeClick(object sender, MouseButtonEventArgs e)
         {
             for (int i = 0; i < CanvasPos.Children.Count; ++i)
@@ -13199,6 +13218,8 @@ namespace Interface_1._0
                 Canvas.SetZIndex(txt, -1);
                 CanvasPos.Children.Add(txt);
 
+                shapesInfo.Add(new ShapeInfo(txtTangle, txt));
+
                 Canvas.SetLeft(txtTangle, Mouse.GetPosition(CanvasPos).X - 8);
                 Canvas.SetTop(txtTangle, Mouse.GetPosition(CanvasPos).Y - 8);
 
@@ -13208,29 +13229,56 @@ namespace Interface_1._0
                 TxTWrite(txtTangle, txt);
             }
 
-            if (e.LeftButton == MouseButtonState.Pressed)
+            bool longClick = false;
+
+            if(moving)
             {
-                CanvasPos.Children.Add(nw);
+                moving = false;
 
-                CanvasPos.Children.Add(test);
-                test.Stroke = Brushes.Red;
-                test.Width = 10;
-                test.Height = 10;
+                Canvas.SetLeft(ExcretorySquare.additSquare, 0);
+                Canvas.SetTop(ExcretorySquare.additSquare, 0);
 
-                Canvas.SetLeft(test, e.GetPosition(CanvasPos).X - 5);
-                Canvas.SetTop(test, e.GetPosition(CanvasPos).Y - 5);
+                Canvas.SetLeft(ExcretorySquare.additSquare, 0);
+                Canvas.SetTop(ExcretorySquare.additSquare, 0);
 
-                nw.Fill = new SolidColorBrush(Colors.Blue) { Opacity = .1 };
-                nw.Stroke = Brushes.Blue;
+                ExcretorySquare.Reset();
+                ExcretorySquare.ResetColors();
 
-                Canvas.SetLeft(nw, Canvas.GetLeft(test));
-                Canvas.SetTop(nw, Canvas.GetTop(test));
+                CanvasPos.Children.Remove(ExcretorySquare.mainSquare);
+                CanvasPos.Children.Remove(ExcretorySquare.additSquare);
 
-                nw.Width = 5;
-                nw.Height = 5;
+                foreach (RememberShNTxT txt in remTxT)
+                    txt.remShape.Stroke = Brushes.Transparent;
 
-                test.MouseMove += MM;
-                test.MouseUp += MU;
+                foreach (RememberShNTxT sh in remList)
+                    sh.remShape.Stroke = Brushes.White;
+
+                remList.Clear();
+                remTxT.Clear();
+
+                ExcretorySquare = new ExcretorySquare(new Point(0, 0), new Point(0, 5), new Point(5, 5), new Point(5, 0));
+                CanvasPos.Children.Add(ExcretorySquare.mainSquare);
+                CanvasPos.Children.Add(ExcretorySquare.additSquare);
+                ExcretorySquare.Reset();
+                ExcretorySquare.ResetColors();
+            }
+
+            if (e.LeftButton == MouseButtonState.Pressed)
+                if ((DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) > 4000)
+                    longClick = true;
+            
+            if (longClick && !moving)
+            {
+                ExcretorySquare.SetColors();
+
+                Canvas.SetLeft(ExcretorySquare.additSquare, e.GetPosition(CanvasPos).X - 5);
+                Canvas.SetTop(ExcretorySquare.additSquare, e.GetPosition(CanvasPos).Y - 5);
+
+                Canvas.SetLeft(ExcretorySquare.mainSquare, Canvas.GetLeft(ExcretorySquare.additSquare));
+                Canvas.SetTop(ExcretorySquare.mainSquare, Canvas.GetTop(ExcretorySquare.additSquare));
+
+                ExcretorySquare.additSquare.MouseMove += MM;
+                ExcretorySquare.additSquare.MouseUp += MU;
             }
         }
 
@@ -13238,21 +13286,135 @@ namespace Interface_1._0
         {
             if(Mouse.LeftButton == MouseButtonState.Pressed)
             {
-                test.CaptureMouse();
+                (sender as UIElement).CaptureMouse();
 
-                Canvas.SetLeft(test, e.GetPosition(CanvasPos).X - 5);
-                Canvas.SetTop(test, e.GetPosition(CanvasPos).Y - 5);
+                Canvas.SetLeft(sender as UIElement, e.GetPosition(CanvasPos).X - 5);
+                Canvas.SetTop(sender as UIElement, e.GetPosition(CanvasPos).Y - 5);
 
-                nw.Width = Canvas.GetLeft(test) + 5 - Canvas.GetLeft(nw);
-                nw.Height = Canvas.GetTop(test) + 5 - Canvas.GetTop(nw);
+
+                ExcretorySquare.mainS_NE.X = Canvas.GetLeft(ExcretorySquare.additSquare) + 5 - Canvas.GetLeft(ExcretorySquare.mainSquare);
+
+                ExcretorySquare.mainS_SE.X = Canvas.GetLeft(ExcretorySquare.additSquare) + 5 - Canvas.GetLeft(ExcretorySquare.mainSquare);
+                ExcretorySquare.mainS_SE.Y = Canvas.GetTop(ExcretorySquare.additSquare) + 5 - Canvas.GetTop(ExcretorySquare.mainSquare);
+
+                ExcretorySquare.mainS_SW.Y = Canvas.GetTop(ExcretorySquare.additSquare) + 5 - Canvas.GetTop(ExcretorySquare.mainSquare);
+
+                PointCollection collect = new PointCollection();
+                collect.Add(ExcretorySquare.mainS_NW);
+                collect.Add(ExcretorySquare.mainS_SW);
+                collect.Add(ExcretorySquare.mainS_SE);
+                collect.Add(ExcretorySquare.mainS_NE);
+
+                ExcretorySquare.mainSquare.Points = collect;
             }
         }
-
         private void MU(object sender, MouseButtonEventArgs e)
         {
             (sender as UIElement).ReleaseMouseCapture();
-            CanvasPos.Children.Remove(nw);
-            CanvasPos.Children.Remove(test);
+
+            bool clear = true;
+
+            for(int i = 0; i < CanvasPos.Children.Count; ++i)
+                if((CanvasPos.Children[i] is Polygon || CanvasPos.Children[i] is Rectangle)
+                    && CanvasPos.Children[i] != ExcretorySquare.additSquare 
+                    && CanvasPos.Children[i] != ExcretorySquare.mainSquare)
+                    if(Canvas.GetLeft(ExcretorySquare.mainSquare) < Canvas.GetLeft(CanvasPos.Children[i])
+                        && Canvas.GetTop(ExcretorySquare.mainSquare) < Canvas.GetTop(CanvasPos.Children[i])
+                        && Canvas.GetLeft(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualWidth >
+                        Canvas.GetLeft(CanvasPos.Children[i]) + (CanvasPos.Children[i] as Shape).ActualWidth
+                        && Canvas.GetTop(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualHeight >
+                        Canvas.GetTop(CanvasPos.Children[i]) + (CanvasPos.Children[i] as Shape).ActualHeight)
+                    {
+
+                        foreach (ShapeInfo inf in shapesInfo)
+                            if (inf.shape == CanvasPos.Children[i] && inf.left != null)
+                                remList.Add(new RememberShNTxT(inf.shape, inf.left, inf.right, inf.top, inf.bottom,
+                                    inf.txt, inf.kurwaTxT,
+                                    new Point(Canvas.GetLeft(inf.shape) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.shape) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.left) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.left) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.right) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.right) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.top) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.top) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.bottom) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.bottom) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.txt) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.txt) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.kurwaTxT) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.kurwaTxT) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            else
+                                remTxT.Add(new RememberShNTxT(inf.shape, inf.txt,
+                                   new Point(Canvas.GetLeft(inf.shape) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.shape) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                   new Point(Canvas.GetLeft(inf.txt) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.txt) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                        (CanvasPos.Children[i] as Shape).Stroke = Brushes.RoyalBlue;
+                        //remList.Add(new RememberShNTxT(CanvasPos.Children[i] as Shape));
+                        clear = false;
+                        moving = true;
+                    }
+
+            if(clear)
+            {
+                Canvas.SetLeft(ExcretorySquare.additSquare, 0);
+                Canvas.SetTop(ExcretorySquare.additSquare, 0);
+
+                Canvas.SetLeft(ExcretorySquare.additSquare, 0);
+                Canvas.SetTop(ExcretorySquare.additSquare, 0);
+
+                ExcretorySquare.Reset();
+                remList.Clear();
+                remTxT.Clear();
+                ExcretorySquare.ResetColors();
+            }
+            else
+            {
+                Canvas.SetZIndex(ExcretorySquare.mainSquare, 5);
+                ExcretorySquare.mainSquare.MouseDown += EmmitMD;
+                ExcretorySquare.mainSquare.MouseMove += EmmitMM;
+                ExcretorySquare.mainSquare.MouseUp += UIElements_Mouse_Up;
+            }
+        }
+
+        private void EmmitMD(object sender, MouseButtonEventArgs e)
+        {
+            lastPoint = e.GetPosition(sender as UIElement);
+        }
+        private void EmmitMM(object sender, MouseEventArgs e)
+        {
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+                (sender as UIElement).CaptureMouse();
+
+                Canvas.SetLeft(sender as UIElement, e.GetPosition(CanvasPos).X - lastPoint.X);
+                Canvas.SetTop(sender as UIElement, e.GetPosition(CanvasPos).Y - lastPoint.Y);
+
+                foreach(RememberShNTxT shape in remList)
+                {
+                    Canvas.SetLeft(shape.remShape, Canvas.GetLeft(sender as UIElement) + shape.posRemShape.X);
+                    Canvas.SetTop(shape.remShape, Canvas.GetTop(sender as UIElement) + shape.posRemShape.Y);
+
+                    Canvas.SetLeft(shape.left, Canvas.GetLeft(sender as UIElement) + shape.posEllLeft.X);
+                    Canvas.SetTop(shape.left, Canvas.GetTop(sender as UIElement) + shape.posEllLeft.Y);
+
+                    Canvas.SetLeft(shape.right, Canvas.GetLeft(sender as UIElement) + shape.posEllRight.X);
+                    Canvas.SetTop(shape.right, Canvas.GetTop(sender as UIElement) + shape.posEllRight.Y);
+
+                    Canvas.SetLeft(shape.top, Canvas.GetLeft(sender as UIElement) + shape.posEllTop.X);
+                    Canvas.SetTop(shape.top, Canvas.GetTop(sender as UIElement) + shape.posEllTop.Y);
+
+                    Canvas.SetLeft(shape.bottom, Canvas.GetLeft(sender as UIElement) + shape.posEllBottom.X);
+                    Canvas.SetTop(shape.bottom, Canvas.GetTop(sender as UIElement) + shape.posEllBottom.Y);
+
+                    Canvas.SetLeft(shape.remTxT, Canvas.GetLeft(sender as UIElement) + shape.posRemTxT.X);
+                    Canvas.SetTop(shape.remTxT, Canvas.GetTop(sender as UIElement) + shape.posRemTxT.Y);
+                    Canvas.SetLeft(shape.remKurwaTxT, Canvas.GetLeft(sender as UIElement) + shape.posRemKwTxT.X);
+                    Canvas.SetTop(shape.remKurwaTxT, Canvas.GetTop(sender as UIElement) + shape.posRemKwTxT.Y);
+                }
+
+                foreach(RememberShNTxT txt in remTxT)
+                {
+                    Canvas.SetLeft(txt.remShape, Canvas.GetLeft(sender as UIElement) + txt.posRemShape.X);
+                    Canvas.SetTop(txt.remShape, Canvas.GetTop(sender as UIElement) + txt.posRemShape.Y);
+
+                    Canvas.SetLeft(txt.remTxT, Canvas.GetLeft(sender as UIElement) + txt.posRemTxT.X);
+                    Canvas.SetTop(txt.remTxT, Canvas.GetTop(sender as UIElement) + txt.posRemTxT.Y);
+                }
+            }
         }
 
         #endregion
