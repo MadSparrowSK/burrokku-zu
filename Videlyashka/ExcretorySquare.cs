@@ -18,7 +18,7 @@ namespace Emitter
 
         public ExcretorySquare(Point nw, Point sw, Point se, Point ne)
         {
-            additSquare.Stroke = Brushes.Red;
+            additSquare.Stroke = Brushes.Transparent;
             additSquare.Width = 10;
             additSquare.Height = 10;
 
@@ -48,13 +48,12 @@ namespace Emitter
         {
             mainSquare.Points = resetCollection;
         }
-
         public void SetColors()
         {
             mainSquare.Fill = new SolidColorBrush(Colors.Blue) { Opacity = .1 };
             mainSquare.Stroke = Brushes.Blue;
 
-            additSquare.Stroke = Brushes.Red;
+            additSquare.Stroke = Brushes.Transparent;
 
             mainSquare.IsEnabled = true;
         }

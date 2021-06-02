@@ -27,6 +27,7 @@ namespace Interface_1._0
         ExcretorySquare ExcretorySquare = null;
         List<RememberShNTxT> remList = new List<RememberShNTxT>();
         List<RememberShNTxT> remTxT = new List<RememberShNTxT>();
+        List<RememberLines> remLines = new List<RememberLines>();
         static List<ShapeInfo> shapesInfo = new List<ShapeInfo>();
         
 
@@ -59,6 +60,7 @@ namespace Interface_1._0
            
             remList.Clear();
             remTxT.Clear();
+            remLines.Clear();
             shapesInfo.Clear();
 
             workArea.Width = 5000;
@@ -2782,6 +2784,7 @@ namespace Interface_1._0
                         && Math.Abs((CanvasPos.Children[i] as Line).Y1 - (CanvasPos.Children[j] as Line).Y2) == 0)
                             list.Add(new UndefiendLine(CanvasPos.Children[j] as Line));
         }
+
         void RemoveLines(List<UndefiendLine> list)
         {
             for(int i = 0; i < list.Count; ++i)
@@ -12953,7 +12956,10 @@ namespace Interface_1._0
                  Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
                  Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 10);
 
-                 AddRP_Shape(shape, connectionLine, txt, anchor);
+                shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                   connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx, txt.kurwa_txtbox));
+
+                AddRP_Shape(shape, connectionLine, txt, anchor);
              }
             if (Rhomb_Check)
              {
@@ -13009,7 +13015,10 @@ namespace Interface_1._0
                  Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                  Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
 
-                 AddRh_Shape(shape, connectionLine, txt, anchor);
+                shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                   connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx, txt.kurwa_txtbox));
+
+                AddRh_Shape(shape, connectionLine, txt, anchor);
              }
             if (Cycle_Check)
              {
@@ -13066,8 +13075,11 @@ namespace Interface_1._0
                  Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
                  Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
 
-                 AddCy_Shape(shape, connectionLine,txt, anchor);
-             }
+                shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                   connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx, txt.kurwa_txtbox));
+
+                AddCy_Shape(shape, connectionLine,txt, anchor);
+            }
             if (Ellipse_Check)
              {
                  Ellipse_Check = false;
@@ -13119,7 +13131,10 @@ namespace Interface_1._0
                  Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
                  Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + shape.shape.Height + 10);
 
-                 AddEll_Shape(shape, connectionLine,txt, anchor);
+                shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                   connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx, txt.kurwa_txtbox));
+
+                AddEll_Shape(shape, connectionLine,txt, anchor);
             }
 
         }
@@ -13159,15 +13174,15 @@ namespace Interface_1._0
                 MassiveDisabledEnabled(false);
                 txt.IsEnabled = true;
 
-                Canvas.SetLeft(txt, Canvas.GetLeft(rectangle) + rectangle.ActualWidth / 2 - txt.ActualWidth / 2);
-                Canvas.SetTop(txt, Canvas.GetTop(rectangle) + 5);
-
                 if(Keyboard.IsKeyDown(Key.Enter))
                 {
                     txt.ResetTxT();
                     Canvas.SetZIndex(txt, -1);
 
                     rectangle.Width = txt.ActualWidth + 10;
+
+                    Canvas.SetLeft(txt, Canvas.GetLeft(rectangle) + 2.5);
+                    Canvas.SetTop(txt, Canvas.GetTop(rectangle) + 5);
 
                     MassiveDisabledEnabled(true);
                 }
@@ -13187,7 +13202,7 @@ namespace Interface_1._0
                     Canvas.SetLeft(smt, e.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(smt, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 5);
+                    Canvas.SetLeft(txt, Canvas.GetLeft(smt) + 2.5);
                     Canvas.SetTop(txt, Canvas.GetTop(smt) + 5);
                 }
             }
@@ -13223,13 +13238,11 @@ namespace Interface_1._0
                 Canvas.SetLeft(txtTangle, Mouse.GetPosition(CanvasPos).X - 8);
                 Canvas.SetTop(txtTangle, Mouse.GetPosition(CanvasPos).Y - 8);
 
-                Canvas.SetLeft(txt, Canvas.GetLeft(txtTangle) + 5);
+                Canvas.SetLeft(txt, Canvas.GetLeft(txtTangle) + 2.5);
                 Canvas.SetTop(txt, Canvas.GetTop(txtTangle) + 5);
 
                 TxTWrite(txtTangle, txt);
             }
-
-            bool longClick = false;
 
             if(moving)
             {
@@ -13251,10 +13264,14 @@ namespace Interface_1._0
                     txt.remShape.Stroke = Brushes.Transparent;
 
                 foreach (RememberShNTxT sh in remList)
+                    if (sh.remShape.Stroke == Brushes.Yellow)
+                        continue;
+                    else
                     sh.remShape.Stroke = Brushes.White;
 
                 remList.Clear();
                 remTxT.Clear();
+                remLines.Clear();
 
                 ExcretorySquare = new ExcretorySquare(new Point(0, 0), new Point(0, 5), new Point(5, 5), new Point(5, 0));
                 CanvasPos.Children.Add(ExcretorySquare.mainSquare);
@@ -13262,12 +13279,8 @@ namespace Interface_1._0
                 ExcretorySquare.Reset();
                 ExcretorySquare.ResetColors();
             }
-
-            if (e.LeftButton == MouseButtonState.Pressed)
-                if ((DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) > 4000)
-                    longClick = true;
             
-            if (longClick && !moving)
+            if (e.ClickCount == 2 && !moving)
             {
                 ExcretorySquare.SetColors();
 
@@ -13314,11 +13327,12 @@ namespace Interface_1._0
 
             bool clear = true;
 
-            for(int i = 0; i < CanvasPos.Children.Count; ++i)
-                if((CanvasPos.Children[i] is Polygon || CanvasPos.Children[i] is Rectangle)
-                    && CanvasPos.Children[i] != ExcretorySquare.additSquare 
+            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+            {
+                if ((CanvasPos.Children[i] is Polygon || CanvasPos.Children[i] is Rectangle)
+                    && CanvasPos.Children[i] != ExcretorySquare.additSquare
                     && CanvasPos.Children[i] != ExcretorySquare.mainSquare)
-                    if(Canvas.GetLeft(ExcretorySquare.mainSquare) < Canvas.GetLeft(CanvasPos.Children[i])
+                    if (Canvas.GetLeft(ExcretorySquare.mainSquare) < Canvas.GetLeft(CanvasPos.Children[i])
                         && Canvas.GetTop(ExcretorySquare.mainSquare) < Canvas.GetTop(CanvasPos.Children[i])
                         && Canvas.GetLeft(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualWidth >
                         Canvas.GetLeft(CanvasPos.Children[i]) + (CanvasPos.Children[i] as Shape).ActualWidth
@@ -13327,7 +13341,9 @@ namespace Interface_1._0
                     {
 
                         foreach (ShapeInfo inf in shapesInfo)
+                        {
                             if (inf.shape == CanvasPos.Children[i] && inf.left != null)
+                            {
                                 remList.Add(new RememberShNTxT(inf.shape, inf.left, inf.right, inf.top, inf.bottom,
                                     inf.txt, inf.kurwaTxT,
                                     new Point(Canvas.GetLeft(inf.shape) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.shape) - Canvas.GetTop(ExcretorySquare.mainSquare)),
@@ -13337,18 +13353,951 @@ namespace Interface_1._0
                                     new Point(Canvas.GetLeft(inf.bottom) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.bottom) - Canvas.GetTop(ExcretorySquare.mainSquare)),
                                     new Point(Canvas.GetLeft(inf.txt) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.txt) - Canvas.GetTop(ExcretorySquare.mainSquare)),
                                     new Point(Canvas.GetLeft(inf.kurwaTxT) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.kurwaTxT) - Canvas.GetTop(ExcretorySquare.mainSquare))));
-                            else
+                            }
+                            else if (inf.shape == CanvasPos.Children[i] && inf.left == null)
+                            {
                                 remTxT.Add(new RememberShNTxT(inf.shape, inf.txt,
                                    new Point(Canvas.GetLeft(inf.shape) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.shape) - Canvas.GetTop(ExcretorySquare.mainSquare)),
                                    new Point(Canvas.GetLeft(inf.txt) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.txt) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            }
 
-                        (CanvasPos.Children[i] as Shape).Stroke = Brushes.RoyalBlue;
-                        //remList.Add(new RememberShNTxT(CanvasPos.Children[i] as Shape));
-                        clear = false;
-                        moving = true;
+                            for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            {
+                                if (CanvasPos.Children[j] is Polyline && (CanvasPos.Children[j] as Polyline).Stroke == Brushes.Yellow)
+                                    if (Canvas.GetLeft(ExcretorySquare.mainSquare) < Canvas.GetLeft(CanvasPos.Children[j])
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) < Canvas.GetTop(CanvasPos.Children[j])
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualWidth >
+                                        Canvas.GetLeft(CanvasPos.Children[j]) + (CanvasPos.Children[j] as Shape).ActualWidth
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualHeight >
+                                        Canvas.GetTop(CanvasPos.Children[j]) + (CanvasPos.Children[j] as Shape).ActualHeight)
+                                        remList.Add(new RememberShNTxT(CanvasPos.Children[j] as Shape,
+                                            new Point(Canvas.GetLeft(CanvasPos.Children[j]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            Canvas.GetTop(CanvasPos.Children[j]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            }
+
+                            for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            {
+                                if (CanvasPos.Children[j] is Line && (CanvasPos.Children[j] as Line).Stroke == Brushes.Yellow)
+                                    if (Canvas.GetLeft(ExcretorySquare.mainSquare) < (CanvasPos.Children[j] as Line).X1
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) < (CanvasPos.Children[j] as Line).Y1
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualWidth >
+                                        (CanvasPos.Children[j] as Line).X1
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualHeight >
+                                        (CanvasPos.Children[j] as Line).Y1)
+                                    {
+                                        if (Canvas.GetLeft(ExcretorySquare.mainSquare) < (CanvasPos.Children[j] as Line).X2
+                                            && Canvas.GetTop(ExcretorySquare.mainSquare) < (CanvasPos.Children[j] as Line).Y2
+                                            && Canvas.GetLeft(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualWidth >
+                                            (CanvasPos.Children[j] as Line).X2
+                                            && Canvas.GetTop(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualHeight >
+                                            (CanvasPos.Children[j] as Line).Y2)
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = true, bottom = true });
+                                        }
+                                        else
+                                        {
+                                            if ((CanvasPos.Children[j] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                            {
+                                                remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                { top = true, bottom = true });
+                                            }
+                                            else
+                                            {
+                                                remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                    new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                    (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                { top = true, bottom = false });
+                                            }
+
+                                            for (int k = 0; k < CanvasPos.Children.Count; ++k)
+                                            {
+                                                if (CanvasPos.Children[k] is Polyline && (CanvasPos.Children[k] as Polyline).Stroke == Brushes.Yellow)
+                                                    if ((CanvasPos.Children[j] as Line).X1 > (CanvasPos.Children[j] as Line).X2)
+                                                    {
+                                                        //left
+                                                        if ((CanvasPos.Children[j] as Line).X1 -
+                                                            Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                            Canvas.GetLeft(CanvasPos.Children[k])
+                                                            && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                        {
+                                                            remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                                new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                            {
+                                                                if (CanvasPos.Children[q] is Line &&
+                                                                    (CanvasPos.Children[q] as Line).X1 == (CanvasPos.Children[j] as Line).X2
+                                                                    && (CanvasPos.Children[q] as Line).Y1 == (CanvasPos.Children[j] as Line).Y2)
+                                                                {
+                                                                    remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                    new Point((CanvasPos.Children[q] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                    (CanvasPos.Children[q] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                    { top = true, bottom = false });
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //right
+                                                        if ((CanvasPos.Children[j] as Line).X1 +
+                                                            Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                            Canvas.GetLeft(CanvasPos.Children[k])
+                                                            && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                        {
+                                                            remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                                new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                            {
+                                                                if (CanvasPos.Children[q] is Line &&
+                                                                    (CanvasPos.Children[q] as Line).X1 == (CanvasPos.Children[j] as Line).X2
+                                                                    && (CanvasPos.Children[q] as Line).Y1 == (CanvasPos.Children[j] as Line).Y2)
+                                                                {
+                                                                    remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                    new Point((CanvasPos.Children[q] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                    (CanvasPos.Children[q] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                    { top = true, bottom = false });
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                            }
+
+                                        }
+                                    }
+                                    else if (Canvas.GetLeft(ExcretorySquare.mainSquare) < (CanvasPos.Children[j] as Line).X2
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) < (CanvasPos.Children[j] as Line).Y2
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualWidth >
+                                        (CanvasPos.Children[j] as Line).X2
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualHeight >
+                                        (CanvasPos.Children[j] as Line).Y2)
+                                    {
+                                        if ((CanvasPos.Children[j] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                            new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                            new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = true, bottom = true });
+                                        }
+                                        else
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = false, bottom = true });
+                                        }
+
+                                        for (int k = 0; k < CanvasPos.Children.Count; ++k)
+                                        {
+                                            if (CanvasPos.Children[k] is Polyline && (CanvasPos.Children[k] as Polyline).Stroke == Brushes.Yellow)
+                                                if ((CanvasPos.Children[j] as Line).X1 > (CanvasPos.Children[j] as Line).X2)
+                                                {
+                                                    //left
+                                                    if ((CanvasPos.Children[j] as Line).X2 +
+                                                        Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                        Canvas.GetLeft(CanvasPos.Children[k])
+                                                        && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                    {
+                                                        remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                            new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                            Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                        for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                        {
+                                                            if (CanvasPos.Children[q] is Line &&
+                                                                (CanvasPos.Children[q] as Line).X2 == (CanvasPos.Children[j] as Line).X1
+                                                                && (CanvasPos.Children[q] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                                            {
+                                                                remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                new Point((CanvasPos.Children[q] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                (CanvasPos.Children[q] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                { top = false, bottom = true });
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    //right
+                                                    if ((CanvasPos.Children[j] as Line).X2 -
+                                                        Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                        Canvas.GetLeft(CanvasPos.Children[k])
+                                                        && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                    {
+                                                        remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                            new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                            Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                        for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                        {
+                                                            if (CanvasPos.Children[q] is Line &&
+                                                                (CanvasPos.Children[q] as Line).X2 == (CanvasPos.Children[j] as Line).X1
+                                                                && (CanvasPos.Children[q] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                                            {
+                                                                remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                new Point((CanvasPos.Children[q] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                (CanvasPos.Children[q] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                { top = false, bottom = true });
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                        }
+                                    }
+                            }
+
+                            (CanvasPos.Children[i] as Shape).Stroke = Brushes.RoyalBlue;
+                            clear = false;
+                            moving = true;
+                        }
                     }
+                    else if (Canvas.GetLeft(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X)
+                        < Canvas.GetLeft(CanvasPos.Children[i])
+                        && Canvas.GetTop(ExcretorySquare.mainSquare) < Canvas.GetTop(CanvasPos.Children[i])
+                        && Canvas.GetLeft(ExcretorySquare.mainSquare) >
+                        Canvas.GetLeft(CanvasPos.Children[i]) + (CanvasPos.Children[i] as Shape).ActualWidth
+                        && Canvas.GetTop(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualHeight >
+                        Canvas.GetTop(CanvasPos.Children[i]) + (CanvasPos.Children[i] as Shape).ActualHeight)
+                    {
 
-            if(clear)
+                        foreach (ShapeInfo inf in shapesInfo)
+                        {
+                            if (inf.shape == CanvasPos.Children[i] && inf.left != null)
+                            {
+                                remList.Add(new RememberShNTxT(inf.shape, inf.left, inf.right, inf.top, inf.bottom,
+                                    inf.txt, inf.kurwaTxT,
+                                    new Point(Canvas.GetLeft(inf.shape) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.shape) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.left) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.left) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.right) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.right) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.top) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.top) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.bottom) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.bottom) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.txt) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.txt) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.kurwaTxT) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.kurwaTxT) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            }
+                            else if (inf.shape == CanvasPos.Children[i] && inf.left == null)
+                            {
+                                remTxT.Add(new RememberShNTxT(inf.shape, inf.txt,
+                                   new Point(Canvas.GetLeft(inf.shape) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.shape) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                   new Point(Canvas.GetLeft(inf.txt) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.txt) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            }
+
+                            for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            {
+                                if (CanvasPos.Children[j] is Polyline && (CanvasPos.Children[j] as Polyline).Stroke == Brushes.Yellow)
+                                    if (Canvas.GetLeft(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X)
+                                        < Canvas.GetLeft(CanvasPos.Children[j])
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) < Canvas.GetTop(CanvasPos.Children[j])
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) >
+                                        Canvas.GetLeft(CanvasPos.Children[j]) + (CanvasPos.Children[j] as Shape).ActualWidth
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualHeight >
+                                        Canvas.GetTop(CanvasPos.Children[j]) + (CanvasPos.Children[j] as Shape).ActualHeight)
+                                        remList.Add(new RememberShNTxT(CanvasPos.Children[j] as Shape,
+                                            new Point(Canvas.GetLeft(CanvasPos.Children[j]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            Canvas.GetTop(CanvasPos.Children[j]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            }
+
+                            for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            {
+                                if (CanvasPos.Children[j] is Line && (CanvasPos.Children[j] as Line).Stroke == Brushes.Yellow)
+                                    if (Canvas.GetLeft(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X)
+                                        < (CanvasPos.Children[j] as Line).X1
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) < (CanvasPos.Children[j] as Line).Y1
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) >
+                                        (CanvasPos.Children[j] as Line).X1
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualHeight >
+                                        (CanvasPos.Children[j] as Line).Y1)
+                                    {
+                                        if (Canvas.GetLeft(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X)
+                                            < (CanvasPos.Children[j] as Line).X2
+                                            && Canvas.GetTop(ExcretorySquare.mainSquare) < (CanvasPos.Children[j] as Line).Y2
+                                            && Canvas.GetLeft(ExcretorySquare.mainSquare)>
+                                            (CanvasPos.Children[j] as Line).X2
+                                            && Canvas.GetTop(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualHeight >
+                                            (CanvasPos.Children[j] as Line).Y2)
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = true, bottom = true });
+                                        }
+                                        else
+                                        {
+                                            if ((CanvasPos.Children[j] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                            {
+                                                remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                { top = true, bottom = true });
+                                            }
+                                            else
+                                            {
+                                                remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                    new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                    (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                { top = true, bottom = false });
+                                            }
+
+                                            for (int k = 0; k < CanvasPos.Children.Count; ++k)
+                                            {
+                                                if (CanvasPos.Children[k] is Polyline && (CanvasPos.Children[k] as Polyline).Stroke == Brushes.Yellow)
+                                                    if ((CanvasPos.Children[j] as Line).X1 > (CanvasPos.Children[j] as Line).X2)
+                                                    {
+                                                        //left
+                                                        if ((CanvasPos.Children[j] as Line).X1 -
+                                                            Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                            Canvas.GetLeft(CanvasPos.Children[k])
+                                                            && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                        {
+                                                            remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                                new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                            {
+                                                                if (CanvasPos.Children[q] is Line &&
+                                                                    (CanvasPos.Children[q] as Line).X1 == (CanvasPos.Children[j] as Line).X2
+                                                                    && (CanvasPos.Children[q] as Line).Y1 == (CanvasPos.Children[j] as Line).Y2)
+                                                                {
+                                                                    remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                    new Point((CanvasPos.Children[q] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                    (CanvasPos.Children[q] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                    { top = true, bottom = false });
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //right
+                                                        if ((CanvasPos.Children[j] as Line).X1 +
+                                                            Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                            Canvas.GetLeft(CanvasPos.Children[k])
+                                                            && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                        {
+                                                            remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                                new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                            {
+                                                                if (CanvasPos.Children[q] is Line &&
+                                                                    (CanvasPos.Children[q] as Line).X1 == (CanvasPos.Children[j] as Line).X2
+                                                                    && (CanvasPos.Children[q] as Line).Y1 == (CanvasPos.Children[j] as Line).Y2)
+                                                                {
+                                                                    remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                    new Point((CanvasPos.Children[q] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                    (CanvasPos.Children[q] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                    { top = true, bottom = false });
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                            }
+
+                                        }
+                                    }
+                                    else if (Canvas.GetLeft(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X)
+                                        < (CanvasPos.Children[j] as Line).X2
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) < (CanvasPos.Children[j] as Line).Y2
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) >
+                                        (CanvasPos.Children[j] as Line).X2
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) + ExcretorySquare.mainSquare.ActualHeight >
+                                        (CanvasPos.Children[j] as Line).Y2)
+                                    {
+                                        if ((CanvasPos.Children[j] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                            new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                            new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = true, bottom = true });
+                                        }
+                                        else
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = false, bottom = true });
+                                        }
+
+                                        for (int k = 0; k < CanvasPos.Children.Count; ++k)
+                                        {
+                                            if (CanvasPos.Children[k] is Polyline && (CanvasPos.Children[k] as Polyline).Stroke == Brushes.Yellow)
+                                                if ((CanvasPos.Children[j] as Line).X1 > (CanvasPos.Children[j] as Line).X2)
+                                                {
+                                                    //left
+                                                    if ((CanvasPos.Children[j] as Line).X2 +
+                                                        Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                        Canvas.GetLeft(CanvasPos.Children[k])
+                                                        && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                    {
+                                                        remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                            new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                            Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                        for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                        {
+                                                            if (CanvasPos.Children[q] is Line &&
+                                                                (CanvasPos.Children[q] as Line).X2 == (CanvasPos.Children[j] as Line).X1
+                                                                && (CanvasPos.Children[q] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                                            {
+                                                                remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                new Point((CanvasPos.Children[q] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                (CanvasPos.Children[q] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                { top = false, bottom = true });
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    //right
+                                                    if ((CanvasPos.Children[j] as Line).X2 -
+                                                        Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                        Canvas.GetLeft(CanvasPos.Children[k])
+                                                        && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                    {
+                                                        remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                            new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                            Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                        for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                        {
+                                                            if (CanvasPos.Children[q] is Line &&
+                                                                (CanvasPos.Children[q] as Line).X2 == (CanvasPos.Children[j] as Line).X1
+                                                                && (CanvasPos.Children[q] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                                            {
+                                                                remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                new Point((CanvasPos.Children[q] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                (CanvasPos.Children[q] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                { top = false, bottom = true });
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                        }
+                                    }
+                            }
+
+                            (CanvasPos.Children[i] as Shape).Stroke = Brushes.RoyalBlue;
+                            clear = false;
+                            moving = true;
+                        }
+                    }
+                    else if (Canvas.GetLeft(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X)
+                        < Canvas.GetLeft(CanvasPos.Children[i])
+                        && Canvas.GetTop(ExcretorySquare.mainSquare) > Canvas.GetTop(CanvasPos.Children[i])
+                        && Canvas.GetLeft(ExcretorySquare.mainSquare) >
+                        Canvas.GetLeft(CanvasPos.Children[i]) + (CanvasPos.Children[i] as Shape).ActualWidth
+                        && Canvas.GetTop(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.Y - ExcretorySquare.mainS_SW.Y) <
+                        Canvas.GetTop(CanvasPos.Children[i]) + (CanvasPos.Children[i] as Shape).ActualHeight)
+                    {
+
+                        foreach (ShapeInfo inf in shapesInfo)
+                        {
+                            if (inf.shape == CanvasPos.Children[i] && inf.left != null)
+                            {
+                                remList.Add(new RememberShNTxT(inf.shape, inf.left, inf.right, inf.top, inf.bottom,
+                                    inf.txt, inf.kurwaTxT,
+                                    new Point(Canvas.GetLeft(inf.shape) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.shape) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.left) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.left) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.right) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.right) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.top) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.top) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.bottom) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.bottom) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.txt) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.txt) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.kurwaTxT) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.kurwaTxT) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            }
+                            else if (inf.shape == CanvasPos.Children[i] && inf.left == null)
+                            {
+                                remTxT.Add(new RememberShNTxT(inf.shape, inf.txt,
+                                   new Point(Canvas.GetLeft(inf.shape) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.shape) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                   new Point(Canvas.GetLeft(inf.txt) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.txt) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            }
+
+                            for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            {
+                                if (CanvasPos.Children[j] is Polyline && (CanvasPos.Children[j] as Polyline).Stroke == Brushes.Yellow)
+                                    if (Canvas.GetLeft(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X)
+                                        < Canvas.GetLeft(CanvasPos.Children[j])
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) > Canvas.GetTop(CanvasPos.Children[j])
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) >
+                                        Canvas.GetLeft(CanvasPos.Children[j]) + (CanvasPos.Children[j] as Shape).ActualWidth
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.Y - ExcretorySquare.mainS_SW.Y) <
+                                        Canvas.GetTop(CanvasPos.Children[j]) + (CanvasPos.Children[j] as Shape).ActualHeight)
+                                        remList.Add(new RememberShNTxT(CanvasPos.Children[j] as Shape,
+                                            new Point(Canvas.GetLeft(CanvasPos.Children[j]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            Canvas.GetTop(CanvasPos.Children[j]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            }
+
+                            for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            {
+                                if (CanvasPos.Children[j] is Line && (CanvasPos.Children[j] as Line).Stroke == Brushes.Yellow)
+                                    if (Canvas.GetLeft(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X)
+                                        < (CanvasPos.Children[j] as Line).X1
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) > (CanvasPos.Children[j] as Line).Y1
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) >
+                                        (CanvasPos.Children[j] as Line).X1
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.Y - ExcretorySquare.mainS_SW.Y) <
+                                        (CanvasPos.Children[j] as Line).Y1)
+                                    {
+                                        if (Canvas.GetLeft(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X)
+                                            < (CanvasPos.Children[j] as Line).X2
+                                            && Canvas.GetTop(ExcretorySquare.mainSquare) > (CanvasPos.Children[j] as Line).Y2
+                                            && Canvas.GetLeft(ExcretorySquare.mainSquare) >
+                                            (CanvasPos.Children[j] as Line).X2
+                                            && Canvas.GetTop(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.Y - ExcretorySquare.mainS_SW.Y) <
+                                            (CanvasPos.Children[j] as Line).Y2)
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = true, bottom = true });
+                                        }
+                                        else
+                                        {
+                                            if ((CanvasPos.Children[j] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                            {
+                                                remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                { top = true, bottom = true });
+                                            }
+                                            else
+                                            {
+                                                remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                    new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                    (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                { top = true, bottom = false });
+                                            }
+
+                                            for (int k = 0; k < CanvasPos.Children.Count; ++k)
+                                            {
+                                                if (CanvasPos.Children[k] is Polyline && (CanvasPos.Children[k] as Polyline).Stroke == Brushes.Yellow)
+                                                    if ((CanvasPos.Children[j] as Line).X1 > (CanvasPos.Children[j] as Line).X2)
+                                                    {
+                                                        //left
+                                                        if ((CanvasPos.Children[j] as Line).X1 -
+                                                            Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                            Canvas.GetLeft(CanvasPos.Children[k])
+                                                            && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                        {
+                                                            remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                                new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                            {
+                                                                if (CanvasPos.Children[q] is Line &&
+                                                                    (CanvasPos.Children[q] as Line).X1 == (CanvasPos.Children[j] as Line).X2
+                                                                    && (CanvasPos.Children[q] as Line).Y1 == (CanvasPos.Children[j] as Line).Y2)
+                                                                {
+                                                                    remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                    new Point((CanvasPos.Children[q] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                    (CanvasPos.Children[q] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                    { top = true, bottom = false });
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //right
+                                                        if ((CanvasPos.Children[j] as Line).X1 +
+                                                            Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                            Canvas.GetLeft(CanvasPos.Children[k])
+                                                            && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                        {
+                                                            remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                                new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                            {
+                                                                if (CanvasPos.Children[q] is Line &&
+                                                                    (CanvasPos.Children[q] as Line).X1 == (CanvasPos.Children[j] as Line).X2
+                                                                    && (CanvasPos.Children[q] as Line).Y1 == (CanvasPos.Children[j] as Line).Y2)
+                                                                {
+                                                                    remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                    new Point((CanvasPos.Children[q] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                    (CanvasPos.Children[q] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                    { top = true, bottom = false });
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                            }
+
+                                        }
+                                    }
+                                    else if (Canvas.GetLeft(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X)
+                                        < (CanvasPos.Children[j] as Line).X2
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) > (CanvasPos.Children[j] as Line).Y2
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) >
+                                        (CanvasPos.Children[j] as Line).X2
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.Y - ExcretorySquare.mainS_SW.Y) <
+                                        (CanvasPos.Children[j] as Line).Y2)
+                                    {
+                                        if ((CanvasPos.Children[j] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                            new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                            new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = true, bottom = true });
+                                        }
+                                        else
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = false, bottom = true });
+                                        }
+
+                                        for (int k = 0; k < CanvasPos.Children.Count; ++k)
+                                        {
+                                            if (CanvasPos.Children[k] is Polyline && (CanvasPos.Children[k] as Polyline).Stroke == Brushes.Yellow)
+                                                if ((CanvasPos.Children[j] as Line).X1 > (CanvasPos.Children[j] as Line).X2)
+                                                {
+                                                    //left
+                                                    if ((CanvasPos.Children[j] as Line).X2 +
+                                                        Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                        Canvas.GetLeft(CanvasPos.Children[k])
+                                                        && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                    {
+                                                        remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                            new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                            Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                        for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                        {
+                                                            if (CanvasPos.Children[q] is Line &&
+                                                                (CanvasPos.Children[q] as Line).X2 == (CanvasPos.Children[j] as Line).X1
+                                                                && (CanvasPos.Children[q] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                                            {
+                                                                remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                new Point((CanvasPos.Children[q] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                (CanvasPos.Children[q] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                { top = false, bottom = true });
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    //right
+                                                    if ((CanvasPos.Children[j] as Line).X2 -
+                                                        Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                        Canvas.GetLeft(CanvasPos.Children[k])
+                                                        && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                    {
+                                                        remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                            new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                            Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                        for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                        {
+                                                            if (CanvasPos.Children[q] is Line &&
+                                                                (CanvasPos.Children[q] as Line).X2 == (CanvasPos.Children[j] as Line).X1
+                                                                && (CanvasPos.Children[q] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                                            {
+                                                                remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                new Point((CanvasPos.Children[q] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                (CanvasPos.Children[q] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                { top = false, bottom = true });
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                        }
+                                    }
+                            }
+
+                            (CanvasPos.Children[i] as Shape).Stroke = Brushes.RoyalBlue;
+                            clear = false;
+                            moving = true;
+                        }
+                    }
+                    else if (Canvas.GetLeft(ExcretorySquare.mainSquare)
+                        < Canvas.GetLeft(CanvasPos.Children[i])
+                        && Canvas.GetTop(ExcretorySquare.mainSquare) > Canvas.GetTop(CanvasPos.Children[i])
+                        && Canvas.GetLeft(ExcretorySquare.mainSquare) + Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X) >
+                        Canvas.GetLeft(CanvasPos.Children[i]) + (CanvasPos.Children[i] as Shape).ActualWidth
+                        && Canvas.GetTop(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.Y - ExcretorySquare.mainS_SW.Y) <
+                        Canvas.GetTop(CanvasPos.Children[i]) + (CanvasPos.Children[i] as Shape).ActualHeight)
+                    {
+
+                        foreach (ShapeInfo inf in shapesInfo)
+                        {
+                            if (inf.shape == CanvasPos.Children[i] && inf.left != null)
+                            {
+                                remList.Add(new RememberShNTxT(inf.shape, inf.left, inf.right, inf.top, inf.bottom,
+                                    inf.txt, inf.kurwaTxT,
+                                    new Point(Canvas.GetLeft(inf.shape) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.shape) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.left) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.left) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.right) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.right) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.top) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.top) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.bottom) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.bottom) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.txt) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.txt) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                    new Point(Canvas.GetLeft(inf.kurwaTxT) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.kurwaTxT) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            }
+                            else if (inf.shape == CanvasPos.Children[i] && inf.left == null)
+                            {
+                                remTxT.Add(new RememberShNTxT(inf.shape, inf.txt,
+                                   new Point(Canvas.GetLeft(inf.shape) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.shape) - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                   new Point(Canvas.GetLeft(inf.txt) - Canvas.GetLeft(ExcretorySquare.mainSquare), Canvas.GetTop(inf.txt) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            }
+
+                            for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            {
+                                if (CanvasPos.Children[j] is Polyline && (CanvasPos.Children[j] as Polyline).Stroke == Brushes.Yellow)
+                                    if (Canvas.GetLeft(ExcretorySquare.mainSquare)
+                                        < Canvas.GetLeft(CanvasPos.Children[j])
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) > Canvas.GetTop(CanvasPos.Children[j])
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) + Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X) >
+                                        Canvas.GetLeft(CanvasPos.Children[j]) + (CanvasPos.Children[j] as Shape).ActualWidth
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.Y - ExcretorySquare.mainS_SW.Y) <
+                                        Canvas.GetTop(CanvasPos.Children[j]) + (CanvasPos.Children[j] as Shape).ActualHeight)
+                                        remList.Add(new RememberShNTxT(CanvasPos.Children[j] as Shape,
+                                            new Point(Canvas.GetLeft(CanvasPos.Children[j]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            Canvas.GetTop(CanvasPos.Children[j]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+                            }
+
+                            for (int j = 0; j < CanvasPos.Children.Count; ++j)
+                            {
+                                if (CanvasPos.Children[j] is Line && (CanvasPos.Children[j] as Line).Stroke == Brushes.Yellow)
+                                    if (Canvas.GetLeft(ExcretorySquare.mainSquare)
+                                        < (CanvasPos.Children[j] as Line).X1
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) > (CanvasPos.Children[j] as Line).Y1
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) + Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X) >
+                                        (CanvasPos.Children[j] as Line).X1
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.Y - ExcretorySquare.mainS_SW.Y) <
+                                        (CanvasPos.Children[j] as Line).Y1)
+                                    {
+                                        if (Canvas.GetLeft(ExcretorySquare.mainSquare)
+                                            > (CanvasPos.Children[j] as Line).X2
+                                            && Canvas.GetTop(ExcretorySquare.mainSquare) < (CanvasPos.Children[j] as Line).Y2
+                                            && Canvas.GetLeft(ExcretorySquare.mainSquare) + Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X) >
+                                            (CanvasPos.Children[j] as Line).X2
+                                            && Canvas.GetTop(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.Y - ExcretorySquare.mainS_SW.Y) <
+                                            (CanvasPos.Children[j] as Line).Y2)
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = true, bottom = true });
+                                        }
+                                        else
+                                        {
+                                            if ((CanvasPos.Children[j] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                            {
+                                                remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                { top = true, bottom = true });
+                                            }
+                                            else
+                                            {
+                                                remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                    new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                    (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                { top = true, bottom = false });
+                                            }
+
+                                            for (int k = 0; k < CanvasPos.Children.Count; ++k)
+                                            {
+                                                if (CanvasPos.Children[k] is Polyline && (CanvasPos.Children[k] as Polyline).Stroke == Brushes.Yellow)
+                                                    if ((CanvasPos.Children[j] as Line).X1 > (CanvasPos.Children[j] as Line).X2)
+                                                    {
+                                                        //left
+                                                        if ((CanvasPos.Children[j] as Line).X1 -
+                                                            Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                            Canvas.GetLeft(CanvasPos.Children[k])
+                                                            && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                        {
+                                                            remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                                new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                            {
+                                                                if (CanvasPos.Children[q] is Line &&
+                                                                    (CanvasPos.Children[q] as Line).X1 == (CanvasPos.Children[j] as Line).X2
+                                                                    && (CanvasPos.Children[q] as Line).Y1 == (CanvasPos.Children[j] as Line).Y2)
+                                                                {
+                                                                    remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                    new Point((CanvasPos.Children[q] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                    (CanvasPos.Children[q] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                    { top = true, bottom = false });
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //right
+                                                        if ((CanvasPos.Children[j] as Line).X1 +
+                                                            Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                            Canvas.GetLeft(CanvasPos.Children[k])
+                                                            && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                        {
+                                                            remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                                new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                            for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                            {
+                                                                if (CanvasPos.Children[q] is Line &&
+                                                                    (CanvasPos.Children[q] as Line).X1 == (CanvasPos.Children[j] as Line).X2
+                                                                    && (CanvasPos.Children[q] as Line).Y1 == (CanvasPos.Children[j] as Line).Y2)
+                                                                {
+                                                                    remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                    new Point((CanvasPos.Children[q] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                    (CanvasPos.Children[q] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                    { top = true, bottom = false });
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                            }
+
+                                        }
+                                    }
+                                    else if (Canvas.GetLeft(ExcretorySquare.mainSquare)
+                                        > (CanvasPos.Children[j] as Line).X2
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) < (CanvasPos.Children[j] as Line).Y2
+                                        && Canvas.GetLeft(ExcretorySquare.mainSquare) + Math.Abs(ExcretorySquare.mainS_NW.X - ExcretorySquare.mainS_NE.X) >
+                                        (CanvasPos.Children[j] as Line).X2
+                                        && Canvas.GetTop(ExcretorySquare.mainSquare) - Math.Abs(ExcretorySquare.mainS_NW.Y - ExcretorySquare.mainS_SW.Y) <
+                                        (CanvasPos.Children[j] as Line).Y2)
+                                    {
+                                        if ((CanvasPos.Children[j] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                            new Point((CanvasPos.Children[j] as Line).X1 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            (CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(ExcretorySquare.mainSquare)),
+                                            new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                            (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = true, bottom = true });
+                                        }
+                                        else
+                                        {
+                                            remLines.Add(new RememberLines(CanvasPos.Children[j] as Line,
+                                                new Point((CanvasPos.Children[j] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                (CanvasPos.Children[j] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                            { top = false, bottom = true });
+                                        }
+
+                                        for (int k = 0; k < CanvasPos.Children.Count; ++k)
+                                        {
+                                            if (CanvasPos.Children[k] is Polyline && (CanvasPos.Children[k] as Polyline).Stroke == Brushes.Yellow)
+                                                if ((CanvasPos.Children[j] as Line).X1 > (CanvasPos.Children[j] as Line).X2)
+                                                {
+                                                    //left
+                                                    if ((CanvasPos.Children[j] as Line).X2 +
+                                                        Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                        Canvas.GetLeft(CanvasPos.Children[k])
+                                                        && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                    {
+                                                        remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                            new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                            Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                        for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                        {
+                                                            if (CanvasPos.Children[q] is Line &&
+                                                                (CanvasPos.Children[q] as Line).X2 == (CanvasPos.Children[j] as Line).X1
+                                                                && (CanvasPos.Children[q] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                                            {
+                                                                remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                new Point((CanvasPos.Children[q] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                (CanvasPos.Children[q] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                { top = false, bottom = true });
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    //right
+                                                    if ((CanvasPos.Children[j] as Line).X2 -
+                                                        Math.Abs((CanvasPos.Children[j] as Line).X1 - (CanvasPos.Children[j] as Line).X2) / 2 ==
+                                                        Canvas.GetLeft(CanvasPos.Children[k])
+                                                        && Math.Abs((CanvasPos.Children[j] as Line).Y1 - Canvas.GetTop(CanvasPos.Children[k])) <= 5)
+                                                    {
+                                                        remList.Add(new RememberShNTxT(CanvasPos.Children[k] as Shape,
+                                                            new Point(Canvas.GetLeft(CanvasPos.Children[k]) - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                            Canvas.GetTop(CanvasPos.Children[k]) - Canvas.GetTop(ExcretorySquare.mainSquare))));
+
+                                                        for (int q = 0; q < CanvasPos.Children.Count; ++q)
+                                                        {
+                                                            if (CanvasPos.Children[q] is Line &&
+                                                                (CanvasPos.Children[q] as Line).X2 == (CanvasPos.Children[j] as Line).X1
+                                                                && (CanvasPos.Children[q] as Line).Y2 == (CanvasPos.Children[j] as Line).Y1)
+                                                            {
+                                                                remLines.Add(new RememberLines(CanvasPos.Children[q] as Line,
+                                                                new Point((CanvasPos.Children[q] as Line).X2 - Canvas.GetLeft(ExcretorySquare.mainSquare),
+                                                                (CanvasPos.Children[q] as Line).Y2 - Canvas.GetTop(ExcretorySquare.mainSquare)))
+                                                                { top = false, bottom = true });
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                        }
+                                    }
+                            }
+
+                            (CanvasPos.Children[i] as Shape).Stroke = Brushes.RoyalBlue;
+                            clear = false;
+                            moving = true;
+                        }
+                    }
+            }
+
+            if (clear)
             {
                 Canvas.SetLeft(ExcretorySquare.additSquare, 0);
                 Canvas.SetTop(ExcretorySquare.additSquare, 0);
@@ -13359,6 +14308,7 @@ namespace Interface_1._0
                 ExcretorySquare.Reset();
                 remList.Clear();
                 remTxT.Clear();
+                remLines.Clear();
                 ExcretorySquare.ResetColors();
             }
             else
@@ -13383,27 +14333,35 @@ namespace Interface_1._0
                 Canvas.SetLeft(sender as UIElement, e.GetPosition(CanvasPos).X - lastPoint.X);
                 Canvas.SetTop(sender as UIElement, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                foreach(RememberShNTxT shape in remList)
+                foreach (RememberShNTxT shape in remList)
                 {
-                    Canvas.SetLeft(shape.remShape, Canvas.GetLeft(sender as UIElement) + shape.posRemShape.X);
-                    Canvas.SetTop(shape.remShape, Canvas.GetTop(sender as UIElement) + shape.posRemShape.Y);
+                    if (shape.left == null)
+                    {
+                        Canvas.SetLeft(shape.remShape, Canvas.GetLeft(sender as UIElement) + shape.posRemShape.X);
+                        Canvas.SetTop(shape.remShape, Canvas.GetTop(sender as UIElement) + shape.posRemShape.Y);
+                    }
+                    else
+                    {
+                        Canvas.SetLeft(shape.remShape, Canvas.GetLeft(sender as UIElement) + shape.posRemShape.X);
+                        Canvas.SetTop(shape.remShape, Canvas.GetTop(sender as UIElement) + shape.posRemShape.Y);
 
-                    Canvas.SetLeft(shape.left, Canvas.GetLeft(sender as UIElement) + shape.posEllLeft.X);
-                    Canvas.SetTop(shape.left, Canvas.GetTop(sender as UIElement) + shape.posEllLeft.Y);
+                        Canvas.SetLeft(shape.left, Canvas.GetLeft(sender as UIElement) + shape.posEllLeft.X);
+                        Canvas.SetTop(shape.left, Canvas.GetTop(sender as UIElement) + shape.posEllLeft.Y);
 
-                    Canvas.SetLeft(shape.right, Canvas.GetLeft(sender as UIElement) + shape.posEllRight.X);
-                    Canvas.SetTop(shape.right, Canvas.GetTop(sender as UIElement) + shape.posEllRight.Y);
+                        Canvas.SetLeft(shape.right, Canvas.GetLeft(sender as UIElement) + shape.posEllRight.X);
+                        Canvas.SetTop(shape.right, Canvas.GetTop(sender as UIElement) + shape.posEllRight.Y);
 
-                    Canvas.SetLeft(shape.top, Canvas.GetLeft(sender as UIElement) + shape.posEllTop.X);
-                    Canvas.SetTop(shape.top, Canvas.GetTop(sender as UIElement) + shape.posEllTop.Y);
+                        Canvas.SetLeft(shape.top, Canvas.GetLeft(sender as UIElement) + shape.posEllTop.X);
+                        Canvas.SetTop(shape.top, Canvas.GetTop(sender as UIElement) + shape.posEllTop.Y);
 
-                    Canvas.SetLeft(shape.bottom, Canvas.GetLeft(sender as UIElement) + shape.posEllBottom.X);
-                    Canvas.SetTop(shape.bottom, Canvas.GetTop(sender as UIElement) + shape.posEllBottom.Y);
+                        Canvas.SetLeft(shape.bottom, Canvas.GetLeft(sender as UIElement) + shape.posEllBottom.X);
+                        Canvas.SetTop(shape.bottom, Canvas.GetTop(sender as UIElement) + shape.posEllBottom.Y);
 
-                    Canvas.SetLeft(shape.remTxT, Canvas.GetLeft(sender as UIElement) + shape.posRemTxT.X);
-                    Canvas.SetTop(shape.remTxT, Canvas.GetTop(sender as UIElement) + shape.posRemTxT.Y);
-                    Canvas.SetLeft(shape.remKurwaTxT, Canvas.GetLeft(sender as UIElement) + shape.posRemKwTxT.X);
-                    Canvas.SetTop(shape.remKurwaTxT, Canvas.GetTop(sender as UIElement) + shape.posRemKwTxT.Y);
+                        Canvas.SetLeft(shape.remTxT, Canvas.GetLeft(sender as UIElement) + shape.posRemTxT.X);
+                        Canvas.SetTop(shape.remTxT, Canvas.GetTop(sender as UIElement) + shape.posRemTxT.Y);
+                        Canvas.SetLeft(shape.remKurwaTxT, Canvas.GetLeft(sender as UIElement) + shape.posRemKwTxT.X);
+                        Canvas.SetTop(shape.remKurwaTxT, Canvas.GetTop(sender as UIElement) + shape.posRemKwTxT.Y);
+                    }
                 }
 
                 foreach(RememberShNTxT txt in remTxT)
@@ -13414,11 +14372,30 @@ namespace Interface_1._0
                     Canvas.SetLeft(txt.remTxT, Canvas.GetLeft(sender as UIElement) + txt.posRemTxT.X);
                     Canvas.SetTop(txt.remTxT, Canvas.GetTop(sender as UIElement) + txt.posRemTxT.Y);
                 }
+
+                foreach(RememberLines lines in remLines)
+                    if(lines.bottom && lines.top)
+                    {
+                        lines.remLine.X1 = Canvas.GetLeft(ExcretorySquare.mainSquare) + lines.posXY1.X;
+                        lines.remLine.Y1 = Canvas.GetTop(ExcretorySquare.mainSquare) + lines.posXY1.Y;
+
+                        lines.remLine.X2 = Canvas.GetLeft(ExcretorySquare.mainSquare) + lines.posXY2.X;
+                        lines.remLine.Y2 = Canvas.GetTop(ExcretorySquare.mainSquare) + lines.posXY2.Y;
+                    }
+                    else if(lines.bottom && !lines.top)
+                    {
+                        lines.remLine.X2 = Canvas.GetLeft(ExcretorySquare.mainSquare) + lines.posXY1.X;
+                        lines.remLine.Y2 = Canvas.GetTop(ExcretorySquare.mainSquare) + lines.posXY1.Y;
+                    }
+                    else if(!lines.bottom && lines.top)
+                    {
+                        lines.remLine.X1 = Canvas.GetLeft(ExcretorySquare.mainSquare) + lines.posXY1.X;
+                        lines.remLine.Y1 = Canvas.GetTop(ExcretorySquare.mainSquare) + lines.posXY1.Y;
+                    }
             }
         }
 
         #endregion
-
         private void TextMD(object sender, MouseButtonEventArgs e)
         {
             textDrop = true;

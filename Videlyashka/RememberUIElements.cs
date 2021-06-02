@@ -26,6 +26,12 @@ namespace RUIEl
         public Point posRemTxT;
         public Point posRemKwTxT;
 
+        public RememberShNTxT(Shape shape, Point pos)
+        {
+            this.remShape = shape;
+            this.posRemShape = pos;
+        }
+
         public RememberShNTxT(Shape shape, TextBox txt, Point shPos, Point txtPos)
         {
             remShape = shape;
@@ -62,9 +68,22 @@ namespace RUIEl
     {
         public Line remLine = null;
 
-        public RememberLines(Line line)
+        public Point posXY1;
+        public Point posXY2;
+
+        public bool top = false;
+        public bool bottom = false;
+
+        public RememberLines(Line line, Point pos)
         {
             remLine = line;
+            posXY1 = pos;
+        }
+        public RememberLines(Line line, Point pos1, Point pos2)
+        {
+            remLine = line;
+            posXY1 = pos1;
+            posXY2 = pos2;
         }
     }
 }
