@@ -73,6 +73,7 @@ namespace Interface_1._0
 
             workArea.MouseDown += FreeClick;
             workArea.MouseMove += FreeMove;
+            workArea.MouseUp += FreeUp;
         }
 
         #region DragMainWindow
@@ -5592,13 +5593,13 @@ namespace Interface_1._0
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
 
                                 Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + special_anchor_top_indent);
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - special_anchor_top_indent - 15);
 
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent + 21);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -5867,13 +5868,12 @@ namespace Interface_1._0
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
 
                                 Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + special_anchor_top_indent);
-
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - special_anchor_top_indent - 15);
 
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent + 21);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -6181,13 +6181,13 @@ namespace Interface_1._0
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
 
                                 Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + special_anchor_top_indent);
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - special_anchor_top_indent - 15);
 
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent + 25);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -6454,13 +6454,13 @@ namespace Interface_1._0
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
 
                                 Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + special_anchor_top_indent);
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - special_anchor_top_indent - 15);
 
                                 Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent + 25);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -6778,7 +6778,7 @@ namespace Interface_1._0
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
 
                                 Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + special_anchor_top_indent);
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - special_anchor_top_indent - 15);
@@ -7058,7 +7058,7 @@ namespace Interface_1._0
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
 
                                 Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + special_anchor_top_indent);
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - special_anchor_top_indent - 15);
@@ -7563,7 +7563,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -7842,7 +7842,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -8164,7 +8164,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -8443,7 +8443,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -8774,7 +8774,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -9061,7 +9061,7 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -11692,7 +11692,7 @@ namespace Interface_1._0
                     Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
                     Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + 15);
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent / 4 + 15);
                     Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                     Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -12037,13 +12037,13 @@ namespace Interface_1._0
                     Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
 
                     Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + anchor_left_indent * 2);
-                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + special_anchor_top_indent);
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
 
                     Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - special_anchor_top_indent - 15);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - special_anchor_top_indent - 20);
 
                     Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent + 20);
 
                     if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                     {
@@ -13188,8 +13188,10 @@ namespace Interface_1._0
 
         bool moving = false;
         bool drawing = false;
+        bool clickFree = false;
         Point startP;
         Point ls;
+
         private void FreeClick(object sender, MouseButtonEventArgs e)
         { 
             for (int i = 0; i < CanvasPos.Children.Count; ++i)
@@ -13249,6 +13251,8 @@ namespace Interface_1._0
                 ExcretorySquare.ResetColors();
             }
 
+            clickFree = true;
+
             Canvas.SetLeft(ExcretorySquare.additSquare, e.GetPosition(CanvasPos).X - 5);
             Canvas.SetTop(ExcretorySquare.additSquare, e.GetPosition(CanvasPos).Y - 5);
 
@@ -13259,11 +13263,12 @@ namespace Interface_1._0
         }
         private void FreeMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed && clickFree)
             {
                 if (Math.Abs(e.GetPosition(CanvasPos).X - startP.X) > 5
                     || Math.Abs(e.GetPosition(CanvasPos).Y - startP.Y) > 5)
                 {
+                    clickFree = false;
                     drawing = true;
 
                     ExcretorySquare.additSquare.CaptureMouse();
@@ -13274,6 +13279,10 @@ namespace Interface_1._0
                     Canvas.SetTop(ExcretorySquare.mainSquare, startP.Y);
                 }
             }
+        }
+        private void FreeUp(object sender, MouseButtonEventArgs e)
+        {
+            clickFree = false;
         }
 
         private void MM(object sender, MouseEventArgs e)
