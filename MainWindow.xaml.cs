@@ -3535,9 +3535,6 @@ namespace Interface_1._0
                 {
                     anchor.is_anchor_create = true;
 
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2))) / 2;
-                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2))) / 2;
-
                     anchor.SetParametrs();
 
                     anchor.anchor_WE.MouseDown += AnchorMouseDown;
@@ -3588,12 +3585,11 @@ namespace Interface_1._0
                             anchor.ResetParametrs();
                             Cursor = Cursors.SizeNS;
 
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2))) / 2;
-                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2))) / 2;
-
                             double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            current_anchor_postion.Y = Canvas.GetTop(rPR_Shapes.shape);
 
                             if (pos.Y < current_anchor_postion.Y)
                             {
@@ -3609,29 +3605,27 @@ namespace Interface_1._0
 
                                 (rPR_Shapes.shape as Polygon).Points = points;
 
-                                current_anchor_postion.Y = Canvas.GetTop(rPR_Shapes.shape);
-
                                 Canvas.SetTop(rPR_Shapes.shape, Canvas.GetTop(rPR_Shapes.shape) - Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4);
 
-                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2 + 7);
-                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 - txt.txtbx.ActualWidth / 2 + 7);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
-                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent);
-                                Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2);
+                                Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
                                 point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
 
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(rPR_Shapes.shape) - 10);
-                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X));
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
+                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(rPR_Shapes.shape) - 13);
 
-                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
+                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) + 10);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -3892,29 +3886,27 @@ namespace Interface_1._0
 
                                 (rPR_Shapes.shape as Polygon).Points = points;
 
-                                current_anchor_postion.Y = Canvas.GetTop(rPR_Shapes.shape);
-
                                 Canvas.SetTop(rPR_Shapes.shape, Canvas.GetTop(rPR_Shapes.shape) + Math.Abs(Math.Sqrt(Math.Pow(pos.Y, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.Y, 2))) / 4);
 
-                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2 + 7);
-                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 - txt.txtbx.ActualWidth / 2 + 7);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
-                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent);
-                                Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2);
+                                Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
                                 point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
 
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(rPR_Shapes.shape) - 10);
-                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X));
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
+                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(rPR_Shapes.shape) - 13);
 
-                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
+                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) + 10);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -4193,12 +4185,11 @@ namespace Interface_1._0
                             anchor.ResetParametrs();
                             Cursor = Cursors.SizeWE;
 
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2))) / 2;
-                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2))) / 2;
-
                             double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
+
+                            current_anchor_postion.X = Canvas.GetLeft(rPR_Shapes.shape);
 
                             TextMethod_3Points(txt, point_summ_second_X);
 
@@ -4217,29 +4208,27 @@ namespace Interface_1._0
 
                                 (rPR_Shapes.shape as Polygon).Points = points;
 
-                                current_anchor_postion.X = Canvas.GetLeft(rPR_Shapes.shape);
-
                                 Canvas.SetLeft(rPR_Shapes.shape, Canvas.GetLeft(rPR_Shapes.shape) - Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2);
 
-                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
-                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
-                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent);
-                                Canvas.SetTop(txt.kurwa_txtbox,  Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2);
+                                Canvas.SetTop(txt.kurwa_txtbox,  Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
                                 point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
 
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(rPR_Shapes.shape) - 10);
-                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X));
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
+                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(rPR_Shapes.shape) - 13);
 
-                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
+                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) + 10);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -4490,29 +4479,27 @@ namespace Interface_1._0
 
                                 (rPR_Shapes.shape as Polygon).Points = points;
 
-                                current_anchor_postion.X = Canvas.GetLeft(rPR_Shapes.shape);
-
                                 Canvas.SetLeft(rPR_Shapes.shape, Canvas.GetLeft(rPR_Shapes.shape) + Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2);
 
-                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
-                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
-                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent);
-                                Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2);
+                                Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
                                 point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
 
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(rPR_Shapes.shape) - 10);
-                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X));
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
+                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(rPR_Shapes.shape) - 13);
 
-                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
+                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) + 10);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -4775,15 +4762,11 @@ namespace Interface_1._0
 
                         if (evnt.LeftButton == MouseButtonState.Pressed)
                         {
-
                             var obj_anchor = (Polyline)sndr;
                             obj_anchor.CaptureMouse();
 
                             anchor.ResetParametrs();
                             Cursor = Cursors.SizeNWSE;
-
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2))) / 2;
-                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2))) / 2;
 
                             double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
                             double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
@@ -4815,26 +4798,26 @@ namespace Interface_1._0
                                 Canvas.SetLeft(rPR_Shapes.shape, Canvas.GetLeft(rPR_Shapes.shape) - 10);
                                 Canvas.SetTop(rPR_Shapes.shape, Canvas.GetTop(rPR_Shapes.shape) - 10);
 
-                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
-                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
-                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent);
-                                Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2);
+                                Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
                                 point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
                                 point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
 
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(rPR_Shapes.shape) - 10);
-                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X));
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
+                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(rPR_Shapes.shape) - 13);
 
-                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
+                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) + 10);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -5094,26 +5077,26 @@ namespace Interface_1._0
                                 Canvas.SetLeft(rPR_Shapes.shape, Canvas.GetLeft(rPR_Shapes.shape) + 10);
                                 Canvas.SetTop(rPR_Shapes.shape, Canvas.GetTop(rPR_Shapes.shape) + 10);
 
-                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
-                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 - txt.txtbx.ActualWidth / 2.5 + txt.text_left_indent);
+                                Canvas.SetTop(txt.txtbx, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
-                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent);
-                                Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent - txt.text_top_indent);
+                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2);
+                                Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - txt.text_top_indent);
 
                                 point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.NE_point.X, 2)));
                                 point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.NW_point.Y, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.SW_point.Y, 2)));
 
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(rPR_Shapes.shape) - 10);
-                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + anchor_left_indent * 2);
-                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(rPR_Shapes.shape) + 20 + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X));
+                                Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2);
 
-                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
+                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
                                 Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(rPR_Shapes.shape) - 13);
 
-                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + anchor_left_indent + 5);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + anchor_top_indent * 2 + 10);
+                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(rPR_Shapes.shape) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2 + 5);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(rPR_Shapes.shape) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) + 10);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -5343,21 +5326,21 @@ namespace Interface_1._0
                         anchor.SetParametrs();
                         Cursor = Cursors.Arrow;
 
-                        Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + anchor_left_indent);
+                        Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2);
                         Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - anchor.shiftTop);
 
                         Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(obj));
-                        Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj) + anchor_top_indent - anchor.shiftTop);
+                        Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - anchor.shiftTop);
 
                         Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj) + anchor.shiftLeft);
                         Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
                     }
 
-                    Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + anchor_left_indent);
+                    Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + (rPR_Shapes.NE_point.X - rPR_Shapes.NW_point.X) / 2);
                     Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - anchor.shiftTop);
 
                     Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(obj));
-                    Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj) + anchor_top_indent - anchor.shiftTop);
+                    Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj) + (rPR_Shapes.SW_point.Y - rPR_Shapes.NW_point.Y) / 2 - anchor.shiftTop);
 
                     Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj) + anchor.shiftLeft);
                     Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
@@ -6731,11 +6714,6 @@ namespace Interface_1._0
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
 
-                            anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_Point.X, 2))) / 2;
-                            anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.S_Point.Y, 2))) / 2;
-
-                            special_anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.W_Point.Y, 2)));
-
                             double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
                             double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) + Math.Sqrt(Math.Pow(shape.S_Point.Y, 2)));
 
@@ -6762,14 +6740,14 @@ namespace Interface_1._0
                                 Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) - 10);
                                 Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) - 10);
 
-                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - txt.txtbx.ActualWidth / 2);
                                 Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
 
-                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent + 3);
+                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - txt.text_left_indent + 3);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) - txt.text_top_indent + 2);
 
                                 current_anchor_postion.X = Canvas.GetLeft(shape.shape);
-                                current_anchor_postion.Y = Canvas.GetTop(shape.shape) - anchor_top_indent;
+                                current_anchor_postion.Y = Canvas.GetTop(shape.shape) - (shape.W_Point.Y - shape.N_Point.Y) / 2;
 
                                 point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
                                 point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) + Math.Sqrt(Math.Pow(shape.S_Point.Y, 2)));
@@ -6777,14 +6755,14 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 17);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + anchor_left_indent * 2);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + (shape.E_Point.X - shape.W_Point.X));
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
 
-                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                                Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - special_anchor_top_indent - 15);
+                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
+                                Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - (shape.W_Point.Y - shape.N_Point.Y) - 15);
 
-                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
+                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + (shape.W_Point.Y - shape.N_Point.Y) + 21);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -7042,10 +7020,10 @@ namespace Interface_1._0
                                 Canvas.SetLeft(shape.shape, Canvas.GetLeft(shape.shape) + 10);
                                 Canvas.SetTop(shape.shape, Canvas.GetTop(shape.shape) + 10);
 
-                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2);
+                                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - txt.txtbx.ActualWidth / 2);
                                 Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
 
-                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent + 3);
+                                Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - txt.text_left_indent + 3);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) - txt.text_top_indent + 2);
 
                                 current_anchor_postion.X = Canvas.GetLeft(shape.shape);
@@ -7057,14 +7035,14 @@ namespace Interface_1._0
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 17);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + anchor_left_indent * 2);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + (shape.E_Point.X - shape.W_Point.X));
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
 
-                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                                Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - special_anchor_top_indent - 15);
+                                Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
+                                Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - (shape.W_Point.Y - shape.N_Point.Y) - 15);
 
-                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent * 2 + 21);
+                                Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
+                                Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + (shape.W_Point.Y - shape.N_Point.Y) + 21);
 
                                 if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                                 {
@@ -7311,8 +7289,8 @@ namespace Interface_1._0
                         anchor.SetParametrs();
                         Cursor = Cursors.Arrow;
 
-                        Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + anchor_left_indent - anchor.shiftLeft);
-                        Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - special_anchor_top_indent - 5);
+                        Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + (shape.E_Point.X - shape.W_Point.X) / 2 - anchor.shiftLeft);
+                        Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - (shape.W_Point.Y - shape.N_Point.Y) - 5);
 
                         Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(obj) - anchor.shiftLeft);
                         Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj));
@@ -7321,8 +7299,8 @@ namespace Interface_1._0
                         Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
                     }
 
-                    Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + anchor_left_indent - anchor.shiftLeft);
-                    Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - special_anchor_top_indent - 5);
+                    Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + (shape.E_Point.X - shape.W_Point.X) / 2 - anchor.shiftLeft);
+                    Canvas.SetTop(anchor.anchor_NS, Canvas.GetTop(obj) - (shape.W_Point.Y - shape.N_Point.Y) - 5);
 
                     Canvas.SetLeft(anchor.anchor_WE, Canvas.GetLeft(obj) - anchor.shiftLeft);
                     Canvas.SetTop(anchor.anchor_WE, Canvas.GetTop(obj));
@@ -7560,10 +7538,10 @@ namespace Interface_1._0
                                 Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + anchor_top_indent - anchor_top_indent / 4);
 
-                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
+                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - (shape.NW_point.X - shape.W_point.X) - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + anchor_left_indent * 2 + (shape.E_point.X - shape.NE_point.X) + 20);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -7839,10 +7817,10 @@ namespace Interface_1._0
                                 Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + anchor_top_indent - anchor_top_indent / 4);
 
-                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
+                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - (shape.NW_point.X - shape.W_point.X) - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + anchor_left_indent * 2 + (shape.E_point.X - shape.NE_point.X) + 20);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -8121,7 +8099,7 @@ namespace Interface_1._0
                             anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
                             anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
                             special_acnhor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_point.X, 2))) / 5;
-                            sp_anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_point.X, 2)));
+                            sp_anchor_left_indent = shape.E_point.X - shape.W_point.X;
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
 
@@ -8161,10 +8139,10 @@ namespace Interface_1._0
                                 Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + anchor_top_indent - anchor_top_indent / 4);
 
-                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
+                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - (shape.NW_point.X - shape.W_point.X) - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + anchor_left_indent * 2 + (shape.E_point.X - shape.NE_point.X) + 20);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -8440,10 +8418,10 @@ namespace Interface_1._0
                                 Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + anchor_top_indent - anchor_top_indent / 4);
 
-                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
+                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - (shape.NW_point.X - shape.W_point.X) - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + anchor_left_indent * 2 + (shape.E_point.X - shape.NE_point.X) + 20);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -8771,10 +8749,10 @@ namespace Interface_1._0
                                 Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + anchor_top_indent - anchor_top_indent / 4);
 
-                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
+                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - (shape.NW_point.X - shape.W_point.X) - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + anchor_left_indent * 2 + (shape.E_point.X - shape.NE_point.X) + 20);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -9058,10 +9036,10 @@ namespace Interface_1._0
                                 Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + anchor_top_indent - anchor_top_indent / 4);
 
-                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
+                                Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - (shape.NW_point.X - shape.W_point.X) - 7);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
-                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent/4 + 15);
+                                Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + anchor_left_indent * 2 + (shape.E_point.X - shape.NE_point.X) + 20);
                                 Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
 
                                 Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
@@ -9504,7 +9482,7 @@ namespace Interface_1._0
 
                             var pos = evnt.GetPosition(CanvasPos) - lastPoint;
 
-                            current_anchor_postion.Y = Canvas.GetTop(shape.shape) - anchor.shiftTop * 1.5;
+                            current_anchor_postion.Y = Canvas.GetTop(shape.shape) - lastPoint.Y;
 
                             if (pos.Y < current_anchor_postion.Y)
                             {
@@ -9517,8 +9495,6 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - 10);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 10);
-
-                                current_anchor_postion.Y = Canvas.GetTop(shape.shape) - anchor.shiftTop * 1.5;
 
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 18);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 1);
@@ -9778,8 +9754,6 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - 10);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 10);
-
-                                current_anchor_postion.Y = Canvas.GetTop(shape.shape) - anchor.shiftTop * 1.5;
 
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 18);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 1);
@@ -10062,7 +10036,7 @@ namespace Interface_1._0
 
                             var pos = evnt.GetPosition(CanvasPos) - lastPoint;
 
-                            current_anchor_postion.X = Canvas.GetLeft(shape.shape) - shape.shape.ActualWidth / 5;
+                            current_anchor_postion.X = Canvas.GetLeft(shape.shape) - lastPoint.X;
 
                             TextMethod_3Points(txt, shape.shape.ActualWidth);
 
@@ -10077,8 +10051,6 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - 10);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 10);
-
-                                current_anchor_postion.X = Canvas.GetLeft(shape.shape) - anchor.shiftLeft;
 
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 18);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 1);
@@ -10338,8 +10310,6 @@ namespace Interface_1._0
 
                                 Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - 10);
                                 Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 10);
-
-                                current_anchor_postion.X = Canvas.GetLeft(shape.shape) - shape.shape.ActualWidth / 5;
 
                                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 18);
                                 Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 1);
@@ -11278,7 +11248,6 @@ namespace Interface_1._0
             }
         }
 
-
         public void RPC_Shape_Move(RP_Shapes shape, TXT txt, ConnectionLine connectionLine,Anchor anchor)
         {
             SearchUndefineLinesFrom(connectionLine.circle_left, ref connectionLine.undefiendLinesLeftFrom);
@@ -11333,32 +11302,29 @@ namespace Interface_1._0
                         anchor.FullyReset();
                     }
 
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_NE.X, 2))) / 2;
-                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.Y, 2)) - Math.Sqrt(Math.Pow(shape.Point_SW.Y, 2))) / 2;
-
-                    var obj = (UIElement)sender;
+                    UIElement obj = (UIElement)sender;
                     obj.CaptureMouse();
 
                     Canvas.SetLeft(obj, e.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(obj, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2 + 7);
-                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + (shape.NE_point.X - shape.NW_point.X) / 2 - txt.txtbx.ActualWidth / 2 + 7);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + (shape.SW_point.Y - shape.NW_point.Y) / 2 - txt.text_top_indent);
 
-                    Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent);
-                    Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + anchor_top_indent - anchor_left_indent / 4);
+                    Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + (shape.NE_point.X - shape.NW_point.X) / 2);
+                    Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + (shape.SW_point.Y - shape.NW_point.Y) / 2 - 5);
 
                     Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 10);
-                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + (shape.SW_point.Y - shape.NW_point.Y) / 2);
 
-                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 20 + anchor_left_indent * 2);
-                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent);
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 20 + (shape.NE_point.X - shape.NW_point.X));
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + (shape.SW_point.Y - shape.NW_point.Y) / 2);
 
-                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + (shape.NE_point.X - shape.NW_point.X) / 2  + 5);
                     Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 13);
 
-                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
-                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 10);
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + (shape.NE_point.X - shape.NW_point.X) / 2 + 5);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + (shape.SW_point.Y - shape.NW_point.Y) + 10);
 
                     if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                     {
@@ -11673,33 +11639,29 @@ namespace Interface_1._0
                         anchor.FullyReset();
                     }
 
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_NE.X, 2))) / 2;
-                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.Y, 2)) - Math.Sqrt(Math.Pow(shape.Point_SW.Y, 2))) / 2;
-                    double sp_anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_point.X, 2)));
-
-                    var obj = (UIElement)sender;
+                    UIElement obj = (UIElement)sender;
                     obj.CaptureMouse();
 
                     Canvas.SetLeft(obj, e.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(obj, e.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2 + 7);
-                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + (shape.NE_point.X - shape.NW_point.X) / 2 - txt.txtbx.ActualWidth / 2 + 7);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + (shape.SW_point.Y - shape.NW_point.Y) / 2 - txt.text_top_indent);
 
-                    Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent);
-                    Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + anchor_top_indent - anchor_left_indent / 4);
+                    Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + (shape.NE_point.X - shape.NW_point.X) / 2);
+                    Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + (shape.SW_point.Y - shape.NW_point.Y) / 2 - 10);
 
-                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
-                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
+                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - (shape.NW_point.X - shape.W_point.X) - 7);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + (shape.SW_point.Y - shape.NW_point.Y) / 2 - 1);
 
-                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + anchor_left_indent / 4 + 15);
-                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + (shape.NE_point.X - shape.NW_point.X) + (shape.E_point.X - shape.NE_point.X) + 20);
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + (shape.SW_point.Y - shape.NW_point.Y) / 2 - 1);
 
-                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + (shape.NE_point.X - shape.NW_point.X ) / 2 + 5);
                     Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 15);
 
-                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
-                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + (shape.NE_point.X - shape.NW_point.X) / 2 + 5);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + (shape.SW_point.Y - shape.NW_point.Y) + 12);
 
                     if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                     {
@@ -12018,32 +11980,29 @@ namespace Interface_1._0
                         anchor.FullyReset();
                     }
 
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_W.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_E.X, 2))) / 2;
-                    double special_anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.W_Point.Y, 2)));
-
                     var obj = (UIElement)sndr;
                     obj.CaptureMouse();
 
                     Canvas.SetLeft(obj, evnt.GetPosition(CanvasPos).X - lastPoint.X);
                     Canvas.SetTop(obj, evnt.GetPosition(CanvasPos).Y - lastPoint.Y);
 
-                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent);
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - txt.text_left_indent);
                     Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
 
-                    Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent + 3);
+                    Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - txt.text_left_indent + 3);
                     Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) - txt.text_top_indent + 2);
 
                     Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 17);
                     Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
 
-                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + anchor_left_indent * 2);
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + (shape.E_Point.X - shape.W_Point.X));
                     Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
 
-                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - special_anchor_top_indent - 20);
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - (shape.W_Point.Y - shape.N_Point.Y) - 15);
 
-                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent - 3);
-                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + special_anchor_top_indent + 20);
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + (shape.W_Point.Y - shape.N_Point.Y) + 21);
 
                     if (connectionLine.undefiendLinesLeftFrom.Count > 0)
                     {
@@ -13265,8 +13224,8 @@ namespace Interface_1._0
         {
             if (e.LeftButton == MouseButtonState.Pressed && clickFree)
             {
-                if (Math.Abs(e.GetPosition(CanvasPos).X - startP.X) > 5
-                    || Math.Abs(e.GetPosition(CanvasPos).Y - startP.Y) > 5)
+                if (Math.Abs(e.GetPosition(CanvasPos).X - startP.X) > 10
+                    || Math.Abs(e.GetPosition(CanvasPos).Y - startP.Y) > 10)
                 {
                     clickFree = false;
                     drawing = true;
