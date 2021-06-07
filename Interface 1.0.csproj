@@ -8,12 +8,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Interface_1._0</RootNamespace>
     <AssemblyName>Interface 1.0</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,7 +56,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Additional Gears\AnchorClass.cs" />
+    <Compile Include="Additional Gears\connection_line.cs" />
+    <Compile Include="Additional Gears\TextIntoShapes.cs" />
+    <Compile Include="Additional Gears\UndefiendLine.cs" />
     <Compile Include="block.cs" />
+    <Compile Include="Shapes\BaseAbstractShapesClass.cs" />
+    <Compile Include="Shapes\Cycle_Shape.cs" />
+    <Compile Include="Shapes\Ellipse_Shape.cs" />
+    <Compile Include="Shapes\Rhomb_Shape.cs" />
+    <Compile Include="Shapes\RP_Shape.cs" />
+    <Compile Include="Shapes\ShapeInfo.cs" />
+    <Compile Include="Videlyashka\ExcretorySquare.cs" />
+    <Compile Include="Videlyashka\RememberUIElements.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -96,9 +109,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Shapes\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Icon\Icon.jpg" />
   </ItemGroup>
