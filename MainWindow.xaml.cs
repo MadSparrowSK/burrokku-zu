@@ -3707,9 +3707,9 @@ namespace Interface_1._0
                 if (!DiagrammAnalyzer.isPrevNext)
                 {
                     if (DiagrammAnalyzer.isLoaded)
-                        diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter, txt.txtbx.Text));
+                        diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter, txt.txtbx.Text));
                     else
-                        diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter - 1, txt.txtbx.Text));
+                        diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter - 1, txt.txtbx.Text));
                     diagramm.ShapesCounter++;
                 }
             }
@@ -3721,8 +3721,7 @@ namespace Interface_1._0
             {
                 int index;
                 if (isRect) index = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
-                else index = GetIndexOfShape(Shapes.Rhomb, rPR_Shapes.shape.Name);
-                CanvasPos.Focus();
+                else index = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
                 if (diagramm.blocks.Count != 0)
                     diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
                 if (DiagrammAnalyzer.PrevNextTextChanged)
@@ -4393,19 +4392,21 @@ namespace Interface_1._0
                             //Повторно считываем данных о фигуре
                             LeftTop.X = Canvas.GetLeft((rPR_Shapes.shape as Polygon));
                             LeftTop.Y = Canvas.GetTop((rPR_Shapes.shape as Polygon));
-                            int indexOfShape = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
+                            int indexOfShape;
+                            if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
+                            else indexOfShape = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
                             foreach (Block block in diagramm.blocks)
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    if (isRect) diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
-                                    else diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
+                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
+                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
 
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
                             }
-                            
+
                         }
                     }
                     void AnchorWE_MouseMove(object sndr, MouseEventArgs evnt)
@@ -4992,13 +4993,15 @@ namespace Interface_1._0
                             //Повторно считываем данных о фигуре
                             LeftTop.X = Canvas.GetLeft((rPR_Shapes.shape as Polygon));
                             LeftTop.Y = Canvas.GetTop((rPR_Shapes.shape as Polygon));
-                            int indexOfShape = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
+                            int indexOfShape;
+                            if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
+                            else indexOfShape = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
                             foreach (Block block in diagramm.blocks)
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    if (isRect) diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
-                                    else diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
+                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
+                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
 
                                     diagramm.blocks.Remove(block);
                                     return;
@@ -5587,13 +5590,15 @@ namespace Interface_1._0
                             //Повторно считываем данных о фигуре
                             LeftTop.X = Canvas.GetLeft((rPR_Shapes.shape as Polygon));
                             LeftTop.Y = Canvas.GetTop((rPR_Shapes.shape as Polygon));
-                            int indexOfShape = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
+                            int indexOfShape;
+                            if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
+                            else indexOfShape = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
                             foreach (Block block in diagramm.blocks)
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    if (isRect) diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
-                                    else diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
+                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
+                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
 
                                     diagramm.blocks.Remove(block);
                                     return;
@@ -5725,7 +5730,7 @@ namespace Interface_1._0
                     bool indexNotFound = true;
                     int indexForDeleting;
                     if (isRect) indexForDeleting = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
-                    else indexForDeleting = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
+                    else indexForDeleting = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
                     DiagrammAnalyzer.shapesCounter--;
                     diagramm.ShapesCounter--;
                     if (diagramm.ShapesCounter == 0) DiagrammAnalyzer.isChanged = false;
@@ -11886,13 +11891,15 @@ namespace Interface_1._0
                     };
                     LeftTop.X = Canvas.GetLeft((shape.shape as Polygon));
                     LeftTop.Y = Canvas.GetTop((shape.shape as Polygon));
-                    int indexOfShape = GetIndexOfShape(Shapes.Rekt, shape.shape.Name);
+                    int indexOfShape;
+                    if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rekt, shape.shape.Name);
+                    else indexOfShape = GetIndexOfShape(Shapes.Parrabellum, shape.shape.Name);
                     foreach (Block block in diagramm.blocks)
                     {
                         if (block.IndexNumber == indexOfShape)
                         {
-                            if (isRect) diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.SE_point, indexOfShape, txt.txtbx.Text));
-                            else diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.SE_point, indexOfShape, txt.txtbx.Text));
+                            if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.SE_point, indexOfShape, txt.txtbx.Text));
+                            else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.SE_point, indexOfShape, txt.txtbx.Text));
 
                             diagramm.blocks.Remove(block);
                             return;
@@ -13105,7 +13112,7 @@ namespace Interface_1._0
                 ++shape_count;
 
                 RP_Shapes shape = new RP_Shapes(Rekt, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1));
-                shape.shape.Name = "Parrabullem_" + DiagrammAnalyzer.shapesCounter.ToString();
+                shape.shape.Name = "Rekt_" + DiagrammAnalyzer.shapesCounter.ToString();
                 DiagrammAnalyzer.shapesCounter++;
 
                 TXT txt = new TXT(7, 5);
@@ -13166,7 +13173,7 @@ namespace Interface_1._0
                  ++shape_count;
 
                  RP_Shapes shape = new RP_Shapes(Parrabellum, new Point(8, 1), new Point(0, 30), new Point(60, 30), new Point(68, 1));
-                 shape.shape.Name = "Rect_" + DiagrammAnalyzer.shapesCounter.ToString();
+                 shape.shape.Name = "Parrabullem_" + DiagrammAnalyzer.shapesCounter.ToString();
                  DiagrammAnalyzer.shapesCounter++;
                  TXT txt = new TXT(7, 5);
                  Canvas.SetZIndex(txt.txtbx, -1);
