@@ -36,8 +36,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Text.Json, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -60,6 +63,9 @@
     <Compile Include="Additional Gears\connection_line.cs" />
     <Compile Include="Additional Gears\TextIntoShapes.cs" />
     <Compile Include="Additional Gears\UndefiendLine.cs" />
+    <Compile Include="NewClasses\block.cs" />
+    <Compile Include="NewClasses\DiagrammAnalyzer.cs" />
+    <Compile Include="NewClasses\PrevNext.cs" />
     <Compile Include="Shapes\Rhomb_Shape.cs" />
     <Compile Include="Shapes\RP_Shape.cs" />
     <Compile Include="Shapes\ShapeInfo.cs" />
