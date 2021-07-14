@@ -7854,6 +7854,45 @@ namespace Interface_1._0
         }
         public void AddCy_Shape(Cy_Shape shape, ConnectionLine connectionLine,TXT txt, Anchor anchor)
         {
+            //Операция для поддержания нормальной инедксации
+            //Считывание данных о фигуре
+            Point LeftTop = new Point()
+            {
+                X = 0,
+                Y = 0
+            };
+
+            LeftTop.X = Canvas.GetLeft((shape.shape as Polygon));
+            LeftTop.Y = Canvas.GetTop((shape.shape as Polygon));
+
+            if (!DiagrammAnalyzer.isPrevNext)
+            {
+                if (DiagrammAnalyzer.isLoaded)
+                    diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, DiagrammAnalyzer.shapesCounter, txt.txtbx.Text));
+                else
+                    diagramm.blocks.Add(new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, DiagrammAnalyzer.shapesCounter - 1, txt.txtbx.Text));
+                diagramm.ShapesCounter++;
+            }
+
+            txt.txtbx.MouseLeave += Txt_MouseLeave;
+            txt.txtbx.TextChanged += Txt_TextChanged;
+
+            void Txt_MouseLeave(object sender, MouseEventArgs e)
+            {
+                int index = GetIndexOfShape(Shapes.Cycle, shape.shape.Name);
+                if (diagramm.blocks.Count != 0)
+                    diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+                if (DiagrammAnalyzer.PrevNextTextChanged)
+                {
+                    PrevNext.AddDiagramm(ref diagramm);
+                    DiagrammAnalyzer.PrevNextTextChanged = false;
+                }
+
+            }
+
+            if (!DiagrammAnalyzer.isPrevNext)
+                PrevNext.AddDiagramm(ref diagramm);
+
             LineAction(connectionLine, shape.shape);
 
             shape.shape.MouseDown += RPR_MouseDown;
@@ -8502,6 +8541,19 @@ namespace Interface_1._0
                                         line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_bottom);
                                 }
                             }
+                            //Повторно считываем данных о фигуре
+                            LeftTop.X = Canvas.GetLeft((shape.shape as Polygon));
+                            LeftTop.Y = Canvas.GetTop((shape.shape as Polygon));
+                            int indexOfShape = GetIndexOfShape(Shapes.Cycle, shape.shape.Name);
+                            foreach (Block block in diagramm.blocks)
+                            {
+                                if (block.IndexNumber == indexOfShape)
+                                {
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Remove(block);
+                                    return;
+                                }
+                            }
                         }
                     }
                     void AnchorWE_MouseMove(object sndr, MouseEventArgs evnt)
@@ -9096,6 +9148,20 @@ namespace Interface_1._0
                                 {
                                     foreach (UndefiendLine line in connectionLine.undefiendLinesBottomToY2)
                                         line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_bottom);
+                                }
+                            }
+
+                            //Повторно считываем данных о фигуре
+                            LeftTop.X = Canvas.GetLeft((shape.shape as Polygon));
+                            LeftTop.Y = Canvas.GetTop((shape.shape as Polygon));
+                            int indexOfShape = GetIndexOfShape(Shapes.Cycle, shape.shape.Name);
+                            foreach (Block block in diagramm.blocks)
+                            {
+                                if (block.IndexNumber == indexOfShape)
+                                {
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Remove(block);
+                                    return;
                                 }
                             }
                         }
@@ -9694,6 +9760,20 @@ namespace Interface_1._0
                                         line.undefLine.Y2 = Canvas.GetTop(connectionLine.circle_bottom);
                                 }
                             }
+
+                            //Повторно считываем данных о фигуре
+                            LeftTop.X = Canvas.GetLeft((shape.shape as Polygon));
+                            LeftTop.Y = Canvas.GetTop((shape.shape as Polygon));
+                            int indexOfShape = GetIndexOfShape(Shapes.Cycle, shape.shape.Name);
+                            foreach (Block block in diagramm.blocks)
+                            {
+                                if (block.IndexNumber == indexOfShape)
+                                {
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Remove(block);
+                                    return;
+                                }
+                            }
                         }
                     }
                     void AnchorMouseUp(object sndr, MouseButtonEventArgs evnt)
@@ -9712,6 +9792,8 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj) + anchor.shiftLeft);
                         Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
+
+                        PrevNext.AddDiagramm(ref diagramm);
                     }
 
                     Canvas.SetLeft(anchor.anchor_NS, Canvas.GetLeft(obj) + (shape.NE_point.X - shape.NW_point.X) / 2);
@@ -9811,6 +9893,46 @@ namespace Interface_1._0
                     CanvasPos.Children.Remove(anchor.anchor_NS);
                     CanvasPos.Children.Remove(anchor.anchor_WE);
                     CanvasPos.Children.Remove(anchor.anchor_NWSE);
+
+                    DiagrammAnalyzer.isChanged = true;
+                    bool isCanBeLower = false;
+                    bool indexNotFound = true;
+                    int indexForDeleting;
+                    indexForDeleting = GetIndexOfShape(Shapes.Cycle, shape.shape.Name);
+                    DiagrammAnalyzer.shapesCounter--;
+                    diagramm.ShapesCounter--;
+                    if (diagramm.ShapesCounter == 0) DiagrammAnalyzer.isChanged = false;
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if ((block.IndexNumber == indexForDeleting) && (indexNotFound))
+                        {
+                            isCanBeLower = true;
+                            indexNotFound = false;
+                        }
+                        if (isCanBeLower)
+                        {
+                            block.IndexNumber--;
+                        }
+
+                    }
+                    if (diagramm.blocks.Count > 1)
+                        diagramm.blocks.RemoveAt(indexForDeleting);
+                    else
+                    {
+                        try
+                        {
+                            diagramm.blocks.RemoveAt(0);
+                            DiagrammAnalyzer.shapesCounter = 0;
+                        }
+                        catch
+                        {
+                            diagramm = new Diagramm();
+                            DiagrammAnalyzer.shapesCounter = 0;
+                        }
+                    }
+                    //Повторный нейминг всех фигур
+                    ReName();
+                    PrevNext.AddDiagramm(ref diagramm);
 
                     --shape_count;
                     ClearCanvas();
@@ -12375,6 +12497,26 @@ namespace Interface_1._0
                               
                         }
                     }
+
+                    //Повторно считываем данных о фигуре
+                    Point LeftTop = new Point()
+                    {
+                        X = 0,
+                        Y = 0
+                    };
+
+                    LeftTop.X = Canvas.GetLeft((shape.shape as Polygon));
+                    LeftTop.Y = Canvas.GetTop((shape.shape as Polygon));
+                    int indexOfShape = GetIndexOfShape(Shapes.Cycle, shape.shape.Name);
+                    foreach (Block block in diagramm.blocks)
+                    {
+                        if (block.IndexNumber == indexOfShape)
+                        {
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                            diagramm.blocks.Remove(block);
+                            return;
+                        }
+                    }
                 }
             }
         }
@@ -13443,7 +13585,8 @@ namespace Interface_1._0
                  ++shape_count;
 
                  Cy_Shape shape = new Cy_Shape(Cycle, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1), new Point(-1, 15), new Point(69, 15));
-
+                 shape.shape.Name = "Cycle_" + DiagrammAnalyzer.shapesCounter.ToString();
+                 DiagrammAnalyzer.shapesCounter++;
                  TXT txt = new TXT(30, 5);
                  Canvas.SetZIndex(txt.txtbx, -1);
                  Canvas.SetZIndex(txt.kurwa_txtbox, -1);
