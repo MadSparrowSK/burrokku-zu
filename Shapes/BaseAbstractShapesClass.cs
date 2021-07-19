@@ -8,11 +8,11 @@ namespace Shapes
     {
         public Shape shape;
 
-        public PrimaryShape(Polygon copy_shape)
+        public PrimaryShape(Polygon copy_shape, PointCollection points)
         {
             shape = new Polygon();
-
-            (shape as Polygon).Points = copy_shape.Points;
+            if (points != null) (shape as Polygon).Points = points;
+            else (shape as Polygon).Points = copy_shape.Points;
             (shape as Polygon).Stroke = Brushes.White;
             shape.Fill = Brushes.Transparent;
         }

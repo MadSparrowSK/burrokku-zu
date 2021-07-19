@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace Shapes
@@ -10,8 +11,8 @@ namespace Shapes
         public Point SE_point;
         public Point NE_point;
 
-        public RP_Shapes(Polygon copy_shape, Point left, Point bottom, Point right, Point top) 
-            : base(copy_shape)
+        public RP_Shapes(Polygon copy_shape, Point left, Point bottom, Point right, Point top, PointCollection points = null) 
+            : base(copy_shape, points)
         {
 
             NW_point = new Point();
@@ -24,7 +25,7 @@ namespace Shapes
             SE_point  = right;
             NE_point  = top;
         }
-
+        
         public Point Point_NW { get => NW_point; set { NW_point = value; } }
         public Point Point_SW { get => SW_point; set { SW_point = value; } }
         public Point Point_SE { get => SE_point; set { SE_point = value; } }

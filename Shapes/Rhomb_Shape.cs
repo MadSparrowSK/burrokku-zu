@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace Shapes
@@ -10,8 +11,8 @@ namespace Shapes
         public Point E_Point;
         public Point N_Point;
         
-        public Rh_Shape(Polygon copy_shape, Point left, Point bottom, Point right, Point top)
-            : base(copy_shape)
+        public Rh_Shape(Polygon copy_shape, Point left, Point bottom, Point right, Point top, PointCollection points = null)
+            : base(copy_shape, points)
         {
             W_Point = new Point(); 
             S_Point = new Point(); 
