@@ -17,6 +17,7 @@ namespace Interface_1._0
         //Булевые переменные, необходимые для работы PrevNext
         public static bool isPrevNext { get; set; }
         public static bool PrevNextTextChanged { get; set; }
+        public static bool ShapeMoved { get; set; }
         public static bool isEmpty { get; set; }
         public static bool isCanBeLoaded { get; set; }
 

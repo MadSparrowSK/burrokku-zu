@@ -148,11 +148,11 @@
                 <StackPanel Orientation="Horizontal">
                     <Label Content="File" Foreground="Gray" Padding="10,5,10,0" 
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
-                           MouseDown="DownSave"/>
+                           MouseDown="prev"/>
 
                     <Label Content="settings" Foreground="Gray" Padding="10,5,10,0"
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
-                           MouseDown="DownLoad"/>
+                           MouseDown="next"/>
 
                     <Label Content="something more ..." MouseEnter="Header_Mouse_Enter"
                            MouseLeave="Header_Mouse_Leave"

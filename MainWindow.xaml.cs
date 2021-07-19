@@ -87,6 +87,7 @@ namespace Interface_1._0
             workArea.MouseUp += FreeUp;
 
             DiagrammAnalyzer.isChanged = false;
+            DiagrammAnalyzer.ShapeMoved = false;
             if (!DiagrammAnalyzer.isPrevNext)
             {
                 PrevNext.Clear();
@@ -104,6 +105,7 @@ namespace Interface_1._0
         private SaveFileDialog _safeDialog = new SaveFileDialog();
         private Diagramm diagramm = new Diagramm();
         private Diagramm tempDiagramm = new Diagramm();
+        
         //метод для извелчения индекса из имени объекта
         private int GetIndexOfShape(Shapes shape, string name)
         {
@@ -11981,6 +11983,7 @@ namespace Interface_1._0
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
                     DiagrammAnalyzer.isChanged = true;
+                    DiagrammAnalyzer.ShapeMoved = true;
                     if (anchor.is_anchor_create)
                     {
                         anchor.is_anchor_create = false;
@@ -12341,6 +12344,8 @@ namespace Interface_1._0
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
+                    DiagrammAnalyzer.isChanged = true;
+                    DiagrammAnalyzer.ShapeMoved = true;
                     if (anchor.is_anchor_create)
                     {
                         anchor.is_anchor_create = false;
@@ -12703,6 +12708,7 @@ namespace Interface_1._0
                 if (evnt.LeftButton == MouseButtonState.Pressed)
                 {
                     DiagrammAnalyzer.isChanged = true;
+                    DiagrammAnalyzer.ShapeMoved = true;
                     if (anchor.is_anchor_create)
                     {
                         anchor.is_anchor_create = false;
@@ -13059,12 +13065,14 @@ namespace Interface_1._0
             RemoveLines(connectionLine.undefiendLinesTopToY2);
 
             shape.shape.MouseMove += ShapeMove;
+            
 
             void ShapeMove(object sender, MouseEventArgs e)
             { 
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
                     DiagrammAnalyzer.isChanged = true;
+                    DiagrammAnalyzer.ShapeMoved = true;
                     var obj = (UIElement)sender;
                     obj.CaptureMouse();
 
@@ -13380,7 +13388,12 @@ namespace Interface_1._0
         public void UIElements_Mouse_Up(object sender, MouseButtonEventArgs e)
         {
             (sender as UIElement).ReleaseMouseCapture();
-            PrevNext.AddDiagramm(ref diagramm);
+            if (DiagrammAnalyzer.ShapeMoved)
+            {
+                PrevNext.AddDiagramm(ref diagramm);
+                DiagrammAnalyzer.ShapeMoved = false;
+            }
+            
         }
 
         void TextMethod_3Points(TXT txt, double length)
@@ -15791,6 +15804,407 @@ namespace Interface_1._0
 
 
         }
+        #endregion
+
+        #region PrevNextActions
+        /// <summary>
+        /// Отрисовка диаграммы при откате
+        /// </summary>
+        /// <param name="diagramm"></param>
+        private void CutDownLoad(Diagramm diagramm)
+        {
+            DiagrammAnalyzer.isLoaded = true;
+            DiagrammAnalyzer.isPrevNext = true;
+            inTrash(null, null);
+            tempDiagramm = diagramm.Clone(diagramm.ID);
+            //Обнуляем основную диаграмму и счетчик фигур    
+
+            diagramm = new Diagramm();
+            DiagrammAnalyzer.shapesCounter = 0;
+
+            //Прорисовываем десериализованные фигуры
+            foreach (Block block in tempDiagramm.blocks)
+            {
+                if (block.IndexNumber < 0)
+                    block.IndexNumber = 0;
+                if (block.Shape == Shapes.Rekt)
+                {
+
+                    Point rectangleNW = block.NW;
+                    Point rectangleSW = block.SW;
+                    Point rectangleSE = block.SE;
+                    Point rectnagleNE = block.NE;
+                    PointCollection PointsOfShape = new PointCollection();
+                    PointsOfShape.Add(rectangleNW);
+                    PointsOfShape.Add(rectangleSW);
+                    PointsOfShape.Add(rectangleSE);
+                    PointsOfShape.Add(rectnagleNE);
+
+                    RP_Shapes shape = new RP_Shapes(Rekt, rectangleNW, rectangleSW, rectangleSE, rectnagleNE, PointsOfShape);
+                    //Индексация фигур  
+                    shape.shape.Name = "Rekt_" + block.IndexNumber.ToString();
+
+                    TXT txt = new TXT(7, 5);
+                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.kurwa_txtbox, -1);
+                    txt.txtbx.Text = block.TextIntoTextBox;
+
+
+                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
+
+                    ConnectionLine connectionLine = new ConnectionLine();
+
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
+
+                    shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    CanvasPos.Children.Add(shape.shape);
+                    CanvasPos.Children.Add(txt.txtbx);
+                    CanvasPos.Children.Add(txt.kurwa_txtbox);
+
+                    CanvasPos.Children.Add(connectionLine.circle_left);
+                    CanvasPos.Children.Add(connectionLine.circle_right);
+                    CanvasPos.Children.Add(connectionLine.circle_top);
+                    CanvasPos.Children.Add(connectionLine.circle_bottom);
+
+                    CanvasPos.Children.Add(anchor.anchor_NS);
+                    CanvasPos.Children.Add(anchor.anchor_WE);
+                    CanvasPos.Children.Add(anchor.anchor_NWSE);
+
+                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
+                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent * 2.3);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+
+                    Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent);
+                    Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + anchor_top_indent - anchor_top_indent / 2);
+
+                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 10);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 20 + anchor_left_indent * 2);
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 13);
+
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 10);
+
+                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                        connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx, txt.kurwa_txtbox));
+
+                    AddRP_Shape(shape, connectionLine, txt, anchor, true);
+
+                }
+                if (block.Shape == Shapes.Parrabellum)
+                {
+                    Point parabellumNW = block.NW;
+                    Point parabellumSW = block.SW;
+                    Point parabellumSE = block.SE;
+                    Point parabellumNE = block.NE;
+
+                    PointCollection parabellumPoints = new PointCollection();
+                    parabellumPoints.Add(parabellumNW);
+                    parabellumPoints.Add(parabellumSW);
+                    parabellumPoints.Add(parabellumSE);
+                    parabellumPoints.Add(parabellumNE);
+
+                    RP_Shapes shape = new RP_Shapes(Parrabellum, parabellumNW, parabellumSW, parabellumSE, parabellumNE, parabellumPoints);
+                    //Индексация фигур
+                    shape.shape.Name = "Parrabullem_" + block.IndexNumber.ToString();
+
+                    TXT txt = new TXT(7, 5);
+                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.kurwa_txtbox, -1);
+                    txt.txtbx.Text = block.TextIntoTextBox;
+
+                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
+
+                    ConnectionLine connectionLine = new ConnectionLine();
+
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
+
+                    shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    CanvasPos.Children.Add(shape.shape);
+                    CanvasPos.Children.Add(txt.txtbx);
+                    CanvasPos.Children.Add(txt.kurwa_txtbox);
+
+                    CanvasPos.Children.Add(connectionLine.circle_left);
+                    CanvasPos.Children.Add(connectionLine.circle_right);
+                    CanvasPos.Children.Add(connectionLine.circle_top);
+                    CanvasPos.Children.Add(connectionLine.circle_bottom);
+
+                    CanvasPos.Children.Add(anchor.anchor_NS);
+                    CanvasPos.Children.Add(anchor.anchor_WE);
+                    CanvasPos.Children.Add(anchor.anchor_NWSE);
+
+                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
+                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent * 2.3);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+
+                    Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent);
+                    Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + anchor_top_indent + anchor_top_indent / 4);
+
+                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 10);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 20 + anchor_left_indent * 2);
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 13);
+
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 10);
+
+                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx, txt.kurwa_txtbox));
+
+                    AddRP_Shape(shape, connectionLine, txt, anchor);
+                }
+                if (block.Shape == Shapes.Rhomb)
+                {
+                    Point rhombN = block.NW;
+                    Point rhombW = block.NE;
+                    Point rhombS = block.SW;
+                    Point rhombE = block.SE;
+
+                    PointCollection rhombPoints = new PointCollection();
+                    rhombPoints.Add(rhombW);
+                    rhombPoints.Add(rhombS);
+                    rhombPoints.Add(rhombE);
+                    rhombPoints.Add(rhombN);
+                    Rh_Shape shape = new Rh_Shape(Rhomb, rhombW, rhombS, rhombE, rhombN, rhombPoints);
+                    shape.shape.Name = "Rhomb_" + block.IndexNumber.ToString();
+                    TXT txt = new TXT(10, 7);
+                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.kurwa_txtbox, -1);
+                    txt.txtbx.Text = block.TextIntoTextBox;
+
+                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 5);
+
+                    ConnectionLine connectionLine = new ConnectionLine();
+
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_E.X, 2))) / 2;
+                    double special_anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.W_Point.Y, 2)));
+
+                    shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    CanvasPos.Children.Add(shape.shape);
+                    CanvasPos.Children.Add(txt.txtbx);
+                    CanvasPos.Children.Add(txt.kurwa_txtbox);
+
+                    CanvasPos.Children.Add(connectionLine.circle_left);
+                    CanvasPos.Children.Add(connectionLine.circle_right);
+                    CanvasPos.Children.Add(connectionLine.circle_top);
+                    CanvasPos.Children.Add(connectionLine.circle_bottom);
+
+                    CanvasPos.Children.Add(anchor.anchor_NS);
+                    CanvasPos.Children.Add(anchor.anchor_WE);
+                    CanvasPos.Children.Add(anchor.anchor_NWSE);
+
+                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
+                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.3 - txt.text_left_indent);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
+
+                    Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent + 3);
+                    Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) - txt.text_top_indent + 2);
+
+                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 17);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
+
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + (shape.E_Point.X - shape.W_Point.X));
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
+
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - (shape.W_Point.Y - shape.N_Point.Y) - 5);
+
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + (shape.W_Point.Y - shape.N_Point.Y) + 15);
+
+                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx, txt.kurwa_txtbox));
+
+                    AddRh_Shape(shape, connectionLine, txt, anchor);
+
+                }
+                if (block.Shape == Shapes.Cycle)
+                {
+                    Point cycleNW = block.NW;
+                    Point cycleW = block.AddPoint1;
+                    Point cycleSW = block.SW;
+                    Point cycleSE = block.SE;
+                    Point cycleE = block.AddPoint2;
+                    Point cycleNE = block.NE;
+                    PointCollection cyclePoints = new PointCollection()
+                    {
+                        cycleNW,
+                        cycleW,
+                        cycleSW,
+                        cycleSE,
+                        cycleE,
+                        cycleNE,
+                    };
+
+                    Cy_Shape shape = new Cy_Shape(Cycle, cycleNW, cycleSW, cycleSE, cycleNE, cycleW, cycleE, cyclePoints);
+                    shape.shape.Name = "Cycle_" + block.IndexNumber.ToString();
+
+                    TXT txt = new TXT(30, 5);
+                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.kurwa_txtbox, -1);
+                    txt.txtbx.Text = block.TextIntoTextBox;
+
+                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
+
+                    ConnectionLine connectionLine = new ConnectionLine();
+
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
+                    double sp_anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_point.X, 2)));
+
+                    shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    CanvasPos.Children.Add(shape.shape);
+                    CanvasPos.Children.Add(txt.txtbx);
+                    CanvasPos.Children.Add(txt.kurwa_txtbox);
+
+                    CanvasPos.Children.Add(connectionLine.circle_left);
+                    CanvasPos.Children.Add(connectionLine.circle_right);
+                    CanvasPos.Children.Add(connectionLine.circle_top);
+                    CanvasPos.Children.Add(connectionLine.circle_bottom);
+
+                    CanvasPos.Children.Add(anchor.anchor_NS);
+                    CanvasPos.Children.Add(anchor.anchor_WE);
+                    CanvasPos.Children.Add(anchor.anchor_NWSE);
+
+                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
+                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - 15);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+
+                    Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + anchor_left_indent);
+                    Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
+
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + 15);
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
+
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 15);
+
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
+
+                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx, txt.kurwa_txtbox));
+
+                    AddCy_Shape(shape, connectionLine, txt, anchor);
+
+                }
+                if (block.Shape == Shapes.Ellipse)
+                {
+                    Ell_Shape shape = new Ell_Shape(Ellipse);
+                    shape.shape.Name = "Ellipse_" + block.IndexNumber.ToString();
+                    shape.shape.Width = block.Width;
+                    shape.shape.Height = block.Height;
+
+                    TXT txt = new TXT(15, 6);
+                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.kurwa_txtbox, -1);
+                    txt.txtbx.Text = block.TextIntoTextBox;
+
+                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 6);
+
+                    ConnectionLine connectionLine = new ConnectionLine();
+
+                    shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    CanvasPos.Children.Add(txt.txtbx);
+                    CanvasPos.Children.Add(txt.kurwa_txtbox);
+                    CanvasPos.Children.Add(shape.shape);
+
+                    CanvasPos.Children.Add(connectionLine.circle_left);
+                    CanvasPos.Children.Add(connectionLine.circle_right);
+                    CanvasPos.Children.Add(connectionLine.circle_top);
+                    CanvasPos.Children.Add(connectionLine.circle_bottom);
+
+                    CanvasPos.Children.Add(anchor.anchor_NS);
+                    CanvasPos.Children.Add(anchor.anchor_WE);
+                    CanvasPos.Children.Add(anchor.anchor_NWSE);
+
+                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
+                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - txt.text_left_indent);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - txt.text_top_indent);
+
+                    Canvas.SetLeft(txt.kurwa_txtbox, Canvas.GetLeft(shape.shape) + shape.shape.ActualWidth / 2);
+                    Canvas.SetTop(txt.kurwa_txtbox, Canvas.GetTop(shape.shape) + shape.shape.ActualHeight / 2);
+
+                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 18);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 1);
+
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + shape.shape.Width + 15);
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 1);
+
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 15);
+
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + shape.shape.Height + 10);
+
+                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx, txt.kurwa_txtbox));
+
+                    AddEll_Shape(shape, connectionLine, txt, anchor);
+                }
+                DiagrammAnalyzer.shapesCounter++;
+            }
+            //Булевые переменные, необходимые для сохранения индексации
+            DiagrammAnalyzer.isLoaded = false;
+            DiagrammAnalyzer.isPrevNext = false;
+            diagramm.ID = tempDiagramm.ID;
+            tempDiagramm = new Diagramm();
+        }
+
+        /// <summary>
+        /// Перейти к следующей сохраненной итерации блок-схемы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void next(object sender, MouseButtonEventArgs e)
+        {
+            DiagrammAnalyzer.isCanBeLoaded = true;
+            PrevNext.Next(ref diagramm, DiagrammAnalyzer.isCanBeLoaded);
+            if (DiagrammAnalyzer.isCanBeLoaded)
+                CutDownLoad(diagramm);
+            DiagrammAnalyzer.isChanged = true;
+        }
+        /// <summary>
+        /// Перейти к предыдущей сохраненной итерации блок-схемы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void prev(object sender, MouseButtonEventArgs e)
+        {
+            DiagrammAnalyzer.isCanBeLoaded = true;
+            PrevNext.Prev(ref diagramm, DiagrammAnalyzer.isCanBeLoaded);
+            if (DiagrammAnalyzer.isCanBeLoaded) CutDownLoad(diagramm);
+            DiagrammAnalyzer.isChanged = true;
+        }
+
         #endregion
     }
 }
