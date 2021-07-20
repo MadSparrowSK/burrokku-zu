@@ -133,7 +133,7 @@
                            />
                             <Label Content="Помощь" Style="{StaticResource ButtonHead}"
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
-                           MouseDown="prev"/>
+                           MouseDown="Label_MouseDown"/>
 
 
 
@@ -226,6 +226,8 @@
                                  Name="Cycle"  MouseDown="DragDrop_MD"></Polygon>
 
                         </Label>
+
+                       
                     </StackPanel>
                     
                     <Polyline Stroke="Transparent" Points="8,0 0,0 0,8 8,0" Name="Anchor"/>

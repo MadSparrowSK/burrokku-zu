@@ -360,14 +360,14 @@ namespace Interface_1._0
 
         bool textDrop = false;
 
-        static int shape_count = 0;
+        static int DiagrammAnalyzer.shapesCounter = 0;
         void ClearCanvas()
         {
-            if (shape_count == 0)
+            if (DiagrammAnalyzer.shapesCounter == 0)
             {
                 CanvasPos.Children.Clear();
                 shapesInfo.Clear();
-                shape_count = 0;
+                DiagrammAnalyzer.shapesCounter = 0;
                 Init();
             }
             else
@@ -3424,7 +3424,7 @@ namespace Interface_1._0
 
             void CircleLeftMD(object sender, MouseButtonEventArgs e)
             {
-                if(shape_count > 1)
+                if(DiagrammAnalyzer.shapesCounter > 1)
                 {
                     lineMove = true;
 
@@ -3449,7 +3449,7 @@ namespace Interface_1._0
             }
             void CircleRightMD(object sender, MouseButtonEventArgs e)
             {
-                if (shape_count > 1)
+                if (DiagrammAnalyzer.shapesCounter > 1)
                 {
                     lineMove = true;
 
@@ -3474,7 +3474,7 @@ namespace Interface_1._0
             }
             void CircleTopMD(object sender, MouseButtonEventArgs e)
             {
-                if (shape_count > 1)
+                if (DiagrammAnalyzer.shapesCounter > 1)
                 {
                     lineMove = true;
 
@@ -3499,7 +3499,7 @@ namespace Interface_1._0
             }
             void CircleBottomMD(object sender, MouseButtonEventArgs e)
             {
-                if (shape_count > 1)
+                if (DiagrammAnalyzer.shapesCounter > 1)
                 {
                     lineMove = true;
 
@@ -3525,7 +3525,7 @@ namespace Interface_1._0
 
             void LineLeftMM(object sender, MouseEventArgs e)
             {
-                if (shape_count > 1 && lineMove)
+                if (DiagrammAnalyzer.shapesCounter > 1 && lineMove)
                 {
                     Line obj_line = (Line)sender;
                     obj_line.CaptureMouse();
@@ -3566,7 +3566,7 @@ namespace Interface_1._0
             }
             void LineRightMM(object sender, MouseEventArgs e)
             {
-                if (shape_count > 1 && lineMove)
+                if (DiagrammAnalyzer.shapesCounter > 1 && lineMove)
                 {
                     Line obj_line = (Line)sender;
                     obj_line.CaptureMouse();
@@ -3607,7 +3607,7 @@ namespace Interface_1._0
             }
             void LineTopMM(object sender, MouseEventArgs e)
             {
-                if (shape_count > 1 && lineMove)
+                if (DiagrammAnalyzer.shapesCounter > 1 && lineMove)
                 {
                     Line obj_line = (Line)sender;
                     obj_line.CaptureMouse();
@@ -3648,7 +3648,7 @@ namespace Interface_1._0
             }
             void LineBottomMM(object sender, MouseEventArgs e)
             {
-                if (shape_count > 1 && lineMove)
+                if (DiagrammAnalyzer.shapesCounter > 1 && lineMove)
                 {
                     Line obj_line = (Line)sender;
                     obj_line.CaptureMouse();
@@ -5651,10 +5651,10 @@ namespace Interface_1._0
 
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    if (shape_count == 1)
+                    if (DiagrammAnalyzer.shapesCounter == 1)
                     {
                         CanvasPos.Children.Clear();
-                        shape_count = 1;
+                        DiagrammAnalyzer.shapesCounter = 1;
                         Init();
                     }
                     else
@@ -5780,7 +5780,7 @@ namespace Interface_1._0
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
 
-                    --shape_count;
+                    --DiagrammAnalyzer.shapesCounter;
                     ClearCanvas();
                 }
 
@@ -7728,10 +7728,10 @@ namespace Interface_1._0
 
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    if (shape_count == 1)
+                    if (DiagrammAnalyzer.shapesCounter == 1)
                     {
                         CanvasPos.Children.Clear();
-                        shape_count = 1;
+                        DiagrammAnalyzer.shapesCounter = 1;
                         Init();
                     }
                     else
@@ -7854,7 +7854,7 @@ namespace Interface_1._0
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
 
-                    --shape_count;
+                    --DiagrammAnalyzer.shapesCounter;
                     ClearCanvas();
                 }
 
@@ -9820,10 +9820,10 @@ namespace Interface_1._0
 
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    if (shape_count == 1)
+                    if (DiagrammAnalyzer.shapesCounter == 1)
                     {
                         CanvasPos.Children.Clear();
-                        shape_count = 1;
+                        DiagrammAnalyzer.shapesCounter = 1;
                         Init();
                     }
                     else
@@ -9946,7 +9946,7 @@ namespace Interface_1._0
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
 
-                    --shape_count;
+                    --DiagrammAnalyzer.shapesCounter;
                     ClearCanvas();
                 }
 
@@ -11800,10 +11800,10 @@ namespace Interface_1._0
 
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    if (shape_count == 1)
+                    if (DiagrammAnalyzer.shapesCounter == 1)
                     {
                         CanvasPos.Children.Clear();
-                        shape_count = 1;
+                        DiagrammAnalyzer.shapesCounter = 1;
                         Init();
                     }
                     else
@@ -11927,7 +11927,7 @@ namespace Interface_1._0
                     PrevNext.AddDiagramm(ref diagramm);
 
 
-                    --shape_count;
+                    --DiagrammAnalyzer.shapesCounter;
                     ClearCanvas();
                 }
 
@@ -13568,7 +13568,7 @@ namespace Interface_1._0
             if (Rectangle_Check)
             {
                 Rectangle_Check = false;
-                ++shape_count;
+                ++DiagrammAnalyzer.shapesCounter;
 
                 RP_Shapes shape = new RP_Shapes(Rekt, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1));
                 shape.shape.Name = "Rekt_" + DiagrammAnalyzer.shapesCounter.ToString();
@@ -13636,7 +13636,7 @@ namespace Interface_1._0
             if (Parrabullem_Check)
              {
                  Parrabullem_Check = false;
-                 ++shape_count;
+                 ++DiagrammAnalyzer.shapesCounter;
 
                  RP_Shapes shape = new RP_Shapes(Parrabellum, new Point(8, 1), new Point(0, 30), new Point(60, 30), new Point(68, 1));
                  shape.shape.Name = "Parrabullem_" + DiagrammAnalyzer.shapesCounter.ToString();
@@ -13697,7 +13697,7 @@ namespace Interface_1._0
             if (Rhomb_Check)
              {
                  Rhomb_Check = false;
-                 ++shape_count;
+                 ++DiagrammAnalyzer.shapesCounter;
 
                  Rh_Shape shape = new Rh_Shape(Rhomb, new Point(0, 8), new Point(40, 20), new Point(80, 8), new Point(40, -4));
                  shape.shape.Name = "Rhomb_" + DiagrammAnalyzer.shapesCounter.ToString();
@@ -13758,7 +13758,7 @@ namespace Interface_1._0
             if (Cycle_Check)
              {
                 Cycle_Check = false;
-                ++shape_count;
+                ++DiagrammAnalyzer.shapesCounter;
 
                 Cy_Shape shape = new Cy_Shape(Cycle, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1), new Point(-1, 15), new Point(69, 15));
                 shape.shape.Name = "Cycle_" + DiagrammAnalyzer.shapesCounter.ToString();
@@ -13820,7 +13820,7 @@ namespace Interface_1._0
             if (Ellipse_Check)
              {
                  Ellipse_Check = false;
-                 ++shape_count;
+                 ++DiagrammAnalyzer.shapesCounter;
 
                  Ell_Shape shape = new Ell_Shape(Ellipse);
                  shape.shape.Name = "Ellipse_" + DiagrammAnalyzer.shapesCounter.ToString();
@@ -15342,7 +15342,7 @@ namespace Interface_1._0
         private void inTrash(object sender, RoutedEventArgs e)
         {
             CanvasPos.Children.Clear();
-            shape_count = 0;
+            DiagrammAnalyzer.shapesCounter = 0;
             Init();
             DiagrammAnalyzer.isChanged = false;
             if (!DiagrammAnalyzer.isPrevNext)
@@ -16342,5 +16342,37 @@ namespace Interface_1._0
 
         }
         #endregion
+
+        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Shape Rectangle = null;
+            Ellipse from = null;
+            Ellipse to = null;
+            bool stop = true;
+            Line line = new Line();
+            CanvasPos.Children.Add(line);
+            line.Stroke = Brushes.Yellow;
+            line.StrokeThickness = 1.5;
+            line.MouseDown += LineMouseDown;
+
+            line.X1 = 421;
+            line.Y1 = 145.5;
+
+            line.X2 = 429;
+            line.Y2 = 404;
+            foreach (Object shape in CanvasPos.Children)
+            {
+                if ((shape is Polygon polygon1) && (polygon1.Name != "") && (polygon1.Name[0] != 'C') && (stop))
+                {
+                    Rectangle = (Shape)shape;
+                    stop = false;
+                }
+                if ((shape is Ellipse ell) && (ell.Name == "C_Rect_0_bottom"))
+                    from = ell;
+                if ((shape is Ellipse ell1) && (ell1.Name == "C_Rect_1_top"))
+                    to = ell1;
+            }
+            LogicOf90LineBuild(Rectangle, from, to, line);
+        }
     }
 }
