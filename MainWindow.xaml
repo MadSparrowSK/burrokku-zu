@@ -1,326 +1,313 @@
-﻿<Window x:Class="Interface_1._0.MainWindow"
+﻿ <Window x:Class="Interface_1._0.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Interface_1._0"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="600" Width="1000"
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None"
-        Background="Black"
+        Background="#FFBEBEBE"
         ResizeMode="CanResizeWithGrip"
-        MinHeight="400"
-        MinWidth="800"
-        Icon="Icon/Icon.jpg">
+        MinHeight="540"
+        MinWidth="900"
+        Icon="Icon/Icon.jpg"
+        Closing ="Window_Closing"
+        PreviewKeyDown="KeyBinding"
+        
+        >
+    <Window.Resources>
 
-    <Border BorderThickness="1.2"
-            CornerRadius="0" Name="Border">
-        <Border.BorderBrush>
-            <SolidColorBrush Color="Purple" Opacity="0.5"></SolidColorBrush>
-        </Border.BorderBrush>
-        <Border.Background>
-            <SolidColorBrush Color="Gray" Opacity="0.1"></SolidColorBrush>
-        </Border.Background>
 
-        <Grid ShowGridLines="False" Name="GridPos">
+    </Window.Resources>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition Height="25"></RowDefinition>
-            </Grid.RowDefinitions>
+    <Border Name="Border">
+        <Grid>
+            <Grid ShowGridLines="False">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="110"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-            <!--#region  Header-->
-            
-            <!--#region right_side-->
-            <DockPanel Grid.Column="2"
+                <!--#region  Header-->
+                <DockPanel Grid.Column="2"
                        Grid.Row="0"
-                       Grid.ColumnSpan="2"
-                       MouseLeftButtonDown="Mouse_Drag_Window" Name="RHDP">
-                <DockPanel.Background>
-                    <SolidColorBrush Color="Gray" Opacity="0.2">
-                    </SolidColorBrush>
-                </DockPanel.Background>
+                       MouseLeftButtonDown="Mouse_Drag_Window" Name="RHDP"
+                       KeyDown="KeyBinding">
+                    <DockPanel.Background>
+                        <SolidColorBrush Color="#FF2E2E30">
+                        </SolidColorBrush>
+                    </DockPanel.Background>
 
-                <StackPanel
+                    <StackPanel
                         Orientation="Horizontal"
-                        HorizontalAlignment="Right">
-
-                    <Label Width="44"
+                        HorizontalAlignment="Right"
+                        KeyDown="KeyBinding">
+                        <Label Width="44"
                            MouseEnter="Mouse_Enter"
                            MouseLeave="Mouse_Leave"
                            MouseLeftButtonDown="Roll_Up"
-                           Padding="14.55,18,0,0">
+                           Padding="14.55,20,0,0">
 
-                        <Polyline Stroke="White" Points=" 0,0 15,0" Name="RollUp"></Polyline>
-                        
-                    </Label>
+                            <Polyline Stroke="White" Points=" 0,0 15,0" Name="RollUp"></Polyline>
+                        </Label>
 
-                    <Label Foreground="White"
+                        <Label Foreground="White"
                            Width="44"
                            MouseEnter="Mouse_Enter"
                            MouseLeave="Mouse_Leave"
-                           Padding="17,12,5,5"
-                           MouseLeftButtonDown="Resize_Wondow">
-
-                        <Canvas>
-                            <Rectangle Stroke="White"
+                           Padding="17,14,5,5"
+                           MouseLeftButtonDown="Resize_Wondow"
+                           >
+                            <Canvas >
+                                <Rectangle Stroke="White"
                                        Height="10"
                                        Width="10"
                                        Panel.ZIndex="1"
-                                       Fill="Black"></Rectangle>
+                                       Fill="#2d2d30"></Rectangle>
 
-                            <Rectangle Stroke="White"
+                                <Rectangle Stroke="White"
                                        Width="10"
                                        Height="10"
                                        Canvas.Top="-2"
                                        Canvas.Right="-12"></Rectangle>
-                        </Canvas>
+                            </Canvas>
+                        </Label>
 
-                    </Label>
-
-                    <Label MouseEnter="Mouse_Enter_Close"
+                        <Label MouseEnter="Mouse_Enter_Close"
                            MouseLeave="Mouse_Leave_Close"
                            MouseLeftButtonDown="Close_Click" 
                            Foreground="White"
                            Name="lbl_Close"
-                           Padding="30,9,7,5"
-                           Width="47">
+                           Padding="28,14,7,5"
+                           Width="44">
 
-                        <Canvas>
-                            <Polyline Stroke="White" Points="0,0 -13,15"></Polyline>
-                            <Polyline Stroke="White" Points=" 0,15 -13,0"></Polyline>
-                            
-                        </Canvas>
-                        
-                    </Label>
+                            <Canvas  >
+                                <Polyline Stroke="White" Points="0,0 -12,12"></Polyline>
+                                <Polyline Stroke="White" Points=" 0,12 -12,0"></Polyline>
+                            </Canvas>
+                        </Label>
 
-                </StackPanel>
-            </DockPanel>
-            <!--#endregion-->
-            
-            <!--#region left_side-->
-            <DockPanel Grid.Column="0"
+                    </StackPanel>
+                </DockPanel>
+                <!--#endregion-->
+
+                <!--#region left_side-->
+                <DockPanel Grid.Column="0"
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
-                       MouseLeftButtonDown="Mouse_Drag_Window">
-                <DockPanel.Background>
-                    <SolidColorBrush Color="Gray" Opacity="0.2"></SolidColorBrush>
-                </DockPanel.Background>
+                       MouseLeftButtonDown="Mouse_Drag_Window"
+                       >
+                    <DockPanel.Background>
+                        <SolidColorBrush Color="#FF2E2E30" ></SolidColorBrush>
+                    </DockPanel.Background>
 
-                <StackPanel Orientation="Vertical"
-                            HorizontalAlignment="Left">
-                    
-                    <!--#region symbol-->
-                    <Label Padding="20,7,44,0">
-                        <Canvas>
-                            <Polyline Stroke="Orange" Points="38,2 30,13"></Polyline>
-                            <Polyline Points="42,4 48,8 42,11" Stroke="#D032FC"></Polyline>
-                            <Polyline Points="25,4 19,8 25,11" Stroke="#D032FC"></Polyline>
-                            <Polyline Points="17,1 8,8 17,14.25 50,14.25  59,8 50,1 17,1" Stroke="White"></Polyline>
+                </DockPanel>
+                <!--#endregion-->
 
-                        </Canvas>
-                    </Label>
-                    <!--#endregion-->
+                <!--#region menu_bar-->
 
-                    <!--<Label Content="Burrokku-Zu"
-                           FontSize="9"
-                           FontFamily="/Font/#Clickuper"
-                           Foreground="White"
-                           Padding="20,3,0,0"></Label>-->
-                </StackPanel>
-            </DockPanel>
-            <!--#endregion-->
-            
-            <!--#region menu_bar-->
-
-            <DockPanel Grid.Column="1"
-                       Grid.Row="0" HorizontalAlignment="Left">
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="File" Foreground="Gray" Padding="10,5,10,0" 
+                <DockPanel Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Grid.Row="0" HorizontalAlignment="Left" Width="454" Margin="0,2"
+                       >
+                    <StackPanel Orientation="Vertical" MouseLeave="Border_MouseMove">
+                        <StackPanel Orientation="Horizontal" Height="18" Margin="0,5,0,0">
+                            <Label Content="Файл"  Style="{StaticResource ButtonHead}"
+                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
+                           MouseDown="FileDown"
+                                   MouseUp="ButtonUp"/>
+                            <Label Content="Редактировать" Style="{StaticResource ButtonHead}" 
+                                   MouseEnter="Header_Mouse_Enter"
+                           MouseLeave="Header_Mouse_Leave"
+                           MouseDown="EditDown"
+                           MouseUp="ButtonUp"
+                           />
+                            <Label Content="Помощь" Style="{StaticResource ButtonHead}"
                            MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
                            MouseDown="prev"/>
 
-                    <Label Content="settings" Foreground="Gray" Padding="10,5,10,0"
-                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
-                           MouseDown="next"/>
 
-                    <Label Content="something more ..." MouseEnter="Header_Mouse_Enter"
-                           MouseLeave="Header_Mouse_Leave"
-                           Foreground="Gray" Padding="10,5,10,0"/>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Name="gridPNG">
+
+                            <Image Source="Resources\Grid_3.png" Width="12" Margin="8,2,0,0" MouseDown="GridSwitcher"/>
+                        </StackPanel>
+                    </StackPanel>
+
+
+
+                </DockPanel>
+
+                <!--#endregion-->
+
+                <!--#region  main field-->
+                <Canvas Grid.Row="1"
+                            Grid.Column="1"
+                            AllowDrop="True"
+                            Drop="DnD_Drop"
+                            Name="CanvasPos"
+                            Focusable="True" Grid.ColumnSpan="2" Margin="0,0,-1209,-1528"
+                        Background="{StaticResource gridGeom}"
+                        >
+
                     
-                </StackPanel>
+                </Canvas>
 
-            </DockPanel>
-            
-            <!--#endregion-->
-            
-            <!--#endregion-->
-            
-           <!--#region  main field-->
+                <!--#endregion-->
 
-            <Canvas Grid.Row="1"
-                   Grid.Column="1"
-                   Grid.ColumnSpan="2"
-                   Background="Black"
-                   AllowDrop="True"
-                   Drop="DnD_Drop"
-                   Name="CanvasPos">
-                
-            </Canvas>
-            <!--#endregion-->
+                <!--#region left_side_bar -->
 
-           <!--#region left side bar-->
-
-           <Border    Grid.Column="0"
-                      Grid.Row="1">
-                <Border.Background>
-                    <SolidColorBrush Color="Gray" Opacity="0.2"></SolidColorBrush>
-                </Border.Background>
-           </Border>
-            
-           <DockPanel Grid.Column="0"
+                <Border    Grid.Column="0"
                        Grid.Row="1"
-                       VerticalAlignment="Top">
-                <DockPanel.Background>
-                    <SolidColorBrush Color="Gray" Opacity="0"></SolidColorBrush>
-                </DockPanel.Background>
+                       BorderBrush="#c0c0c0" BorderThickness="0,0,2,0"
+                       >
+                    <Border.Background>
+                        <SolidColorBrush Color="#FFD0D0D0" ></SolidColorBrush>
+                    </Border.Background>
+                </Border>
 
-                <StackPanel Orientation="Vertical">
+                <DockPanel Grid.Column="0"
+                       Grid.Row="1"
+                       VerticalAlignment="Top" Height="239">
+                    <StackPanel Orientation="Vertical">
 
-                    <!--#region  ellipse-->
-                    <Label Padding="20,10,0,10"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
+                        <Label Padding="20,15,0,10"
                            Name="lbl_Ellipse">
-                        <Rectangle Width="70"
-                                   Height="25"
-                                   Fill="Transparent"
-                                   Stroke="Gray"
-                                   RadiusX="13"
-                                   RadiusY="20"
+                            <Rectangle Style="{StaticResource Ellipse}"
                                    Name="Ellipse"
                                    MouseDown="DragDrop_MD"/>
-                    </Label>
-                    <!--#endregion-->
-                    
-                    <!--#region rectangle-->
-                    <Label Padding="20,10,0,10"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
-                           Name="lbl_Rect">
-                        
-                        <Polygon Stroke="Gray" Fill="Transparent" 
-                                 Points="8,1 8,30 60,30 60,1"
-                                 Name="Rekt" MouseDown="DragDrop_MD"/>
-                            
-                    </Label>
-                    <!--#endregion-->
+                        </Label>
 
-                    <!--#region parallelogram-->
-                    <Label Padding="19,10,0,10"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
+                        <Label Padding="20,10,0,10"
+                        
+                           Name="lbl_Rect">
+                            <Polygon Style="{StaticResource Rect}"
+                                 Name="Rekt" MouseDown="DragDrop_MD"/>
+
+                        </Label>
+
+                        <Label Padding="19,10,0,10"
                            Name="lbl_Parrabellum">
 
-                        <Polygon Stroke="Gray" Points="8,1 0,30 60,30 68,1"
-                                 Name="Parrabellum" Fill="Transparent"
+                            <Polygon Style="{StaticResource Parrabullem}"
+                                 Name="Parrabellum" 
                                  MouseDown="DragDrop_MD"></Polygon>
-                       
-                    </Label>
-                    <!--#endregion-->
-                    
-                    <!--#region rhombus-->
-                    <Label Padding="14,12,0,8"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
+
+                        </Label>
+
+                        <Label Padding="14,12,0,8"
                            Name="lbl_Rhomb">
 
-                        <Polygon Stroke="Gray" Points="0,8 40,20 80,8 40,-4"
-                                 Name="Rhomb" Fill="Transparent"
+                            <Polygon Style="{StaticResource Rhomb}"
+                            Name="Rhomb" 
                                  MouseDown="DragDrop_MD"/>
 
-                    </Label>
-                    <!--#endregion-->
-                    
-                    <!--#region cycle-->
-                    <Label Padding="20,16,0,12"
-                           MouseEnter="SideBar_Mouse_Enter"
-                           MouseLeave="SideBar_Mouse_Leave"
+                        </Label>
+
+                        <Label Padding="9,12,0,-1"
+                           Name="lbl_RWL">
+                        </Label>
+
+                        <Label Padding="20,16,0,12"
                            Name="lbl_Cylce">
 
-                        <Polygon Stroke="Gray" Points="8,1 -1,15 8,30 60,30 69,15 60,1"
-                                 Name="Cycle" Fill="Transparent" MouseDown="DragDrop_MD"></Polygon>
+                            <Polygon Style="{StaticResource Cycle}"
+                            
+                                 Name="Cycle"  MouseDown="DragDrop_MD"></Polygon>
 
-                    </Label>
-                    <!--#endregion-->
-
-                </StackPanel>
-
-
-            </DockPanel>
-
-           <DockPanel Grid.Column="0"
-                       Grid.Row="1"
-                       VerticalAlignment="Bottom">
-                <WrapPanel HorizontalAlignment="Left">
-                    <Label Content="Clear" Foreground="Gray"
-                           MouseEnter="Clear_Mouse_Enter"
-                           MouseLeave="Clear_Mouse_Leave"
-                           Name="Clear"
-                           MouseDown="inTrash"
-                           FontFamily="Clickuper"/>
-
-                    <Label Content="Text" Foreground="Gray"
-                           MouseEnter="Clear_Mouse_Enter"
-                           MouseLeave="Clear_Mouse_Leave"
-                           Name="Text"
-                           MouseDown="TextMD"/>
-                </WrapPanel> 
-           </DockPanel>
-            
-           <!--#endregion-->
-             
-           <!--#region footer-->
-           <Border    Grid.ColumnSpan="4"
-                       Grid.Row="2"
-                       Grid.Column="0">
-                <Border.Background>
-                    <SolidColorBrush Color="Purple" Opacity="0.5"></SolidColorBrush>
-                </Border.Background>
-           </Border>
-
-
-           <DockPanel Grid.ColumnSpan="3"
-                       Grid.Row="2"
-                       Grid.Column="0" 
-                       HorizontalAlignment="Left">
-
-                <StackPanel Orientation="Horizontal">
-
-                    <Label Content="Burrokku-zu" FontFamily="Clickuper"
-                           FontSize="15" Padding="10,3,0,0" 
-                           Foreground="Gray" Opacity="0.7"/>
-
+                        </Label>
+                    </StackPanel>
+                    
                     <Polyline Stroke="Transparent" Points="8,0 0,0 0,8 8,0" Name="Anchor"/>
                     <Polyline Points="4,0 0,10 4,20 4,0" Stroke="Transparent" Name="anchor_Left"/>
                     <Polyline Points="0,4 10,0 20,4 0,4" Stroke="Transparent" Name="anchor_Top"/>
-                    
-                    
+
+                </DockPanel>
+                <!--#endregion-->
+            </Grid>
+            <Grid Name="FileZone" Background="#FF41403E" Height="50" Width="130" Margin="9,24,0,0"
+                  Grid.Row="1" Grid.Column="1" 
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Left"
+                  Panel.ZIndex="900"
+                  MouseLeave="FileZone_MouseLeave"
+                  Visibility="Hidden">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="130" Background="#FF2E2E30">
+                    <Label   Style="{StaticResource Button}" MouseDown="DownLoad" Name="btnLoad">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Загрузить"/>
+                                <TextBlock Text="Ctrl+L" Margin="52,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
+                    </Label>
+                    <Label  Style="{StaticResource Button}"  MouseDown="CutDownSave" Name="btnShortSave">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Сохранить"/>
+                                <TextBlock Text="Alt+S" Margin="48,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
+                    </Label>
+                    <Label  Style="{StaticResource Button}" MouseDown="DownSave" Name="btnSave">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Сохранить как"/>
+                                <TextBlock Text="Ctrl+S" Margin="28,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
+                    </Label>
                 </StackPanel>
-                
-           </DockPanel> 
-           <!--#endregion-->
-            
+            </Grid>
+            <Grid Name="EditZone" Background="#FF2E2E30"  Height="50" Width="130" Margin="59,24,0,0"
+                  Grid.Row="1" Grid.Column="1" 
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Left"
+                  Panel.ZIndex="900"
+                  MouseLeave="EditZone_MouseLeave"
+                  Visibility="Hidden">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="130">
+                    <Label  Style="{StaticResource Button}"  Name="btnPrev" MouseDown="prev">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Отменить"/>
+                                <TextBlock Text="Ctrl+Z" Margin="50,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
+                    </Label>
+                    <Label  Style="{StaticResource Button}" Name="btnNext" MouseDown="next">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Восстановить"/>
+                                <TextBlock Text="Ctrl+Y" Margin="33,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
+                    </Label>
+                    <Label  Style="{StaticResource Button}"  Name="btnDelete" MouseDown="inTrash">
+                        <Label.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Удалить все"/>
+                                <TextBlock Text="Alt+C" Margin="43,0,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </Label.Content>
+                    </Label>
+
+                </StackPanel>
+
+            </Grid>
         </Grid>
     </Border>
+
+
+
 </Window>

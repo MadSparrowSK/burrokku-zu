@@ -16206,5 +16206,129 @@ namespace Interface_1._0
         }
 
         #endregion
+
+        #region Interaction with window
+        private void Border_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (((e.MouseDevice.DirectlyOver == FileZone) || (e.MouseDevice.DirectlyOver is Label) || (e.MouseDevice.DirectlyOver is StackPanel)) && (EditZone.Visibility == Visibility.Hidden))
+            {
+                FileZone.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                FileZone.Visibility = Visibility.Hidden;
+
+            }
+            if (((e.MouseDevice.DirectlyOver == EditZone) || (e.MouseDevice.DirectlyOver is Label) || (e.MouseDevice.DirectlyOver is StackPanel)) && (FileZone.Visibility == Visibility.Hidden))
+            {
+                EditZone.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                EditZone.Visibility = Visibility.Hidden;
+
+            }
+
+            return;
+        }
+
+        private void ButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush2");
+
+        }
+
+        private void EditDown(object sender, MouseButtonEventArgs e)
+        {
+            if (FileZone.Visibility == Visibility.Visible) FileZone.Visibility = Visibility.Hidden;
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush1");
+            EditZone.Visibility = Visibility.Visible;
+        }
+
+        private void EditZone_MouseLeave(object sender, MouseEventArgs e)
+        {
+            EditZone.Visibility = Visibility.Hidden;
+        }
+
+        private void GridSwitcher(object sender, MouseButtonEventArgs e)
+        {
+            if (!CanvasSwitcher)
+            {
+                CanvasPos.Background = (Brush)Application.Current.MainWindow.FindResource("CanvasBackground");
+                CanvasSwitcher = true;
+            }
+            else
+            {
+                CanvasPos.Background = (Brush)Application.Current.MainWindow.FindResource("gridGeom");
+                CanvasSwitcher = false;
+            }
+        }
+
+        private void FileZone_MouseLeave(object sender, MouseEventArgs e)
+        {
+            FileZone.Visibility = Visibility.Hidden;
+        }
+
+        private void FileDown(object sender, MouseButtonEventArgs e)
+        {
+            if (EditZone.Visibility == Visibility.Visible) EditZone.Visibility = Visibility.Hidden;
+
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush1");
+            FileZone.Visibility = Visibility.Visible;
+
+        }
+
+        #endregion
+
+        #region windowsActions
+
+        /// <summary>
+        /// Вызов окна, которое напоминает о сохранении
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            /*
+            SaveWindow _window = new SaveWindow();
+            _window.Owner = this;
+            if (DiagrammAnalyzer.isChanged)
+            {
+                if (_window.ShowDialog() == false)
+                {
+                    e.Cancel = true; // Отмена закрытия окна 
+                    DiagrammAnalyzer.isChanged = false;
+                    DiagrammAnalyzer.tempPath = "";
+                }
+            }
+            */
+            
+        }
+        /// <summary>
+        /// Событие, в котором прописаны все комбинации клавиш
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void KeyBinding(object sender, KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.IsKeyDown(Key.C) && (e.KeyboardDevice.Modifiers == ModifierKeys.Alt))
+                inTrash(null, null);
+            if ((e.Key == Key.S) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
+            {
+                DownSave(null, null);
+                DiagrammAnalyzer.tempPath = "";
+            }
+
+            if ((e.Key == Key.L) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
+                DownLoad(null, null);
+            if ((e.Key == Key.Z) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
+                prev(null, null);
+            if ((e.Key == Key.Y) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
+                next(null, null);
+            if (e.KeyboardDevice.IsKeyDown(Key.S) && (e.KeyboardDevice.Modifiers == ModifierKeys.Alt))
+                CutDownSave(null, null);
+
+        }
+        #endregion
     }
 }

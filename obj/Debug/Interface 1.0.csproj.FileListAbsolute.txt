@@ -57,3 +57,4 @@ C:\Программирование\проекты\Project_block_diagram\Burrokk
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\System.Buffers.xml
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\System.Memory.xml
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\bin\Debug\System.Numerics.Vectors.xml
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\App.baml
