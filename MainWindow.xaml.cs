@@ -250,7 +250,8 @@ namespace Interface_1._0
         #region DragMainWindow
         private void Mouse_Drag_Window(object sender, MouseButtonEventArgs e)
         {
-            DragMove();
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
         }
         #endregion
 
@@ -13576,7 +13577,7 @@ namespace Interface_1._0
                 TXT txt = new TXT(7, 5);
                 Canvas.SetZIndex(txt.txtbx, -1);
                 Canvas.SetZIndex(txt.kurwa_txtbox, -1);
-
+                shape.shape.Style = (Style)FindResource("Rect");
                 Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
                 ConnectionLine connectionLine = new ConnectionLine();
@@ -13634,6 +13635,7 @@ namespace Interface_1._0
                  shape.shape.Name = "Parrabullem_" + DiagrammAnalyzer.shapesCounter.ToString();
                  DiagrammAnalyzer.shapesCounter++;
                  TXT txt = new TXT(7, 5);
+                 shape.shape.Style = (Style)FindResource("Parrabullem");
                  Canvas.SetZIndex(txt.txtbx, -1);
                  Canvas.SetZIndex(txt.kurwa_txtbox, -1);
 
@@ -13694,6 +13696,7 @@ namespace Interface_1._0
                  shape.shape.Name = "Rhomb_" + DiagrammAnalyzer.shapesCounter.ToString();
                  DiagrammAnalyzer.shapesCounter++;
                  TXT txt = new TXT(10, 7);
+                 shape.shape.Style = (Style)FindResource("Rhomb");
                  Canvas.SetZIndex(txt.txtbx, -1);
                  Canvas.SetZIndex(txt.kurwa_txtbox, -1);
 
@@ -13747,15 +13750,16 @@ namespace Interface_1._0
              }
             if (Cycle_Check)
              {
-                 Cycle_Check = false;
-                 ++shape_count;
+                Cycle_Check = false;
+                ++shape_count;
 
-                 Cy_Shape shape = new Cy_Shape(Cycle, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1), new Point(-1, 15), new Point(69, 15));
-                 shape.shape.Name = "Cycle_" + DiagrammAnalyzer.shapesCounter.ToString();
-                 DiagrammAnalyzer.shapesCounter++;
-                 TXT txt = new TXT(30, 5);
-                 Canvas.SetZIndex(txt.txtbx, -1);
-                 Canvas.SetZIndex(txt.kurwa_txtbox, -1);
+                Cy_Shape shape = new Cy_Shape(Cycle, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1), new Point(-1, 15), new Point(69, 15));
+                shape.shape.Name = "Cycle_" + DiagrammAnalyzer.shapesCounter.ToString();
+                DiagrammAnalyzer.shapesCounter++;
+                TXT txt = new TXT(30, 5);
+                shape.shape.Style = (Style)FindResource("Cycle");
+                Canvas.SetZIndex(txt.txtbx, -1);
+                Canvas.SetZIndex(txt.kurwa_txtbox, -1);
 
                  Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
@@ -13816,6 +13820,7 @@ namespace Interface_1._0
                  DiagrammAnalyzer.shapesCounter++;
 
                  TXT txt = new TXT(15, 6);
+                 shape.shape.Style = (Style)FindResource("Ellipse");
                  Canvas.SetZIndex(txt.txtbx, -1);
                  Canvas.SetZIndex(txt.kurwa_txtbox, -1);
 
@@ -16289,7 +16294,7 @@ namespace Interface_1._0
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            /*
+            
             SaveWindow _window = new SaveWindow();
             _window.Owner = this;
             if (DiagrammAnalyzer.isChanged)
@@ -16301,7 +16306,7 @@ namespace Interface_1._0
                     DiagrammAnalyzer.tempPath = "";
                 }
             }
-            */
+            
             
         }
         /// <summary>

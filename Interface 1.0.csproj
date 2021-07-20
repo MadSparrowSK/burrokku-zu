@@ -42,6 +42,7 @@
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -76,6 +77,9 @@
     <Compile Include="NewClasses\block.cs" />
     <Compile Include="NewClasses\DiagrammAnalyzer.cs" />
     <Compile Include="NewClasses\PrevNext.cs" />
+    <Compile Include="SaveWindow.xaml.cs">
+      <DependentUpon>SaveWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shapes\Rhomb_Shape.cs" />
     <Compile Include="Shapes\RP_Shape.cs" />
     <Compile Include="Shapes\ShapeInfo.cs" />
@@ -96,6 +100,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SaveWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -128,6 +136,17 @@
   <ItemGroup>
     <Resource Include="Icon\Icon.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\csross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\grid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Grid_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\questionMark.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

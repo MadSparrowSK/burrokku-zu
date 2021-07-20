@@ -13,8 +13,7 @@ namespace Shapes
             shape = new Polygon();
             if (points != null) (shape as Polygon).Points = points;
             else (shape as Polygon).Points = copy_shape.Points;
-            (shape as Polygon).Stroke = Brushes.White;
-            shape.Fill = Brushes.Transparent;
+            
         }
         public PrimaryShape(Rectangle copy_tangle)
         {
@@ -26,8 +25,7 @@ namespace Shapes
             (shape as Rectangle).RadiusX = copy_tangle.RadiusX;
             (shape as Rectangle).RadiusY = copy_tangle.RadiusY;
 
-            shape.Stroke = Brushes.White;
-            shape.Fill = Brushes.Transparent;
+            
         }
     }
 }
