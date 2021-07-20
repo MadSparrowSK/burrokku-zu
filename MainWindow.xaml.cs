@@ -195,7 +195,7 @@ namespace Interface_1._0
             int counterForName = 0;
             foreach (Object shape in CanvasPos.Children)
             {
-                if ((shape is Polygon polygon1)&&(polygon1.Name != ""))
+                if ((shape is Polygon polygon1) && (polygon1.Name != "") && (polygon1.Name[0] != 'C'))
                 {
                     string oldName = polygon1.Name;
                     polygon1.Name = "";
@@ -216,7 +216,7 @@ namespace Interface_1._0
                     polygon1.Name = polygon1.Name + counterForName;
                     counterForName++;
                 }
-                if ((shape is Rectangle polygon)&&(polygon.Name != ""))
+                if ((shape is Rectangle polygon)&&(polygon.Name != "") && (polygon.Name[0] != 'C'))
                 {
 
                     string oldName = polygon.Name;
@@ -13587,6 +13587,13 @@ namespace Interface_1._0
 
                 shape.shape.MouseUp += UIElements_Mouse_Up;
 
+                //Тестовая зона
+                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                //
+
                 CanvasPos.Children.Add(shape.shape);
                 CanvasPos.Children.Add(txt.txtbx);
                 CanvasPos.Children.Add(txt.kurwa_txtbox);
@@ -15410,7 +15417,7 @@ namespace Interface_1._0
                     Canvas.SetZIndex(txt.txtbx, -1);
                     Canvas.SetZIndex(txt.kurwa_txtbox, -1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-
+                    shape.shape.Style = (Style)FindResource("Rect");
 
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
@@ -15482,7 +15489,7 @@ namespace Interface_1._0
                     Canvas.SetZIndex(txt.txtbx, -1);
                     Canvas.SetZIndex(txt.kurwa_txtbox, -1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-
+                    shape.shape.Style = (Style)FindResource("Parrabullem");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
                     ConnectionLine connectionLine = new ConnectionLine();
@@ -15550,7 +15557,7 @@ namespace Interface_1._0
                     Canvas.SetZIndex(txt.txtbx, -1);
                     Canvas.SetZIndex(txt.kurwa_txtbox, -1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-
+                    shape.shape.Style = (Style)FindResource("Rhomb");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 5);
 
                     ConnectionLine connectionLine = new ConnectionLine();
@@ -15627,7 +15634,7 @@ namespace Interface_1._0
                     Canvas.SetZIndex(txt.txtbx, -1);
                     Canvas.SetZIndex(txt.kurwa_txtbox, -1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-
+                    shape.shape.Style = (Style)FindResource("Cycle");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
                     ConnectionLine connectionLine = new ConnectionLine();
@@ -15692,7 +15699,7 @@ namespace Interface_1._0
                     Canvas.SetZIndex(txt.txtbx, -1);
                     Canvas.SetZIndex(txt.kurwa_txtbox, -1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-
+                    shape.shape.Style = (Style)FindResource("Ellipse");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 6);
 
                     ConnectionLine connectionLine = new ConnectionLine();
@@ -15853,7 +15860,7 @@ namespace Interface_1._0
                     Canvas.SetZIndex(txt.txtbx, -1);
                     Canvas.SetZIndex(txt.kurwa_txtbox, -1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-
+                    shape.shape.Style = (Style)FindResource("Rect");
 
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
@@ -15925,7 +15932,7 @@ namespace Interface_1._0
                     Canvas.SetZIndex(txt.txtbx, -1);
                     Canvas.SetZIndex(txt.kurwa_txtbox, -1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-
+                    shape.shape.Style = (Style)FindResource("Parrabullem");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
                     ConnectionLine connectionLine = new ConnectionLine();
@@ -15992,7 +15999,7 @@ namespace Interface_1._0
                     Canvas.SetZIndex(txt.txtbx, -1);
                     Canvas.SetZIndex(txt.kurwa_txtbox, -1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-
+                    shape.shape.Style = (Style)FindResource("Rhomb");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 5);
 
                     ConnectionLine connectionLine = new ConnectionLine();
@@ -16067,7 +16074,7 @@ namespace Interface_1._0
                     Canvas.SetZIndex(txt.txtbx, -1);
                     Canvas.SetZIndex(txt.kurwa_txtbox, -1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-
+                    shape.shape.Style = (Style)FindResource("Cycle");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
                     ConnectionLine connectionLine = new ConnectionLine();
@@ -16129,7 +16136,7 @@ namespace Interface_1._0
                     Canvas.SetZIndex(txt.txtbx, -1);
                     Canvas.SetZIndex(txt.kurwa_txtbox, -1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-
+                    shape.shape.Style = (Style)FindResource("Ellipse");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 6);
 
                     ConnectionLine connectionLine = new ConnectionLine();
