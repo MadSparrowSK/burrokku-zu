@@ -360,7 +360,7 @@ namespace Interface_1._0
 
         bool textDrop = false;
 
-        static int DiagrammAnalyzer.shapesCounter = 0;
+        
         void ClearCanvas()
         {
             if (DiagrammAnalyzer.shapesCounter == 0)
@@ -13568,7 +13568,7 @@ namespace Interface_1._0
             if (Rectangle_Check)
             {
                 Rectangle_Check = false;
-                ++DiagrammAnalyzer.shapesCounter;
+                
 
                 RP_Shapes shape = new RP_Shapes(Rekt, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1));
                 shape.shape.Name = "Rekt_" + DiagrammAnalyzer.shapesCounter.ToString();
@@ -13636,7 +13636,7 @@ namespace Interface_1._0
             if (Parrabullem_Check)
              {
                  Parrabullem_Check = false;
-                 ++DiagrammAnalyzer.shapesCounter;
+                 
 
                  RP_Shapes shape = new RP_Shapes(Parrabellum, new Point(8, 1), new Point(0, 30), new Point(60, 30), new Point(68, 1));
                  shape.shape.Name = "Parrabullem_" + DiagrammAnalyzer.shapesCounter.ToString();
@@ -13697,7 +13697,7 @@ namespace Interface_1._0
             if (Rhomb_Check)
              {
                  Rhomb_Check = false;
-                 ++DiagrammAnalyzer.shapesCounter;
+                 
 
                  Rh_Shape shape = new Rh_Shape(Rhomb, new Point(0, 8), new Point(40, 20), new Point(80, 8), new Point(40, -4));
                  shape.shape.Name = "Rhomb_" + DiagrammAnalyzer.shapesCounter.ToString();
@@ -13758,7 +13758,7 @@ namespace Interface_1._0
             if (Cycle_Check)
              {
                 Cycle_Check = false;
-                ++DiagrammAnalyzer.shapesCounter;
+                
 
                 Cy_Shape shape = new Cy_Shape(Cycle, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1), new Point(-1, 15), new Point(69, 15));
                 shape.shape.Name = "Cycle_" + DiagrammAnalyzer.shapesCounter.ToString();
@@ -13820,7 +13820,7 @@ namespace Interface_1._0
             if (Ellipse_Check)
              {
                  Ellipse_Check = false;
-                 ++DiagrammAnalyzer.shapesCounter;
+                 
 
                  Ell_Shape shape = new Ell_Shape(Ellipse);
                  shape.shape.Name = "Ellipse_" + DiagrammAnalyzer.shapesCounter.ToString();
@@ -15428,6 +15428,13 @@ namespace Interface_1._0
 
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
+
                     CanvasPos.Children.Add(shape.shape);
                     CanvasPos.Children.Add(txt.txtbx);
                     CanvasPos.Children.Add(txt.kurwa_txtbox);
@@ -16367,9 +16374,10 @@ namespace Interface_1._0
                     Rectangle = (Shape)shape;
                     stop = false;
                 }
-                if ((shape is Ellipse ell) && (ell.Name == "C_Rect_0_bottom"))
-                    from = ell;
-                if ((shape is Ellipse ell1) && (ell1.Name == "C_Rect_1_top"))
+                if (shape is Ellipse ell)
+                    if (ell.Name == "C_Rekt_0_bottom")
+                        from = ell;
+                if ((shape is Ellipse ell1) && (ell1.Name == "C_Rekt_1_top"))
                     to = ell1;
             }
             LogicOf90LineBuild(Rectangle, from, to, line);
