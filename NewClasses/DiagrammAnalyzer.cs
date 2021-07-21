@@ -21,8 +21,9 @@ namespace Interface_1._0
         public static bool isEmpty { get; set; }
         public static bool isCanBeLoaded { get; set; }
 
-        //Счетчик фигур
+        //Счетчики фигур и линий
         public static int shapesCounter { get; set; }
+        public static int linesCounter { get; set; }
         //Строки для работы с проводником
         public static string tempPath { get; set; }
         public static string pathForSaving { get; set; }
@@ -35,8 +36,10 @@ namespace Interface_1._0
             isEmpty = false;
             isCanBeLoaded = true;
             shapesCounter = 0;
+            linesCounter = 0;
             tempPath = "";
             pathForSaving = "";
+            
 
         }
     }

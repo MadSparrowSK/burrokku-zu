@@ -45,6 +45,7 @@ namespace Interface_1._0
         /// Список со всеми фигурами
         /// </summary>
         public List<Block> blocks { get; set; } = new List<Block>();
+        public List<DataForSavingLine> Lines { get; set; } = new List<DataForSavingLine>();
         //Вспоминаем, что класс - это ссылочный тип и пишем метод для передачи значения экземпляра
         /// <summary>
         /// Возвращает Diagramm-объект, хранящий значение данного объекта
@@ -178,25 +179,6 @@ namespace Interface_1._0
             IndexNumber = indexNumber;
             TextIntoTextBox = textIntoTextBox;
         }
-        /*
-        //Конструктор для работы с фигурой с текстом
-        
-        public Diagramm(Shapes shape, int nw, int ne, int sw, int se, int addpoint1 = 0, int addpoint2 = 0, int width = 0, int height = 0, int textWidth = 10, int textHeight = 10, int fontSize = 8)
-        {
-            NW = nw;
-            NE = ne;
-            SW = sw;
-            SE = se;
-            AddPoint1 = addpoint1;
-            AddPoint2 = addpoint2;
-            Width = width;
-            Height = height;
-            Shape = shape;
-            TextWidth = textWidth;
-            TextHeight = textHeight;
-            FontSize = fontSize;
-        }
-        */
 
         /// <summary>
         /// Возвращает Block-объект, хранящий значение данного объекта
@@ -233,29 +215,39 @@ namespace Interface_1._0
         }
 
     }
-
-    class Arrows
+    /// <summary>
+    /// Класс-контейнер, содержащий в себе данные для воссоздания линий
+    /// </summary>
+    public class DataForSavingLine
     {
-        //Координаты точек стрелочки
-        public List<ArrowPoint> Points { get; set; }
-        //Переменные, которые, возможно пригодятся при работе со стрелами
-        /*
-        public int StartIndex { get; set; }
-        public int EndIndex { get; set; }
+        //Счетчик для линий
+        public int LinesCounter { get; set; }
+        //Координаты начала и конца линии
+        public Point StartPoint { get; set; }
+        public Point EndPoint { get; set; }
 
-        public int StartConnectorIndex { get; set; }
+        //Имя круга-источника линии и круга-цели
+        public string Source { get; set; }
+        public string Target { get; set; }
 
-        public int EndConnectorIndex { get; set; }
-        */
-    }
+        public DataForSavingLine(Point startPoint, Point endPoint, string source, string target, int linesCounter)
+        {
+            StartPoint = startPoint;
+            EndPoint = endPoint;
+            Source = source;
+            Target = target;
+            LinesCounter = linesCounter;
+        }
 
-    class ArrowPoint
-    {
-        //Координаты одной стрелы
-        public int X1 { get; set; }
-        public int Y1 { get; set; }
-        public int X2 { get; set; }
-        public int Y2 { get; set; }
+        public DataForSavingLine()
+        {
+
+        }
+
+        public override string ToString()
+        {
+            return Source + " - " + Target + " № " + LinesCounter;
+        }
     }
 
 }

@@ -94,6 +94,7 @@ namespace Interface_1._0
                 diagramm = new Diagramm();
             }
             DiagrammAnalyzer.shapesCounter = 0;
+            DiagrammAnalyzer.linesCounter = 0;
         }
 
         #region Data for serialization
@@ -105,8 +106,10 @@ namespace Interface_1._0
         private SaveFileDialog _safeDialog = new SaveFileDialog();
         private Diagramm diagramm = new Diagramm();
         private Diagramm tempDiagramm = new Diagramm();
-        
-        //метод для извелчения индекса из имени объекта
+
+        /// <summary>
+        /// метод для извлечения индекса из имени объекта 
+        /// </summary>
         private int GetIndexOfShape(Shapes shape, string name)
         {
             int index = 0;
@@ -188,7 +191,71 @@ namespace Interface_1._0
             }
             return index;
         }
-        //Метод для повторный нейминг фигур
+        /// <summary>
+        /// Метод для получения имени фигуры по данным кружка
+        /// </summary>
+        private string GetNameOfShape(Ellipse ellipse)
+        {
+            string name = "";
+            int sepCounter = 0;
+            for (int i = 0; i < ellipse.Name.Length; i++)
+            {
+                if (ellipse.Name[i] == '_')
+                {
+                    sepCounter++;
+                    if (sepCounter != 2) continue;
+                }
+                if ((sepCounter < 1) || (sepCounter > 2)) continue;
+                name += ellipse.Name[i];
+            }
+            return name;
+
+        }
+
+        /// <summary>
+        /// метод для нахождения кружка по имени в канвасе
+        /// </summary>
+        private Ellipse GetEllipseInCanvas(string name)
+        {
+            foreach (Object shape in CanvasPos.Children)
+            {
+                if ((shape is Ellipse ell)&&(ell.Name == name)) return ell;
+            }
+            return null;
+        }
+        /// <summary>
+        /// Метод для нахождения фигуры по имени в канвасе
+        /// </summary>
+        private Shape GetShapeInCanvas(string name)
+        {
+            foreach (Object shape in CanvasPos.Children)
+            {
+                if ((shape is Polygon ell1) && (ell1.Name == name)) return ell1;
+                if ((shape is Rectangle ell2) && (ell2.Name == name)) return ell2;
+            }
+            return null;
+        }
+        /// <summary>
+        ///Метод для создания линии 
+        /// </summary>
+        private Line CreateLine(Point start, Point end)
+        {
+            Line line = new Line();
+            CanvasPos.Children.Add(line);
+            line.Stroke = Brushes.Yellow;
+            line.StrokeThickness = 1.5;
+            line.MouseDown += LineMouseDown;
+
+            line.X1 = start.X;
+            line.Y1 = start.Y;
+
+            line.X2 = end.X ;
+            line.Y2 = end.Y;
+            return line;
+        }
+        /// <summary>
+        /// Повторный нейминг фигур
+        /// </summary>
         private void ReName()
         {
             //Повторный нейминг всех фигур
@@ -367,7 +434,6 @@ namespace Interface_1._0
             {
                 CanvasPos.Children.Clear();
                 shapesInfo.Clear();
-                DiagrammAnalyzer.shapesCounter = 0;
                 Init();
             }
             else
@@ -1019,11 +1085,17 @@ namespace Interface_1._0
         }
         void LogicOf90LineBuild(Shape shape, Ellipse ellFrom, Ellipse ellTo, Line line)
         {
+
+            
+            diagramm.Lines.Add(new DataForSavingLine(new Point() { X = line.X1, Y = line.Y1 }, new Point() { X = line.X2, Y = line.Y2 }, ellFrom.Name, ellTo.Name, DiagrammAnalyzer.linesCounter));
+            DiagrammAnalyzer.linesCounter++;
             HideLines(line);
 
             Shape fromGone = shape;
             Shape toGone = null;
-            for (int i = 0; i < CanvasPos.Children.Count; ++i)
+            if (IsLoaded) toGone = GetShapeInCanvas(GetNameOfShape(ellTo));
+            else
+                for (int i = 0; i < CanvasPos.Children.Count; ++i)
             {
                 if (CanvasPos.Children[i] is Polygon || CanvasPos.Children[i] is Rectangle)
                 {
@@ -1081,17 +1153,8 @@ namespace Interface_1._0
 
                         if (Math.Abs(Canvas.GetTop(ellFrom) - Canvas.GetTop(ellTo)) < 50)
                         {
-                            Line lineOne = new Line()
-                            { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
-                            lineOne.MouseDown += LineMouseDown;
-                            CanvasPos.Children.Add(lineOne);
-
-                            lineOne.X1 = Canvas.GetLeft(ellFrom);
-                            lineOne.Y1 = Canvas.GetTop(ellFrom);
-
-                            lineOne.X2 = Canvas.GetLeft(ellFrom) + 30;
-                            lineOne.Y2 = lineOne.Y1;
-
+                            Line lineOne = CreateLine(new Point() { X = Canvas.GetLeft(ellFrom), Y = Canvas.GetTop(ellFrom) }, new Point() { X = Canvas.GetLeft(ellFrom) + 30, Y = Canvas.GetTop(ellFrom) });
+                            
                             Polyline arrOne = new Polyline()
                             { Stroke = Brushes.Yellow, Points = rightArray.Points, StrokeThickness = 1.5 };
                             CanvasPos.Children.Add(arrOne);
@@ -1099,49 +1162,16 @@ namespace Interface_1._0
                             Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
                             Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
 
-                            Line lineTwo = new Line()
-                            { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
-                            lineTwo.MouseDown += LineMouseDown;
-                            CanvasPos.Children.Add(lineTwo);
+                            Line lineTwo = CreateLine(new Point() { X = lineOne.X2, Y = lineOne.Y2 }, new Point() { X = lineOne.X2, Y = Canvas.GetTop(ellFrom) + 30 });
+                            
+                            Line lineThree = CreateLine(new Point() { X = lineTwo.X2, Y = lineTwo.Y2 }, new Point() { X = Canvas.GetLeft(ellTo) + 30, Y = lineTwo.Y2 });
+                            
+                            Line lineFour = CreateLine(new Point() { X = lineThree.X2, Y = lineThree.Y2 }, new Point() { X = lineThree.X2, Y = Canvas.GetTop(ellTo) });
+                            
 
-                            lineTwo.X1 = lineOne.X2;
-                            lineTwo.Y1 = lineOne.Y2;
 
-                            lineTwo.X2 = lineOne.X2;
-                            lineTwo.Y2 = Canvas.GetTop(ellFrom) + 30;
-
-                            Line lineThree = new Line()
-                            { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
-                            lineThree.MouseDown += LineMouseDown;
-                            CanvasPos.Children.Add(lineThree);
-
-                            lineThree.X1 = lineTwo.X2;
-                            lineThree.Y1 = lineTwo.Y2;
-
-                            lineThree.X2 = Canvas.GetLeft(ellTo) + 30;
-                            lineThree.Y2 = lineThree.Y1;
-
-                            Line lineFour = new Line()
-                            { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
-                            lineThree.MouseDown += LineMouseDown;
-                            CanvasPos.Children.Add(lineFour);
-
-                            lineFour.X1 = lineThree.X2;
-                            lineFour.Y1 = lineThree.Y2;
-
-                            lineFour.X2 = lineFour.X1;
-                            lineFour.Y2 = Canvas.GetTop(ellTo);
-
-                            Line lineFive = new Line()
-                            { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
-                            lineThree.MouseDown += LineMouseDown;
-                            CanvasPos.Children.Add(lineFive);
-
-                            lineFive.X1 = lineFour.X2;
-                            lineFive.Y1 = lineFour.Y2;
-
-                            lineFive.X2 = Canvas.GetLeft(ellTo);
-                            lineFive.Y2 = Canvas.GetTop(ellTo);
+                            Line lineFive = CreateLine(new Point() { X = lineFour.X2, Y = lineFour.Y2 }, new Point() { X = Canvas.GetLeft(ellTo), Y = Canvas.GetTop(ellTo) });
+                            
 
                             Polyline arrTwo = new Polyline()
                             { Stroke = Brushes.Yellow, Points = leftArray.Points, StrokeThickness = 1.5 };
@@ -5769,11 +5799,13 @@ namespace Interface_1._0
                         {
                             diagramm.blocks.RemoveAt(0);
                             DiagrammAnalyzer.shapesCounter = 0;
+                            DiagrammAnalyzer.linesCounter = 0;
                         }
                         catch
                         {
                             diagramm = new Diagramm();
                             DiagrammAnalyzer.shapesCounter = 0;
+                            DiagrammAnalyzer.linesCounter = 0;
                         }
                     }
                     //Повторный нейминг всех фигур
@@ -7843,11 +7875,13 @@ namespace Interface_1._0
                         {
                             diagramm.blocks.RemoveAt(0);
                             DiagrammAnalyzer.shapesCounter = 0;
+                            DiagrammAnalyzer.linesCounter = 0;
                         }
                         catch
                         {
                             diagramm = new Diagramm();
                             DiagrammAnalyzer.shapesCounter = 0;
+                            DiagrammAnalyzer.linesCounter = 0;
                         }
                     }
                     //Повторный нейминг всех фигур
@@ -9935,11 +9969,13 @@ namespace Interface_1._0
                         {
                             diagramm.blocks.RemoveAt(0);
                             DiagrammAnalyzer.shapesCounter = 0;
+                            DiagrammAnalyzer.linesCounter = 0;
                         }
                         catch
                         {
                             diagramm = new Diagramm();
                             DiagrammAnalyzer.shapesCounter = 0;
+                            DiagrammAnalyzer.linesCounter = 0;
                         }
                     }
                     //Повторный нейминг всех фигур
@@ -11915,11 +11951,13 @@ namespace Interface_1._0
                         {
                             diagramm.blocks.RemoveAt(0);
                             DiagrammAnalyzer.shapesCounter = 0;
+                            DiagrammAnalyzer.linesCounter = 0;
                         }
                         catch
                         {
                             diagramm = new Diagramm();
                             DiagrammAnalyzer.shapesCounter = 0;
+                            DiagrammAnalyzer.linesCounter = 0;
                         }
                     }
                     //Повторный нейминг всех фигур
@@ -13562,8 +13600,12 @@ namespace Interface_1._0
 
         private void DnD_Drop(object sender, DragEventArgs e)
         {
-            if (DiagrammAnalyzer.shapesCounter < 0) DiagrammAnalyzer.shapesCounter = 0;
-            DiagrammAnalyzer.isChanged = true;
+            if (DiagrammAnalyzer.shapesCounter < 0)
+            {
+                DiagrammAnalyzer.shapesCounter = 0;
+                DiagrammAnalyzer.linesCounter = 0;
+            }
+                DiagrammAnalyzer.isChanged = true;
 
             if (Rectangle_Check)
             {
@@ -13655,7 +13697,14 @@ namespace Interface_1._0
 
                  shape.shape.MouseUp += UIElements_Mouse_Up;
 
-                 CanvasPos.Children.Add(shape.shape);
+                //Тестовая зона
+                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                //
+
+                CanvasPos.Children.Add(shape.shape);
                  CanvasPos.Children.Add(txt.txtbx);
                  CanvasPos.Children.Add(txt.kurwa_txtbox);
 
@@ -13716,7 +13765,14 @@ namespace Interface_1._0
 
                  shape.shape.MouseUp += UIElements_Mouse_Up;
 
-                 CanvasPos.Children.Add(shape.shape);
+                //Тестовая зона
+                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                //
+
+                CanvasPos.Children.Add(shape.shape);
                  CanvasPos.Children.Add(txt.txtbx);
                  CanvasPos.Children.Add(txt.kurwa_txtbox);
 
@@ -13778,7 +13834,14 @@ namespace Interface_1._0
 
                  shape.shape.MouseUp += UIElements_Mouse_Up;
 
-                 CanvasPos.Children.Add(shape.shape);
+                //Тестовая зона
+                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                //
+
+                CanvasPos.Children.Add(shape.shape);
                  CanvasPos.Children.Add(txt.txtbx);
                  CanvasPos.Children.Add(txt.kurwa_txtbox);
 
@@ -13837,7 +13900,14 @@ namespace Interface_1._0
 
                  shape.shape.MouseUp += UIElements_Mouse_Up;
 
-                 CanvasPos.Children.Add(txt.txtbx);
+                //Тестовая зона
+                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                //
+
+                CanvasPos.Children.Add(txt.txtbx);
                  CanvasPos.Children.Add(txt.kurwa_txtbox);
                  CanvasPos.Children.Add(shape.shape);
 
@@ -15342,7 +15412,6 @@ namespace Interface_1._0
         private void inTrash(object sender, RoutedEventArgs e)
         {
             CanvasPos.Children.Clear();
-            DiagrammAnalyzer.shapesCounter = 0;
             Init();
             DiagrammAnalyzer.isChanged = false;
             if (!DiagrammAnalyzer.isPrevNext)
@@ -15350,7 +15419,6 @@ namespace Interface_1._0
                 PrevNext.Clear();
                 diagramm = new Diagramm();
             }
-            DiagrammAnalyzer.shapesCounter = 0;
         }
 
         #endregion
@@ -15388,6 +15456,7 @@ namespace Interface_1._0
                 //Обнуляем основную диаграмму и счетчик фигур, запоминаем путь и закрываем поток   
                 diagramm = new Diagramm();
                 DiagrammAnalyzer.shapesCounter = 0;
+                DiagrammAnalyzer.linesCounter = 0;
                 DiagrammAnalyzer.tempPath = _openDialog.FileName;
                 reader.Close();
             }
@@ -15506,6 +15575,13 @@ namespace Interface_1._0
 
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
+
                     CanvasPos.Children.Add(shape.shape);
                     CanvasPos.Children.Add(txt.txtbx);
                     CanvasPos.Children.Add(txt.kurwa_txtbox);
@@ -15573,6 +15649,13 @@ namespace Interface_1._0
                     double special_anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.W_Point.Y, 2)));
 
                     shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
 
                     CanvasPos.Children.Add(shape.shape);
                     CanvasPos.Children.Add(txt.txtbx);
@@ -15652,6 +15735,13 @@ namespace Interface_1._0
 
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
+
                     CanvasPos.Children.Add(shape.shape);
                     CanvasPos.Children.Add(txt.txtbx);
                     CanvasPos.Children.Add(txt.kurwa_txtbox);
@@ -15713,6 +15803,13 @@ namespace Interface_1._0
 
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
+
                     CanvasPos.Children.Add(txt.txtbx);
                     CanvasPos.Children.Add(txt.kurwa_txtbox);
                     CanvasPos.Children.Add(shape.shape);
@@ -15754,6 +15851,14 @@ namespace Interface_1._0
                 }
 
                 DiagrammAnalyzer.shapesCounter++;
+            }
+            foreach (DataForSavingLine Data in tempDiagramm.Lines)
+            {
+                Ellipse from = GetEllipseInCanvas(Data.Source);
+                Ellipse to = GetEllipseInCanvas(Data.Target);
+                Line line = CreateLine(Data.StartPoint, Data.EndPoint);
+                Shape shape = GetShapeInCanvas(GetNameOfShape(from));
+                LogicOf90LineBuild(shape, from, to, line);
             }
             DiagrammAnalyzer.tempPath = _openDialog.FileName;
 
@@ -15840,6 +15945,7 @@ namespace Interface_1._0
 
             diagramm = new Diagramm();
             DiagrammAnalyzer.shapesCounter = 0;
+            DiagrammAnalyzer.linesCounter = 0;
 
             //Прорисовываем десериализованные фигуры
             foreach (Block block in tempDiagramm.blocks)
@@ -15877,6 +15983,13 @@ namespace Interface_1._0
                     double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
 
                     shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
 
                     CanvasPos.Children.Add(shape.shape);
                     CanvasPos.Children.Add(txt.txtbx);
@@ -15949,6 +16062,13 @@ namespace Interface_1._0
 
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
+
                     CanvasPos.Children.Add(shape.shape);
                     CanvasPos.Children.Add(txt.txtbx);
                     CanvasPos.Children.Add(txt.kurwa_txtbox);
@@ -16015,6 +16135,13 @@ namespace Interface_1._0
                     double special_anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.W_Point.Y, 2)));
 
                     shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
 
                     CanvasPos.Children.Add(shape.shape);
                     CanvasPos.Children.Add(txt.txtbx);
@@ -16092,6 +16219,13 @@ namespace Interface_1._0
 
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
+
                     CanvasPos.Children.Add(shape.shape);
                     CanvasPos.Children.Add(txt.txtbx);
                     CanvasPos.Children.Add(txt.kurwa_txtbox);
@@ -16149,6 +16283,13 @@ namespace Interface_1._0
                     ConnectionLine connectionLine = new ConnectionLine();
 
                     shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
 
                     CanvasPos.Children.Add(txt.txtbx);
                     CanvasPos.Children.Add(txt.kurwa_txtbox);
@@ -16350,37 +16491,6 @@ namespace Interface_1._0
         }
         #endregion
 
-        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Shape Rectangle = null;
-            Ellipse from = null;
-            Ellipse to = null;
-            bool stop = true;
-            Line line = new Line();
-            CanvasPos.Children.Add(line);
-            line.Stroke = Brushes.Yellow;
-            line.StrokeThickness = 1.5;
-            line.MouseDown += LineMouseDown;
-
-            line.X1 = 421;
-            line.Y1 = 145.5;
-
-            line.X2 = 429;
-            line.Y2 = 404;
-            foreach (Object shape in CanvasPos.Children)
-            {
-                if ((shape is Polygon polygon1) && (polygon1.Name != "") && (polygon1.Name[0] != 'C') && (stop))
-                {
-                    Rectangle = (Shape)shape;
-                    stop = false;
-                }
-                if (shape is Ellipse ell)
-                    if (ell.Name == "C_Rekt_0_bottom")
-                        from = ell;
-                if ((shape is Ellipse ell1) && (ell1.Name == "C_Rekt_1_top"))
-                    to = ell1;
-            }
-            LogicOf90LineBuild(Rectangle, from, to, line);
-        }
+        
     }
 }
