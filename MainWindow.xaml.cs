@@ -5666,6 +5666,31 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj) + anchor.shiftLeft);
                         Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
+                        //Сохранение новых координат линий
+                        string[] sides = { "_left", "_right", "_top", "_bottom" };
+
+                        for (int i = 0; i < diagramm.Lines.Count; i++)
+                        {
+                            for (int j = 0; j <= 3; j++)
+                            {
+                                string tempName = "C_" + rPR_Shapes.shape.Name + sides[j];
+                                Ellipse tempEll = GetEllipseInCanvas(tempName);
+
+                                if (diagramm.Lines[i].Source == tempName)
+                                {
+                                    diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, new Point() { X = diagramm.Lines[i].EndPoint.X, Y = diagramm.Lines[i].EndPoint.Y }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                                    diagramm.Lines.Remove(diagramm.Lines[i + 1]);
+                                }
+                                else
+                                    if (diagramm.Lines[i].Target == tempName)
+                                {
+                                    diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = diagramm.Lines[i].StartPoint.X, Y = diagramm.Lines[i].StartPoint.Y }, new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                                    diagramm.Lines.Remove(diagramm.Lines[i + 1]);
+                                }
+
+                            }
+
+                        }
                         PrevNext.AddDiagramm(ref diagramm);
                     }
 
@@ -7745,6 +7770,31 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj));
                         Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
+                        //Сохранение новых координат линий
+                        string[] sides = { "_left", "_right", "_top", "_bottom" };
+
+                        for (int i = 0; i < diagramm.Lines.Count; i++)
+                        {
+                            for (int j = 0; j <= 3; j++)
+                            {
+                                string tempName = "C_" + shape.shape.Name + sides[j];
+                                Ellipse tempEll = GetEllipseInCanvas(tempName);
+
+                                if (diagramm.Lines[i].Source == tempName)
+                                {
+                                    diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, new Point() { X = diagramm.Lines[i].EndPoint.X, Y = diagramm.Lines[i].EndPoint.Y }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                                    diagramm.Lines.Remove(diagramm.Lines[i + 1]);
+                                }
+                                else
+                                    if (diagramm.Lines[i].Target == tempName)
+                                {
+                                    diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = diagramm.Lines[i].StartPoint.X, Y = diagramm.Lines[i].StartPoint.Y }, new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                                    diagramm.Lines.Remove(diagramm.Lines[i + 1]);
+                                }
+
+                            }
+
+                        }
                         PrevNext.AddDiagramm(ref diagramm);
                     }
 
@@ -9839,6 +9889,31 @@ namespace Interface_1._0
                         Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj) + anchor.shiftLeft);
                         Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
 
+                        //Сохранение новых координат линий
+                        string[] sides = { "_left", "_right", "_top", "_bottom" };
+
+                        for (int i = 0; i < diagramm.Lines.Count; i++)
+                        {
+                            for (int j = 0; j <= 3; j++)
+                            {
+                                string tempName = "C_" + shape.shape.Name + sides[j];
+                                Ellipse tempEll = GetEllipseInCanvas(tempName);
+
+                                if (diagramm.Lines[i].Source == tempName)
+                                {
+                                    diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, new Point() { X = diagramm.Lines[i].EndPoint.X, Y = diagramm.Lines[i].EndPoint.Y }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                                    diagramm.Lines.Remove(diagramm.Lines[i + 1]);
+                                }
+                                else
+                                    if (diagramm.Lines[i].Target == tempName)
+                                {
+                                    diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = diagramm.Lines[i].StartPoint.X, Y = diagramm.Lines[i].StartPoint.Y }, new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                                    diagramm.Lines.Remove(diagramm.Lines[i + 1]);
+                                }
+
+                            }
+
+                        }
                         PrevNext.AddDiagramm(ref diagramm);
                     }
 
@@ -11820,6 +11895,31 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(shape.shape));
                         Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(shape.shape));
+                        //Сохранение новых координат линий
+                        string[] sides = { "_left", "_right", "_top", "_bottom" };
+
+                        for (int i = 0; i < diagramm.Lines.Count; i++)
+                        {
+                            for (int j = 0; j <= 3; j++)
+                            {
+                                string tempName = "C_" + shape.shape.Name + sides[j];
+                                Ellipse tempEll = GetEllipseInCanvas(tempName);
+
+                                if (diagramm.Lines[i].Source == tempName)
+                                {
+                                    diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, new Point() { X = diagramm.Lines[i].EndPoint.X, Y = diagramm.Lines[i].EndPoint.Y }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                                    diagramm.Lines.Remove(diagramm.Lines[i + 1]);
+                                }
+                                else
+                                    if (diagramm.Lines[i].Target == tempName)
+                                {
+                                    diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = diagramm.Lines[i].StartPoint.X, Y = diagramm.Lines[i].StartPoint.Y }, new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                                    diagramm.Lines.Remove(diagramm.Lines[i + 1]);
+                                }
+
+                            }
+
+                        }
 
                         PrevNext.AddDiagramm(ref diagramm);
                     }
@@ -12332,6 +12432,8 @@ namespace Interface_1._0
                             return;
                         }
                     }
+                    
+
                 }
             }
         }
@@ -13426,6 +13528,7 @@ namespace Interface_1._0
 
         public void UIElements_Mouse_Up(object sender, MouseButtonEventArgs e)
         {
+            //Сохранение новых координат линий
             string[] sides = { "_left", "_right", "_top", "_bottom"};
 
             for (int i = 0; i < diagramm.Lines.Count; i++)
