@@ -194,19 +194,19 @@ namespace Interface_1._0
         /// <summary>
         /// Метод для получения имени фигуры по данным кружка
         /// </summary>
-        private string GetNameOfShape(Ellipse ellipse)
+        private string GetNameOfShape(string text)
         {
             string name = "";
             int sepCounter = 0;
-            for (int i = 0; i < ellipse.Name.Length; i++)
+            for (int i = 0; i < text.Length; i++)
             {
-                if (ellipse.Name[i] == '_')
+                if (text[i] == '_')
                 {
                     sepCounter++;
                     if (sepCounter != 2) continue;
                 }
                 if ((sepCounter < 1) || (sepCounter > 2)) continue;
-                name += ellipse.Name[i];
+                name += text[i];
             }
             return name;
 
@@ -1093,7 +1093,7 @@ namespace Interface_1._0
 
             Shape fromGone = shape;
             Shape toGone = null;
-            if (IsLoaded) toGone = GetShapeInCanvas(GetNameOfShape(ellTo));
+            if (IsLoaded) toGone = GetShapeInCanvas(GetNameOfShape(ellTo.Name));
             else
                 for (int i = 0; i < CanvasPos.Children.Count; ++i)
             {
@@ -13426,9 +13426,36 @@ namespace Interface_1._0
 
         public void UIElements_Mouse_Up(object sender, MouseButtonEventArgs e)
         {
+            string[] sides = { "_left", "_right", "_top", "_bottom"};
+
+            for (int i = 0; i < diagramm.Lines.Count; i++)
+            {
+                for (int j = 0; j <= 3; j++)
+                {
+                    string tempName = "C_" + (sender as Shape).Name + sides[j];
+                    Ellipse tempEll = GetEllipseInCanvas(tempName);
+
+                    if (diagramm.Lines[i].Source == tempName)
+                    {
+                        diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, new Point() { X = diagramm.Lines[i].EndPoint.X, Y = diagramm.Lines[i].EndPoint.Y }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                        diagramm.Lines.Remove(diagramm.Lines[i+1]);
+                    }
+                    else
+                        if (diagramm.Lines[i].Target == tempName)
+                    {
+                        diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = diagramm.Lines[i].StartPoint.X, Y = diagramm.Lines[i].StartPoint.Y }, new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                        diagramm.Lines.Remove(diagramm.Lines[i+1]);
+                    }
+
+                }
+
+            }
+            
+
             (sender as UIElement).ReleaseMouseCapture();
             if (DiagrammAnalyzer.ShapeMoved)
             {
+                
                 PrevNext.AddDiagramm(ref diagramm);
                 DiagrammAnalyzer.ShapeMoved = false;
             }
@@ -13630,7 +13657,7 @@ namespace Interface_1._0
                 shape.shape.MouseUp += UIElements_Mouse_Up;
 
                 //Тестовая зона
-                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                 connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                 connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                 connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -13698,7 +13725,7 @@ namespace Interface_1._0
                  shape.shape.MouseUp += UIElements_Mouse_Up;
 
                 //Тестовая зона
-                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                 connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                 connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                 connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -13766,7 +13793,7 @@ namespace Interface_1._0
                  shape.shape.MouseUp += UIElements_Mouse_Up;
 
                 //Тестовая зона
-                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                 connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                 connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                 connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -13835,7 +13862,7 @@ namespace Interface_1._0
                  shape.shape.MouseUp += UIElements_Mouse_Up;
 
                 //Тестовая зона
-                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                 connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                 connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                 connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -13901,7 +13928,7 @@ namespace Interface_1._0
                  shape.shape.MouseUp += UIElements_Mouse_Up;
 
                 //Тестовая зона
-                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                 connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                 connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                 connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -15498,7 +15525,7 @@ namespace Interface_1._0
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
                     //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                     connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                     connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                     connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -15576,7 +15603,7 @@ namespace Interface_1._0
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
                     //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                     connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                     connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                     connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -15651,7 +15678,7 @@ namespace Interface_1._0
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
                     //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                     connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                     connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                     connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -15736,7 +15763,7 @@ namespace Interface_1._0
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
                     //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                     connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                     connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                     connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -15804,7 +15831,7 @@ namespace Interface_1._0
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
                     //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                     connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                     connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                     connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -15857,7 +15884,7 @@ namespace Interface_1._0
                 Ellipse from = GetEllipseInCanvas(Data.Source);
                 Ellipse to = GetEllipseInCanvas(Data.Target);
                 Line line = CreateLine(Data.StartPoint, Data.EndPoint);
-                Shape shape = GetShapeInCanvas(GetNameOfShape(from));
+                Shape shape = GetShapeInCanvas(GetNameOfShape(from.Name));
                 LogicOf90LineBuild(shape, from, to, line);
             }
             DiagrammAnalyzer.tempPath = _openDialog.FileName;
@@ -15985,7 +16012,7 @@ namespace Interface_1._0
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
                     //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                     connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                     connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                     connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -16063,7 +16090,7 @@ namespace Interface_1._0
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
                     //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                     connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                     connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                     connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -16137,7 +16164,7 @@ namespace Interface_1._0
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
                     //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                     connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                     connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                     connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -16220,7 +16247,7 @@ namespace Interface_1._0
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
                     //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                     connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                     connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                     connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
@@ -16285,7 +16312,7 @@ namespace Interface_1._0
                     shape.shape.MouseUp += UIElements_Mouse_Up;
 
                     //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_Left";
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
                     connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
                     connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
                     connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
