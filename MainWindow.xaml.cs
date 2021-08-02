@@ -106,6 +106,7 @@ namespace Interface_1._0
         private SaveFileDialog _safeDialog = new SaveFileDialog();
         private Diagramm diagramm = new Diagramm();
         private Diagramm tempDiagramm = new Diagramm();
+        string[] sides = { "_left", "_right", "_top", "_bottom" };
 
         /// <summary>
         /// метод для извлечения индекса из имени объекта 
@@ -262,8 +263,10 @@ namespace Interface_1._0
             int counterForName = 0;
             foreach (Object shape in CanvasPos.Children)
             {
+               
                 if ((shape is Polygon polygon1) && (polygon1.Name != "") && (polygon1.Name[0] != 'C'))
                 {
+                    
                     string oldName = polygon1.Name;
                     polygon1.Name = "";
                     bool stup = false;
@@ -281,6 +284,31 @@ namespace Interface_1._0
                         }
                     }
                     polygon1.Name = polygon1.Name + counterForName;
+                    //Переименовываем соединительные точки внутри канваса
+                    foreach (Object line in CanvasPos.Children)
+                    {
+                        if ((line is Ellipse)&&(oldName == GetNameOfShape(((line as Ellipse).Name))))
+                            (line as Ellipse).Name = (line as Ellipse).Name.Replace(oldName, polygon1.Name);
+                    }
+                    //Переименовываем линии внутри диаграммы
+                    for (int i = 0; i < diagramm.Lines.Count; i++)
+                    {
+                        for (int j = 0; j <= 3; j++)
+                        {
+                            string tempName = "C_" + oldName + sides[j];
+                            Ellipse tempEll = GetEllipseInCanvas(tempName);
+
+                            if (diagramm.Lines[i].Source == tempName) diagramm.Lines[i].Source = "C_" + polygon1.Name + sides[j];
+                            
+                            if (diagramm.Lines[i].Target == tempName) diagramm.Lines[i].Target = "C_" + polygon1.Name + sides[j];
+                            
+                        }
+
+                    }
+                    for (int i = 0; i < diagramm.Lines.Count; i++)
+                    {
+                        diagramm.Lines[i].LinesCounter = i;
+                    }
                     counterForName++;
                 }
                 if ((shape is Rectangle polygon)&&(polygon.Name != "") && (polygon.Name[0] != 'C'))
@@ -303,6 +331,34 @@ namespace Interface_1._0
                         }
                     }
                     polygon.Name = polygon.Name + counterForName;
+
+                    foreach (Object line in CanvasPos.Children)
+                    {
+                        if ((line is Ellipse) && (oldName == GetNameOfShape(((line as Ellipse).Name))))
+                            (line as Ellipse).Name = (line as Ellipse).Name.Replace(oldName, polygon.Name);
+                        
+                    }
+
+                    //Переименовываем линии внутри диаграммы
+                    for (int i = 0; i < diagramm.Lines.Count; i++)
+                    {
+                        for (int j = 0; j <= 3; j++)
+                        {
+                            string tempName = "C_" + oldName + sides[j];
+                            Ellipse tempEll = GetEllipseInCanvas(tempName);
+
+                            if (diagramm.Lines[i].Source == tempName) diagramm.Lines[i].Source = "C_" + polygon.Name + sides[j];
+
+                            if (diagramm.Lines[i].Target == tempName) diagramm.Lines[i].Target = "C_" + polygon.Name + sides[j];
+
+                        }
+
+                    }
+                    for (int i = 0; i < diagramm.Lines.Count; i++)
+                    {
+                        diagramm.Lines[i].LinesCounter = i;
+                    }
+
                     counterForName++;
                 }
             }
@@ -3761,6 +3817,7 @@ namespace Interface_1._0
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 int index;
+
                 if (isRect) index = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
                 else index = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
                 if (diagramm.blocks.Count != 0)
@@ -3779,6 +3836,7 @@ namespace Interface_1._0
             LineAction(connectionLine, rPR_Shapes.shape);
 
             rPR_Shapes.shape.MouseDown += RPR_MouseDown;
+
 
             void RPR_MouseDown(object sender, MouseButtonEventArgs e)
             {
@@ -5667,8 +5725,6 @@ namespace Interface_1._0
                         Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj) + anchor.shiftLeft);
                         Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
                         //Сохранение новых координат линий
-                        string[] sides = { "_left", "_right", "_top", "_bottom" };
-
                         for (int i = 0; i < diagramm.Lines.Count; i++)
                         {
                             for (int j = 0; j <= 3; j++)
@@ -5706,10 +5762,10 @@ namespace Interface_1._0
 
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    if (DiagrammAnalyzer.shapesCounter == 1)
+                    if (DiagrammAnalyzer.shapesCounter == 0)
                     {
                         CanvasPos.Children.Clear();
-                        DiagrammAnalyzer.shapesCounter = 1;
+                        DiagrammAnalyzer.shapesCounter = 0;
                         Init();
                     }
                     else
@@ -5833,12 +5889,35 @@ namespace Interface_1._0
                             DiagrammAnalyzer.linesCounter = 0;
                         }
                     }
+                    List<int> indexesForDeleting = new List<int>();
+                    for (int i = 0; i < diagramm.Lines.Count; i++)
+                    {
+                        
+                        if (rPR_Shapes.shape.Name == GetNameOfShape(diagramm.Lines[i].Source))
+                        {
+                            indexesForDeleting.Add(i);
+
+                        }
+                        
+                        if ((diagramm.Lines.Count >0)&&(rPR_Shapes.shape.Name == GetNameOfShape(diagramm.Lines[i].Target)))
+                        {
+                            indexesForDeleting.Add(i);
+                        }
+                    }
+                    while(indexesForDeleting.Count>0)
+                    {
+                        diagramm.Lines.RemoveAt(indexesForDeleting[indexesForDeleting.Count - 1]);
+                        indexesForDeleting.RemoveAt(indexesForDeleting.Count - 1);
+                        DiagrammAnalyzer.linesCounter--;
+
+                    }
                     //Повторный нейминг всех фигур
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
 
-                    --DiagrammAnalyzer.shapesCounter;
+                    
                     ClearCanvas();
+                    
                 }
 
                 RPC_Shape_Move(rPR_Shapes, txt, connectionLine, anchor, isRect);
@@ -7771,8 +7850,6 @@ namespace Interface_1._0
                         Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(obj));
                         Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
                         //Сохранение новых координат линий
-                        string[] sides = { "_left", "_right", "_top", "_bottom" };
-
                         for (int i = 0; i < diagramm.Lines.Count; i++)
                         {
                             for (int j = 0; j <= 3; j++)
@@ -7810,10 +7887,10 @@ namespace Interface_1._0
 
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    if (DiagrammAnalyzer.shapesCounter == 1)
+                    if (DiagrammAnalyzer.shapesCounter == 0)
                     {
                         CanvasPos.Children.Clear();
-                        DiagrammAnalyzer.shapesCounter = 1;
+                        DiagrammAnalyzer.shapesCounter = 0;
                         Init();
                     }
                     else
@@ -7934,11 +8011,35 @@ namespace Interface_1._0
                             DiagrammAnalyzer.linesCounter = 0;
                         }
                     }
+
+                    List<int> indexesForDeleting = new List<int>();
+                    for (int i = 0; i < diagramm.Lines.Count; i++)
+                    {
+
+                        if (shape.shape.Name == GetNameOfShape(diagramm.Lines[i].Source))
+                        {
+                            indexesForDeleting.Add(i);
+
+                        }
+
+                        if ((diagramm.Lines.Count > 0) && (shape.shape.Name == GetNameOfShape(diagramm.Lines[i].Target)))
+                        {
+                            indexesForDeleting.Add(i);
+                        }
+                    }
+                    while (indexesForDeleting.Count > 0)
+                    {
+                        diagramm.Lines.RemoveAt(indexesForDeleting[indexesForDeleting.Count - 1]);
+                        indexesForDeleting.RemoveAt(indexesForDeleting.Count - 1);
+                        DiagrammAnalyzer.linesCounter--;
+
+                    }
+
                     //Повторный нейминг всех фигур
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
 
-                    --DiagrammAnalyzer.shapesCounter;
+                    
                     ClearCanvas();
                 }
 
@@ -9890,8 +9991,6 @@ namespace Interface_1._0
                         Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(obj));
 
                         //Сохранение новых координат линий
-                        string[] sides = { "_left", "_right", "_top", "_bottom" };
-
                         for (int i = 0; i < diagramm.Lines.Count; i++)
                         {
                             for (int j = 0; j <= 3; j++)
@@ -9929,10 +10028,10 @@ namespace Interface_1._0
 
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    if (DiagrammAnalyzer.shapesCounter == 1)
+                    if (DiagrammAnalyzer.shapesCounter == 0)
                     {
                         CanvasPos.Children.Clear();
-                        DiagrammAnalyzer.shapesCounter = 1;
+                        DiagrammAnalyzer.shapesCounter = 0;
                         Init();
                     }
                     else
@@ -10053,11 +10152,34 @@ namespace Interface_1._0
                             DiagrammAnalyzer.linesCounter = 0;
                         }
                     }
+
+                    List<int> indexesForDeleting = new List<int>();
+                    for (int i = 0; i < diagramm.Lines.Count; i++)
+                    {
+
+                        if (shape.shape.Name == GetNameOfShape(diagramm.Lines[i].Source))
+                        {
+                            indexesForDeleting.Add(i);
+
+                        }
+
+                        if ((diagramm.Lines.Count > 0) && (shape.shape.Name == GetNameOfShape(diagramm.Lines[i].Target)))
+                        {
+                            indexesForDeleting.Add(i);
+                        }
+                    }
+                    while (indexesForDeleting.Count > 0)
+                    {
+                        diagramm.Lines.RemoveAt(indexesForDeleting[indexesForDeleting.Count - 1]);
+                        indexesForDeleting.RemoveAt(indexesForDeleting.Count - 1);
+                        DiagrammAnalyzer.linesCounter--;
+                    }
+
                     //Повторный нейминг всех фигур
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
 
-                    --DiagrammAnalyzer.shapesCounter;
+                    
                     ClearCanvas();
                 }
 
@@ -11896,8 +12018,7 @@ namespace Interface_1._0
                         Canvas.SetLeft(anchor.anchor_NWSE, Canvas.GetLeft(shape.shape));
                         Canvas.SetTop(anchor.anchor_NWSE, Canvas.GetTop(shape.shape));
                         //Сохранение новых координат линий
-                        string[] sides = { "_left", "_right", "_top", "_bottom" };
-
+                        
                         for (int i = 0; i < diagramm.Lines.Count; i++)
                         {
                             for (int j = 0; j <= 3; j++)
@@ -11936,10 +12057,10 @@ namespace Interface_1._0
 
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    if (DiagrammAnalyzer.shapesCounter == 1)
+                    if (DiagrammAnalyzer.shapesCounter == 0)
                     {
                         CanvasPos.Children.Clear();
-                        DiagrammAnalyzer.shapesCounter = 1;
+                        DiagrammAnalyzer.shapesCounter = 0;
                         Init();
                     }
                     else
@@ -12060,12 +12181,35 @@ namespace Interface_1._0
                             DiagrammAnalyzer.linesCounter = 0;
                         }
                     }
+
+                    List<int> indexesForDeleting = new List<int>();
+                    for (int i = 0; i < diagramm.Lines.Count; i++)
+                    {
+
+                        if (shape.shape.Name == GetNameOfShape(diagramm.Lines[i].Source))
+                        {
+                            indexesForDeleting.Add(i);
+
+                        }
+
+                        if ((diagramm.Lines.Count > 0) && (shape.shape.Name == GetNameOfShape(diagramm.Lines[i].Target)))
+                        {
+                            indexesForDeleting.Add(i);
+                        }
+                    }
+                    while (indexesForDeleting.Count > 0)
+                    {
+                        diagramm.Lines.RemoveAt(indexesForDeleting[indexesForDeleting.Count - 1]);
+                        indexesForDeleting.RemoveAt(indexesForDeleting.Count - 1);
+                        DiagrammAnalyzer.linesCounter--;
+                    }
+
                     //Повторный нейминг всех фигур
                     ReName();
                     PrevNext.AddDiagramm(ref diagramm);
 
 
-                    --DiagrammAnalyzer.shapesCounter;
+                    
                     ClearCanvas();
                 }
 
@@ -13529,8 +13673,6 @@ namespace Interface_1._0
         public void UIElements_Mouse_Up(object sender, MouseButtonEventArgs e)
         {
             //Сохранение новых координат линий
-            string[] sides = { "_left", "_right", "_top", "_bottom"};
-
             for (int i = 0; i < diagramm.Lines.Count; i++)
             {
                 for (int j = 0; j <= 3; j++)
@@ -13749,6 +13891,7 @@ namespace Interface_1._0
                 TXT txt = new TXT(7, 5);
                 Canvas.SetZIndex(txt.txtbx, -1);
                 Canvas.SetZIndex(txt.kurwa_txtbox, -1);
+                
                 shape.shape.Style = (Style)FindResource("Rect");
                 Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
