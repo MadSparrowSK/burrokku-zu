@@ -3798,6 +3798,7 @@ namespace Interface_1._0
             {
                 if (!DiagrammAnalyzer.isPrevNext)
                 {
+                    
                     if (DiagrammAnalyzer.isLoaded)
                         diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter, txt.txtbx.Text));
                     else
@@ -3820,23 +3821,29 @@ namespace Interface_1._0
             }
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
+
                 CanvasPos.Focus();
                 int index;
+                double left_size = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.Point_NE.X, 2)));
 
                 if (isRect) index = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
                 else index = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
-                if (diagramm.blocks.Count != 0)
-                    diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
-                if ((DiagrammAnalyzer.PrevNextTextChanged)&&(txt.txtbx.Text != "        ..."))
+                
 
+                if (DiagrammAnalyzer.PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
                     DiagrammAnalyzer.PrevNextTextChanged = false;
                 }
-                txt.txtbx.Text = "      ...";
+                if (txt.txtbx.ActualWidth > left_size)
+                {
+                    if (txt.txtbx.Text != "      ...") diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+                    txt.txtbx.Text = "      ...";
+                }
+                else diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
 
             }
-
+            
             if (!DiagrammAnalyzer.isPrevNext)
                 PrevNext.AddDiagramm(ref diagramm);
 
@@ -4494,12 +4501,13 @@ namespace Interface_1._0
                             int indexOfShape;
                             if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
                             else indexOfShape = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
+                            
                             foreach (Block block in diagramm.blocks)
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
-                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
+                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
+                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
 
                                     diagramm.blocks.Remove(block);
                                     return;
@@ -5089,12 +5097,13 @@ namespace Interface_1._0
                             int indexOfShape;
                             if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
                             else indexOfShape = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
+                            
                             foreach (Block block in diagramm.blocks)
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
-                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
+                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
+                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
 
                                     diagramm.blocks.Remove(block);
                                     return;
@@ -5684,8 +5693,9 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
-                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, txt.txtbx.Text));
+                                    
+                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
+                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
 
                                     diagramm.blocks.Remove(block);
                                     return;
@@ -5906,8 +5916,6 @@ namespace Interface_1._0
                 RPC_Shape_Move(rPR_Shapes, txt, connectionLine, anchor, isRect);
             }
         }
-
-        
 
         public void AddRh_Shape(Rh_Shape shape,ConnectionLine connectionLine ,TXT txt ,Anchor anchor)
         {
@@ -7793,6 +7801,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
+                                     
                                     diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, shape.Point_N, shape.Point_W, shape.Point_S, shape.Point_E, indexOfShape, txt.txtbx.Text));
                                     diagramm.blocks.Remove(block);
                                     return;
@@ -12484,6 +12493,7 @@ namespace Interface_1._0
                     int indexOfShape;
                     if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rekt, shape.shape.Name);
                     else indexOfShape = GetIndexOfShape(Shapes.Parrabellum, shape.shape.Name);
+                    txt.txtbx.Text = diagramm.blocks[indexOfShape].TextIntoTextBox;
                     foreach (Block block in diagramm.blocks)
                     {
                         if (block.IndexNumber == indexOfShape)
