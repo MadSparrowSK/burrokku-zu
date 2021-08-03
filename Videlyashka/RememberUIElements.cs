@@ -40,8 +40,8 @@ namespace RUIEl
             posRemTxT = txtPos;
         }
 
-        public RememberShNTxT(Shape shape,Ellipse le, Ellipse re, Ellipse te, Ellipse be, TextBox txt, TextBox kTxT, 
-            Point posSh, Point l, Point r, Point t, Point b,Point posTxT, Point posKwTxT)
+        public RememberShNTxT(Shape shape,Ellipse le, Ellipse re, Ellipse te, Ellipse be, TextBox txt, 
+            Point posSh, Point l, Point r, Point t, Point b,Point posTxT)
         {
             remShape = shape;
 
@@ -51,7 +51,6 @@ namespace RUIEl
             bottom = be;
 
             remTxT = txt;
-            remKurwaTxT = kTxT;
 
             posEllLeft = l;
             posEllRight = r;
@@ -60,7 +59,6 @@ namespace RUIEl
 
             posRemShape = posSh;
             posRemTxT = posTxT;
-            posRemKwTxT = posKwTxT;
         }
     }
 

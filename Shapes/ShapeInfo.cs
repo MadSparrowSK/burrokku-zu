@@ -13,7 +13,6 @@ namespace Shapes
         public Ellipse bottom = null;
 
         public TextBox txt = null;
-        public TextBox kurwaTxT = null;
 
         public ShapeInfo(Shape shape, TextBox txt)
         {
@@ -21,7 +20,7 @@ namespace Shapes
             this.txt = txt;
         }
 
-        public ShapeInfo(Shape shape, Ellipse l, Ellipse r, Ellipse t, Ellipse b, TextBox txt,TextBox kTxT)
+        public ShapeInfo(Shape shape, Ellipse l, Ellipse r, Ellipse t, Ellipse b, TextBox txt)
         {
             this.shape = shape;
 
@@ -31,7 +30,6 @@ namespace Shapes
             bottom = b;
 
             this.txt = txt;
-            kurwaTxT = kTxT;
         }
     }
 }
