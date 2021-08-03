@@ -7,7 +7,6 @@ namespace TxTnShapes
     public class TXT
     {
         public TextBox txtbx;
-
         public readonly double text_left_indent;
         public readonly double text_top_indent;
 
@@ -23,6 +22,7 @@ namespace TxTnShapes
             txtbx.BorderBrush = Brushes.Transparent;
             txtbx.Background  = Brushes.Transparent;
             txtbx.BorderThickness = new Thickness(0);
+
             
 
             text_left_indent = leftInd;

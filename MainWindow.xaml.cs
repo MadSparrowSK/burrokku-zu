@@ -3770,7 +3770,7 @@ namespace Interface_1._0
         }
         public void AddRP_Shape(RP_Shapes rPR_Shapes,ConnectionLine connectionLine ,TXT txt, Anchor anchor, bool isRect = false)
         {
-            txt.txtbx.Focus();
+            
             //Операция для поддержания нормальной инедксации
             //Считывание данных о фигуре
             Point LeftTop = new Point()
@@ -3805,10 +3805,19 @@ namespace Interface_1._0
                     diagramm.ShapesCounter++;
                 }
             }
-
-            txt.txtbx.MouseLeave += Txt_MouseLeave;
+            txt.txtbx.GotFocus += Txtbx_GotFocus;
             txt.txtbx.TextChanged += Txt_TextChanged;
+            txt.txtbx.MouseLeave += Txt_MouseLeave;
 
+            void Txtbx_GotFocus(object sender, RoutedEventArgs e)
+            {
+                int index;
+
+                if (isRect) index = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
+                else index = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
+                txt.txtbx.Text = diagramm.blocks[index].TextIntoTextBox;
+                
+            }
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
                 CanvasPos.Focus();
@@ -3818,11 +3827,13 @@ namespace Interface_1._0
                 else index = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
                 if (diagramm.blocks.Count != 0)
                     diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
-                if (DiagrammAnalyzer.PrevNextTextChanged)
+                if ((DiagrammAnalyzer.PrevNextTextChanged)&&(txt.txtbx.Text != "        ..."))
+
                 {
                     PrevNext.AddDiagramm(ref diagramm);
                     DiagrammAnalyzer.PrevNextTextChanged = false;
                 }
+                txt.txtbx.Text = "      ...";
 
             }
 
@@ -5895,6 +5906,9 @@ namespace Interface_1._0
                 RPC_Shape_Move(rPR_Shapes, txt, connectionLine, anchor, isRect);
             }
         }
+
+        
+
         public void AddRh_Shape(Rh_Shape shape,ConnectionLine connectionLine ,TXT txt ,Anchor anchor)
         {
             //Операция для поддержания нормальной инедксации
@@ -13660,6 +13674,7 @@ namespace Interface_1._0
 
                 Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent * 2.3);
                 Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+
 
                 
                 Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 10);
