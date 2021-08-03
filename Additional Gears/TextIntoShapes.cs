@@ -19,7 +19,7 @@ namespace TxTnShapes
             txtbx.MinWidth  = 40;
             txtbx.MinHeight = 20;
             txtbx.FontSize  = 10;
-            txtbx.Foreground  = Brushes.Red;
+            txtbx.Foreground  = Brushes.Black;
             txtbx.BorderBrush = Brushes.Transparent;
             txtbx.Background  = Brushes.Transparent;
             txtbx.BorderThickness = new Thickness(0);

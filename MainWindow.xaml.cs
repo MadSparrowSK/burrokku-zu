@@ -1111,12 +1111,6 @@ namespace Interface_1._0
         void CouplingLines(Shape shape, Ellipse ellipse, Line line,Point mouse_postion)
         {
             for (int i = 0; i < CanvasPos.Children.Count; ++i)
-                if (CanvasPos.Children[i] == line)
-                    continue;
-                else
-                    CanvasPos.Children[i].IsEnabled = false;
-
-            for (int i = 0; i < CanvasPos.Children.Count; ++i)
                 if (CanvasPos.Children[i] is Ellipse && CanvasPos.Children[i] != ellipse)
                     if (Math.Abs(mouse_postion.X - Canvas.GetLeft(CanvasPos.Children[i])) < 5 &&
                         Math.Abs(mouse_postion.Y - Canvas.GetTop(CanvasPos.Children[i])) < 5)
@@ -3776,6 +3770,7 @@ namespace Interface_1._0
         }
         public void AddRP_Shape(RP_Shapes rPR_Shapes,ConnectionLine connectionLine ,TXT txt, Anchor anchor, bool isRect = false)
         {
+            txt.txtbx.Focus();
             //Операция для поддержания нормальной инедксации
             //Считывание данных о фигуре
             Point LeftTop = new Point()
@@ -3864,8 +3859,6 @@ namespace Interface_1._0
                 var obj = (UIElement)sender;
                 lastPoint = e.GetPosition(obj);
 
-                if (e.ClickCount == 2)
-                    TextMethodSee(rPR_Shapes, txt, anchor);
 
                 if (!anchor.is_anchor_create)
                 {
@@ -4541,8 +4534,7 @@ namespace Interface_1._0
 
                             current_anchor_postion.X = Canvas.GetLeft(rPR_Shapes.shape);
 
-                            TextMethod_3Points(txt, point_summ_second_X);
-
+                            
                             if (pos.X < current_anchor_postion.X)
                             {
 
@@ -5135,8 +5127,7 @@ namespace Interface_1._0
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
 
-                            TextMethod_3Points(txt, point_summ_second_X);
-
+                            
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
                                 rPR_Shapes.SW_point.Y += 10;
@@ -5974,8 +5965,6 @@ namespace Interface_1._0
                 var obj = (UIElement)sender;
                 lastPoint = e.GetPosition(obj);
 
-                if (e.ClickCount == 2)
-                    TextMethodSee(shape, txt, anchor);
 
                 if (!anchor.is_anchor_create)
                 {
@@ -6036,8 +6025,7 @@ namespace Interface_1._0
 
                             double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
 
-                            TextMethod_3Points(txt, point_summ_second_X);
-
+                            
                             if (pos.X < current_anchor_postion.X)
                             {
                                 shape.N_Point.X += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 2;
@@ -7228,8 +7216,7 @@ namespace Interface_1._0
                             double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
                             double point_summ_second_Y = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) + Math.Sqrt(Math.Pow(shape.S_Point.Y, 2)));
 
-                            TextMethod_3Points(txt, point_summ_second_X);
-
+                            
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
                                 shape.N_Point.X += 10;
@@ -8081,8 +8068,6 @@ namespace Interface_1._0
                 var obj = (UIElement)sender;
                 lastPoint = e.GetPosition(obj);
 
-                if (e.ClickCount == 2)
-                    TextMethodSee(shape, txt, anchor);
 
                 if (!anchor.is_anchor_create)
                 {
@@ -8745,8 +8730,7 @@ namespace Interface_1._0
 
                             double point_summ_second_X = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) + Math.Sqrt(Math.Pow(shape.NE_point.X, 2)));
 
-                            TextMethod_3Points(txt, (shape.NE_point.X - shape.NW_point.X) / 2);
-
+                            
                             if (pos.X < current_anchor_postion.X)
                             {
                                 shape.W_point.X -= Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2))) / 10;
@@ -9351,8 +9335,7 @@ namespace Interface_1._0
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint_anchor;
 
-                            TextMethod_3Points(txt, point_summ_second_X);
-
+                            
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
                                 shape.W_point.X -= 3;
@@ -10202,8 +10185,6 @@ namespace Interface_1._0
                 var obj = (Rectangle)sender;
                 lastPoint = e.GetPosition(obj);
 
-                if (e.ClickCount == 2)
-                    TextMethodSee(shape, txt, anchor);
 
                 if (!anchor.is_anchor_create)
                 {
@@ -10829,8 +10810,7 @@ namespace Interface_1._0
 
                             current_anchor_postion.X = Canvas.GetLeft(shape.shape) - lastPoint.X;
 
-                            TextMethod_3Points(txt, shape.shape.ActualWidth);
-
+                            
                             if (pos.X < current_anchor_postion.X)
                             {
                                 shape.shape.Width += Math.Abs(Math.Sqrt(Math.Pow(pos.X, 2)) - Math.Sqrt(Math.Pow(current_anchor_postion.X, 2)));
@@ -11391,8 +11371,7 @@ namespace Interface_1._0
 
                             var pos = e.GetPosition(CanvasPos) - lastPoint;
 
-                            TextMethod_3Points(txt, shape.shape.Width);
-
+                            
                             if (pos.X < current_anchor_postion.X && pos.Y < current_anchor_postion.Y)
                             {
                                 shape.shape.Width += 10;
@@ -13624,157 +13603,8 @@ namespace Interface_1._0
             
         }
 
-        void TextMethod_3Points(TXT txt, double length)
-        {
-            if (length < txt.txtbx.ActualWidth)
-            {
-                txt.txtbx.Foreground = Brushes.Transparent;
-                Canvas.SetZIndex(txt.txtbx, -1);
-            }
-            else
-            {
-                txt.txtbx.Foreground = Brushes.White;
-                Canvas.SetZIndex(txt.txtbx, -1);
-            }
-        }
-        void MassiveDisabledEnabled(bool DisEn)
-        {
-            if (!DisEn)
-                for (int i = 0; i < CanvasPos.Children.Count; ++i)
-                    CanvasPos.Children[i].IsEnabled = DisEn;
-            else
-                for (int i = 0; i < CanvasPos.Children.Count; ++i)
-                    if (CanvasPos.Children[i] is TextBox)
-                        CanvasPos.Children[i].IsEnabled = false;
-                    else
-                        CanvasPos.Children[i].IsEnabled = true;
-        }
-
-        public void TextMethodSee(RP_Shapes shape, TXT txt, Anchor anchor)
-        {
-            txt.txtbx.SetTxT();
-            Canvas.SetZIndex(txt.txtbx, 1);
-
-            double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_NE.X, 2))) / 2;
-            double left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(shape.Point_NE.X, 2)));
-
-            txt.txtbx.Foreground = Brushes.White;
-
-            txt.txtbx.KeyDown += Writing;
-
-            void Writing(object sender, KeyEventArgs e)
-            {
-                MassiveDisabledEnabled(false);
-                txt.txtbx.IsEnabled = true;
-
-                anchor.ResetParametrs();
-                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2);
-
-                
-                left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(shape.Point_NE.X, 2)));
-
-                if (Keyboard.IsKeyDown(Key.Enter))
-                {
-                    txt.txtbx.ResetTxT();
-                    Canvas.SetZIndex(txt.txtbx, -1);
-
-                    TextMethod_3Points(txt, left_size);
-                    MassiveDisabledEnabled(true);
-                }
-            }
-        }
-        public void TextMethodSee(Rh_Shape shape, TXT txt, Anchor anchor)
-        {
-            txt.txtbx.SetTxT();
-            Canvas.SetZIndex(txt.txtbx, 1);
-
-            double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_Point.X, 2))) / 2;
-            double left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
-
-            txt.txtbx.Foreground = Brushes.White;
-
-            txt.txtbx.KeyDown += Writing;
-
-            void Writing(object sender, KeyEventArgs e)
-            {
-                MassiveDisabledEnabled(false);
-                txt.txtbx.IsEnabled = true;
-
-                anchor.ResetParametrs();
-                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2);
-
-                left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
-
-                if (Keyboard.IsKeyDown(Key.Enter))
-                {
-                    txt.txtbx.ResetTxT();
-                    Canvas.SetZIndex(txt.txtbx, -1);
-
-                    TextMethod_3Points(txt, left_size);
-                    MassiveDisabledEnabled(true);
-                }
-            }
-        }
-        public void TextMethodSee(Cy_Shape shape, TXT txt, Anchor anchor)
-        {
-            txt.txtbx.SetTxT();
-            Canvas.SetZIndex(txt.txtbx, 1);
-
-            double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_NE.X, 2))) / 2;
-            double left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(shape.Point_NE.X, 2)));
-
-            txt.txtbx.Foreground = Brushes.White;
-
-            txt.txtbx.KeyDown += Writing;
-
-            void Writing(object sender, KeyEventArgs e)
-            {
-                MassiveDisabledEnabled(false);
-                txt.txtbx.IsEnabled = true;
-
-                anchor.ResetParametrs();
-                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2);
-
-                left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(shape.Point_NE.X, 2)));
-
-                if (Keyboard.IsKeyDown(Key.Enter))
-                {
-                    txt.txtbx.ResetTxT();
-                    Canvas.SetZIndex(txt.txtbx, -1);
-
-                    TextMethod_3Points(txt, left_size);
-                    MassiveDisabledEnabled(true);
-                }
-            }
-        }
-        public void TextMethodSee(Ell_Shape shape, TXT txt, Anchor anchor)
-        {
-            txt.txtbx.SetTxT();
-            Canvas.SetZIndex(txt.txtbx, 1);
-
-            txt.txtbx.Foreground = Brushes.White;
-
-            txt.txtbx.KeyDown += Writing;
-
-            void Writing(object sender, KeyEventArgs e)
-            {
-                MassiveDisabledEnabled(false);
-                txt.txtbx.IsEnabled = true;
-
-                anchor.ResetParametrs();
-                Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.ActualWidth / 2 - txt.txtbx.ActualWidth / 2);
-
-                if (Keyboard.IsKeyDown(Key.Enter))
-                {
-                    txt.txtbx.ResetTxT();
-                    Canvas.SetZIndex(txt.txtbx, -1);
-
-                    TextMethod_3Points(txt, shape.shape.ActualWidth);
-                    MassiveDisabledEnabled(true);
-                }
-            }
-        }
-
+        
+        
         private void DnD_Drop(object sender, DragEventArgs e)
         {
             if (DiagrammAnalyzer.shapesCounter < 0)
@@ -13859,7 +13689,7 @@ namespace Interface_1._0
                  DiagrammAnalyzer.shapesCounter++;
                  TXT txt = new TXT(7, 5);
                  shape.shape.Style = (Style)FindResource("Parrabullem");
-                 Canvas.SetZIndex(txt.txtbx, -1);
+                 Canvas.SetZIndex(txt.txtbx, 1);
                  
                  Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
@@ -13923,7 +13753,7 @@ namespace Interface_1._0
                  DiagrammAnalyzer.shapesCounter++;
                  TXT txt = new TXT(10, 7);
                  shape.shape.Style = (Style)FindResource("Rhomb");
-                 Canvas.SetZIndex(txt.txtbx, -1);
+                 Canvas.SetZIndex(txt.txtbx, 1);
                  
                  Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 5);
 
@@ -13987,7 +13817,7 @@ namespace Interface_1._0
                 DiagrammAnalyzer.shapesCounter++;
                 TXT txt = new TXT(30, 5);
                 shape.shape.Style = (Style)FindResource("Cycle");
-                Canvas.SetZIndex(txt.txtbx, -1);
+                Canvas.SetZIndex(txt.txtbx, 1);
                 
                  Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
@@ -14053,7 +13883,7 @@ namespace Interface_1._0
 
                  TXT txt = new TXT(15, 6);
                  shape.shape.Style = (Style)FindResource("Ellipse");
-                 Canvas.SetZIndex(txt.txtbx, -1);
+                 Canvas.SetZIndex(txt.txtbx, 1);
                  
                  Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 6);
 
@@ -14113,9 +13943,7 @@ namespace Interface_1._0
 
             void RtxtMD(object sender, MouseButtonEventArgs e)
             {
-                if (e.ClickCount == 2)
-                    TxTWriting(rectangle, txt);
-
+                
                 if(e.RightButton == MouseButtonState.Pressed)
                 {
                     CanvasPos.Children.Remove(txt);
@@ -14128,32 +13956,7 @@ namespace Interface_1._0
                 TxTMove(rectangle, txt);
             }
         } 
-        void TxTWriting(Rectangle rectangle, TextBox txt)
-        {
-            txt.SetTxT();
-            Canvas.SetZIndex(txt, 1);
-
-            txt.KeyDown += Writing;
-
-            void Writing(object sender, KeyEventArgs e)
-            {
-                MassiveDisabledEnabled(false);
-                txt.IsEnabled = true;
-
-                if(Keyboard.IsKeyDown(Key.Enter))
-                {
-                    txt.ResetTxT();
-                    Canvas.SetZIndex(txt, -1);
-
-                    rectangle.Width = txt.ActualWidth + 10;
-
-                    Canvas.SetLeft(txt, Canvas.GetLeft(rectangle) + 2.5);
-                    Canvas.SetTop(txt, Canvas.GetTop(rectangle) + 5);
-
-                    MassiveDisabledEnabled(true);
-                }
-            }
-        }
+        
         void TxTMove(Rectangle rectangle, TextBox txt)
         {
             rectangle.MouseMove += RtxtMove;
@@ -14200,7 +14003,7 @@ namespace Interface_1._0
                 TextBox txt = new TextBox() 
                 { Text = "Text",  IsEnabled = false, Foreground = Brushes.White, Background = Brushes.Transparent,
                 BorderBrush = Brushes.Transparent};
-                Canvas.SetZIndex(txt, -1);
+                Canvas.SetZIndex(txt, 1);
                 CanvasPos.Children.Add(txt);
 
                 shapesInfo.Add(new ShapeInfo(txtTangle, txt));
@@ -15638,7 +15441,7 @@ namespace Interface_1._0
                     shape.shape.Name = "Rekt_" + block.IndexNumber.ToString();
 
                     TXT txt = new TXT(7, 5);
-                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
                     shape.shape.Style = (Style)FindResource("Rect");
 
@@ -15712,7 +15515,7 @@ namespace Interface_1._0
                     shape.shape.Name = "Parrabullem_" + block.IndexNumber.ToString();
 
                     TXT txt = new TXT(7, 5);
-                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
                     shape.shape.Style = (Style)FindResource("Parrabullem");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
@@ -15782,7 +15585,7 @@ namespace Interface_1._0
                     Rh_Shape shape = new Rh_Shape(Rhomb, rhombW, rhombS, rhombE, rhombN, rhombPoints);
                     shape.shape.Name = "Rhomb_" + block.IndexNumber.ToString();
                     TXT txt = new TXT(10, 7);
-                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
                     shape.shape.Style = (Style)FindResource("Rhomb");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 5);
@@ -15862,7 +15665,7 @@ namespace Interface_1._0
                     shape.shape.Name = "Cycle_" + block.IndexNumber.ToString();
 
                     TXT txt = new TXT(30, 5);
-                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
                     shape.shape.Style = (Style)FindResource("Cycle");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
@@ -15928,7 +15731,7 @@ namespace Interface_1._0
                     shape.shape.Height = block.Height;
 
                     TXT txt = new TXT(15, 6);
-                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
                     shape.shape.Style = (Style)FindResource("Ellipse");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 6);
@@ -16100,7 +15903,7 @@ namespace Interface_1._0
                     shape.shape.Name = "Rekt_" + block.IndexNumber.ToString();
 
                     TXT txt = new TXT(7, 5);
-                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
                     shape.shape.Style = (Style)FindResource("Rect");
 
@@ -16174,7 +15977,7 @@ namespace Interface_1._0
                     shape.shape.Name = "Parrabullem_" + block.IndexNumber.ToString();
 
                     TXT txt = new TXT(7, 5);
-                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
                     shape.shape.Style = (Style)FindResource("Parrabullem");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
@@ -16243,7 +16046,7 @@ namespace Interface_1._0
                     Rh_Shape shape = new Rh_Shape(Rhomb, rhombW, rhombS, rhombE, rhombN, rhombPoints);
                     shape.shape.Name = "Rhomb_" + block.IndexNumber.ToString();
                     TXT txt = new TXT(10, 7);
-                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
                     shape.shape.Style = (Style)FindResource("Rhomb");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 5);
@@ -16320,7 +16123,7 @@ namespace Interface_1._0
                     shape.shape.Name = "Cycle_" + block.IndexNumber.ToString();
 
                     TXT txt = new TXT(30, 5);
-                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
                     shape.shape.Style = (Style)FindResource("Cycle");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
@@ -16384,7 +16187,7 @@ namespace Interface_1._0
                     shape.shape.Height = block.Height;
 
                     TXT txt = new TXT(15, 6);
-                    Canvas.SetZIndex(txt.txtbx, -1);
+                    Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
                     shape.shape.Style = (Style)FindResource("Ellipse");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 6);
