@@ -58,9 +58,15 @@ namespace Interface_1._0
             {
                 blocksClone.Add(block.Clone());
             }
+            List<DataForSavingLine> LinesClone = new List<DataForSavingLine> { };
+            foreach (DataForSavingLine line in Lines)
+            {
+                LinesClone.Add(line.CloneLine());
+            }
             Diagramm diagrammClone = new Diagramm()
             {
                 blocks = blocksClone,
+                Lines = LinesClone,
                 ShapesCounter = this.ShapesCounter
             };
             return diagrammClone;
@@ -72,9 +78,15 @@ namespace Interface_1._0
             {
                 blocksClone.Add(block.Clone());
             }
+            List<DataForSavingLine> LinesClone = new List<DataForSavingLine> { };
+            foreach (DataForSavingLine line in Lines)
+            {
+                LinesClone.Add(line.CloneLine());
+            }
             Diagramm diagrammClone = new Diagramm()
             {
                 blocks = blocksClone,
+                Lines = LinesClone,
                 ShapesCounter = this.ShapesCounter,
                 ID = id
             };
@@ -127,15 +139,6 @@ namespace Interface_1._0
 
         //Текст внутри фигуры
         public string TextIntoTextBox { get; set; }
-
-        //Ширина, длина и размер шрифта текста внутри фигуры
-        /*
-        public int TextWidth { get; set; }
-
-        public int TextHeigth { get; set; }
-
-        public int FontSize { get; set; }
-        */
 
         public Block()
         {
@@ -204,7 +207,7 @@ namespace Interface_1._0
 
             return blockClone;
         }
-
+        
         /// <summary>
         /// Вернет имя данной фигуры (в имени хранится индекс и тип фигуры)
         /// </summary>
@@ -243,6 +246,20 @@ namespace Interface_1._0
         {
 
         }
+
+        public DataForSavingLine CloneLine()
+        {
+            DataForSavingLine LineClone = new DataForSavingLine()
+            {
+                StartPoint = this.StartPoint,
+                EndPoint = this.EndPoint,
+                Source = this.Source,
+                Target = this.Target,
+                LinesCounter = this.LinesCounter,
+            };
+            return LineClone;
+        }
+
 
         public override string ToString()
         {

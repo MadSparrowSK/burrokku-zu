@@ -254,6 +254,7 @@ namespace Interface_1._0
             line.Y2 = end.Y;
             void LineMouseDown(object sender, MouseButtonEventArgs e)
             {
+
                 click = false;
                 var obj_line = (Line)sender;
                 if (e.RightButton == MouseButtonState.Pressed && !lineMove)
@@ -268,6 +269,8 @@ namespace Interface_1._0
                         diagramm.Lines.RemoveAt(i);
                     }
                 }
+                DiagrammAnalyzer.isChanged = true;
+                PrevNext.AddDiagramm(ref diagramm);
 
             }
             return line;
@@ -1126,9 +1129,14 @@ namespace Interface_1._0
         void LogicOf90LineBuild(Shape shape, Ellipse ellFrom, Ellipse ellTo, Line line)
         {
 
-            diagramm.Lines.Add(new DataForSavingLine(new Point() { X = line.X1, Y = line.Y1 }, new Point() { X = line.X2, Y = line.Y2 }, ellFrom.Name, ellTo.Name, DiagrammAnalyzer.linesCounter));
+            if (!DiagrammAnalyzer.isPrevNext)
+            {
+                diagramm.Lines.Add(new DataForSavingLine(new Point() { X = line.X1, Y = line.Y1 }, new Point() { X = line.X2, Y = line.Y2 }, ellFrom.Name, ellTo.Name, DiagrammAnalyzer.linesCounter));
+                DiagrammAnalyzer.linesCounter++;
+                PrevNext.AddDiagramm(ref diagramm);
+            }
             if (CanvasPos.Children.IsSynchronized) Console.WriteLine(2);
-            DiagrammAnalyzer.linesCounter++;
+            
             HideLines(line);
 
             Shape fromGone = shape;
@@ -3346,6 +3354,9 @@ namespace Interface_1._0
                         diagramm.Lines.RemoveAt(i);
                     }
                 }
+                DiagrammAnalyzer.isChanged = true;
+                PrevNext.AddDiagramm(ref diagramm);
+
 
             }
         }
@@ -3572,6 +3583,8 @@ namespace Interface_1._0
 
                 if (e.ClickCount == 1 && lineMove)
                     click = true;
+                DiagrammAnalyzer.isChanged = true;
+                PrevNext.AddDiagramm(ref diagramm);
             }
 
             void LineLeftMM(object sender, MouseEventArgs e)
@@ -8052,7 +8065,7 @@ namespace Interface_1._0
                 CanvasPos.Focus();
                 int index;
                 double left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(shape.Point_NE.X, 2)));
-                index = GetIndexOfShape(Shapes.Rhomb, shape.shape.Name);
+                index = GetIndexOfShape(Shapes.Cycle, shape.shape.Name);
 
 
                 if (DiagrammAnalyzer.PrevNextTextChanged)
@@ -10189,7 +10202,7 @@ namespace Interface_1._0
                 int index;
                 double left_size = shape.shape.ActualWidth;
                 
-                index = GetIndexOfShape(Shapes.Rhomb, shape.shape.Name);
+                index = GetIndexOfShape(Shapes.Ellipse, shape.shape.Name);
 
 
                 if (DiagrammAnalyzer.PrevNextTextChanged)
@@ -13624,6 +13637,7 @@ namespace Interface_1._0
 
         public void UIElements_Mouse_Up(object sender, MouseButtonEventArgs e)
         {
+            
             //Сохранение новых координат линий
             for (int i = 0; i < diagramm.Lines.Count; i++)
             {
@@ -13636,23 +13650,24 @@ namespace Interface_1._0
                     {
                         diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, new Point() { X = diagramm.Lines[i].EndPoint.X, Y = diagramm.Lines[i].EndPoint.Y }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
                         diagramm.Lines.Remove(diagramm.Lines[i+1]);
+
                     }
                     else
                         if (diagramm.Lines[i].Target == tempName)
                     {
                         diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = diagramm.Lines[i].StartPoint.X, Y = diagramm.Lines[i].StartPoint.Y }, new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
                         diagramm.Lines.Remove(diagramm.Lines[i+1]);
+                        
                     }
 
                 }
 
             }
             
-
             (sender as UIElement).ReleaseMouseCapture();
             if (DiagrammAnalyzer.ShapeMoved)
             {
-                
+                DiagrammAnalyzer.isChanged = true;
                 PrevNext.AddDiagramm(ref diagramm);
                 DiagrammAnalyzer.ShapeMoved = false;
             }
@@ -14100,6 +14115,7 @@ namespace Interface_1._0
                 ExcretorySquare.ResetColors();
             }
 
+            bool somethingChanged = false;
             clickFree = true;
             //Сохранение новых координат фигур
             foreach(Block shape in diagramm.blocks)
@@ -14110,6 +14126,11 @@ namespace Interface_1._0
                     if((el is Shape block)&&(block.Name == shape.ToString()))
                     {
                         Point LeftTop = new Point() { X = Canvas.GetLeft(block), Y = Canvas.GetTop(block) };
+                        if(shape.LeftTop != LeftTop)
+                        {
+                            DiagrammAnalyzer.isChanged = true;
+                            somethingChanged = true;
+                        }    
                         shape.LeftTop = LeftTop;
                     }
                 }
@@ -14138,7 +14159,10 @@ namespace Interface_1._0
                 }
             }
             
-
+            if (somethingChanged)
+            {
+                PrevNext.AddDiagramm(ref diagramm);
+            }
 
             Canvas.SetLeft(ExcretorySquare.additSquare, e.GetPosition(CanvasPos).X - 5);
             Canvas.SetTop(ExcretorySquare.additSquare, e.GetPosition(CanvasPos).Y - 5);
@@ -15158,26 +15182,11 @@ namespace Interface_1._0
                 ExcretorySquare.mainSquare.MouseUp += UIElements_Mouse_Up;
             }
 
-            foreach (object item in CanvasPos.Children)
-            {
-                if ((item is Shape shape)&&(shape.Name != "") && (shape.Name[1] != '_'))
-                {
-                    
-                    string type = "";
-                    for (int i = 0; i < shape.Name.Length; i++)
-                    {
-                        if (shape.Name[i] == '_') break;
-                        type += shape.Name[i];
-
-                    }
-
-                    shape.Style = (Style)FindResource(type);
-                }
-            }
         }
 
         private void EmmitMD(object sender, MouseButtonEventArgs e)
         {
+            bool somethingChanged = false;
             List<int> indexesForDeleting = new List<int>();
             List<int> indexesForDeletingLines = new List<int>();
             ls = e.GetPosition(sender as UIElement);
@@ -15258,6 +15267,7 @@ namespace Interface_1._0
                     
                 while (indexesForDeleting.Count > 0)
                 {
+                    somethingChanged = true;
                     diagramm.blocks.RemoveAt(indexesForDeleting[indexesForDeleting.Count - 1]);
                     indexesForDeleting.RemoveAt(indexesForDeleting.Count - 1);
                     DiagrammAnalyzer.shapesCounter--;
@@ -15317,8 +15327,11 @@ namespace Interface_1._0
                 {
                     diagramm.blocks[i].IndexNumber = i;
                 }
-                PrevNext.AddDiagramm(ref diagramm);
+                
             }
+
+            if (somethingChanged) PrevNext.AddDiagramm(ref diagramm);
+
         }
         private void EmmitMM(object sender, MouseEventArgs e)
         {
@@ -16442,6 +16455,17 @@ namespace Interface_1._0
                 }
                 DiagrammAnalyzer.shapesCounter++;
             }
+            //Прорисовываем десериализованные линии
+            foreach (DataForSavingLine Data in tempDiagramm.Lines)
+            {
+                Ellipse from = GetEllipseInCanvas(Data.Source);
+                Ellipse to = GetEllipseInCanvas(Data.Target);
+                Line line = CreateLine(Data.StartPoint, Data.EndPoint, from, to);
+                Shape shape = GetShapeInCanvas(GetNameOfShape(from.Name));
+
+
+                LogicOf90LineBuild(shape, from, to, line);
+            }
             //Булевые переменные, необходимые для сохранения индексации
             DiagrammAnalyzer.isLoaded = false;
             DiagrammAnalyzer.isPrevNext = false;
@@ -16457,7 +16481,7 @@ namespace Interface_1._0
         private void next(object sender, MouseButtonEventArgs e)
         {
             DiagrammAnalyzer.isCanBeLoaded = true;
-            PrevNext.Next(ref diagramm, DiagrammAnalyzer.isCanBeLoaded);
+            PrevNext.Next(ref diagramm,DiagrammAnalyzer.isCanBeLoaded);
             if (DiagrammAnalyzer.isCanBeLoaded)
                 CutDownLoad(diagramm);
             DiagrammAnalyzer.isChanged = true;
