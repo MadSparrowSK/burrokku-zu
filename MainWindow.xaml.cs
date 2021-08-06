@@ -115,7 +115,7 @@ namespace Interface_1._0
         {
             int index = 0;
             string temp = "";
-            if (shape == Shapes.Rekt)
+            if (shape == Shapes.Rect)
             {
                 if (name.Length == 6)
                 {
@@ -134,21 +134,21 @@ namespace Interface_1._0
                 }
             }
 
-            if (shape == Shapes.Parrabellum)
+            if (shape == Shapes.Parabellum)
             {
+                if (name.Length == 12)
+                {
+                    temp = name[11].ToString();
+                    index = Convert.ToInt32(temp);
+                }
                 if (name.Length == 13)
                 {
-                    temp = name[12].ToString();
+                    temp = name[11].ToString() + name[12].ToString();
                     index = Convert.ToInt32(temp);
                 }
                 if (name.Length == 14)
                 {
-                    temp = name[12].ToString() + name[13].ToString();
-                    index = Convert.ToInt32(temp);
-                }
-                if (name.Length == 15)
-                {
-                    temp = name[12].ToString() + name[13].ToString() + name[14].ToString();
+                    temp = name[11].ToString() + name[12].ToString() + name[13].ToString();
                     index = Convert.ToInt32(temp);
                 }
             }
@@ -239,7 +239,7 @@ namespace Interface_1._0
         /// <summary>
         ///Метод для создания линии 
         /// </summary>
-        private Line CreateLine(Point start, Point end)
+        private Line CreateLine(Point start, Point end, Ellipse ellFrom, Ellipse ellTo)
         {
             Line line = new Line();
             CanvasPos.Children.Add(line);
@@ -252,6 +252,24 @@ namespace Interface_1._0
 
             line.X2 = end.X ;
             line.Y2 = end.Y;
+            void LineMouseDown(object sender, MouseButtonEventArgs e)
+            {
+                click = false;
+                var obj_line = (Line)sender;
+                if (e.RightButton == MouseButtonState.Pressed && !lineMove)
+                    HideLines(obj_line);
+
+                if (e.ClickCount == 1 && lineMove)
+                    click = true;
+                for (int i = 0; i < diagramm.Lines.Count; i++)
+                {
+                    if ((ellFrom.Name == diagramm.Lines[i].Source) && (ellTo.Name == diagramm.Lines[i].Target))
+                    {
+                        diagramm.Lines.RemoveAt(i);
+                    }
+                }
+
+            }
             return line;
         }
         /// <summary>
@@ -264,7 +282,7 @@ namespace Interface_1._0
             foreach (Object shape in CanvasPos.Children)
             {
                
-                if ((shape is Polygon polygon1) && (polygon1.Name != "") && (polygon1.Name[0] != 'C'))
+                if ((shape is Polygon polygon1) && (polygon1.Name != "") && (polygon1.Name[0].ToString() + polygon1.Name[1].ToString() != "C_"))
                 {
                     
                     string oldName = polygon1.Name;
@@ -417,34 +435,6 @@ namespace Interface_1._0
 
         #endregion
 
-        #region Interactions with SideBar
-        private void SideBar_Mouse_Enter(object sender, RoutedEventArgs e)
-        {
-            if (lbl_Ellipse == sender)
-                Ellipse.Stroke = Brushes.White;
-            if (lbl_Cylce == sender)
-                Cycle.Stroke = Brushes.White;
-            if (lbl_Parrabellum == sender)
-                Parrabellum.Stroke = Brushes.White;
-            if (lbl_Rhomb == sender)
-                Rhomb.Stroke = Brushes.White;
-            if (lbl_Rect == sender)
-                Rekt.Stroke = Brushes.White;
-        }
-        private void SideBar_Mouse_Leave(object sender, RoutedEventArgs e)
-        {
-            if (lbl_Ellipse == sender)
-                Ellipse.Stroke = Brushes.Gray;
-            if (lbl_Cylce == sender)
-                Cycle.Stroke = Brushes.Gray;
-            if (lbl_Parrabellum == sender)
-                Parrabellum.Stroke = Brushes.Gray;
-            if (lbl_Rhomb == sender)
-                Rhomb.Stroke = Brushes.Gray;
-            if (lbl_Rect == sender)
-                Rekt.Stroke = Brushes.Gray;
-        }
-        #endregion
 
         #region Show Window with Settings
         private void Change_Window(object sender, RoutedEventArgs e)
@@ -476,7 +466,7 @@ namespace Interface_1._0
         #region Drag_N_Drop
 
         private bool Rectangle_Check = false;
-        private bool Parrabullem_Check = false;
+        private bool Parabellum_Check = false;
         private bool Rhomb_Check = false;
         private bool Cycle_Check = false;
         private bool Ellipse_Check = false;
@@ -510,14 +500,14 @@ namespace Interface_1._0
         private void turnOffCheckBoxes(Shapes shape)
         {
             Rectangle_Check = false;
-            Parrabullem_Check = false;
+            Parabellum_Check = false;
             Rhomb_Check = false;
             Cycle_Check = false;
             Ellipse_Check = false;
-            if (shape == Shapes.Rekt)
+            if (shape == Shapes.Rect)
                 Rectangle_Check = true;
-            if (shape == Shapes.Parrabellum)
-                Parrabullem_Check = true;
+            if (shape == Shapes.Parabellum)
+                Parabellum_Check = true;
             if (shape == Shapes.Rhomb)
                 Rhomb_Check = true;
             if (shape == Shapes.Cycle)
@@ -527,12 +517,12 @@ namespace Interface_1._0
         }
         private void DragDrop_MD(object sender, MouseButtonEventArgs e)
         {
-            if (Rekt == sender)
-                turnOffCheckBoxes(Shapes.Rekt);
+            if (Rect == sender)
+                turnOffCheckBoxes(Shapes.Rect);
             if (Rhomb == sender)
                 turnOffCheckBoxes(Shapes.Rhomb);
-            if (Parrabellum == sender)
-                turnOffCheckBoxes(Shapes.Parrabellum);
+            if (Parabellum == sender)
+                turnOffCheckBoxes(Shapes.Parabellum);
             if (Cycle == sender)
                 turnOffCheckBoxes(Shapes.Cycle);
             if (Ellipse == sender)
@@ -1136,8 +1126,8 @@ namespace Interface_1._0
         void LogicOf90LineBuild(Shape shape, Ellipse ellFrom, Ellipse ellTo, Line line)
         {
 
-            
             diagramm.Lines.Add(new DataForSavingLine(new Point() { X = line.X1, Y = line.Y1 }, new Point() { X = line.X2, Y = line.Y2 }, ellFrom.Name, ellTo.Name, DiagrammAnalyzer.linesCounter));
+            if (CanvasPos.Children.IsSynchronized) Console.WriteLine(2);
             DiagrammAnalyzer.linesCounter++;
             HideLines(line);
 
@@ -1203,7 +1193,7 @@ namespace Interface_1._0
 
                         if (Math.Abs(Canvas.GetTop(ellFrom) - Canvas.GetTop(ellTo)) < 50)
                         {
-                            Line lineOne = CreateLine(new Point() { X = Canvas.GetLeft(ellFrom), Y = Canvas.GetTop(ellFrom) }, new Point() { X = Canvas.GetLeft(ellFrom) + 30, Y = Canvas.GetTop(ellFrom) });
+                            Line lineOne = CreateLine(new Point() { X = Canvas.GetLeft(ellFrom), Y = Canvas.GetTop(ellFrom) }, new Point() { X = Canvas.GetLeft(ellFrom) + 30, Y = Canvas.GetTop(ellFrom) }, ellFrom, ellTo);
                             
                             Polyline arrOne = new Polyline()
                             { Stroke = Brushes.Yellow, Points = rightArray.Points, StrokeThickness = 1.5 };
@@ -1212,15 +1202,15 @@ namespace Interface_1._0
                             Canvas.SetLeft(arrOne, Canvas.GetLeft(ellFrom) + Math.Abs(lineOne.X1 - lineOne.X2) / 2);
                             Canvas.SetTop(arrOne, Canvas.GetTop(ellFrom) - 5);
 
-                            Line lineTwo = CreateLine(new Point() { X = lineOne.X2, Y = lineOne.Y2 }, new Point() { X = lineOne.X2, Y = Canvas.GetTop(ellFrom) + 30 });
+                            Line lineTwo = CreateLine(new Point() { X = lineOne.X2, Y = lineOne.Y2 }, new Point() { X = lineOne.X2, Y = Canvas.GetTop(ellFrom) + 30 }, ellFrom, ellTo);
                             
-                            Line lineThree = CreateLine(new Point() { X = lineTwo.X2, Y = lineTwo.Y2 }, new Point() { X = Canvas.GetLeft(ellTo) + 30, Y = lineTwo.Y2 });
+                            Line lineThree = CreateLine(new Point() { X = lineTwo.X2, Y = lineTwo.Y2 }, new Point() { X = Canvas.GetLeft(ellTo) + 30, Y = lineTwo.Y2 }, ellFrom, ellTo);
                             
-                            Line lineFour = CreateLine(new Point() { X = lineThree.X2, Y = lineThree.Y2 }, new Point() { X = lineThree.X2, Y = Canvas.GetTop(ellTo) });
+                            Line lineFour = CreateLine(new Point() { X = lineThree.X2, Y = lineThree.Y2 }, new Point() { X = lineThree.X2, Y = Canvas.GetTop(ellTo) }, ellFrom, ellTo);
                             
 
 
-                            Line lineFive = CreateLine(new Point() { X = lineFour.X2, Y = lineFour.Y2 }, new Point() { X = Canvas.GetLeft(ellTo), Y = Canvas.GetTop(ellTo) });
+                            Line lineFive = CreateLine(new Point() { X = lineFour.X2, Y = lineFour.Y2 }, new Point() { X = Canvas.GetLeft(ellTo), Y = Canvas.GetTop(ellTo) }, ellFrom, ellTo);
                             
 
                             Polyline arrTwo = new Polyline()
@@ -1236,7 +1226,6 @@ namespace Interface_1._0
                             { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                             lineOne.MouseDown += LineMouseDown;
                             CanvasPos.Children.Add(lineOne);
-
                             lineOne.X1 = Canvas.GetLeft(ellFrom);
                             lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1289,7 +1278,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1361,7 +1349,6 @@ namespace Interface_1._0
                         { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1411,7 +1398,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1472,7 +1458,6 @@ namespace Interface_1._0
                             Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                             lineOne.MouseDown += LineMouseDown;
                             CanvasPos.Children.Add(lineOne);
-
                             lineOne.X1 = Canvas.GetLeft(ellFrom);
                             lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1538,7 +1523,6 @@ namespace Interface_1._0
                             Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                             lineOne.MouseDown += LineMouseDown;
                             CanvasPos.Children.Add(lineOne);
-
                             lineOne.X1 = Canvas.GetLeft(ellFrom);
                             lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1611,7 +1595,6 @@ namespace Interface_1._0
                             Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                             lineOne.MouseDown += LineMouseDown;
                             CanvasPos.Children.Add(lineOne);
-
                             lineOne.X1 = Canvas.GetLeft(ellFrom);
                             lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1677,7 +1660,6 @@ namespace Interface_1._0
                             Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                             lineOne.MouseDown += LineMouseDown;
                             CanvasPos.Children.Add(lineOne);
-
                             lineOne.X1 = Canvas.GetLeft(ellFrom);
                             lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1728,7 +1710,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1779,7 +1760,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1835,7 +1815,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1885,7 +1864,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1935,7 +1913,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -1996,7 +1973,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2055,7 +2031,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2105,7 +2080,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2175,7 +2149,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2225,7 +2198,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2287,7 +2259,6 @@ namespace Interface_1._0
                             Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                             lineOne.MouseDown += LineMouseDown;
                             CanvasPos.Children.Add(lineOne);
-
                             lineOne.X1 = Canvas.GetLeft(ellFrom);
                             lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2353,7 +2324,6 @@ namespace Interface_1._0
                             Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                             lineOne.MouseDown += LineMouseDown;
                             CanvasPos.Children.Add(lineOne);
-
                             lineOne.X1 = Canvas.GetLeft(ellFrom);
                             lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2406,7 +2376,6 @@ namespace Interface_1._0
                             Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                             lineOne.MouseDown += LineMouseDown;
                             CanvasPos.Children.Add(lineOne);
-
                             lineOne.X1 = Canvas.GetLeft(ellFrom);
                             lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2472,7 +2441,6 @@ namespace Interface_1._0
                             Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                             lineOne.MouseDown += LineMouseDown;
                             CanvasPos.Children.Add(lineOne);
-
                             lineOne.X1 = Canvas.GetLeft(ellFrom);
                             lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2543,7 +2511,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2604,7 +2571,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2671,7 +2637,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2742,7 +2707,6 @@ namespace Interface_1._0
                             Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                             lineOne.MouseDown += LineMouseDown;
                             CanvasPos.Children.Add(lineOne);
-
                             lineOne.X1 = Canvas.GetLeft(ellFrom);
                             lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2809,7 +2773,6 @@ namespace Interface_1._0
                             Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                             lineOne.MouseDown += LineMouseDown;
                             CanvasPos.Children.Add(lineOne);
-
                             lineOne.X1 = Canvas.GetLeft(ellFrom);
                             lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2860,7 +2823,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2919,7 +2881,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -2975,7 +2936,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -3025,7 +2985,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -3075,7 +3034,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -3125,7 +3083,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -3183,7 +3140,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -3233,7 +3189,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -3283,7 +3238,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -3334,7 +3288,6 @@ namespace Interface_1._0
                         Line lineOne = new Line() { Stroke = Brushes.Yellow, StrokeThickness = 1.5 };
                         lineOne.MouseDown += LineMouseDown;
                         CanvasPos.Children.Add(lineOne);
-
                         lineOne.X1 = Canvas.GetLeft(ellFrom);
                         lineOne.Y1 = Canvas.GetTop(ellFrom);
 
@@ -3376,6 +3329,24 @@ namespace Interface_1._0
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                     }
                 }
+            }
+            void LineMouseDown(object sender, MouseButtonEventArgs e)
+            {
+                click = false;
+                var obj_line = (Line)sender;
+                if (e.RightButton == MouseButtonState.Pressed && !lineMove)
+                    HideLines(obj_line);
+
+                if (e.ClickCount == 1 && lineMove)
+                    click = true;
+                for (int i = 0; i < diagramm.Lines.Count; i++)
+                {
+                    if ((ellFrom.Name == diagramm.Lines[i].Source)&&(ellTo.Name == diagramm.Lines[i].Target))
+                    {
+                        diagramm.Lines.RemoveAt(i);
+                    }
+                }
+
             }
         }
 
@@ -3485,16 +3456,7 @@ namespace Interface_1._0
                     && (list[i] as UndefiendLine).undefLine.X2 == 0 && (list[i] as UndefiendLine).undefLine.Y2 == 0))
                     list.Remove(list[i]);
         }
-        void LineMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            click = false;
-            var obj_line = (Line)sender;
-            if (e.RightButton == MouseButtonState.Pressed && !lineMove)
-                HideLines(obj_line);
-
-            if (e.ClickCount == 1 && lineMove)
-                click = true;
-        }
+        
         void LineAction(ConnectionLine connectionLine, Shape shape)
         {
             connectionLine.circle_left.MouseDown += CircleLeftMD;
@@ -3541,7 +3503,6 @@ namespace Interface_1._0
                     line.Stroke = Brushes.Yellow;
                     line.MouseDown += LineMouseDown;
                     line.MouseMove += LineRightMM;
-
                     line.X1 = Canvas.GetLeft(connectionLine.circle_right);
                     line.Y1 = Canvas.GetTop(connectionLine.circle_right);
 
@@ -3601,6 +3562,16 @@ namespace Interface_1._0
                     line.Y2 = pos.Y;
                 }
 
+            }
+            void LineMouseDown(object sender, MouseButtonEventArgs e)
+            {
+                click = false;
+                var obj_line = (Line)sender;
+                if (e.RightButton == MouseButtonState.Pressed && !lineMove)
+                    HideLines(obj_line);
+
+                if (e.ClickCount == 1 && lineMove)
+                    click = true;
             }
 
             void LineLeftMM(object sender, MouseEventArgs e)
@@ -3725,6 +3696,7 @@ namespace Interface_1._0
 
                     CouplingLines(shape, connectionLine.circle_top, obj_line, pos);
                 }
+
             }
             void LineBottomMM(object sender, MouseEventArgs e)
             {
@@ -3788,9 +3760,9 @@ namespace Interface_1._0
                 if (!DiagrammAnalyzer.isPrevNext)
                 {
                     if (DiagrammAnalyzer.isLoaded)
-                        diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter, txt.txtbx.Text));
+                        diagramm.blocks.Add(new Block(Shapes.Rect, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter, txt.txtbx.Text));
                     else
-                        diagramm.blocks.Add(new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter - 1, txt.txtbx.Text));
+                        diagramm.blocks.Add(new Block(Shapes.Rect, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter - 1, txt.txtbx.Text));
                     diagramm.ShapesCounter++;
                 }
             }
@@ -3800,9 +3772,9 @@ namespace Interface_1._0
                 {
                     
                     if (DiagrammAnalyzer.isLoaded)
-                        diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter, txt.txtbx.Text));
+                        diagramm.blocks.Add(new Block(Shapes.Parabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter, txt.txtbx.Text));
                     else
-                        diagramm.blocks.Add(new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter - 1, txt.txtbx.Text));
+                        diagramm.blocks.Add(new Block(Shapes.Parabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, DiagrammAnalyzer.shapesCounter - 1, txt.txtbx.Text));
                     diagramm.ShapesCounter++;
                 }
             }
@@ -3814,8 +3786,8 @@ namespace Interface_1._0
             {
                 int index;
 
-                if (isRect) index = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
-                else index = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
+                if (isRect) index = GetIndexOfShape(Shapes.Rect, rPR_Shapes.shape.Name);
+                else index = GetIndexOfShape(Shapes.Parabellum, rPR_Shapes.shape.Name);
                 txt.txtbx.Text = diagramm.blocks[index].TextIntoTextBox;
                 
             }
@@ -3826,8 +3798,8 @@ namespace Interface_1._0
                 int index;
                 double left_size = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.Point_NE.X, 2)));
 
-                if (isRect) index = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
-                else index = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
+                if (isRect) index = GetIndexOfShape(Shapes.Rect, rPR_Shapes.shape.Name);
+                else index = GetIndexOfShape(Shapes.Parabellum, rPR_Shapes.shape.Name);
                 
 
                 if (DiagrammAnalyzer.PrevNextTextChanged)
@@ -3840,8 +3812,10 @@ namespace Interface_1._0
                     if (txt.txtbx.Text != "      ...") diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
                     txt.txtbx.Text = "      ...";
                 }
-                else diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
-
+                else 
+                {
+                    if (txt.txtbx.Text != "      ...") diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+                }
             }
             
             if (!DiagrammAnalyzer.isPrevNext)
@@ -4499,15 +4473,15 @@ namespace Interface_1._0
                             LeftTop.X = Canvas.GetLeft((rPR_Shapes.shape as Polygon));
                             LeftTop.Y = Canvas.GetTop((rPR_Shapes.shape as Polygon));
                             int indexOfShape;
-                            if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
-                            else indexOfShape = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
+                            if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rect, rPR_Shapes.shape.Name);
+                            else indexOfShape = GetIndexOfShape(Shapes.Parabellum, rPR_Shapes.shape.Name);
                             
                             foreach (Block block in diagramm.blocks)
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
-                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
+                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rect, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
+                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
 
                                     diagramm.blocks.Remove(block);
                                     return;
@@ -5095,15 +5069,15 @@ namespace Interface_1._0
                             LeftTop.X = Canvas.GetLeft((rPR_Shapes.shape as Polygon));
                             LeftTop.Y = Canvas.GetTop((rPR_Shapes.shape as Polygon));
                             int indexOfShape;
-                            if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
-                            else indexOfShape = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
+                            if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rect, rPR_Shapes.shape.Name);
+                            else indexOfShape = GetIndexOfShape(Shapes.Parabellum, rPR_Shapes.shape.Name);
                             
                             foreach (Block block in diagramm.blocks)
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
-                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
+                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rect, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
+                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
 
                                     diagramm.blocks.Remove(block);
                                     return;
@@ -5687,15 +5661,15 @@ namespace Interface_1._0
                             LeftTop.X = Canvas.GetLeft((rPR_Shapes.shape as Polygon));
                             LeftTop.Y = Canvas.GetTop((rPR_Shapes.shape as Polygon));
                             int indexOfShape;
-                            if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
-                            else indexOfShape = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
+                            if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rect, rPR_Shapes.shape.Name);
+                            else indexOfShape = GetIndexOfShape(Shapes.Parabellum, rPR_Shapes.shape.Name);
                             foreach (Block block in diagramm.blocks)
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
                                     
-                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
-                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
+                                    if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rect, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
+                                    else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parabellum, LeftTop, rPR_Shapes.Point_NW, rPR_Shapes.Point_NE, rPR_Shapes.Point_SW, rPR_Shapes.SE_point, indexOfShape, block.TextIntoTextBox));
 
                                     diagramm.blocks.Remove(block);
                                     return;
@@ -5847,8 +5821,8 @@ namespace Interface_1._0
                     bool isCanBeLower = false;
                     bool indexNotFound = true;
                     int indexForDeleting;
-                    if (isRect) indexForDeleting = GetIndexOfShape(Shapes.Rekt, rPR_Shapes.shape.Name);
-                    else indexForDeleting = GetIndexOfShape(Shapes.Parrabellum, rPR_Shapes.shape.Name);
+                    if (isRect) indexForDeleting = GetIndexOfShape(Shapes.Rect, rPR_Shapes.shape.Name);
+                    else indexForDeleting = GetIndexOfShape(Shapes.Parabellum, rPR_Shapes.shape.Name);
                     DiagrammAnalyzer.shapesCounter--;
                     diagramm.ShapesCounter--;
                     if (diagramm.ShapesCounter == 0) DiagrammAnalyzer.isChanged = false;
@@ -12491,15 +12465,15 @@ namespace Interface_1._0
                     LeftTop.X = Canvas.GetLeft((shape.shape as Polygon));
                     LeftTop.Y = Canvas.GetTop((shape.shape as Polygon));
                     int indexOfShape;
-                    if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rekt, shape.shape.Name);
-                    else indexOfShape = GetIndexOfShape(Shapes.Parrabellum, shape.shape.Name);
-                    txt.txtbx.Text = diagramm.blocks[indexOfShape].TextIntoTextBox;
+                    if (isRect) indexOfShape = GetIndexOfShape(Shapes.Rect, shape.shape.Name);
+                    else indexOfShape = GetIndexOfShape(Shapes.Parabellum, shape.shape.Name);
+                    
                     foreach (Block block in diagramm.blocks)
                     {
                         if (block.IndexNumber == indexOfShape)
                         {
-                            if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rekt, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.SE_point, indexOfShape, txt.txtbx.Text));
-                            else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parrabellum, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.SE_point, indexOfShape, txt.txtbx.Text));
+                            if (isRect) diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rect, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.SE_point, indexOfShape, block.TextIntoTextBox));
+                            else diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Parabellum, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.SE_point, indexOfShape, block.TextIntoTextBox));
 
                             diagramm.blocks.Remove(block);
                             return;
@@ -13643,8 +13617,8 @@ namespace Interface_1._0
                 Rectangle_Check = false;
                 
 
-                RP_Shapes shape = new RP_Shapes(Rekt, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1));
-                shape.shape.Name = "Rekt_" + DiagrammAnalyzer.shapesCounter.ToString();
+                RP_Shapes shape = new RP_Shapes(Rect, new Point(8, 1), new Point(8, 30), new Point(60, 30), new Point(60, 1));
+                shape.shape.Name = "Rect_" + DiagrammAnalyzer.shapesCounter.ToString();
                 DiagrammAnalyzer.shapesCounter++;
 
                 TXT txt = new TXT(7, 5);
@@ -13704,16 +13678,16 @@ namespace Interface_1._0
 
                 AddRP_Shape(shape, connectionLine,txt, anchor, true);
             }
-            if (Parrabullem_Check)
+            if (Parabellum_Check)
              {
-                 Parrabullem_Check = false;
+                 Parabellum_Check = false;
                  
 
-                 RP_Shapes shape = new RP_Shapes(Parrabellum, new Point(8, 1), new Point(0, 30), new Point(60, 30), new Point(68, 1));
-                 shape.shape.Name = "Parrabullem_" + DiagrammAnalyzer.shapesCounter.ToString();
+                 RP_Shapes shape = new RP_Shapes(Parabellum, new Point(8, 1), new Point(0, 30), new Point(60, 30), new Point(68, 1));
+                 shape.shape.Name = "Parabellum_" + DiagrammAnalyzer.shapesCounter.ToString();
                  DiagrammAnalyzer.shapesCounter++;
                  TXT txt = new TXT(7, 5);
-                 shape.shape.Style = (Style)FindResource("Parrabullem");
+                 shape.shape.Style = (Style)FindResource("Parabellum");
                  Canvas.SetZIndex(txt.txtbx, 1);
                  
                  Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
@@ -14055,8 +14029,7 @@ namespace Interface_1._0
                 foreach (RememberShNTxT sh in remList)
                     if (sh.remShape.Stroke == Brushes.Yellow)
                         continue;
-                    else
-                    sh.remShape.Stroke = Brushes.White;
+                    
 
                 remList.Clear();
                 remTxT.Clear();
@@ -14070,6 +14043,44 @@ namespace Interface_1._0
             }
 
             clickFree = true;
+            //Сохранение новых координат фигур
+            foreach(Block shape in diagramm.blocks)
+            {
+
+                foreach (object el in CanvasPos.Children)
+                {
+                    if((el is Shape block)&&(block.Name == shape.ToString()))
+                    {
+                        Point LeftTop = new Point() { X = Canvas.GetLeft(block), Y = Canvas.GetTop(block) };
+                        shape.LeftTop = LeftTop;
+                    }
+                }
+                //Сохранение новых координат линий
+                for (int i = 0; i < diagramm.Lines.Count; i++)
+                {
+                    for (int j = 0; j <= 3; j++)
+                    {
+                        string tempName = "C_" + shape.ToString() + sides[j];
+                        Ellipse tempEll = GetEllipseInCanvas(tempName);
+
+                        if (diagramm.Lines[i].Source == tempName)
+                        {
+                            diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, new Point() { X = diagramm.Lines[i].EndPoint.X, Y = diagramm.Lines[i].EndPoint.Y }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                            diagramm.Lines.Remove(diagramm.Lines[i + 1]);
+                        }
+                        else
+                            if (diagramm.Lines[i].Target == tempName)
+                        {
+                            diagramm.Lines.Insert(diagramm.Lines[i].LinesCounter, new DataForSavingLine(new Point() { X = diagramm.Lines[i].StartPoint.X, Y = diagramm.Lines[i].StartPoint.Y }, new Point() { X = Canvas.GetLeft(tempEll), Y = Canvas.GetTop(tempEll) }, diagramm.Lines[i].Source, diagramm.Lines[i].Target, diagramm.Lines[i].LinesCounter));
+                            diagramm.Lines.Remove(diagramm.Lines[i + 1]);
+                        }
+
+                    }
+
+                }
+            }
+            
+
 
             Canvas.SetLeft(ExcretorySquare.additSquare, e.GetPosition(CanvasPos).X - 5);
             Canvas.SetTop(ExcretorySquare.additSquare, e.GetPosition(CanvasPos).Y - 5);
@@ -14362,8 +14373,6 @@ namespace Interface_1._0
                                         }
                                     }
                             }
-
-                            (CanvasPos.Children[i] as Shape).Stroke = Brushes.RoyalBlue;
                             clear = false;
                             moving = true;
                         }
@@ -14596,8 +14605,6 @@ namespace Interface_1._0
                                         }
                                     }
                             }
-
-                            (CanvasPos.Children[i] as Shape).Stroke = Brushes.RoyalBlue;
                             clear = false;
                             moving = true;
                         }
@@ -14830,7 +14837,6 @@ namespace Interface_1._0
                                     }
                             }
 
-                            (CanvasPos.Children[i] as Shape).Stroke = Brushes.RoyalBlue;
                             clear = false;
                             moving = true;
                         }
@@ -15064,13 +15070,13 @@ namespace Interface_1._0
                                     }
                             }
 
-                            (CanvasPos.Children[i] as Shape).Stroke = Brushes.RoyalBlue;
                             clear = false;
                             moving = true;
                         }
                     }
             }
 
+            
             if (clear)
             {
                 CanvasPos.Children.Remove(ExcretorySquare.mainSquare);
@@ -15093,16 +15099,119 @@ namespace Interface_1._0
                 ExcretorySquare.mainSquare.MouseMove += EmmitMM;
                 ExcretorySquare.mainSquare.MouseUp += UIElements_Mouse_Up;
             }
+
+            foreach (object item in CanvasPos.Children)
+            {
+                if ((item is Shape shape)&&(shape.Name != "") && (shape.Name[1] != '_'))
+                {
+                    
+                    string type = "";
+                    for (int i = 0; i < shape.Name.Length; i++)
+                    {
+                        if (shape.Name[i] == '_') break;
+                        type += shape.Name[i];
+
+                    }
+
+                    shape.Style = (Style)FindResource(type);
+                }
+            }
         }
 
         private void EmmitMD(object sender, MouseButtonEventArgs e)
         {
+            List<int> indexesForDeleting = new List<int>();
+            List<int> indexesForDeletingLines = new List<int>();
             ls = e.GetPosition(sender as UIElement);
 
             if(e.RightButton == MouseButtonState.Pressed)
             {
-                foreach(RememberShNTxT list in remList)
+                DiagrammAnalyzer.isChanged = true;
+                foreach (RememberShNTxT list in remList)
                 {
+                    if ((list.remShape is Shape shape)&&(list.remShape.Name != ""))
+                    {
+                       
+                        //Находим индексы фигур для удаления
+                        int indexForDeleting;
+                        string name = GetNameOfShape(list.right.Name);
+                        string type = "";
+                        for (int i = 0; i < name.Length; i++)
+                        {
+                            if (name[i] == '_') break;
+                            type += name[i];
+
+                        }
+                        indexForDeleting = 0;
+                        switch (type)
+                        {
+                            case "Rect":
+                                indexForDeleting = GetIndexOfShape(Shapes.Rect, shape.Name);
+                                break;
+                            case "Rhomb":
+                                indexForDeleting = GetIndexOfShape(Shapes.Rhomb, shape.Name);
+                                break;
+                            case "Cycle":
+                                indexForDeleting = GetIndexOfShape(Shapes.Cycle, shape.Name);
+                                break;
+                            case "Ellipse":
+                                indexForDeleting = GetIndexOfShape(Shapes.Ellipse, shape.Name);
+                                break;
+                            case "Parabellum":
+                                indexForDeleting = GetIndexOfShape(Shapes.Parabellum, shape.Name);
+                                break;
+                            default:
+                                break;
+                        }
+                        bool inList = false;
+                        foreach(int index in indexesForDeleting)
+                        {
+                            if (index == indexForDeleting) inList = true;
+                        }
+                        if (!inList)
+                        {
+                            indexesForDeleting.Add(indexForDeleting);
+                        }
+                        //Находим и удаляем линии
+                        for (int i = 0; i < diagramm.Lines.Count; i++)
+                        {
+
+                            if (shape.Name == GetNameOfShape(diagramm.Lines[i].Source))
+                            {
+                                indexesForDeletingLines.Add(i);
+
+                            }
+
+                            if (shape.Name == GetNameOfShape(diagramm.Lines[i].Target))
+                            {
+                                indexesForDeletingLines.Add(i);
+                            }
+                        }
+                        while (indexesForDeletingLines.Count > 0)
+                        {
+                            diagramm.Lines.RemoveAt(indexesForDeletingLines[indexesForDeletingLines.Count - 1]);
+                            indexesForDeletingLines.RemoveAt(indexesForDeletingLines.Count - 1);
+                            DiagrammAnalyzer.linesCounter--;
+
+                        }
+                        ReName();
+                    }
+                }
+                    
+                while (indexesForDeleting.Count > 0)
+                {
+                    diagramm.blocks.RemoveAt(indexesForDeleting[indexesForDeleting.Count - 1]);
+                    indexesForDeleting.RemoveAt(indexesForDeleting.Count - 1);
+                    DiagrammAnalyzer.shapesCounter--;
+                    diagramm.ShapesCounter--;
+
+                }
+                   
+                if (diagramm.ShapesCounter == 0) DiagrammAnalyzer.isChanged = false;
+                
+                foreach (RememberShNTxT list in remList)
+                {
+                    
                     CanvasPos.Children.Remove(list.remShape);
                     CanvasPos.Children.Remove(list.remTxT);
                     
@@ -15143,6 +15252,14 @@ namespace Interface_1._0
                 CanvasPos.Children.Add(ExcretorySquare.additSquare);
                 ExcretorySquare.Reset();
                 ExcretorySquare.ResetColors();
+
+                //Повторный нейминг всех фигур
+                ReName();
+                for (int i = 0; i < diagramm.blocks.Count; i++)
+                {
+                    diagramm.blocks[i].IndexNumber = i;
+                }
+                PrevNext.AddDiagramm(ref diagramm);
             }
         }
         private void EmmitMM(object sender, MouseEventArgs e)
@@ -15449,7 +15566,7 @@ namespace Interface_1._0
             //Прорисовываем десериализованные фигуры
             foreach (Block block in tempDiagramm.blocks)
             {
-                if (block.Shape == Shapes.Rekt)
+                if (block.Shape == Shapes.Rect)
                  {
                     Point rectangleNW = block.NW;
                     Point rectangleSW = block.SW;
@@ -15461,9 +15578,9 @@ namespace Interface_1._0
                     PointsOfShape.Add(rectangleSE);
                     PointsOfShape.Add(rectnagleNE);
 
-                    RP_Shapes shape = new RP_Shapes(Rekt, rectangleNW, rectangleSW, rectangleSE, rectnagleNE, PointsOfShape);
+                    RP_Shapes shape = new RP_Shapes(Rect, rectangleNW, rectangleSW, rectangleSE, rectnagleNE, PointsOfShape);
                     //Индексация фигур  
-                    shape.shape.Name = "Rekt_" + block.IndexNumber.ToString();
+                    shape.shape.Name = "Rect_" + block.IndexNumber.ToString();
 
                     TXT txt = new TXT(7, 5);
                     Canvas.SetZIndex(txt.txtbx, 1);
@@ -15522,7 +15639,7 @@ namespace Interface_1._0
                     AddRP_Shape(shape, connectionLine, txt, anchor, true);
                 }
                 
-                if (block.Shape == Shapes.Parrabellum)
+                if (block.Shape == Shapes.Parabellum)
                 {
                     Point parabellumNW = block.NW;
                     Point parabellumSW = block.SW;
@@ -15535,14 +15652,14 @@ namespace Interface_1._0
                     parabellumPoints.Add(parabellumSE);
                     parabellumPoints.Add(parabellumNE);
 
-                    RP_Shapes shape = new RP_Shapes(Parrabellum, parabellumNW, parabellumSW, parabellumSE, parabellumNE, parabellumPoints);
+                    RP_Shapes shape = new RP_Shapes(Parabellum, parabellumNW, parabellumSW, parabellumSE, parabellumNE, parabellumPoints);
                     //Индексация фигур
-                    shape.shape.Name = "Parrabullem_" + block.IndexNumber.ToString();
+                    shape.shape.Name = "Parabellum_" + block.IndexNumber.ToString();
 
                     TXT txt = new TXT(7, 5);
                     Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-                    shape.shape.Style = (Style)FindResource("Parrabullem");
+                    shape.shape.Style = (Style)FindResource("Parabellum");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
                     ConnectionLine connectionLine = new ConnectionLine();
@@ -15814,8 +15931,10 @@ namespace Interface_1._0
             {
                 Ellipse from = GetEllipseInCanvas(Data.Source);
                 Ellipse to = GetEllipseInCanvas(Data.Target);
-                Line line = CreateLine(Data.StartPoint, Data.EndPoint);
+                Line line = CreateLine(Data.StartPoint, Data.EndPoint, from, to );
                 Shape shape = GetShapeInCanvas(GetNameOfShape(from.Name));
+                
+                
                 LogicOf90LineBuild(shape, from, to, line);
             }
             DiagrammAnalyzer.tempPath = _openDialog.FileName;
@@ -15910,7 +16029,7 @@ namespace Interface_1._0
             {
                 if (block.IndexNumber < 0)
                     block.IndexNumber = 0;
-                if (block.Shape == Shapes.Rekt)
+                if (block.Shape == Shapes.Rect)
                 {
 
                     Point rectangleNW = block.NW;
@@ -15923,9 +16042,9 @@ namespace Interface_1._0
                     PointsOfShape.Add(rectangleSE);
                     PointsOfShape.Add(rectnagleNE);
 
-                    RP_Shapes shape = new RP_Shapes(Rekt, rectangleNW, rectangleSW, rectangleSE, rectnagleNE, PointsOfShape);
+                    RP_Shapes shape = new RP_Shapes(Rect, rectangleNW, rectangleSW, rectangleSE, rectnagleNE, PointsOfShape);
                     //Индексация фигур  
-                    shape.shape.Name = "Rekt_" + block.IndexNumber.ToString();
+                    shape.shape.Name = "Rect_" + block.IndexNumber.ToString();
 
                     TXT txt = new TXT(7, 5);
                     Canvas.SetZIndex(txt.txtbx, 1);
@@ -15984,7 +16103,7 @@ namespace Interface_1._0
                     AddRP_Shape(shape, connectionLine, txt, anchor, true);
 
                 }
-                if (block.Shape == Shapes.Parrabellum)
+                if (block.Shape == Shapes.Parabellum)
                 {
                     Point parabellumNW = block.NW;
                     Point parabellumSW = block.SW;
@@ -15997,14 +16116,14 @@ namespace Interface_1._0
                     parabellumPoints.Add(parabellumSE);
                     parabellumPoints.Add(parabellumNE);
 
-                    RP_Shapes shape = new RP_Shapes(Parrabellum, parabellumNW, parabellumSW, parabellumSE, parabellumNE, parabellumPoints);
+                    RP_Shapes shape = new RP_Shapes(Parabellum, parabellumNW, parabellumSW, parabellumSE, parabellumNE, parabellumPoints);
                     //Индексация фигур
-                    shape.shape.Name = "Parrabullem_" + block.IndexNumber.ToString();
+                    shape.shape.Name = "Parabellum_" + block.IndexNumber.ToString();
 
                     TXT txt = new TXT(7, 5);
                     Canvas.SetZIndex(txt.txtbx, 1);
                     txt.txtbx.Text = block.TextIntoTextBox;
-                    shape.shape.Style = (Style)FindResource("Parrabullem");
+                    shape.shape.Style = (Style)FindResource("Parabellum");
                     Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
 
                     ConnectionLine connectionLine = new ConnectionLine();

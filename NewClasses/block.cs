@@ -17,8 +17,8 @@ namespace Interface_1._0
     public enum Shapes
     {
         Ellipse,
-        Rekt,
-        Parrabellum,
+        Rect,
+        Parabellum,
         Rhomb,
         Cycle
     }

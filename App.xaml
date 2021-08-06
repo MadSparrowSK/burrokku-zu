@@ -107,7 +107,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="Parrabullem" TargetType="Polygon">
+        <Style x:Key="Parabellum" TargetType="Polygon">
             <Setter Property="Points" Value="8,1 0,30 60,30 68,1 8,1"/>
             <Setter Property="Fill">
                 <Setter.Value>

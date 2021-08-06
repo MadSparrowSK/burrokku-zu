@@ -192,15 +192,15 @@
                         
                            Name="lbl_Rect">
                             <Polygon Style="{StaticResource Rect}"
-                                 Name="Rekt" MouseDown="DragDrop_MD"/>
+                                 Name="Rect" MouseDown="DragDrop_MD"/>
 
                         </Label>
 
                         <Label Padding="19,10,0,10"
-                           Name="lbl_Parrabellum">
+                           Name="lbl_Parabellum">
 
-                            <Polygon Style="{StaticResource Parrabullem}"
-                                 Name="Parrabellum" 
+                            <Polygon Style="{StaticResource Parabellum}"
+                                 Name="Parabellum" 
                                  MouseDown="DragDrop_MD"></Polygon>
 
                         </Label>
