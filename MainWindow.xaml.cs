@@ -5912,21 +5912,42 @@ namespace Interface_1._0
                     diagramm.blocks.Add(new Block(Shapes.Rhomb, LeftTop, shape.Point_N, shape.Point_W, shape.Point_S, shape.Point_E, DiagrammAnalyzer.shapesCounter - 1, txt.txtbx.Text));
                 diagramm.ShapesCounter++;
             }
-
+            
             txt.txtbx.MouseLeave += Txt_MouseLeave;
             txt.txtbx.TextChanged += Txt_TextChanged;
+            txt.txtbx.GotFocus += Txtbx_GotFocus;
+            void Txtbx_GotFocus(object sender, RoutedEventArgs e)
+            {
+                int index;
 
+                index = GetIndexOfShape(Shapes.Rhomb, shape.shape.Name);
+                txt.txtbx.Text = diagramm.blocks[index].TextIntoTextBox;
+
+            }
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
-                int index = GetIndexOfShape(Shapes.Rhomb, shape.shape.Name);
-                if (diagramm.blocks.Count != 0)
-                    diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+               CanvasPos.Focus();
+                int index;
+                double left_size = 0;
+                //double left_size = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.Point_NE.X, 2)));
+
+                index = GetIndexOfShape(Shapes.Rhomb, shape.shape.Name);
+                
+
                 if (DiagrammAnalyzer.PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
                     DiagrammAnalyzer.PrevNextTextChanged = false;
                 }
-
+                if (txt.txtbx.ActualWidth > left_size)
+                {
+                    if (txt.txtbx.Text != "      ...") diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+                    txt.txtbx.Text = "      ...";
+                }
+                else 
+                {
+                    if (txt.txtbx.Text != "      ...") diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+                }
             }
 
             if (!DiagrammAnalyzer.isPrevNext)
@@ -8019,18 +8040,39 @@ namespace Interface_1._0
 
             txt.txtbx.MouseLeave += Txt_MouseLeave;
             txt.txtbx.TextChanged += Txt_TextChanged;
+            txt.txtbx.GotFocus += Txtbx_GotFocus;
+            void Txtbx_GotFocus(object sender, RoutedEventArgs e)
+            {
+                int index;
 
+                index = GetIndexOfShape(Shapes.Cycle, shape.shape.Name);
+                txt.txtbx.Text = diagramm.blocks[index].TextIntoTextBox;
+
+            }
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
-                int index = GetIndexOfShape(Shapes.Cycle, shape.shape.Name);
-                if (diagramm.blocks.Count != 0)
-                    diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+                CanvasPos.Focus();
+                int index;
+                double left_zize = 0;
+                //double left_size = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.Point_NE.X, 2)));
+
+                index = GetIndexOfShape(Shapes.Rhomb, shape.shape.Name);
+
+
                 if (DiagrammAnalyzer.PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
                     DiagrammAnalyzer.PrevNextTextChanged = false;
                 }
-
+                if (txt.txtbx.ActualWidth > left_size)
+                {
+                    if (txt.txtbx.Text != "      ...") diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+                    txt.txtbx.Text = "      ...";
+                }
+                else
+                {
+                    if (txt.txtbx.Text != "      ...") diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+                }
             }
 
             if (!DiagrammAnalyzer.isPrevNext)
@@ -10136,18 +10178,39 @@ namespace Interface_1._0
 
             txt.txtbx.MouseLeave += Txt_MouseLeave;
             txt.txtbx.TextChanged += Txt_TextChanged;
+            txt.txtbx.GotFocus += Txtbx_GotFocus;
+            void Txtbx_GotFocus(object sender, RoutedEventArgs e)
+            {
+                int index;
 
+                index = GetIndexOfShape(Shapes.Ellipse, shape.shape.Name);
+                txt.txtbx.Text = diagramm.blocks[index].TextIntoTextBox;
+
+            }
             void Txt_MouseLeave(object sender, MouseEventArgs e)
             {
-                int index = GetIndexOfShape(Shapes.Ellipse, shape.shape.Name);
-                if (diagramm.blocks.Count != 0)
-                    diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+                CanvasPos.Focus();
+                int index;
+                double left_zize = 0;
+                //double left_size = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.Point_NE.X, 2)));
+
+                index = GetIndexOfShape(Shapes.Rhomb, shape.shape.Name);
+
+
                 if (DiagrammAnalyzer.PrevNextTextChanged)
                 {
                     PrevNext.AddDiagramm(ref diagramm);
                     DiagrammAnalyzer.PrevNextTextChanged = false;
                 }
-
+                if (txt.txtbx.ActualWidth > left_size)
+                {
+                    if (txt.txtbx.Text != "      ...") diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+                    txt.txtbx.Text = "      ...";
+                }
+                else
+                {
+                    if (txt.txtbx.Text != "      ...") diagramm.blocks[index].TextIntoTextBox = txt.txtbx.Text;
+                }
             }
 
             if (!DiagrammAnalyzer.isPrevNext)
