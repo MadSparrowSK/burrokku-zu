@@ -5928,9 +5928,7 @@ namespace Interface_1._0
             {
                CanvasPos.Focus();
                 int index;
-                double left_size = 0;
-                //double left_size = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.Point_NE.X, 2)));
-
+                double left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) + Math.Sqrt(Math.Pow(shape.E_Point.X, 2)));
                 index = GetIndexOfShape(Shapes.Rhomb, shape.shape.Name);
                 
 
@@ -6599,7 +6597,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, shape.Point_N, shape.Point_W, shape.Point_S, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, shape.Point_N, shape.Point_W, shape.Point_S, shape.Point_E, indexOfShape, block.TextIntoTextBox));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -7190,7 +7188,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, shape.Point_N, shape.Point_W, shape.Point_S, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, shape.Point_N, shape.Point_W, shape.Point_S, shape.Point_E, indexOfShape, block.TextIntoTextBox));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -7797,7 +7795,7 @@ namespace Interface_1._0
                                 if (block.IndexNumber == indexOfShape)
                                 {
                                      
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, shape.Point_N, shape.Point_W, shape.Point_S, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, shape.Point_N, shape.Point_W, shape.Point_S, shape.Point_E, indexOfShape, block.TextIntoTextBox));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -8053,9 +8051,7 @@ namespace Interface_1._0
             {
                 CanvasPos.Focus();
                 int index;
-                double left_zize = 0;
-                //double left_size = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.Point_NE.X, 2)));
-
+                double left_size = Math.Abs(Math.Sqrt(Math.Pow(shape.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(shape.Point_NE.X, 2)));
                 index = GetIndexOfShape(Shapes.Rhomb, shape.shape.Name);
 
 
@@ -8727,7 +8723,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, block.TextIntoTextBox));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -9331,7 +9327,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, block.TextIntoTextBox));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -9935,7 +9931,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, block.TextIntoTextBox));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -10191,9 +10187,8 @@ namespace Interface_1._0
             {
                 CanvasPos.Focus();
                 int index;
-                double left_zize = 0;
-                //double left_size = Math.Abs(Math.Sqrt(Math.Pow(rPR_Shapes.Point_NW.X, 2)) + Math.Sqrt(Math.Pow(rPR_Shapes.Point_NE.X, 2)));
-
+                double left_size = shape.shape.ActualWidth;
+                
                 index = GetIndexOfShape(Shapes.Rhomb, shape.shape.Name);
 
 
@@ -10827,7 +10822,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, shape.shape.Width, shape.shape.Height, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, shape.shape.Width, shape.shape.Height, indexOfShape, block.TextIntoTextBox));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -11391,7 +11386,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, shape.shape.Width, shape.shape.Height, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, shape.shape.Width, shape.shape.Height, indexOfShape, block.TextIntoTextBox));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -11962,7 +11957,7 @@ namespace Interface_1._0
                             {
                                 if (block.IndexNumber == indexOfShape)
                                 {
-                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, shape.shape.Width, shape.shape.Height, indexOfShape, txt.txtbx.Text));
+                                    diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, shape.shape.Width, shape.shape.Height, indexOfShape, block.TextIntoTextBox));
                                     diagramm.blocks.Remove(block);
                                     return;
                                 }
@@ -12899,7 +12894,7 @@ namespace Interface_1._0
                     {
                         if (block.IndexNumber == indexOfShape)
                         {
-                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Cycle, LeftTop, shape.Point_NW, shape.Point_NE, shape.Point_SW, shape.Point_SE, shape.Point_W, shape.Point_E, indexOfShape, block.TextIntoTextBox));
                             diagramm.blocks.Remove(block);
                             return;
                         }
@@ -13259,7 +13254,7 @@ namespace Interface_1._0
                     {
                         if (block.IndexNumber == indexOfShape)
                         {
-                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, shape.Point_N, shape.Point_W, shape.Point_S, shape.Point_E, indexOfShape, txt.txtbx.Text));
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Rhomb, LeftTop, shape.Point_N, shape.Point_W, shape.Point_S, shape.Point_E, indexOfShape, block.TextIntoTextBox));
                             diagramm.blocks.Remove(block);
                             return;
                         }
@@ -13618,7 +13613,7 @@ namespace Interface_1._0
                     {
                         if (block.IndexNumber == indexOfShape)
                         {
-                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, shape.shape.Width, shape.shape.Height, indexOfShape, txt.txtbx.Text));
+                            diagramm.blocks.Insert(block.IndexNumber, new Block(Shapes.Ellipse, LeftTop, shape.shape.Width, shape.shape.Height, indexOfShape, block.TextIntoTextBox));
                             diagramm.blocks.Remove(block);
                             return;
                         }
