@@ -77,12 +77,18 @@
     <Compile Include="NewClasses\block.cs" />
     <Compile Include="NewClasses\DiagrammAnalyzer.cs" />
     <Compile Include="NewClasses\PrevNext.cs" />
+    <Compile Include="picture.xaml.cs">
+      <DependentUpon>picture.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SaveWindow.xaml.cs">
       <DependentUpon>SaveWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shapes\Rhomb_Shape.cs" />
     <Compile Include="Shapes\RP_Shape.cs" />
     <Compile Include="Shapes\ShapeInfo.cs" />
+    <Compile Include="tasks.xaml.cs">
+      <DependentUpon>tasks.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Videlyashka\ExcretorySquare.cs" />
     <Compile Include="Videlyashka\RememberUIElements.cs" />
     <Page Include="MainWindow.xaml">
@@ -100,7 +106,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="picture.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SaveWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="tasks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -147,6 +161,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\questionMark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\test.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

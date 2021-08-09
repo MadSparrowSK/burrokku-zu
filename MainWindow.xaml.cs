@@ -44,6 +44,8 @@ namespace Interface_1._0
 
         public MainWindow()
         {
+            tasks test = new tasks();
+            test.ShowDialog();
             InitializeComponent();
 
             Init();
