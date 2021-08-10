@@ -264,6 +264,7 @@
                                MouseLeave="Button_right_sidebar_Leave"
                                Name="switcher_right_side"
                                Margin="2,0,5,0"
+                               Padding="1"
                                >
                             <Label.Content>
                                 <Image Source="Resources/GraySparow.png" Width="16" Height="15" Margin="0,2,0,0" x:Name="strelka"/>
@@ -275,7 +276,10 @@
                                MouseEnter="Button_right_sidebar_Enter"
                                MouseLeave="Button_right_sidebar_Leave" RenderTransformOrigin="0.5,0.5"
                                Width="53"
+                               Padding="1,0,0,0"
+                               Name="TermSwitch"
                                >
+                            
                             <Label.Content>
                                 <TextBlock Text="Семестр" Margin="0,0,0,0"
                            FontSize="13"
@@ -289,7 +293,8 @@
                                MouseUp="Button_right_sidebar_MouseUp"
                                MouseEnter="Button_right_sidebar_Enter"
                                MouseLeave="Button_right_sidebar_Leave"
-                               Width= "90">
+                               Width= "90"
+                               Padding="1,0">
                             <Label.Content>
                                 <TextBlock Text="Лабораторная" Margin="0,0,0,0"
                            FontSize="13"
@@ -345,6 +350,8 @@
                            FontSize="17"
                        />
                         </Button>
+                        <CheckBox Style="{StaticResource CheckBox}" />
+
                     </StackPanel>
                     
                 </StackPanel>
@@ -417,6 +424,42 @@
                         </Label.Content>
                     </Label>
 
+                </StackPanel>
+
+            </Grid>
+            <Grid Name="TermZone" Background="#FFB9B3BF"  Height="35" Width="100" Margin="0,63,60,0"
+                  Grid.Row="1" Grid.Column="2" 
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Right"
+                  Panel.ZIndex="900"
+                  MouseLeave="TermZone_MouseLeave"
+                  Visibility="Hidden"
+                  >
+                <Polyline Points="52,0 100,0 100,35 0,35 0,0" >
+                    <Polyline.Stroke>
+                        <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" Opacity="0.5">
+                            <GradientStop Color="#00069B" Offset="0"/>
+                            <GradientStop Color="#BA48B6" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Polyline.Stroke>
+                </Polyline>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="130">
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Name="Term_1" Checked="Checked" Unchecked="Checked" IsChecked="True" />
+                        <TextBlock Text="Семестр №1" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Points="0,0 130,0" StrokeThickness="0.5" >
+                        <Polyline.Stroke>
+                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" Opacity="0.5">
+                                <GradientStop Color="#00069B" Offset="0"/>
+                                <GradientStop Color="#BA48B6" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Polyline.Stroke>
+                    </Polyline>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}" Name="Term_2" Unchecked="Checked" Checked="Checked"/>
+                        <TextBlock Text="Семестр №2" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
                 </StackPanel>
 
             </Grid>

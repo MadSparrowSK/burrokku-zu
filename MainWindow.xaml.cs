@@ -16524,6 +16524,14 @@ namespace Interface_1._0
                 EditZone.Visibility = Visibility.Hidden;
 
             }
+            if (((e.MouseDevice.DirectlyOver == TermZone) || (e.MouseDevice.DirectlyOver is Label) ||(e.MouseDevice.DirectlyOver is CheckBox) || (e.MouseDevice.DirectlyOver is Polyline) || (e.MouseDevice.DirectlyOver is TextBlock) || (e.MouseDevice.DirectlyOver is StackPanel)) && (EditZone.Visibility == Visibility.Hidden))
+            {
+                TermZone.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                TermZone.Visibility = Visibility.Hidden;
+            }
 
             return;
         }
@@ -16649,7 +16657,12 @@ namespace Interface_1._0
                     switcher = true;
                 }
             }
-            
+            if (((Label)sender).Name == "TermSwitch")
+            {
+                TermZone.Visibility = Visibility.Visible;
+            }
+
+
 
         }
         private void Button_right_sidebar_MouseUp(object sender, MouseButtonEventArgs e)
@@ -16667,6 +16680,37 @@ namespace Interface_1._0
             ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush_right_side_bar_2");
         }
 
+        private void Checked(object sender, RoutedEventArgs e)
+        {
+            if (TermZone.Visibility == Visibility.Hidden) return;
+            if (((CheckBox)sender).Name == "Term_1")
+            {
+                if (((CheckBox)sender).IsChecked == true)
+                {
+                    Term_2.IsChecked = false;
+                }
+                else
+                {
+                    Term_2.IsChecked = true;
+                }
+            }
+            if (((CheckBox)sender).Name == "Term_2")
+            {
+                if (((CheckBox)sender).IsChecked == true)
+                {
+                    Term_1.IsChecked = false;
+                }
+                else
+                {
+                    Term_1.IsChecked = true;
+                }
+            }
 
+        }
+
+        private void TermZone_MouseLeave(object sender, MouseEventArgs e)
+        {
+            TermZone.Visibility = Visibility.Hidden;
+        }
     }
 }
