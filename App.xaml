@@ -6,7 +6,11 @@
     <Application.Resources>
         <SolidColorBrush x:Key="ButtonBrush1" Color="#FF2A2A30"/>
         <SolidColorBrush x:Key="ButtonBrush2" Color="#FF2E2E30"/>
-        <SolidColorBrush x:Key="CanvasBackground" Color="#FFBEBEBE"/>
+        <SolidColorBrush x:Key="ButtonBrush_right_side_bar_1" Color="#FF9B979E"/>
+        <SolidColorBrush x:Key="ButtonBrush_right_side_bar_2" Color="#FFB9B3BF"/>
+        <SolidColorBrush x:Key="ButtonBrush_right_side_bar_in" Color="#FFECECEC"/>
+
+        <SolidColorBrush x:Key="CanvasBackground" Color="#FFB9B3BF"/>
         <DrawingBrush x:Key="gridGeom" Viewport="0,0,10,10" ViewportUnits="Absolute" TileMode="Tile">
             <DrawingBrush.Drawing>
                 <GeometryDrawing Brush="Black">
@@ -225,13 +229,25 @@
 
 
         </Style>
+        <Style x:Key="Button_right_sidebar" TargetType="Label">
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Background" Value="#FFB9B3BF"/>
+            <Setter Property="Foreground" Value="#FF303030"/>
+            <Setter Property="Padding" Value="2,0,0,0"/>
+            <Style.Triggers>
+               
+            </Style.Triggers>
+
+
+        </Style>
         <Style x:Key="ButtonHead" TargetType="Label">
             <Setter Property="Foreground" Value="Gray"/>
             <Setter Property="Padding" Value="10,0,10,0"/>
 
 
         </Style>
-
         <Style x:Key="CmbButton" TargetType="Button">
 
             <Setter Property="OverridesDefaultStyle" Value="True"/>

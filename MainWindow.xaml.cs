@@ -98,7 +98,7 @@ namespace Interface_1._0
             DiagrammAnalyzer.shapesCounter = 0;
             DiagrammAnalyzer.linesCounter = 0;
         }
-
+        bool switcher = true;
         #region Data for serialization
         //Данные для корректного сохранения
         string title = "";
@@ -16625,8 +16625,48 @@ namespace Interface_1._0
                 CutDownSave(null, null);
 
         }
-        #endregion
 
-        
+        #endregion
+        private void Button_right_sidebar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush_right_side_bar_1");
+            if(((Label)sender).Name == "switcher_right_side")
+            {
+                if (switcher)
+                {
+                    Right_side_bar.MinWidth = 33;
+                    SP1.Margin = new Thickness(158, 0, 0, 0);
+                    SP2.Visibility = Visibility.Hidden;
+                    strelka.Source = new BitmapImage(new Uri("Resources/GraySparow2.png", UriKind.RelativeOrAbsolute));
+                    switcher = false;
+                }
+                else
+                {
+                    Right_side_bar.MinWidth = 200;
+                    SP1.Margin = new Thickness(0, 0, 0, 0);
+                    SP2.Visibility = Visibility.Visible;
+                    strelka.Source = new BitmapImage(new Uri("Resources/GraySparow.png", UriKind.RelativeOrAbsolute));
+                    switcher = true;
+                }
+            }
+            
+
+        }
+        private void Button_right_sidebar_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush_right_side_bar_2");
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush_right_side_bar_in");
+
+        }
+        private void Button_right_sidebar_Enter(object sender, RoutedEventArgs e)
+        {
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush_right_side_bar_in");
+        }
+        private void Button_right_sidebar_Leave(object sender, RoutedEventArgs e)
+        {
+            ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush_right_side_bar_2");
+        }
+
+
     }
 }
