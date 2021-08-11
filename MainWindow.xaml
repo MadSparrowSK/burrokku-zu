@@ -25,7 +25,7 @@
 
     <Border Name="Border">
         <Grid>
-            <Grid ShowGridLines="False">
+            <Grid ShowGridLines="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"></RowDefinition>
                     <RowDefinition></RowDefinition>
@@ -240,8 +240,9 @@
                        Grid.Row="1"
                        BorderBrush="#c0c0c0" BorderThickness="0,0,2,0"
                            HorizontalAlignment="Right"
-                           MinWidth="200"
+                           MinWidth="210"
                            Name="Right_side_bar"
+                           MouseMove=" Border_MouseMove"
                        >
                     <Border.Background>
                         <SolidColorBrush Color="#FFD0D0D0" ></SolidColorBrush>
@@ -249,7 +250,7 @@
                     
                 </Border>
                 <StackPanel Height="300"
-                            Width="190"
+                            Width="205"
                             Grid.Column="2"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
@@ -263,36 +264,41 @@
                                MouseEnter="Button_right_sidebar_Enter"
                                MouseLeave="Button_right_sidebar_Leave"
                                Name="switcher_right_side"
-                               Margin="2,0,5,0"
+                               Margin="4,2,5,0"
                                Padding="1"
                                >
                             <Label.Content>
                                 <Image Source="Resources/GraySparow.png" Width="16" Height="15" Margin="0,2,0,0" x:Name="strelka"/>
                             </Label.Content>
                         </Label>
-                        <Label Style="{StaticResource Button_right_sidebar}"
-                               MouseDown="Button_right_sidebar_MouseDown"
-                               MouseUp="Button_right_sidebar_MouseUp"
-                               MouseEnter="Button_right_sidebar_Enter"
-                               MouseLeave="Button_right_sidebar_Leave" RenderTransformOrigin="0.5,0.5"
-                               Width="53"
-                               Padding="1,0,0,0"
-                               Name="TermSwitch"
-                               >
-                            
-                            <Label.Content>
-                                <TextBlock Text="Семестр" Margin="0,0,0,0"
-                           FontSize="13"
-                       />
-                            </Label.Content>
-                               
-                            
-                        </Label>
+                        
+
+                    </StackPanel>
+                    <StackPanel  Name="SP2">
+                        <Button  Style="{StaticResource Button_task}"  Margin="0,5,8,5">
+                            <TextBlock Text="Задание №1" Margin="42,0,0,0"/>
+                        </Button>
+                        <Button  Style="{StaticResource Button_task}" Click="Button_Click">
+                            <TextBlock Text="Задание №2" Margin="42,0,0,0"/>
+                        </Button>
+                        <Button  Style="{StaticResource Button_task}">
+                            <TextBlock Text="Задание №3" Margin="42,0,0,0"/>
+                        </Button>
+                        <Button  Style="{StaticResource Button_task}">
+                            <TextBlock Text="Задание №4" Margin="42,0,0,0"/>
+                        </Button>
+                        <Button  Style="{StaticResource Button_task}">
+                            <TextBlock Text="Задание №5" Margin="42,0,0,0"/>
+                        </Button>
+                        
+                    </StackPanel>
+                    <StackPanel x:Name="SP3" Orientation="Horizontal" >
                         <Label Style="{StaticResource Button_right_sidebar}"
                                MouseDown="Button_right_sidebar_MouseDown"
                                MouseUp="Button_right_sidebar_MouseUp"
                                MouseEnter="Button_right_sidebar_Enter"
                                MouseLeave="Button_right_sidebar_Leave"
+                               Name="LabsSwitch"
                                Width= "90"
                                Padding="1,0">
                             <Label.Content>
@@ -301,57 +307,25 @@
                        />
                             </Label.Content>
                         </Label>
+                        <Label Style="{StaticResource Button_right_sidebar}"
+                               MouseDown="Button_right_sidebar_MouseDown"
+                               MouseUp="Button_right_sidebar_MouseUp"
+                               MouseEnter="Button_right_sidebar_Enter"
+                               MouseLeave="Button_right_sidebar_Leave" 
+                               Width="53"
+                               Padding="1,0,0,0"
+                               Name="TermSwitch"
+                               >
 
-                    </StackPanel>
-                    <StackPanel  Name="SP2">
-                        <Button  Style="{StaticResource CmbButton}"
-                 Height="35" 
-                 Margin="0,5,8,5"            
-                 Width="auto"
-                 Name="Right_side_bar_sp">
-
-                            <TextBlock Text="Задание №1" Margin="42,0,0,0"
-                           FontSize="17"
+                            <Label.Content>
+                                <TextBlock Text="Семестр" Margin="0,0,0,0"
+                           FontSize="13"
                        />
-                        </Button>
-                        <Button  Style="{StaticResource CmbButton}"
-                 Height="35" 
-                 Margin="0,0,8,5"            
-                 Width="auto">
+                            </Label.Content>
 
-                            <TextBlock Text="Задание №2" Margin="42,0,0,0"
-                           FontSize="17"
-                       />
-                        </Button>
-                        <Button  Style="{StaticResource CmbButton}"
-                 Height="35" 
-                 Margin="0,0,8,5"            
-                 Width="auto">
 
-                            <TextBlock Text="Задание №3" Margin="42,0,0,0"
-                           FontSize="17"
-                       />
-                        </Button>
-                        <Button  Style="{StaticResource CmbButton}"
-                 Height="35" 
-                 Margin="0,0,8,5"            
-                 Width="auto">
-
-                            <TextBlock Text="Задание №4" Margin="42,0,0,0"
-                           FontSize="17"
-                       />
-                        </Button>
-                        <Button  Style="{StaticResource CmbButton}"
-                 Height="35" 
-                 Margin="0,0,8,5"            
-                 Width="auto">
-
-                            <TextBlock Text="Задание №5" Margin="42,0,0,0"
-                           FontSize="17"
-                       />
-                        </Button>
-                        <CheckBox Style="{StaticResource CheckBox}" />
-
+                        </Label>
+                        
                     </StackPanel>
                     
                 </StackPanel>
@@ -427,7 +401,7 @@
                 </StackPanel>
 
             </Grid>
-            <Grid Name="TermZone" Background="#FFB9B3BF"  Height="35" Width="100" Margin="0,63,60,0"
+            <Grid Name="TermZone" Background="#FFB9B3BF"  Height="35" Width="100" Margin="0,289,11,0"
                   Grid.Row="1" Grid.Column="2" 
                   VerticalAlignment="Top"
                   HorizontalAlignment="Right"
@@ -435,9 +409,9 @@
                   MouseLeave="TermZone_MouseLeave"
                   Visibility="Hidden"
                   >
-                <Polyline Points="52,0 100,0 100,35 0,35 0,0" >
+                <Polyline Points="52,0 100,0 100,35 0,35 0,0" StrokeThickness="2">
                     <Polyline.Stroke>
-                        <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" Opacity="0.5">
+                        <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" >
                             <GradientStop Color="#00069B" Offset="0"/>
                             <GradientStop Color="#BA48B6" Offset="1"/>
                         </LinearGradientBrush>
@@ -448,9 +422,9 @@
                         <CheckBox Style="{StaticResource CheckBox}"  Name="Term_1" Checked="Checked" Unchecked="Checked" IsChecked="True" />
                         <TextBlock Text="Семестр №1" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
                     </StackPanel>
-                    <Polyline Points="0,0 130,0" StrokeThickness="0.5" >
+                    <Polyline Points="0,0 130,0" StrokeThickness="1" >
                         <Polyline.Stroke>
-                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" Opacity="0.5">
+                            <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" >
                                 <GradientStop Color="#00069B" Offset="0"/>
                                 <GradientStop Color="#BA48B6" Offset="1"/>
                             </LinearGradientBrush>
@@ -463,7 +437,173 @@
                 </StackPanel>
 
             </Grid>
+            <Grid Name="LabsZone1" Background="#FFB9B3BF"  Height="230" Width="145" Margin="0,290,60,0"
+                  Grid.Row="1" Grid.Column="2" 
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Right"
+                  Panel.ZIndex="9000"
+                  MouseLeave="LabsZone_MouseLeave"
+                  Visibility="Hidden"
+                  >
+                <Polyline Points="89,0 145,0 145,230 0,230 0,0" StrokeThickness="1.5" Panel.ZIndex="10">
+                    <Polyline.Stroke>
+                        <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" >
+                            <GradientStop Color="#00069B" Offset="0"/>
+                            <GradientStop Color="#BA48B6" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Polyline.Stroke>
+                </Polyline>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="145" Height="500" Panel.ZIndex="9000">
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}" IsChecked="True"  Checked="Checked" Unchecked="Checked" Name="L1CHB1" />
+                        <TextBlock Text="Лабораторная №1" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L1CHB2"/>
+                        <TextBlock Text="Лабораторная №2" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"   Checked="Checked" Unchecked="Checked" Name="L1CHB3" />
+                        <TextBlock Text="Лабораторная №3" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L1CHB4"/>
+                        <TextBlock Text="Лабораторная №4" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"   Checked="Checked" Unchecked="Checked" Name="L1CHB5" />
+                        <TextBlock Text="Лабораторная №5" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L1CHB6"/>
+                        <TextBlock Text="Лабораторная №6" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"   Checked="Checked" Unchecked="Checked" Name="L1CHB7" />
+                        <TextBlock Text="Лабораторная №7" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L1CHB8"/>
+                        <TextBlock Text="Лабораторная №8" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"   Checked="Checked" Unchecked="Checked" Name="L1CHB9" />
+                        <TextBlock Text="Лабораторная №9" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L1CHB10"/>
+                        <TextBlock Text="Лабораторная №10" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"   Checked="Checked" Unchecked="Checked" Name="L1CHB11" />
+                        <TextBlock Text="Лабораторная №11" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L1CHB12"/>
+                        <TextBlock Text="Лабораторная №12" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L1CHB13"/>
+                        <TextBlock Text="Лабораторная №13" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+
+
+                </StackPanel>
+
+            </Grid>
+            <Grid Name="LabsZone2" Background="#FFB9B3BF"  Height="214" Width="145" Margin="0,289,60,0"
+                  Grid.Row="1" Grid.Column="2" 
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Right"
+                  Panel.ZIndex="9000"
+                  MouseLeave="LabsZone_MouseLeave"
+                  Visibility="Hidden"
+                  >
+                <Polyline Points="89,0 145,0 145,214 0,214 0,0" StrokeThickness="1.5" Panel.ZIndex="10">
+                    <Polyline.Stroke>
+                        <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" >
+                            <GradientStop Color="#00069B" Offset="0"/>
+                            <GradientStop Color="#BA48B6" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Polyline.Stroke>
+                </Polyline>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="145"  Panel.ZIndex="9000">
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}" IsChecked="True"  Checked="Checked" Unchecked="Checked" Name="L2CHB1" />
+                        <TextBlock Text="Лабораторная №1" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L2CHB2"/>
+                        <TextBlock Text="Лабораторная №2" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"   Checked="Checked" Unchecked="Checked" Name="L2CHB3"/>
+                        <TextBlock Text="Лабораторная №3" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L2CHB4" />
+                        <TextBlock Text="Лабораторная №4" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"   Checked="Checked" Unchecked="Checked" Name="L2CHB5" />
+                        <TextBlock Text="Лабораторная №5" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L2CHB6"/>
+                        <TextBlock Text="Лабораторная №6" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"   Checked="Checked" Unchecked="Checked" Name="L2CHB7" />
+                        <TextBlock Text="Лабораторная №7" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L2CHB8"/>
+                        <TextBlock Text="Лабораторная №8" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"   Checked="Checked" Unchecked="Checked" Name="L2CHB9" />
+                        <TextBlock Text="Лабораторная №9" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L2CHB10"/>
+                        <TextBlock Text="Лабораторная №10" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"   Checked="Checked" Unchecked="Checked" Name="L2CHB11" />
+                        <TextBlock Text="Лабораторная №11" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                    <Polyline Style="{StaticResource Separator}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <CheckBox Style="{StaticResource CheckBox}"  Unchecked="Checked" Checked="Checked" Name="L2CHB12"/>
+                        <TextBlock Text="Лабораторная №12" Margin="5,0,0,0"  Foreground="#FF303030" FontSize="13"/>
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
         </Grid>
+        
     </Border>
 
 

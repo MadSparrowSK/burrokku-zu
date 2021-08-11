@@ -40,19 +40,58 @@ namespace Interface_1._0
         List<RememberShNTxT> remTxT = new List<RememberShNTxT>();
         List<RememberLines> remLines = new List<RememberLines>();
         static List<ShapeInfo> shapesInfo = new List<ShapeInfo>();
-        
+
+        #region Data for frontend
+        public List<CheckBox> Labs1 = new List<CheckBox>();
+        public List<CheckBox> Labs2 = new List<CheckBox>();
+        public List<CheckBox> Term = new List<CheckBox>();
+        bool isCHBWorking = false;
+        bool switcher = true;
+        bool CanvasSwitcher = false;
+        #endregion
 
         public MainWindow()
         {
-            tasks test = new tasks();
-            test.ShowDialog();
+            
             InitializeComponent();
 
             Init();
+            CreateLists();
+        }
+        void CreateLists()
+        {
+            Labs1.Add(L1CHB1);
+            Labs1.Add(L1CHB2);
+            Labs1.Add(L1CHB3);
+            Labs1.Add(L1CHB4);
+            Labs1.Add(L1CHB5);
+            Labs1.Add(L1CHB6);
+            Labs1.Add(L1CHB7);
+            Labs1.Add(L1CHB8);
+            Labs1.Add(L1CHB9);
+            Labs1.Add(L1CHB10);
+            Labs1.Add(L1CHB11);
+            Labs1.Add(L1CHB12);
+            Labs1.Add(L1CHB13);
+            Labs2.Add(L2CHB1);
+            Labs2.Add(L2CHB2);
+            Labs2.Add(L2CHB3);
+            Labs2.Add(L2CHB4);
+            Labs2.Add(L2CHB5);
+            Labs2.Add(L2CHB6);
+            Labs2.Add(L2CHB7);
+            Labs2.Add(L2CHB8);
+            Labs2.Add(L2CHB9);
+            Labs2.Add(L2CHB10);
+            Labs2.Add(L2CHB11);
+            Labs2.Add(L2CHB12);
+            Term.Add(Term_1);
+            Term.Add(Term_2);
         }
 
         void Init()
-        {
+        { 
+
             PointCollection pointsBottom = new PointCollection() { new Point(0, 0), new Point(5, 5), new Point(10, 0) };
             bottomArray.Points = pointsBottom;
 
@@ -98,11 +137,11 @@ namespace Interface_1._0
             DiagrammAnalyzer.shapesCounter = 0;
             DiagrammAnalyzer.linesCounter = 0;
         }
-        bool switcher = true;
+        
+        
         #region Data for serialization
         //Данные для корректного сохранения
         string title = "";
-        bool CanvasSwitcher = false;
         //Данные, необходимые для сериализации
         private OpenFileDialog _openDialog = new OpenFileDialog();
         private SaveFileDialog _safeDialog = new SaveFileDialog();
@@ -16524,13 +16563,35 @@ namespace Interface_1._0
                 EditZone.Visibility = Visibility.Hidden;
 
             }
-            if (((e.MouseDevice.DirectlyOver == TermZone) || (e.MouseDevice.DirectlyOver is Label) ||(e.MouseDevice.DirectlyOver is CheckBox) || (e.MouseDevice.DirectlyOver is Polyline) || (e.MouseDevice.DirectlyOver is TextBlock) || (e.MouseDevice.DirectlyOver is StackPanel)) && (EditZone.Visibility == Visibility.Hidden))
+            if (((e.MouseDevice.DirectlyOver == TermZone) || (e.MouseDevice.DirectlyOver is Label) ||(e.MouseDevice.DirectlyOver is CheckBox) || (e.MouseDevice.DirectlyOver is Polyline) || (e.MouseDevice.DirectlyOver is TextBlock) || (e.MouseDevice.DirectlyOver is StackPanel)))
             {
                 TermZone.Visibility = Visibility.Visible;
+                LabsZone1.Visibility = Visibility.Hidden;
+                LabsZone2.Visibility = Visibility.Hidden;
             }
             else
             {
                 TermZone.Visibility = Visibility.Hidden;
+            }
+            if (((e.MouseDevice.DirectlyOver == LabsZone1) || (e.MouseDevice.DirectlyOver is Label) || (e.MouseDevice.DirectlyOver is CheckBox) || (e.MouseDevice.DirectlyOver is Polyline) || (e.MouseDevice.DirectlyOver is TextBlock) || (e.MouseDevice.DirectlyOver is StackPanel)))
+            {
+                LabsZone1.Visibility = Visibility.Visible;
+                TermZone.Visibility = Visibility.Hidden;
+                LabsZone2.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                LabsZone1.Visibility = Visibility.Hidden;
+            }
+            if (((e.MouseDevice.DirectlyOver == LabsZone2) || (e.MouseDevice.DirectlyOver is Label) || (e.MouseDevice.DirectlyOver is CheckBox) || (e.MouseDevice.DirectlyOver is Polyline) || (e.MouseDevice.DirectlyOver is TextBlock) || (e.MouseDevice.DirectlyOver is StackPanel)))
+            {
+                LabsZone2.Visibility = Visibility.Visible;
+                TermZone.Visibility = Visibility.Hidden;
+                LabsZone1.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                LabsZone2.Visibility = Visibility.Hidden;
             }
 
             return;
@@ -16634,7 +16695,7 @@ namespace Interface_1._0
 
         }
 
-        #endregion
+        # endregion
         private void Button_right_sidebar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush_right_side_bar_1");
@@ -16643,16 +16704,18 @@ namespace Interface_1._0
                 if (switcher)
                 {
                     Right_side_bar.MinWidth = 33;
-                    SP1.Margin = new Thickness(158, 0, 0, 0);
+                    SP1.Margin = new Thickness(172, 0, 0, 0);
                     SP2.Visibility = Visibility.Hidden;
+                    SP3.Visibility = Visibility.Hidden;
                     strelka.Source = new BitmapImage(new Uri("Resources/GraySparow2.png", UriKind.RelativeOrAbsolute));
                     switcher = false;
                 }
                 else
                 {
-                    Right_side_bar.MinWidth = 200;
+                    Right_side_bar.MinWidth = 210;
                     SP1.Margin = new Thickness(0, 0, 0, 0);
                     SP2.Visibility = Visibility.Visible;
+                    SP3.Visibility = Visibility.Visible;
                     strelka.Source = new BitmapImage(new Uri("Resources/GraySparow.png", UriKind.RelativeOrAbsolute));
                     switcher = true;
                 }
@@ -16661,7 +16724,21 @@ namespace Interface_1._0
             {
                 TermZone.Visibility = Visibility.Visible;
             }
-
+            
+            if (((Label)sender).Name == "LabsSwitch")
+            {
+                if (Term_1.IsChecked == true)
+                {
+                    LabsZone1.Visibility = Visibility.Visible;
+                    LabsZone2.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    LabsZone2.Visibility = Visibility.Visible;
+                    LabsZone1.Visibility = Visibility.Hidden;
+                }
+            }
+            
 
 
         }
@@ -16682,8 +16759,8 @@ namespace Interface_1._0
 
         private void Checked(object sender, RoutedEventArgs e)
         {
-            if (TermZone.Visibility == Visibility.Hidden) return;
-            if (((CheckBox)sender).Name == "Term_1")
+            if (TermZone == null) return;
+            if ((((CheckBox)sender).Name == "Term_1")&&(TermZone.Visibility == Visibility.Visible))
             {
                 if (((CheckBox)sender).IsChecked == true)
                 {
@@ -16706,11 +16783,75 @@ namespace Interface_1._0
                 }
             }
 
+            if ((((CheckBox)sender).Name[1] == '1')&&(!isCHBWorking))
+            {
+                isCHBWorking = true;
+                if (((CheckBox)sender).IsChecked == true)
+                {
+                    
+                    for (int i = 0; i < Labs1.Count; i++)
+                    {
+                        if (((CheckBox)sender).Name != Labs1[i].Name)
+                        {
+                            Labs1[i].IsChecked = false;
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    if (((CheckBox)sender).Name == "L1CHB1")
+                    {
+                        L1CHB2.IsChecked = true;
+                    }
+                    else L1CHB1.IsChecked = true;
+                }
+                isCHBWorking = false;
+
+            }
+            if ((((CheckBox)sender).Name[1] == '2')&&(!isCHBWorking))
+            {
+                isCHBWorking = true;
+                if (((CheckBox)sender).IsChecked == true)
+                {
+                    
+                    foreach (CheckBox checkBox in Labs2)
+                    {
+                        if (((CheckBox)sender).Name != checkBox.Name)
+                        {
+                            checkBox.IsChecked = false;
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    if (((CheckBox)sender).Name == "L2CHB1")
+                    {
+                        L2CHB2.IsChecked = true;
+                    }
+                    else L2CHB1.IsChecked = true;
+                }
+                isCHBWorking = false;
+
+
+            }
+
         }
 
         private void TermZone_MouseLeave(object sender, MouseEventArgs e)
         {
             TermZone.Visibility = Visibility.Hidden;
+        }
+        private void LabsZone_MouseLeave(object sender, MouseEventArgs e)
+        {
+            LabsZone1.Visibility = Visibility.Hidden;
+            LabsZone2.Visibility = Visibility.Hidden;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

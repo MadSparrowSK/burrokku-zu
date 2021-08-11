@@ -232,14 +232,14 @@
         <Style x:Key="Button_right_sidebar" TargetType="Label">
             <Setter Property="Height" Value="20"/>
             <Setter Property="Width" Value="45"/>
-            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Margin" Value="0,3,4,3"/>
             <Setter Property="Background" Value="#FFB9B3BF"/>
             <Setter Property="Foreground" Value="#FF303030"/>
             <Setter Property="Padding" Value="2,0,0,0"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush">
                 <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" Opacity="0.5">
+                    <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" Opacity="1">
                         <GradientStop Color="#00069B" Offset="0"/>
                         <GradientStop Color="#BA48B6" Offset="1"/>
                     </LinearGradientBrush>
@@ -303,18 +303,78 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="Button_task" TargetType="Button">
+
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="#FFB9B3BF"/>
+            <Setter Property="Foreground" Value="#FF303030"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Width" Value="auto"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Margin" Value="0,0,8,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <!--Работа с границей кнопки-->
+                        <Border Name="border" BorderThickness="1"
+                                    CornerRadius="5" 
+                                
+                                Background="{TemplateBinding Background}" OpacityMask="Black"
+                                    >
+
+                            <Border.BorderBrush>
+                                <LinearGradientBrush EndPoint="0.5,1"   StartPoint="0.3,0" Opacity="1">
+                                    <GradientStop Color="#00069B" Offset="0"/>
+                                    <GradientStop Color="#BA48B6" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                            <!--Настройка расположения объекта внутри кнопки-->
+                            <ContentPresenter
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Margin="0,0,0,0"/>
+
+                        </Border>
+                        <!--Работа с тригерами кнопки -->
+                        <ControlTemplate.Triggers>
+                            <!--При наведении на кнопку...-->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!--Изменение заливки и цвета текста-->
+                                <Setter Property="Background" Value="#FFECECEC"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF9B979E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="CheckBox" TargetType="CheckBox">
             <Setter Property="Background" Value="#FFB9B3BF"/>
             <Setter Property="BorderBrush">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" Opacity="0.5">
+                <Setter.Value >
+                    <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" Opacity="0.5" >
                         <GradientStop Color="#00069B" Offset="0"/>
                         <GradientStop Color="#BA48B6" Offset="1"/>
                     </LinearGradientBrush>
                 </Setter.Value>
-                
+
             </Setter>
             <Setter Property="Margin" Value="1"/>
+            
+        </Style>
+        <Style x:Key="Separator" TargetType="Polyline">
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" >
+                        <GradientStop Color="#00069B" Offset="0"/>
+                        <GradientStop Color="#BA48B6" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Points" Value="0,0 145,0"/>
+            <Setter Property="StrokeThickness" Value="1"/>
         </Style>
     </Application.Resources>
 </Application>
