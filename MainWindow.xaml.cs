@@ -52,8 +52,10 @@ namespace Interface_1._0
 
         public MainWindow()
         {
-            
+            LogInWindow log = new LogInWindow();
+            log.ShowDialog();
             InitializeComponent();
+            
 
             Init();
             CreateLists();

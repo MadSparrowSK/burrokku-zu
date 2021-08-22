@@ -25,7 +25,7 @@
 
     <Border Name="Border">
         <Grid>
-            <Grid ShowGridLines="True">
+            <Grid ShowGridLines="False">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"></RowDefinition>
                     <RowDefinition></RowDefinition>
@@ -268,28 +268,79 @@
                                Padding="1"
                                >
                             <Label.Content>
-                                <Image Source="Resources/GraySparow.png" Width="16" Height="15" Margin="0,2,0,0" x:Name="strelka"/>
+                                <Image Source="Resources/GraySparow.png" Width="16" Height="15" Margin="0,0,0,0" x:Name="strelka"/>
                             </Label.Content>
                         </Label>
                         
 
                     </StackPanel>
                     <StackPanel  Name="SP2">
-                        <Button  Style="{StaticResource Button_task}"  Margin="0,5,8,5">
-                            <TextBlock Text="Задание №1" Margin="42,0,0,0"/>
-                        </Button>
-                        <Button  Style="{StaticResource Button_task}" Click="Button_Click">
-                            <TextBlock Text="Задание №2" Margin="42,0,0,0"/>
-                        </Button>
-                        <Button  Style="{StaticResource Button_task}">
-                            <TextBlock Text="Задание №3" Margin="42,0,0,0"/>
-                        </Button>
-                        <Button  Style="{StaticResource Button_task}">
-                            <TextBlock Text="Задание №4" Margin="42,0,0,0"/>
-                        </Button>
-                        <Button  Style="{StaticResource Button_task}">
-                            <TextBlock Text="Задание №5" Margin="42,0,0,0"/>
-                        </Button>
+                        <StackPanel Orientation="Horizontal">
+                            <Button  Style="{StaticResource Button_task}"  Margin="0,5,2,5" Width="175">
+                                <TextBlock Text="Задание №1" Margin="42,0,0,0"/>
+                            </Button>
+                            <StackPanel Margin="0,5,0,0">
+                                <Button  Style="{StaticResource Button_task}" Height="16" Margin="0,0,0,1" >
+                                    <Image Source="Resources/GraySparowUp.png" Width="16" Height="15" Margin="0,0,0,1" />
+                                </Button>
+                                <Button  Style="{StaticResource Button_task}" Height="16" Margin="0"  >
+                                    <Image Source="Resources/GraySparowDown.png" Width="16" Height="15" Margin="0,1,0,0" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Button  Style="{StaticResource Button_task}"  Margin="0,5,2,5" Width="175">
+                                <TextBlock Text="Задание №2" Margin="42,0,0,0"/>
+                            </Button>
+                            <StackPanel Margin="0,5,0,0">
+                                <Button  Style="{StaticResource Button_task}" Height="16" Margin="0,0,0,1" >
+                                    <Image Source="Resources/GraySparowUp.png" Width="16" Height="15" Margin="0,0,0,1" />
+                                </Button>
+                                <Button  Style="{StaticResource Button_task}" Height="16" Margin="0"  >
+                                    <Image Source="Resources/GraySparowDown.png" Width="16" Height="15" Margin="0,1,0,0" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button  Style="{StaticResource Button_task}"  Margin="0,5,2,5" Width="175">
+                                <TextBlock Text="Задание №3" Margin="42,0,0,0"/>
+                            </Button>
+                            <StackPanel Margin="0,5,0,0">
+                                <Button  Style="{StaticResource Button_task}" Height="16" Margin="0,0,0,1" >
+                                    <Image Source="Resources/GraySparowUp.png" Width="16" Height="15" Margin="0,0,0,1" />
+                                </Button>
+                                <Button  Style="{StaticResource Button_task}" Height="16" Margin="0"  >
+                                    <Image Source="Resources/GraySparowDown.png" Width="16" Height="15" Margin="0,1,0,0" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button  Style="{StaticResource Button_task}"  Margin="0,5,2,5" Width="175">
+                                <TextBlock Text="Задание №4" Margin="42,0,0,0"/>
+                            </Button>
+                            <StackPanel Margin="0,5,0,0">
+                                <Button  Style="{StaticResource Button_task}" Height="16" Margin="0,0,0,1" >
+                                    <Image Source="Resources/GraySparowUp.png" Width="16" Height="15" Margin="0,0,0,1" />
+                                </Button>
+                                <Button  Style="{StaticResource Button_task}" Height="16" Margin="0"  >
+                                    <Image Source="Resources/GraySparowDown.png" Width="16" Height="15" Margin="0,1,0,0" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button  Style="{StaticResource Button_task}"  Margin="0,5,2,5" Width="175">
+                                <TextBlock Text="Задание №5" Margin="42,0,0,0"/>
+                            </Button>
+                            <StackPanel Margin="0,5,0,0">
+                                <Button  Style="{StaticResource Button_task}" Height="16" Margin="0,0,0,1" >
+                                    <Image Source="Resources/GraySparowUp.png" Width="16" Height="15" Margin="0,0,0,1" />
+                                </Button>
+                                <Button  Style="{StaticResource Button_task}" Height="16" Margin="0"  >
+                                    <Image Source="Resources/GraySparowDown.png" Width="16" Height="15" Margin="0,1,0,0" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
                         
                     </StackPanel>
                     <StackPanel x:Name="SP3" Orientation="Horizontal" >
@@ -401,7 +452,7 @@
                 </StackPanel>
 
             </Grid>
-            <Grid Name="TermZone" Background="#FFB9B3BF"  Height="35" Width="100" Margin="0,289,11,0"
+            <Grid Name="TermZone" Background="#FFB9B3BF"  Height="35" Width="100" Margin="0,310,11,0"
                   Grid.Row="1" Grid.Column="2" 
                   VerticalAlignment="Top"
                   HorizontalAlignment="Right"
@@ -437,7 +488,7 @@
                 </StackPanel>
 
             </Grid>
-            <Grid Name="LabsZone1" Background="#FFB9B3BF"  Height="230" Width="145" Margin="0,290,60,0"
+            <Grid Name="LabsZone1" Background="#FFB9B3BF"  Height="230" Width="145" Margin="0,310,60,0"
                   Grid.Row="1" Grid.Column="2" 
                   VerticalAlignment="Top"
                   HorizontalAlignment="Right"
@@ -523,7 +574,7 @@
                 </StackPanel>
 
             </Grid>
-            <Grid Name="LabsZone2" Background="#FFB9B3BF"  Height="214" Width="145" Margin="0,289,60,0"
+            <Grid Name="LabsZone2" Background="#FFB9B3BF"  Height="214" Width="145" Margin="0,310,60,0"
                   Grid.Row="1" Grid.Column="2" 
                   VerticalAlignment="Top"
                   HorizontalAlignment="Right"

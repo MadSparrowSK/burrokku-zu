@@ -63,6 +63,16 @@ namespace Interface_1._0.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap backgroundForLogIn {
+            get {
+                object obj = ResourceManager.GetObject("backgroundForLogIn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap csross {
             get {
                 object obj = ResourceManager.GetObject("csross", resourceCulture);
@@ -86,6 +96,26 @@ namespace Interface_1._0.Properties {
         internal static System.Drawing.Bitmap GraySparow2 {
             get {
                 object obj = ResourceManager.GetObject("GraySparow2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GraySparowDown {
+            get {
+                object obj = ResourceManager.GetObject("GraySparowDown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GraySparowUp {
+            get {
+                object obj = ResourceManager.GetObject("GraySparowUp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -11,6 +11,7 @@
         <SolidColorBrush x:Key="ButtonBrush_right_side_bar_in" Color="#FFECECEC"/>
 
         <SolidColorBrush x:Key="CanvasBackground" Color="#FFB9B3BF"/>
+        
         <DrawingBrush x:Key="gridGeom" Viewport="0,0,10,10" ViewportUnits="Absolute" TileMode="Tile">
             <DrawingBrush.Drawing>
                 <GeometryDrawing Brush="Black">
@@ -349,6 +350,166 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+        <Style x:Key="Button_login" TargetType="Button">
+
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="#FFBEBEBE"/>
+            <Setter Property="Foreground" Value="#FF303030"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Width" Value="130"/>
+            <Setter Property="Height" Value="26"/>
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <!--Работа с границей кнопки-->
+                        <Border Name="border" BorderThickness="1"
+                                    CornerRadius="3" 
+                                
+                                Background="{TemplateBinding Background}" OpacityMask="Black"
+                                    >
+
+                            <Border.BorderBrush>
+                                <LinearGradientBrush EndPoint="0.5,1"   StartPoint="0.3,0" Opacity="0.5">
+                                    <GradientStop Color="#00069B" Offset="0"/>
+                                    <GradientStop Color="#BA48B6" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                            <!--Настройка расположения объекта внутри кнопки-->
+                            <ContentPresenter
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Margin="0,0,0,0"/>
+
+                        </Border>
+                        <!--Работа с тригерами кнопки -->
+                        <ControlTemplate.Triggers>
+                            <!--При наведении на кнопку...-->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!--Изменение заливки и цвета текста-->
+                                <Setter Property="Background" Value="#FFECECEC"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF9B979E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TxB" TargetType="TextBox">
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Width" Value="130"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#FFA6A6A6"/>
+            <Setter Property="BorderBrush">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.3,1.4"   StartPoint="0.2,0" Opacity="0.5" >
+                        <GradientStop Color="#00069B" Offset="0"/>
+                        <GradientStop Color="#BA48B6" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="TextBlockForTxB_login" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FFA6A6A6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Style.Triggers>
+                
+                <DataTrigger Binding="{Binding Text, ElementName=loginTxB}" Value="">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TextBlockForTxB_password" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FFA6A6A6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Style.Triggers>
+
+                <DataTrigger Binding="{Binding Text, ElementName=passwordTxB}" Value="">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TextBlockForTxB_registration" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FFA6A6A6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Text, ElementName=RegistrationTxB}" Value="">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TextBlockForTxB_option" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FFA6A6A6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Text, ElementName=OptionTxB}" Value="">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="HiddenTB" TargetType="TextBlock">
+            <Setter Property="Visibility" Value="Hidden"/>
+        </Style>
+        <Style x:Key="TextBlockForTxB_checkPassword1" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FFA6A6A6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Text, ElementName=PassWord1TxB}" Value="">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TextBlockForTxB_checkPassword2" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FFA6A6A6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Text, ElementName=PassWord2TxB}" Value="">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="LoginWindowSwitcher" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF6E6E6E"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Foreground" Value="#FF6E6E6E"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="CheckBox" TargetType="CheckBox">
             <Setter Property="Background" Value="#FFB9B3BF"/>

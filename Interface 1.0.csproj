@@ -74,6 +74,9 @@
     <Compile Include="Additional Gears\connection_line.cs" />
     <Compile Include="Additional Gears\TextIntoShapes.cs" />
     <Compile Include="Additional Gears\UndefiendLine.cs" />
+    <Compile Include="LogInWindow.xaml.cs">
+      <DependentUpon>LogInWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewClasses\block.cs" />
     <Compile Include="NewClasses\DiagrammAnalyzer.cs" />
     <Compile Include="NewClasses\PrevNext.cs" />
@@ -96,6 +99,10 @@
     </Compile>
     <Compile Include="Videlyashka\ExcretorySquare.cs" />
     <Compile Include="Videlyashka\RememberUIElements.cs" />
+    <Page Include="LogInWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -170,6 +177,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\GraySparow2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\GraySparowDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\GraySparowUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\backgroundForLogIn.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

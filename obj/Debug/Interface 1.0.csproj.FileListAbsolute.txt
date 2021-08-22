@@ -64,3 +64,5 @@ C:\Программирование\проекты\Project_block_diagram\Burrokk
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\tasks.baml
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\picture.g.cs
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\picture.baml
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\LogInWindow.g.cs
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\LogInWindow.baml
