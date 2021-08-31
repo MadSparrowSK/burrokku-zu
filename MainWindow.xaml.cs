@@ -29,6 +29,8 @@ namespace Interface_1._0
 {
     public partial class MainWindow : Window
     {
+        static private User activeUser = new User();
+
         static readonly Rectangle workArea = new Rectangle();
         static readonly Polyline bottomArray = new Polyline();
         static readonly Polyline topArray = new Polyline();
@@ -41,6 +43,8 @@ namespace Interface_1._0
         List<RememberLines> remLines = new List<RememberLines>();
         static List<ShapeInfo> shapesInfo = new List<ShapeInfo>();
 
+        
+
         #region Data for frontend
         public List<CheckBox> Labs1 = new List<CheckBox>();
         public List<CheckBox> Labs2 = new List<CheckBox>();
@@ -52,14 +56,16 @@ namespace Interface_1._0
 
         public MainWindow()
         {
-            LogInWindow log = new LogInWindow();
-            log.ShowDialog();
+            
             InitializeComponent();
             
 
             Init();
             CreateLists();
+
+            if (activeUser.Name == null) HideRightSideBar();
         }
+        //Создание списков для корректной работы чекбоксов из правой панели
         void CreateLists()
         {
             Labs1.Add(L1CHB1);
@@ -90,9 +96,28 @@ namespace Interface_1._0
             Term.Add(Term_1);
             Term.Add(Term_2);
         }
-
+        /// <summary>
+        /// Прячет правый сайдбар
+        /// </summary>
+        void HideRightSideBar()
+        {
+            Right_side_bar.Visibility = Visibility.Hidden;
+            SP2.Visibility = Visibility.Hidden;
+            SP3.Visibility = Visibility.Hidden;
+            switcher_right_side.Visibility = Visibility.Hidden;
+        }
+        /// <summary>
+        /// Показывает правый сайдбар
+        /// </summary>
+        void ShowRightSideBar()
+        {
+            Right_side_bar.Visibility = Visibility.Visible;
+            SP2.Visibility = Visibility.Visible;
+            SP3.Visibility = Visibility.Visible;
+            switcher_right_side.Visibility = Visibility.Visible;
+        }
         void Init()
-        { 
+        {
 
             PointCollection pointsBottom = new PointCollection() { new Point(0, 0), new Point(5, 5), new Point(10, 0) };
             bottomArray.Points = pointsBottom;
@@ -16854,6 +16879,20 @@ namespace Interface_1._0
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void LoginWindow_Open(object sender, MouseButtonEventArgs e)
+        {
+            this.Visibility = Visibility.Hidden;
+            LogInWindow log = new LogInWindow();
+            log.ShowDialog();
+            this.Visibility = Visibility.Visible;
+            activeUser = AllUsers.FindeMarkedUser();
+            if (activeUser != null)
+            {
+                Login_label.Content = activeUser.Name;
+                ShowRightSideBar();
+            }
         }
     }
 }

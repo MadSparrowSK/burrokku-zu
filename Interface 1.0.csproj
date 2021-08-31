@@ -80,6 +80,7 @@
     <Compile Include="NewClasses\block.cs" />
     <Compile Include="NewClasses\DiagrammAnalyzer.cs" />
     <Compile Include="NewClasses\PrevNext.cs" />
+    <Compile Include="NewClasses\User.cs" />
     <Compile Include="picture.xaml.cs">
       <DependentUpon>picture.xaml</DependentUpon>
     </Compile>

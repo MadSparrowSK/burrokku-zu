@@ -72,28 +72,29 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,60" Visibility="Hidden" Name="LoginZone">
             <TextBlock Text="Вход" Foreground="#FF4C394B" FontSize="33" HorizontalAlignment="Center"/>
             <TextBox x:Name="loginTxB" Style="{StaticResource TxB}"  Margin="0,20,0,0" />
-            <TextBox x:Name="passwordTxB" Style="{StaticResource TxB}" Margin="0,15,0,0"  />
-            <Button  Style="{StaticResource Button_login}" Name="Login_btn"  Width="130" Height="26" Margin="0,30,0,0">
+            <PasswordBox x:Name="passwordTxB" Style="{StaticResource PsB}" Margin="0,15,0,0"  KeyUp="password_KeyUp" PreviewKeyDown="password_KeyDown" />
+            <Button  Style="{StaticResource Button_login}" Name="Login_btn"  Width="130" Height="26" Margin="0,30,0,0" Click="Login_btn_Click">
                 <TextBlock Text="Войти" Margin="46,0,0,0" FontSize="12" Foreground="#FF4D4D4D"/>
             </Button>
         </StackPanel>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Name="RegistrationZone">
             <TextBlock Text="Регистрация" Foreground="#FF4C394B" FontSize="33" HorizontalAlignment="Center"/>
             <TextBox x:Name="RegistrationTxB" Style="{StaticResource TxB}"  Margin="0,20,0,0" />
-            <TextBox x:Name="OptionTxB" Style="{StaticResource TxB}" MaxLength="2" Margin="0,15,0,0"  />
-            <TextBox x:Name="PassWord1TxB" Style="{StaticResource TxB}" Margin="0,15,0,0"  />
-            <TextBox x:Name="PassWord2TxB" Style="{StaticResource TxB}" Margin="0,15,0,0"  />
+            <TextBox x:Name="OptionTxB" Style="{StaticResource TxB}" MaxLength="2" Margin="0,15,0,0"  PreviewTextInput="pnl_PreviewTextInput" PreviewKeyDown="pnl_PreviewKeyDown" />
+            <PasswordBox x:Name="PassWord1TxB" Style="{StaticResource PsB}" Margin="0,15,0,0" KeyUp="password_KeyUp" KeyDown="password_KeyDown" />
+            <PasswordBox x:Name="PassWord2TxB" Style="{StaticResource PsB}" Margin="0,15,0,0" KeyUp="password_KeyUp" KeyDown="password_KeyDown" />
 
-            <Button  Style="{StaticResource Button_login}" Name="Registration_btn"  Width="130" Height="26" Margin="0,30,0,0">
+            <Button  Style="{StaticResource Button_login}" Name="Registration_btn"  Width="130" Height="26" Margin="0,30,0,0" Click="Registration_btn_Click">
                 <TextBlock Text="Зарегистрироваться" Margin="8,0,0,0" FontSize="12" Foreground="#FF4D4D4D"/>
             </Button>
         </StackPanel>
         <TextBlock Text="Логин" Style="{StaticResource HiddenTB}"  Margin="0,0,86,100" Name="TB_login"/>
-        <TextBlock Text="Пароль" Style="{StaticResource HiddenTB}"  Margin="0,0,80,20" Name="TB_password"/>
+        <TextBlock Text="Пароль" Style="{StaticResource TextBlockForTxB_password}"  Margin="0,0,80,20" Name="TB_password" Visibility="Hidden"/>
         <TextBlock Text="ФИО пользователя" Style="{StaticResource TextBlockForTxB_registration}" Name="TB_Registration" Margin="0,0,12,116"/>
-        <TextBlock Text="Номер варианта" Style="{StaticResource TextBlockForTxB_option}" Name="TB_option" Margin="0,0,26,36"/>
+        <TextBlock Text="Номер варианта" Style="{StaticResource TextBlockForTxB_option}" Name="TB_option" Margin="0,0,26,36" />
         <TextBlock Text="Пароль" Style="{StaticResource TextBlockForTxB_checkPassword1}" Name="TB_checkingPS1" Margin="0,42,80,0"/>
         <TextBlock Text="Повторите пароль" Style="{StaticResource TextBlockForTxB_checkPassword2}" Name="TB_checkingPS2" Margin="0,144,16,25"/>
+        <TextBlock Text="Пароли не совпадают!" Foreground="Red" VerticalAlignment="Bottom" HorizontalAlignment="Center" Name="TB_message"  Margin="0,0,0,35" Visibility="Hidden"/>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="5">
             <TextBlock Text="Уже есть аккаунт? Войти" Style="{StaticResource LoginWindowSwitcher}" MouseDown="SwitchWindow" Name="switcher"/>
             <Polyline Points="85,0 112,0" x:Name="SepBelowSwitcher" Stroke="#FF6E6E6E" Opacity="0.5"/>
