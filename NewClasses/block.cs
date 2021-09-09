@@ -23,8 +23,9 @@ namespace Interface_1._0
         Cycle
     }
     /// <summary>
-    /// Класс-контейнер, необходимый для операц сериализации (сохранение, загрузка, кодировани данных)
+    /// Класс-контейнер, необходимый данные, необходимые для сериализации (сохранение, загрузка, кодировани данных)
     /// </summary>
+    [Serializable]
     public class Diagramm
     {
         public Diagramm()
@@ -40,6 +41,10 @@ namespace Interface_1._0
         //ID диаграммы
         public double ID { get { return _id; } set { _id = value; } }
 
+        /// <summary>
+        /// Имя для нахождения сохранения для работы правого сайд-бара
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// Список со всеми фигурами
@@ -113,6 +118,7 @@ namespace Interface_1._0
     /// <summary>
     /// Класс-контейнер, содержащий в себе данные для воссоздания фигуры
     /// </summary>
+    [Serializable]
     public class Block
     {
         //Координаты фигуры
@@ -221,6 +227,7 @@ namespace Interface_1._0
     /// <summary>
     /// Класс-контейнер, содержащий в себе данные для воссоздания линий
     /// </summary>
+    [Serializable]
     public class DataForSavingLine
     {
         //Счетчик для линий

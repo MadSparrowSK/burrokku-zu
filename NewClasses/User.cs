@@ -9,6 +9,7 @@ namespace Interface_1._0
     /// <summary>
     /// Класс, хранящий в себе данные для одного пользователя
     /// </summary>
+    [Serializable]
     public class User
     {
         /// <summary>
@@ -28,6 +29,18 @@ namespace Interface_1._0
         /// </summary>
         public bool Mark { get; set; }
         /// <summary>
+        /// Выбранный семестр
+        /// </summary>
+        public int SelectedTerm { get; set; }
+        /// <summary>
+        /// Выбранная лаба
+        /// </summary>
+        public int SelectedLab { get; set; }
+        /// <summary>
+        /// Выбранное задание
+        /// </summary>
+        public int SelectedTask { get; set; }
+        /// <summary>
         /// Все сохранения 
         /// </summary>
         public List<Diagramm> Saves { get; set;}
@@ -43,9 +56,12 @@ namespace Interface_1._0
             Option = option;
             Saves = saves;
             Mark = false;
+            SelectedTerm = 1;
+            SelectedLab = 1;
         }
 
     }
+    [Serializable]
     public static class AllUsers
     {
         public static List<User> Users { get; set; }
@@ -116,7 +132,7 @@ namespace Interface_1._0
         /// Находит и возвращает активного пользователя
         /// </summary>
         /// <returns></returns>
-        public static User FindeMarkedUser()
+        public static User FindMarkedUser()
         {
             foreach (User user in Users)
             {
@@ -127,5 +143,30 @@ namespace Interface_1._0
             }
             return null;
         }
+    }
+    /// <summary>
+    /// Отдельный класс, хранящий данные для сериализации\десериализации
+    /// </summary>
+    [Serializable]
+    public class DataForSavingUsers
+    {
+        /// <summary>
+        /// Активный пользователь
+        /// </summary>
+        public User MarkedUser { get; set; }
+        /// <summary>
+        /// Список пользователей
+        /// </summary>
+        public List<User> Users { get; set; }
+        public DataForSavingUsers(User markedUser, List<User> users)
+        {
+            MarkedUser = markedUser;
+            Users = users;
+        }
+        public DataForSavingUsers( List<User> users)
+        {
+            Users = users;
+        }
+
     }
 }

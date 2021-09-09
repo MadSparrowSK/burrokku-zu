@@ -37,6 +37,7 @@ namespace Interface_1._0
         }
         private void Close_Click(object sender, RoutedEventArgs e)
         {
+            AllUsers.RemoveMark();
             this.Close();
         }
         private void Mouse_Enter_Close(object sender, RoutedEventArgs e)
