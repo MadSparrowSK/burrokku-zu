@@ -140,7 +140,8 @@
                            MouseUp="ButtonUp"
                            />
                             <Label Content="Помощь" Style="{StaticResource ButtonHead}"
-                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave"
+                           MouseEnter="Header_Mouse_Enter" MouseLeave="Header_Mouse_Leave" MouseDown="OpenHelp"
+                                   
                            />
 
 

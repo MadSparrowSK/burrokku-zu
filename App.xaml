@@ -535,5 +535,10 @@
             <Setter Property="Points" Value="0,0 145,0"/>
             <Setter Property="StrokeThickness" Value="1"/>
         </Style>
+        <Style x:Key="PolylineInHelpWindow" TargetType="Polyline">
+            <Setter Property="Points" Value="0,0 100,0"/>
+            <Setter Property="Stroke" Value="#FF2E2E30"/>
+            <Setter Property="StrokeThickness" Value="2"/>
+        </Style>
     </Application.Resources>
 </Application>

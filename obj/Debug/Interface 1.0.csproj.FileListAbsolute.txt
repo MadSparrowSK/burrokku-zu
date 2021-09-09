@@ -60,9 +60,9 @@ C:\Программирование\проекты\Project_block_diagram\Burrokk
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\App.baml
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\SaveWindow.g.cs
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\SaveWindow.baml
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\tasks.g.cs
-C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\tasks.baml
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\picture.g.cs
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\picture.baml
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\LogInWindow.g.cs
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\LogInWindow.baml
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Help.g.cs
+C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Help.baml

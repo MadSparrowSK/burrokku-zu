@@ -116,26 +116,7 @@ namespace Interface_1._0
             Term.Add(Term_1);
             Term.Add(Term_2);
         }
-        /// <summary>
-        /// Прячет правый сайдбар
-        /// </summary>
-        void HideRightSideBar()
-        {
-            Right_side_bar.Visibility = Visibility.Hidden;
-            SP2.Visibility = Visibility.Hidden;
-            SP3.Visibility = Visibility.Hidden;
-            switcher_right_side.Visibility = Visibility.Hidden;
-        }
-        /// <summary>
-        /// Показывает правый сайдбар
-        /// </summary>
-        void ShowRightSideBar()
-        {
-            Right_side_bar.Visibility = Visibility.Visible;
-            SP2.Visibility = Visibility.Visible;
-            SP3.Visibility = Visibility.Visible;
-            switcher_right_side.Visibility = Visibility.Visible;
-        }
+        
         void Init()
         {
 
@@ -187,8 +168,6 @@ namespace Interface_1._0
         
         
         #region Data for serialization
-        //Данные для корректного сохранения
-        string title = "";
         //Данные, необходимые для сериализации
         private OpenFileDialog _openDialog = new OpenFileDialog();
         private SaveFileDialog _safeDialog = new SaveFileDialog();
@@ -523,7 +502,13 @@ namespace Interface_1._0
         #endregion
 
         #region left_side
-        private void Help_Window(object sender, RoutedEventArgs e) { }
+
+        //Открытие окна помощи
+        private void OpenHelp(object sender, MouseButtonEventArgs e)
+        {
+            Help h = new Help();
+            h.ShowDialog();
+        }
         private void Header_Mouse_Enter(object sender, RoutedEventArgs e)
         {
             ((Label)sender).Foreground = Brushes.White;
@@ -16153,394 +16138,7 @@ namespace Interface_1._0
                 DiagrammAnalyzer.isChanged = true;
         }
         
-        private void Right_Sidebar_DownLoad(Diagramm diagramm)
-        {
-            DiagrammAnalyzer.isLoaded = true;
-            inTrash(null, null);
-            tempDiagramm = diagramm.Clone(diagramm.ID);
-            //Обнуляем основную диаграмму и счетчик фигур    
-
-            diagramm = new Diagramm();
-            DiagrammAnalyzer.shapesCounter = 0;
-            DiagrammAnalyzer.linesCounter = 0;
-
-            //Прорисовываем десериализованные фигуры
-            foreach (Block block in tempDiagramm.blocks)
-            {
-                if (block.IndexNumber < 0)
-                    block.IndexNumber = 0;
-                if (block.Shape == Shapes.Rect)
-                {
-
-                    Point rectangleNW = block.NW;
-                    Point rectangleSW = block.SW;
-                    Point rectangleSE = block.SE;
-                    Point rectnagleNE = block.NE;
-                    PointCollection PointsOfShape = new PointCollection();
-                    PointsOfShape.Add(rectangleNW);
-                    PointsOfShape.Add(rectangleSW);
-                    PointsOfShape.Add(rectangleSE);
-                    PointsOfShape.Add(rectnagleNE);
-
-                    RP_Shapes shape = new RP_Shapes(Rect, rectangleNW, rectangleSW, rectangleSE, rectnagleNE, PointsOfShape);
-                    //Индексация фигур  
-                    shape.shape.Name = "Rect_" + block.IndexNumber.ToString();
-
-                    TXT txt = new TXT(7, 5);
-                    Canvas.SetZIndex(txt.txtbx, 1);
-                    txt.txtbx.Text = block.TextIntoTextBox;
-                    shape.shape.Style = (Style)FindResource("Rect");
-
-                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
-
-                    ConnectionLine connectionLine = new ConnectionLine();
-
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
-                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
-
-                    shape.shape.MouseUp += UIElements_Mouse_Up;
-
-                    //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
-                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
-                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
-                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
-                    //
-
-                    CanvasPos.Children.Add(shape.shape);
-                    CanvasPos.Children.Add(txt.txtbx);
-
-                    CanvasPos.Children.Add(connectionLine.circle_left);
-                    CanvasPos.Children.Add(connectionLine.circle_right);
-                    CanvasPos.Children.Add(connectionLine.circle_top);
-                    CanvasPos.Children.Add(connectionLine.circle_bottom);
-
-                    CanvasPos.Children.Add(anchor.anchor_NS);
-                    CanvasPos.Children.Add(anchor.anchor_WE);
-                    CanvasPos.Children.Add(anchor.anchor_NWSE);
-
-                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
-                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
-
-                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent * 2.3);
-                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
-
-                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 10);
-                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent);
-
-                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 20 + anchor_left_indent * 2);
-                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent);
-
-                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
-                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 13);
-
-                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
-                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 10);
-
-                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
-                        connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx));
-
-                    AddRP_Shape(shape, connectionLine, txt, anchor, true);
-
-                }
-                if (block.Shape == Shapes.Parabellum)
-                {
-                    Point parabellumNW = block.NW;
-                    Point parabellumSW = block.SW;
-                    Point parabellumSE = block.SE;
-                    Point parabellumNE = block.NE;
-
-                    PointCollection parabellumPoints = new PointCollection();
-                    parabellumPoints.Add(parabellumNW);
-                    parabellumPoints.Add(parabellumSW);
-                    parabellumPoints.Add(parabellumSE);
-                    parabellumPoints.Add(parabellumNE);
-
-                    RP_Shapes shape = new RP_Shapes(Parabellum, parabellumNW, parabellumSW, parabellumSE, parabellumNE, parabellumPoints);
-                    //Индексация фигур
-                    shape.shape.Name = "Parabellum_" + block.IndexNumber.ToString();
-
-                    TXT txt = new TXT(7, 5);
-                    Canvas.SetZIndex(txt.txtbx, 1);
-                    txt.txtbx.Text = block.TextIntoTextBox;
-                    shape.shape.Style = (Style)FindResource("Parabellum");
-                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
-
-                    ConnectionLine connectionLine = new ConnectionLine();
-
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
-                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
-
-                    shape.shape.MouseUp += UIElements_Mouse_Up;
-
-                    //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
-                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
-                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
-                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
-                    //
-
-                    CanvasPos.Children.Add(shape.shape);
-                    CanvasPos.Children.Add(txt.txtbx);
-
-                    CanvasPos.Children.Add(connectionLine.circle_left);
-                    CanvasPos.Children.Add(connectionLine.circle_right);
-                    CanvasPos.Children.Add(connectionLine.circle_top);
-                    CanvasPos.Children.Add(connectionLine.circle_bottom);
-
-                    CanvasPos.Children.Add(anchor.anchor_NS);
-                    CanvasPos.Children.Add(anchor.anchor_WE);
-                    CanvasPos.Children.Add(anchor.anchor_NWSE);
-
-                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
-                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
-
-                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent * 2.3);
-                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
-
-                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 10);
-                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent);
-
-                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 20 + anchor_left_indent * 2);
-                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent);
-
-                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
-                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 13);
-
-                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
-                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 10);
-
-                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
-                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx));
-
-                    AddRP_Shape(shape, connectionLine, txt, anchor);
-                }
-                if (block.Shape == Shapes.Rhomb)
-                {
-                    Point rhombN = block.NW;
-                    Point rhombW = block.NE;
-                    Point rhombS = block.SW;
-                    Point rhombE = block.SE;
-
-                    PointCollection rhombPoints = new PointCollection();
-                    rhombPoints.Add(rhombW);
-                    rhombPoints.Add(rhombS);
-                    rhombPoints.Add(rhombE);
-                    rhombPoints.Add(rhombN);
-                    Rh_Shape shape = new Rh_Shape(Rhomb, rhombW, rhombS, rhombE, rhombN, rhombPoints);
-                    shape.shape.Name = "Rhomb_" + block.IndexNumber.ToString();
-                    TXT txt = new TXT(10, 7);
-                    Canvas.SetZIndex(txt.txtbx, 1);
-                    txt.txtbx.Text = block.TextIntoTextBox;
-                    shape.shape.Style = (Style)FindResource("Rhomb");
-                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 5);
-
-                    ConnectionLine connectionLine = new ConnectionLine();
-
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_E.X, 2))) / 2;
-                    double special_anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.W_Point.Y, 2)));
-
-                    shape.shape.MouseUp += UIElements_Mouse_Up;
-
-                    //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
-                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
-                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
-                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
-                    //
-
-                    CanvasPos.Children.Add(shape.shape);
-                    CanvasPos.Children.Add(txt.txtbx);
-
-                    CanvasPos.Children.Add(connectionLine.circle_left);
-                    CanvasPos.Children.Add(connectionLine.circle_right);
-                    CanvasPos.Children.Add(connectionLine.circle_top);
-                    CanvasPos.Children.Add(connectionLine.circle_bottom);
-
-                    CanvasPos.Children.Add(anchor.anchor_NS);
-                    CanvasPos.Children.Add(anchor.anchor_WE);
-                    CanvasPos.Children.Add(anchor.anchor_NWSE);
-
-                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
-                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
-
-                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.3 - txt.text_left_indent);
-                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
-
-                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 17);
-                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
-
-                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + (shape.E_Point.X - shape.W_Point.X));
-                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
-
-                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
-                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - (shape.W_Point.Y - shape.N_Point.Y) - 5);
-
-                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
-                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + (shape.W_Point.Y - shape.N_Point.Y) + 15);
-
-                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
-                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx));
-
-                    AddRh_Shape(shape, connectionLine, txt, anchor);
-
-                }
-                if (block.Shape == Shapes.Cycle)
-                {
-                    Point cycleNW = block.NW;
-                    Point cycleW = block.AddPoint1;
-                    Point cycleSW = block.SW;
-                    Point cycleSE = block.SE;
-                    Point cycleE = block.AddPoint2;
-                    Point cycleNE = block.NE;
-                    PointCollection cyclePoints = new PointCollection()
-                    {
-                        cycleNW,
-                        cycleW,
-                        cycleSW,
-                        cycleSE,
-                        cycleE,
-                        cycleNE,
-                    };
-
-                    Cy_Shape shape = new Cy_Shape(Cycle, cycleNW, cycleSW, cycleSE, cycleNE, cycleW, cycleE, cyclePoints);
-                    shape.shape.Name = "Cycle_" + block.IndexNumber.ToString();
-
-                    TXT txt = new TXT(30, 5);
-                    Canvas.SetZIndex(txt.txtbx, 1);
-                    txt.txtbx.Text = block.TextIntoTextBox;
-                    shape.shape.Style = (Style)FindResource("Cycle");
-                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
-
-                    ConnectionLine connectionLine = new ConnectionLine();
-
-                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
-                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
-                    double sp_anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_point.X, 2)));
-
-                    shape.shape.MouseUp += UIElements_Mouse_Up;
-
-                    //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
-                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
-                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
-                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
-                    //
-
-                    CanvasPos.Children.Add(shape.shape);
-                    CanvasPos.Children.Add(txt.txtbx);
-
-                    CanvasPos.Children.Add(connectionLine.circle_left);
-                    CanvasPos.Children.Add(connectionLine.circle_right);
-                    CanvasPos.Children.Add(connectionLine.circle_top);
-                    CanvasPos.Children.Add(connectionLine.circle_bottom);
-
-                    CanvasPos.Children.Add(anchor.anchor_NS);
-                    CanvasPos.Children.Add(anchor.anchor_WE);
-                    CanvasPos.Children.Add(anchor.anchor_NWSE);
-
-                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
-                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
-
-                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - 15);
-                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
-
-                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
-                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
-
-                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + 15);
-                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
-
-                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
-                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 15);
-
-                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
-                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
-
-                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
-                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx));
-
-                    AddCy_Shape(shape, connectionLine, txt, anchor);
-
-                }
-                if (block.Shape == Shapes.Ellipse)
-                {
-                    Ell_Shape shape = new Ell_Shape(Ellipse);
-                    shape.shape.Name = "Ellipse_" + block.IndexNumber.ToString();
-                    shape.shape.Width = block.Width;
-                    shape.shape.Height = block.Height;
-
-                    TXT txt = new TXT(15, 6);
-                    Canvas.SetZIndex(txt.txtbx, 1);
-                    txt.txtbx.Text = block.TextIntoTextBox;
-                    shape.shape.Style = (Style)FindResource("Ellipse");
-                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 6);
-
-                    ConnectionLine connectionLine = new ConnectionLine();
-
-                    shape.shape.MouseUp += UIElements_Mouse_Up;
-
-                    //Тестовая зона
-                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
-                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
-                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
-                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
-                    //
-
-                    CanvasPos.Children.Add(txt.txtbx);
-                    CanvasPos.Children.Add(shape.shape);
-
-                    CanvasPos.Children.Add(connectionLine.circle_left);
-                    CanvasPos.Children.Add(connectionLine.circle_right);
-                    CanvasPos.Children.Add(connectionLine.circle_top);
-                    CanvasPos.Children.Add(connectionLine.circle_bottom);
-
-                    CanvasPos.Children.Add(anchor.anchor_NS);
-                    CanvasPos.Children.Add(anchor.anchor_WE);
-                    CanvasPos.Children.Add(anchor.anchor_NWSE);
-
-                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
-                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
-
-                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - txt.text_left_indent);
-                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - txt.text_top_indent);
-
-                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 18);
-                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 1);
-
-                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + shape.shape.Width + 15);
-                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 1);
-
-                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
-                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 15);
-
-                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
-                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + shape.shape.Height + 10);
-
-                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
-                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx));
-
-                    AddEll_Shape(shape, connectionLine, txt, anchor);
-                }
-                DiagrammAnalyzer.shapesCounter++;
-            }
-            //Прорисовываем десериализованные линии
-            foreach (DataForSavingLine Data in tempDiagramm.Lines)
-            {
-                Ellipse from = GetEllipseInCanvas(Data.Source);
-                Ellipse to = GetEllipseInCanvas(Data.Target);
-                Line line = CreateLine(Data.StartPoint, Data.EndPoint, from, to);
-                Shape shape = GetShapeInCanvas(GetNameOfShape(from.Name));
-
-
-                LogicOf90LineBuild(shape, from, to, line);
-            }
-            //Булевые переменные, необходимые для сохранения индексации
-            DiagrammAnalyzer.isLoaded = false;
-            DiagrammAnalyzer.isPrevNext = false;
-            diagramm.ID = tempDiagramm.ID;
-            tempDiagramm = new Diagramm();
-        }
+        
 
 
         /// <summary>
@@ -17152,6 +16750,415 @@ namespace Interface_1._0
         # endregion
 
         #region Right sidebar design and logic
+        /// <summary>
+        /// Прячет правый сайдбар
+        /// </summary>
+        void HideRightSideBar()
+        {
+            Right_side_bar.Visibility = Visibility.Hidden;
+            SP2.Visibility = Visibility.Hidden;
+            SP3.Visibility = Visibility.Hidden;
+            switcher_right_side.Visibility = Visibility.Hidden;
+        }
+        /// <summary>
+        /// Показывает правый сайдбар
+        /// </summary>
+        void ShowRightSideBar()
+        {
+            Right_side_bar.Visibility = Visibility.Visible;
+            SP2.Visibility = Visibility.Visible;
+            SP3.Visibility = Visibility.Visible;
+            switcher_right_side.Visibility = Visibility.Visible;
+        }
+        //Метод для загрузки блок-схемы для задания из правого сайд-бара
+        private void Right_Sidebar_DownLoad(Diagramm diagramm)
+        {
+            DiagrammAnalyzer.isLoaded = true;
+            inTrash(null, null);
+            tempDiagramm = diagramm.Clone(diagramm.ID);
+            //Обнуляем основную диаграмму и счетчик фигур    
+
+            diagramm = new Diagramm();
+            DiagrammAnalyzer.shapesCounter = 0;
+            DiagrammAnalyzer.linesCounter = 0;
+
+            //Прорисовываем десериализованные фигуры
+            foreach (Block block in tempDiagramm.blocks)
+            {
+                if (block.IndexNumber < 0)
+                    block.IndexNumber = 0;
+                if (block.Shape == Shapes.Rect)
+                {
+
+                    Point rectangleNW = block.NW;
+                    Point rectangleSW = block.SW;
+                    Point rectangleSE = block.SE;
+                    Point rectnagleNE = block.NE;
+                    PointCollection PointsOfShape = new PointCollection();
+                    PointsOfShape.Add(rectangleNW);
+                    PointsOfShape.Add(rectangleSW);
+                    PointsOfShape.Add(rectangleSE);
+                    PointsOfShape.Add(rectnagleNE);
+
+                    RP_Shapes shape = new RP_Shapes(Rect, rectangleNW, rectangleSW, rectangleSE, rectnagleNE, PointsOfShape);
+                    //Индексация фигур  
+                    shape.shape.Name = "Rect_" + block.IndexNumber.ToString();
+
+                    TXT txt = new TXT(7, 5);
+                    Canvas.SetZIndex(txt.txtbx, 1);
+                    txt.txtbx.Text = block.TextIntoTextBox;
+                    shape.shape.Style = (Style)FindResource("Rect");
+
+                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
+
+                    ConnectionLine connectionLine = new ConnectionLine();
+
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
+
+                    shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
+
+                    CanvasPos.Children.Add(shape.shape);
+                    CanvasPos.Children.Add(txt.txtbx);
+
+                    CanvasPos.Children.Add(connectionLine.circle_left);
+                    CanvasPos.Children.Add(connectionLine.circle_right);
+                    CanvasPos.Children.Add(connectionLine.circle_top);
+                    CanvasPos.Children.Add(connectionLine.circle_bottom);
+
+                    CanvasPos.Children.Add(anchor.anchor_NS);
+                    CanvasPos.Children.Add(anchor.anchor_WE);
+                    CanvasPos.Children.Add(anchor.anchor_NWSE);
+
+                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
+                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent * 2.3);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 10);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 20 + anchor_left_indent * 2);
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 13);
+
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 10);
+
+                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                        connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx));
+
+                    AddRP_Shape(shape, connectionLine, txt, anchor, true);
+
+                }
+                if (block.Shape == Shapes.Parabellum)
+                {
+                    Point parabellumNW = block.NW;
+                    Point parabellumSW = block.SW;
+                    Point parabellumSE = block.SE;
+                    Point parabellumNE = block.NE;
+
+                    PointCollection parabellumPoints = new PointCollection();
+                    parabellumPoints.Add(parabellumNW);
+                    parabellumPoints.Add(parabellumSW);
+                    parabellumPoints.Add(parabellumSE);
+                    parabellumPoints.Add(parabellumNE);
+
+                    RP_Shapes shape = new RP_Shapes(Parabellum, parabellumNW, parabellumSW, parabellumSE, parabellumNE, parabellumPoints);
+                    //Индексация фигур
+                    shape.shape.Name = "Parabellum_" + block.IndexNumber.ToString();
+
+                    TXT txt = new TXT(7, 5);
+                    Canvas.SetZIndex(txt.txtbx, 1);
+                    txt.txtbx.Text = block.TextIntoTextBox;
+                    shape.shape.Style = (Style)FindResource("Parabellum");
+                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
+
+                    ConnectionLine connectionLine = new ConnectionLine();
+
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
+
+                    shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
+
+                    CanvasPos.Children.Add(shape.shape);
+                    CanvasPos.Children.Add(txt.txtbx);
+
+                    CanvasPos.Children.Add(connectionLine.circle_left);
+                    CanvasPos.Children.Add(connectionLine.circle_right);
+                    CanvasPos.Children.Add(connectionLine.circle_top);
+                    CanvasPos.Children.Add(connectionLine.circle_bottom);
+
+                    CanvasPos.Children.Add(anchor.anchor_NS);
+                    CanvasPos.Children.Add(anchor.anchor_WE);
+                    CanvasPos.Children.Add(anchor.anchor_NWSE);
+
+                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
+                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.text_left_indent * 2.3);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 10);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 20 + anchor_left_indent * 2);
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 13);
+
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 10);
+
+                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx));
+
+                    AddRP_Shape(shape, connectionLine, txt, anchor);
+                }
+                if (block.Shape == Shapes.Rhomb)
+                {
+                    Point rhombN = block.NW;
+                    Point rhombW = block.NE;
+                    Point rhombS = block.SW;
+                    Point rhombE = block.SE;
+
+                    PointCollection rhombPoints = new PointCollection();
+                    rhombPoints.Add(rhombW);
+                    rhombPoints.Add(rhombS);
+                    rhombPoints.Add(rhombE);
+                    rhombPoints.Add(rhombN);
+                    Rh_Shape shape = new Rh_Shape(Rhomb, rhombW, rhombS, rhombE, rhombN, rhombPoints);
+                    shape.shape.Name = "Rhomb_" + block.IndexNumber.ToString();
+                    TXT txt = new TXT(10, 7);
+                    Canvas.SetZIndex(txt.txtbx, 1);
+                    txt.txtbx.Text = block.TextIntoTextBox;
+                    shape.shape.Style = (Style)FindResource("Rhomb");
+                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 5);
+
+                    ConnectionLine connectionLine = new ConnectionLine();
+
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_Point.X, 2)) - Math.Sqrt(Math.Pow(shape.Point_E.X, 2))) / 2;
+                    double special_anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.N_Point.Y, 2)) - Math.Sqrt(Math.Pow(shape.W_Point.Y, 2)));
+
+                    shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
+
+                    CanvasPos.Children.Add(shape.shape);
+                    CanvasPos.Children.Add(txt.txtbx);
+
+                    CanvasPos.Children.Add(connectionLine.circle_left);
+                    CanvasPos.Children.Add(connectionLine.circle_right);
+                    CanvasPos.Children.Add(connectionLine.circle_top);
+                    CanvasPos.Children.Add(connectionLine.circle_bottom);
+
+                    CanvasPos.Children.Add(anchor.anchor_NS);
+                    CanvasPos.Children.Add(anchor.anchor_WE);
+                    CanvasPos.Children.Add(anchor.anchor_NWSE);
+
+                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
+                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - txt.txtbx.ActualWidth / 2.3 - txt.text_left_indent);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape));
+
+                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 17);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + 5);
+
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + 15 + (shape.E_Point.X - shape.W_Point.X));
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + 3);
+
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - (shape.W_Point.Y - shape.N_Point.Y) - 5);
+
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + (shape.E_Point.X - shape.W_Point.X) / 2 - 3);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + (shape.W_Point.Y - shape.N_Point.Y) + 15);
+
+                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx));
+
+                    AddRh_Shape(shape, connectionLine, txt, anchor);
+
+                }
+                if (block.Shape == Shapes.Cycle)
+                {
+                    Point cycleNW = block.NW;
+                    Point cycleW = block.AddPoint1;
+                    Point cycleSW = block.SW;
+                    Point cycleSE = block.SE;
+                    Point cycleE = block.AddPoint2;
+                    Point cycleNE = block.NE;
+                    PointCollection cyclePoints = new PointCollection()
+                    {
+                        cycleNW,
+                        cycleW,
+                        cycleSW,
+                        cycleSE,
+                        cycleE,
+                        cycleNE,
+                    };
+
+                    Cy_Shape shape = new Cy_Shape(Cycle, cycleNW, cycleSW, cycleSE, cycleNE, cycleW, cycleE, cyclePoints);
+                    shape.shape.Name = "Cycle_" + block.IndexNumber.ToString();
+
+                    TXT txt = new TXT(30, 5);
+                    Canvas.SetZIndex(txt.txtbx, 1);
+                    txt.txtbx.Text = block.TextIntoTextBox;
+                    shape.shape.Style = (Style)FindResource("Cycle");
+                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 8, 5);
+
+                    ConnectionLine connectionLine = new ConnectionLine();
+
+                    double anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.X, 2)) - Math.Sqrt(Math.Pow(shape.NE_point.X, 2))) / 2;
+                    double anchor_top_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.NW_point.Y, 2)) - Math.Sqrt(Math.Pow(shape.SW_point.Y, 2))) / 2;
+                    double sp_anchor_left_indent = Math.Abs(Math.Sqrt(Math.Pow(shape.W_point.X, 2)) - Math.Sqrt(Math.Pow(shape.E_point.X, 2)));
+
+                    shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
+
+                    CanvasPos.Children.Add(shape.shape);
+                    CanvasPos.Children.Add(txt.txtbx);
+
+                    CanvasPos.Children.Add(connectionLine.circle_left);
+                    CanvasPos.Children.Add(connectionLine.circle_right);
+                    CanvasPos.Children.Add(connectionLine.circle_top);
+                    CanvasPos.Children.Add(connectionLine.circle_bottom);
+
+                    CanvasPos.Children.Add(anchor.anchor_NS);
+                    CanvasPos.Children.Add(anchor.anchor_WE);
+                    CanvasPos.Children.Add(anchor.anchor_NWSE);
+
+                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
+                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + anchor_left_indent - 15);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + anchor_top_indent - txt.text_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - sp_anchor_left_indent / 5 - 7);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
+
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + sp_anchor_left_indent + 15);
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + anchor_top_indent - 1);
+
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 15);
+
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + anchor_left_indent + 5);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + anchor_top_indent * 2 + 12);
+
+                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx));
+
+                    AddCy_Shape(shape, connectionLine, txt, anchor);
+
+                }
+                if (block.Shape == Shapes.Ellipse)
+                {
+                    Ell_Shape shape = new Ell_Shape(Ellipse);
+                    shape.shape.Name = "Ellipse_" + block.IndexNumber.ToString();
+                    shape.shape.Width = block.Width;
+                    shape.shape.Height = block.Height;
+
+                    TXT txt = new TXT(15, 6);
+                    Canvas.SetZIndex(txt.txtbx, 1);
+                    txt.txtbx.Text = block.TextIntoTextBox;
+                    shape.shape.Style = (Style)FindResource("Ellipse");
+                    Anchors.Anchor anchor = new Anchor(Anchor, anchor_Top, anchor_Left, 10, 6);
+
+                    ConnectionLine connectionLine = new ConnectionLine();
+
+                    shape.shape.MouseUp += UIElements_Mouse_Up;
+
+                    //Тестовая зона
+                    connectionLine.circle_left.Name = "C_" + shape.shape.Name + "_left";
+                    connectionLine.circle_right.Name = "C_" + shape.shape.Name + "_right";
+                    connectionLine.circle_top.Name = "C_" + shape.shape.Name + "_top";
+                    connectionLine.circle_bottom.Name = "C_" + shape.shape.Name + "_bottom";
+                    //
+
+                    CanvasPos.Children.Add(txt.txtbx);
+                    CanvasPos.Children.Add(shape.shape);
+
+                    CanvasPos.Children.Add(connectionLine.circle_left);
+                    CanvasPos.Children.Add(connectionLine.circle_right);
+                    CanvasPos.Children.Add(connectionLine.circle_top);
+                    CanvasPos.Children.Add(connectionLine.circle_bottom);
+
+                    CanvasPos.Children.Add(anchor.anchor_NS);
+                    CanvasPos.Children.Add(anchor.anchor_WE);
+                    CanvasPos.Children.Add(anchor.anchor_NWSE);
+
+                    Canvas.SetLeft(shape.shape, block.LeftTop.X);
+                    Canvas.SetTop(shape.shape, block.LeftTop.Y);
+
+                    Canvas.SetLeft(txt.txtbx, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2 - txt.text_left_indent);
+                    Canvas.SetTop(txt.txtbx, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - txt.text_top_indent);
+
+                    Canvas.SetLeft(connectionLine.circle_left, Canvas.GetLeft(shape.shape) - 18);
+                    Canvas.SetTop(connectionLine.circle_left, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 1);
+
+                    Canvas.SetLeft(connectionLine.circle_right, Canvas.GetLeft(shape.shape) + shape.shape.Width + 15);
+                    Canvas.SetTop(connectionLine.circle_right, Canvas.GetTop(shape.shape) + shape.shape.Height / 2 - 1);
+
+                    Canvas.SetLeft(connectionLine.circle_top, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
+                    Canvas.SetTop(connectionLine.circle_top, Canvas.GetTop(shape.shape) - 15);
+
+                    Canvas.SetLeft(connectionLine.circle_bottom, Canvas.GetLeft(shape.shape) + shape.shape.Width / 2);
+                    Canvas.SetTop(connectionLine.circle_bottom, Canvas.GetTop(shape.shape) + shape.shape.Height + 10);
+
+                    shapesInfo.Add(new ShapeInfo(shape.shape, connectionLine.circle_left, connectionLine.circle_right,
+                       connectionLine.circle_top, connectionLine.circle_bottom, txt.txtbx));
+
+                    AddEll_Shape(shape, connectionLine, txt, anchor);
+                }
+                DiagrammAnalyzer.shapesCounter++;
+            }
+            //Прорисовываем десериализованные линии
+            foreach (DataForSavingLine Data in tempDiagramm.Lines)
+            {
+                Ellipse from = GetEllipseInCanvas(Data.Source);
+                Ellipse to = GetEllipseInCanvas(Data.Target);
+                Line line = CreateLine(Data.StartPoint, Data.EndPoint, from, to);
+                Shape shape = GetShapeInCanvas(GetNameOfShape(from.Name));
+
+
+                LogicOf90LineBuild(shape, from, to, line);
+            }
+            //Булевые переменные, необходимые для сохранения индексации
+            DiagrammAnalyzer.isLoaded = false;
+            DiagrammAnalyzer.isPrevNext = false;
+            diagramm.ID = tempDiagramm.ID;
+            tempDiagramm = new Diagramm();
+        }
         //Общий метод для обработки нажатий кнопок в правом сайдбаре
         private void Button_right_sidebar_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -17188,13 +17195,14 @@ namespace Interface_1._0
             //Открытие панели с выбором лабораторной
             if (((Label)sender).Name == "LabsSwitch")
             {
-                //При выбраном первом семестре откроется панель с 13-
+                //При выбраном первом семестре откроется панель с 13-ю лабами
                 if (Term_1.IsChecked == true)
                 {
                     activeUser.SelectedTerm = 1;
                     LabsZone1.Visibility = Visibility.Visible;
                     LabsZone2.Visibility = Visibility.Hidden;
                 }
+                //При выбраном втором - с 13-ю лабами
                 else
                 {
                     activeUser.SelectedTerm = 2;
@@ -17206,10 +17214,11 @@ namespace Interface_1._0
 
 
         }
-
+        //Метод, регулирующий отображение кнопок с заданиями в зависимости от выбранной лабораторной
         private void Task_visibility_controller(int selectedLab)
         {
             bool isAverageLab = true;
+            //Если в лабе 6 заданий
             foreach (int lab in bigLabs)
             {
                 if (activeUser.SelectedLab == lab)
@@ -17228,6 +17237,7 @@ namespace Interface_1._0
                     isAverageLab = false;
                 }
             }
+            //Если в лабе 4 задания
             foreach (int lab in smalLabs)
             {
                 if (activeUser.SelectedLab == lab)
@@ -17245,6 +17255,7 @@ namespace Interface_1._0
                     isAverageLab = false;
                 }
             }
+            //Если в лабе 5 заданий
             if (isAverageLab)
             {
                 task_6.Visibility = Visibility.Hidden;
@@ -17259,24 +17270,29 @@ namespace Interface_1._0
                 if (LabsZone2 != null) LabsZone2.Margin = new Thickness(0, 310, 60, 0);
             }
         }
+        //Анимация - отжатие кнопки
         private void Button_right_sidebar_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush_right_side_bar_2");
             ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush_right_side_bar_in");
 
         }
+        //Анимация - вхождение в кнопку мышкой
         private void Button_right_sidebar_Enter(object sender, RoutedEventArgs e)
         {
             ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush_right_side_bar_in");
         }
+        //Анимация - выход из зоны кнопки
         private void Button_right_sidebar_Leave(object sender, RoutedEventArgs e)
         {
             ((Label)sender).Background = (Brush)Application.Current.MainWindow.FindResource("ButtonBrush_right_side_bar_2");
         }
-
+        //Метод для поддержания в активном режиме только одного чекбокса из группы
         private void Checked(object sender, RoutedEventArgs e)
         {
+            //Костыль для странного бага при запуске приложения
             if (TermZone == null) return;
+            //Логика для группы чекбоксов "Семестр"
             if ((((CheckBox)sender).Name == "Term_1")&&(TermZone.Visibility == Visibility.Visible))
             {
                 if (((CheckBox)sender).IsChecked == true)
@@ -17303,12 +17319,15 @@ namespace Interface_1._0
                     activeUser.SelectedTerm = 1;
                 }
             }
-
+            //Логика для группы чекбоксов "Лабораторные"
             if ((((CheckBox)sender).Name[1] == '1')&&(!isCHBWorking))
             {
+                //Булевая переменная, необходимая для невозможности самовызова метода
                 isCHBWorking = true;
+                //Если выбранный чекбокс был неактивный 
                 if (((CheckBox)sender).IsChecked == true)
                 {
+                    //Сохранение номера выбранной лабораторной (данные берутся в названии чекбокса)
                     if (((CheckBox)sender).Name.Length == 6)
                     {
                         activeUser.SelectedLab = Convert.ToInt32(Convert.ToString(((CheckBox)sender).Name[5]));
@@ -17326,6 +17345,9 @@ namespace Interface_1._0
                     }
                     
                 }
+                //Если выбранный чекбокс был активный
+                //По умолчанию активным становится первый чекбокс
+                //Если выбран он, то второй
                 else
                 {
                     if (((CheckBox)sender).Name == "L1CHB1")
@@ -17341,8 +17363,10 @@ namespace Interface_1._0
                     }
                 }
                 isCHBWorking = false;
+                //В лабах разное кол-во заданий, поэтому вызывается метод для контроля их отображения
                 Task_visibility_controller(activeUser.SelectedLab);
             }
+            //Для второй панели с лабами логика та же
             if ((((CheckBox)sender).Name[1] == '2')&&(!isCHBWorking))
             {
                 isCHBWorking = true;
@@ -17382,12 +17406,12 @@ namespace Interface_1._0
                     }
                 }
                 isCHBWorking = false;
-
+                Task_visibility_controller(activeUser.SelectedLab);
 
             }
 
         }
-
+        //Закрытие панелей при выходе за их границу
         private void TermZone_MouseLeave(object sender, MouseEventArgs e)
         {
             TermZone.Visibility = Visibility.Hidden;
@@ -17399,38 +17423,48 @@ namespace Interface_1._0
         }
 
         
-
+        //Открытие окна для входа в аккаунт\регистрации
         private void LoginWindow_Open(object sender, MouseButtonEventArgs e)
         {
+            //Прячем основное окно
             this.Visibility = Visibility.Hidden;
             LogInWindow log = new LogInWindow();
             log.ShowDialog();
+            //Вновь открываем его
             this.Visibility = Visibility.Visible;
+            //Нахождение вбитого пользователя
             activeUser = AllUsers.FindMarkedUser();
+            //При нахождении вписываем его ФИО в правый верхний угол и даем доступ к правому сайдбару
             if (activeUser != null)
             {
                 Login_label.Content = activeUser.Name;
                 ShowRightSideBar();
             }
+            //Иначе возвращаемся к  значениям по умолчанию
             else
             {
                 Login_label.Content = "Войти...";
                 HideRightSideBar();
             }
         }
-
+        //Метод для открытия картинок с заданиями
         private void Open_task(object sender, RoutedEventArgs e)
         {
+            //Определяем выбранное задание исходя из имени кнопки-отправителя
             activeUser.SelectedTask = Convert.ToInt32(Convert.ToUInt32(Convert.ToString(((Button)sender).Name[5])));
+            //Показываем задание
             picture task = new picture();
             task.Show();
         }
-
+        //Сохранение блок-схемы по определенному заданию
         private void save_Click(object sender, RoutedEventArgs e)
         {
+            //Определяем выбранное задание исходя из имени кнопки-отправителя
             activeUser.SelectedTask = Convert.ToInt32(((Button)sender).Name[5]);
+            //Создаем копию необходимой диаграммы и шифруем необходимые для работы данные в имени
             Diagramm RSB_diagram = diagramm.Clone();
             RSB_diagram.Name = activeUser.SelectedTerm + "_" + activeUser.SelectedLab + "_" + activeUser.SelectedTask + "_" + activeUser.Option;
+            //Удаляем старую блок-схему для этого задания
             foreach (Diagramm d in activeUser.Saves)
             {
                 if (d.Name == RSB_diagram.Name)
@@ -17439,17 +17473,22 @@ namespace Interface_1._0
                     break;
                 }
             }
+            //Сохраняем новую блок-схему
             activeUser.Saves.Add(RSB_diagram);
         }
+        //Загрузка блок-схемы по определенному заданию
         private void load_Click(object sender, RoutedEventArgs e)
         {
+            //Определяем выбранное задание исходя из имени кнопки-отправителя
             activeUser.SelectedTask = Convert.ToInt32(((Button)sender).Name[5]);
+            //Определяем имя необходимой для загрузки диаграммы
             string nameOfDiagramm = activeUser.SelectedTerm + "_" + activeUser.SelectedLab + "_" + activeUser.SelectedTask + "_" + activeUser.Option;
-
+            //Находим диаграмму
             foreach (Diagramm d in activeUser.Saves)
             {
                 if (d.Name == nameOfDiagramm)
                 {
+                    //При нахождении - загружаем и настраиваем работу функции PrevNext
                     Right_Sidebar_DownLoad(d);
                     DiagrammAnalyzer.isChanged = false;
                     PrevNext.Clear();
@@ -17458,6 +17497,7 @@ namespace Interface_1._0
             }
         }
         #endregion
+        
     }
 }
 

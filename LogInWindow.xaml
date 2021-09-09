@@ -14,6 +14,7 @@
         <ImageBrush ImageSource="Resources/backgroundForLogIn.png" x:Name="Task"></ImageBrush>
     </Window.Background>
     <Grid>
+        
         <DockPanel 
                        Grid.Row="0"
                        MouseLeftButtonDown="Mouse_Drag_Window" Name="RHDP"

@@ -74,6 +74,9 @@
     <Compile Include="Additional Gears\connection_line.cs" />
     <Compile Include="Additional Gears\TextIntoShapes.cs" />
     <Compile Include="Additional Gears\UndefiendLine.cs" />
+    <Compile Include="Help.xaml.cs">
+      <DependentUpon>Help.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LogInWindow.xaml.cs">
       <DependentUpon>LogInWindow.xaml</DependentUpon>
     </Compile>
@@ -95,11 +98,12 @@
     <Compile Include="Shapes\Rhomb_Shape.cs" />
     <Compile Include="Shapes\RP_Shape.cs" />
     <Compile Include="Shapes\ShapeInfo.cs" />
-    <Compile Include="tasks.xaml.cs">
-      <DependentUpon>tasks.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Videlyashka\ExcretorySquare.cs" />
     <Compile Include="Videlyashka\RememberUIElements.cs" />
+    <Page Include="Help.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LogInWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -124,10 +128,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SaveWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="tasks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
