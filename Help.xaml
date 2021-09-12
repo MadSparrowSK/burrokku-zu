@@ -9,7 +9,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        Title="Помощь" Height="307" Width="570">
+        Title="Помощь" Height="307" Width="568">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -117,7 +117,7 @@
                 <Polyline Style="{StaticResource PolylineInHelpWindow}" />
 
             </StackPanel>
-            <Polyline Style="{StaticResource PolylineInHelpWindow}" Points="0,0 0,277" StrokeThickness="4"></Polyline>
+            <Polyline Style="{StaticResource PolylineInHelpWindow}" Points="0,0 0,277" StrokeThickness="2"></Polyline>
             <StackPanel Orientation="Vertical" Width="464">
                 <TextBlock FontSize="14" Margin="3,5,0,3" Text="Отображает выход во внешнюю среду и вход из внешней среды "/>
                 <TextBlock FontSize="14" Margin="3,0,0,0"  Text="(начало или конец схемы программы, алгоритма)."/>
@@ -133,7 +133,7 @@
                 <TextBlock FontSize="14" Margin="3,0,0,0"  Text="воздействия на некоторую последующую функцию."/>
                 <Polyline Style="{StaticResource PolylineInHelpWindow}" StrokeThickness="4" Margin="0,1,0,0" Points="0,0 700,0"/>
             </StackPanel>
-            <Polyline Style="{StaticResource PolylineInHelpWindow}" Points="0,0 0,277" StrokeThickness="4"></Polyline>
+            <Polyline Style="{StaticResource PolylineInHelpWindow}" Points="0,0 0,277" StrokeThickness="2"></Polyline>
         </DockPanel>
     </Grid>
 </Window>

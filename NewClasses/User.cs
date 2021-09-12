@@ -46,7 +46,8 @@ namespace Interface_1._0
         public List<Diagramm> Saves { get; set;}
         public User()
         {
-
+            SelectedTerm = 1;
+            SelectedLab = 1;
         }
 
         public User(string name, string password, int option, List<Diagramm> saves)

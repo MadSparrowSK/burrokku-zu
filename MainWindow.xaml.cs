@@ -22,8 +22,12 @@ namespace Interface_1._0
     public partial class MainWindow : Window
     {
         static private User activeUser = new User();
-        static private int[] bigLabs = new int[] {2, 3, 6, 7, 13 };
-        static private int[] smalLabs = new int[] { 11 };
+        static private int[] bigLabs_sem1 = new int[] {2, 3, 6, 7, 13 };
+        static private int[] smalLabs_sem1 = new int[] { 11 };
+        static private int[] bigLabs_sem2 = new int[] { 6 };
+        static private int[] smalLabs_sem2 = new int[] { 4, 5 };
+        static private int[] OneLab_sem2 = new int[] { 9, 11 };
+        static private int[] ThreeLabs_sem2 = new int[] { 12, 1};
         static readonly Rectangle workArea = new Rectangle();
         static readonly Polyline bottomArray = new Polyline();
         static readonly Polyline topArray = new Polyline();
@@ -51,9 +55,10 @@ namespace Interface_1._0
         {
             
             InitializeComponent();
+            DeserializedUsersData();
             Init();
             CreateLists();
-            DeserializedUsersData();
+            
 
             if (activeUser.Name == null) HideRightSideBar();
         }
@@ -70,11 +75,12 @@ namespace Interface_1._0
                 {
                     DataForSavingUsers data = (DataForSavingUsers)formatter.Deserialize(fs);
                     activeUser = data.MarkedUser;
+                    activeUser.Mark = true;
                     AllUsers.Users = data.Users;
                 }
                 catch (Exception)
                 {
-
+                    //Если ошибка, то ничего не происходит
                 }
                 
             }
@@ -17217,57 +17223,226 @@ namespace Interface_1._0
         //Метод, регулирующий отображение кнопок с заданиями в зависимости от выбранной лабораторной
         private void Task_visibility_controller(int selectedLab)
         {
-            bool isAverageLab = true;
-            //Если в лабе 6 заданий
-            foreach (int lab in bigLabs)
+            if (activeUser.SelectedTerm == 1)
             {
-                if (activeUser.SelectedLab == lab)
-                {
 
-                    task_5.Visibility = Visibility.Visible;
-                    save_5.Visibility = Visibility.Visible;
-                    load_5.Visibility = Visibility.Visible;
-                    task_6.Visibility = Visibility.Visible;
-                    save_6.Visibility = Visibility.Visible;
-                    load_6.Visibility = Visibility.Visible;
-                    SP3.Margin = new Thickness(0, 0, 0, 0);
-                    TermZone.Margin = new Thickness(0, 355, 11, 0);
-                    LabsZone1.Margin = new Thickness(0, 355, 60, 0);
-                    LabsZone2.Margin = new Thickness(0, 355, 60, 0);
-                    isAverageLab = false;
+                bool isAverageLab = true;
+                //Если в лабе 6 заданий
+                foreach (int lab in bigLabs_sem1)
+                {
+                    if (activeUser.SelectedLab == lab)
+                    {
+
+                        task_5.Visibility = Visibility.Visible;
+                        save_5.Visibility = Visibility.Visible;
+                        load_5.Visibility = Visibility.Visible;
+                        task_6.Visibility = Visibility.Visible;
+                        save_6.Visibility = Visibility.Visible;
+                        load_6.Visibility = Visibility.Visible;
+                        task_4.Visibility = Visibility.Visible;
+                        save_4.Visibility = Visibility.Visible;
+                        load_4.Visibility = Visibility.Visible;
+                        task_3.Visibility = Visibility.Visible;
+                        save_3.Visibility = Visibility.Visible;
+                        load_3.Visibility = Visibility.Visible;
+                        task_2.Visibility = Visibility.Visible;
+                        save_2.Visibility = Visibility.Visible;
+                        load_2.Visibility = Visibility.Visible;
+                        SP3.Margin = new Thickness(0, 0, 0, 0);
+                        TermZone.Margin = new Thickness(0, 355, 11, 0);
+                        LabsZone1.Margin = new Thickness(0, 355, 60, 0);
+                        LabsZone2.Margin = new Thickness(0, 355, 60, 0);
+                        isAverageLab = false;
+                    }
                 }
-            }
-            //Если в лабе 4 задания
-            foreach (int lab in smalLabs)
-            {
-                if (activeUser.SelectedLab == lab)
+                //Если в лабе 4 задания
+                foreach (int lab in smalLabs_sem1)
+                {
+                    if (activeUser.SelectedLab == lab)
+                    {
+                        task_6.Visibility = Visibility.Hidden;
+                        save_6.Visibility = Visibility.Hidden;
+                        load_6.Visibility = Visibility.Hidden;
+                        task_5.Visibility = Visibility.Hidden;
+                        save_5.Visibility = Visibility.Hidden;
+                        load_5.Visibility = Visibility.Hidden;
+                        task_4.Visibility = Visibility.Visible;
+                        save_4.Visibility = Visibility.Visible;
+                        load_4.Visibility = Visibility.Visible;
+                        task_3.Visibility = Visibility.Visible;
+                        save_3.Visibility = Visibility.Visible;
+                        load_3.Visibility = Visibility.Visible;
+                        task_2.Visibility = Visibility.Visible;
+                        save_2.Visibility = Visibility.Visible;
+                        load_2.Visibility = Visibility.Visible;
+                        SP3.Margin = new Thickness(0, -150, 0, 0);
+                        TermZone.Margin = new Thickness(0, 265, 11, 0);
+                        LabsZone1.Margin = new Thickness(0, 265, 60, 0);
+                        LabsZone2.Margin = new Thickness(0, 270, 60, 0);
+                        isAverageLab = false;
+                    }
+                }
+                //Если в лабе 5 заданий
+                if (isAverageLab)
                 {
                     task_6.Visibility = Visibility.Hidden;
                     save_6.Visibility = Visibility.Hidden;
                     load_6.Visibility = Visibility.Hidden;
-                    task_5.Visibility = Visibility.Hidden;
-                    save_5.Visibility = Visibility.Hidden;
-                    load_5.Visibility = Visibility.Hidden;
-                    SP3.Margin = new Thickness(0, -150, 0, 0);
-                    TermZone.Margin = new Thickness(0, 265, 11, 0);
-                    LabsZone1.Margin = new Thickness(0, 265, 60, 0);
-                    LabsZone2.Margin = new Thickness(0, 270, 60, 0);
-                    isAverageLab = false;
+                    task_5.Visibility = Visibility.Visible;
+                    save_5.Visibility = Visibility.Visible;
+                    load_5.Visibility = Visibility.Visible;
+                    task_4.Visibility = Visibility.Visible;
+                    save_4.Visibility = Visibility.Visible;
+                    load_4.Visibility = Visibility.Visible;
+                    task_3.Visibility = Visibility.Visible;
+                    save_3.Visibility = Visibility.Visible;
+                    load_3.Visibility = Visibility.Visible;
+                    task_2.Visibility = Visibility.Visible;
+                    save_2.Visibility = Visibility.Visible;
+                    load_2.Visibility = Visibility.Visible;
+                    SP3.Margin = new Thickness(0, -60, 0, 0);
+                    TermZone.Margin = new Thickness(0, 310, 11, 0);
+                    if (LabsZone1 != null) LabsZone1.Margin = new Thickness(0, 310, 60, 0);
+                    if (LabsZone2 != null) LabsZone2.Margin = new Thickness(0, 310, 60, 0);
                 }
             }
-            //Если в лабе 5 заданий
-            if (isAverageLab)
+            if (activeUser.SelectedTerm == 2)
             {
-                task_6.Visibility = Visibility.Hidden;
-                save_6.Visibility = Visibility.Hidden;
-                load_6.Visibility = Visibility.Hidden;
-                task_5.Visibility = Visibility.Visible;
-                save_5.Visibility = Visibility.Visible;
-                load_5.Visibility = Visibility.Visible;
-                SP3.Margin = new Thickness(0, -60, 0, 0);
-                TermZone.Margin = new Thickness(0, 310, 11, 0);
-                if (LabsZone1 != null) LabsZone1.Margin = new Thickness(0, 310, 60, 0);
-                if (LabsZone2 != null) LabsZone2.Margin = new Thickness(0, 310, 60, 0);
+
+                bool isAverageLab = true;
+                //Если в лабе 6 заданий
+                foreach (int lab in bigLabs_sem2)
+                {
+                    if (activeUser.SelectedLab == lab)
+                    {
+
+                        task_5.Visibility = Visibility.Visible;
+                        save_5.Visibility = Visibility.Visible;
+                        load_5.Visibility = Visibility.Visible;
+                        task_6.Visibility = Visibility.Visible;
+                        save_6.Visibility = Visibility.Visible;
+                        load_6.Visibility = Visibility.Visible;
+                        task_4.Visibility = Visibility.Visible;
+                        save_4.Visibility = Visibility.Visible;
+                        load_4.Visibility = Visibility.Visible;
+                        task_3.Visibility = Visibility.Visible;
+                        save_3.Visibility = Visibility.Visible;
+                        load_3.Visibility = Visibility.Visible;
+                        task_2.Visibility = Visibility.Visible;
+                        save_2.Visibility = Visibility.Visible;
+                        load_2.Visibility = Visibility.Visible;
+                        SP3.Margin = new Thickness(0, 0, 0, 0);
+                        TermZone.Margin = new Thickness(0, 355, 11, 0);
+                        LabsZone1.Margin = new Thickness(0, 355, 60, 0);
+                        LabsZone2.Margin = new Thickness(0, 355, 60, 0);
+                        isAverageLab = false;
+                    }
+                }
+                //Если в лабе 4 задания
+                foreach (int lab in smalLabs_sem2)
+                {
+                    if (activeUser.SelectedLab == lab)
+                    {
+                        task_6.Visibility = Visibility.Hidden;
+                        save_6.Visibility = Visibility.Hidden;
+                        load_6.Visibility = Visibility.Hidden;
+                        task_5.Visibility = Visibility.Hidden;
+                        save_5.Visibility = Visibility.Hidden;
+                        load_5.Visibility = Visibility.Hidden;
+                        task_4.Visibility = Visibility.Visible;
+                        save_4.Visibility = Visibility.Visible;
+                        load_4.Visibility = Visibility.Visible;
+                        task_3.Visibility = Visibility.Visible;
+                        save_3.Visibility = Visibility.Visible;
+                        load_3.Visibility = Visibility.Visible;
+                        task_2.Visibility = Visibility.Visible;
+                        save_2.Visibility = Visibility.Visible;
+                        load_2.Visibility = Visibility.Visible;
+                        SP3.Margin = new Thickness(0, -150, 0, 0);
+                        TermZone.Margin = new Thickness(0, 265, 11, 0);
+                        LabsZone1.Margin = new Thickness(0, 265, 60, 0);
+                        LabsZone2.Margin = new Thickness(0, 270, 60, 0);
+                        isAverageLab = false;
+                    }
+                }
+                //Если в лабе 3 задания
+                foreach (int lab in ThreeLabs_sem2)
+                {
+                    if (activeUser.SelectedLab == lab)
+                    {
+                        task_6.Visibility = Visibility.Hidden;
+                        save_6.Visibility = Visibility.Hidden;
+                        load_6.Visibility = Visibility.Hidden;
+                        task_5.Visibility = Visibility.Hidden;
+                        save_5.Visibility = Visibility.Hidden;
+                        load_5.Visibility = Visibility.Hidden;
+                        task_4.Visibility = Visibility.Hidden;
+                        save_4.Visibility = Visibility.Hidden;
+                        load_4.Visibility = Visibility.Hidden;
+                        task_3.Visibility = Visibility.Visible;
+                        save_3.Visibility = Visibility.Visible;
+                        load_3.Visibility = Visibility.Visible;
+                        task_2.Visibility = Visibility.Visible;
+                        save_2.Visibility = Visibility.Visible;
+                        load_2.Visibility = Visibility.Visible;
+                        SP3.Margin = new Thickness(0, -240, 0, 0);
+                        TermZone.Margin = new Thickness(0, 220, 11, 0);
+                        LabsZone1.Margin = new Thickness(0, 220, 60, 0);
+                        LabsZone2.Margin = new Thickness(0, 220, 60, 0);
+                        isAverageLab = false;
+                    }
+                }
+                //Если в лабе одно задание
+                foreach (int lab in OneLab_sem2)
+                {
+                    if (activeUser.SelectedLab == lab)
+                    {
+                        task_6.Visibility = Visibility.Hidden;
+                        save_6.Visibility = Visibility.Hidden;
+                        load_6.Visibility = Visibility.Hidden;
+                        task_5.Visibility = Visibility.Hidden;
+                        save_5.Visibility = Visibility.Hidden;
+                        load_5.Visibility = Visibility.Hidden;
+                        task_4.Visibility = Visibility.Hidden;
+                        save_4.Visibility = Visibility.Hidden;
+                        load_4.Visibility = Visibility.Hidden;
+                        task_3.Visibility = Visibility.Hidden;
+                        save_3.Visibility = Visibility.Hidden;
+                        load_3.Visibility = Visibility.Hidden;
+                        task_2.Visibility = Visibility.Hidden;
+                        save_2.Visibility = Visibility.Hidden;
+                        load_2.Visibility = Visibility.Hidden;
+
+                        SP3.Margin = new Thickness(0, -420, 0, 0);
+                        TermZone.Margin = new Thickness(0, 130, 11, 0);
+                        LabsZone1.Margin = new Thickness(0, 130, 60, 0);
+                        LabsZone2.Margin = new Thickness(0, 130, 60, 0);
+                        isAverageLab = false;
+                    }
+                }
+                //Если в лабе 5 заданий
+                if (isAverageLab)
+                {
+                    task_6.Visibility = Visibility.Hidden;
+                    save_6.Visibility = Visibility.Hidden;
+                    load_6.Visibility = Visibility.Hidden;
+                    task_5.Visibility = Visibility.Visible;
+                    save_5.Visibility = Visibility.Visible;
+                    load_5.Visibility = Visibility.Visible;
+                    task_4.Visibility = Visibility.Visible;
+                    save_4.Visibility = Visibility.Visible;
+                    load_4.Visibility = Visibility.Visible;
+                    task_3.Visibility = Visibility.Visible;
+                    save_3.Visibility = Visibility.Visible;
+                    load_3.Visibility = Visibility.Visible;
+                    task_2.Visibility = Visibility.Visible;
+                    save_2.Visibility = Visibility.Visible;
+                    load_2.Visibility = Visibility.Visible;
+                    SP3.Margin = new Thickness(0, -60, 0, 0);
+                    TermZone.Margin = new Thickness(0, 310, 11, 0);
+                    if (LabsZone1 != null) LabsZone1.Margin = new Thickness(0, 310, 60, 0);
+                    if (LabsZone2 != null) LabsZone2.Margin = new Thickness(0, 310, 60, 0);
+                }
             }
         }
         //Анимация - отжатие кнопки
@@ -17299,11 +17474,13 @@ namespace Interface_1._0
                 {
                     Term_2.IsChecked = false;
                     activeUser.SelectedTerm = 1;
+                    Task_visibility_controller(activeUser.SelectedLab);
                 }
                 else
                 {
                     Term_2.IsChecked = true;
                     activeUser.SelectedTerm = 2;
+                    Task_visibility_controller(activeUser.SelectedLab);
                 }
             }
             if (((CheckBox)sender).Name == "Term_2")

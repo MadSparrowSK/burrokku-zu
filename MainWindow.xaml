@@ -510,7 +510,7 @@
                 </StackPanel>
 
             </Grid>
-            <Grid Name="LabsZone1" Background="#FFB9B3BF"  Height="230" Width="145" Margin="0,310,60,0"
+            <Grid Name="LabsZone1" Background="#FFB9B3BF"  Height="230" Width="145" Margin="0,355,60,0"
                   Grid.Row="1" Grid.Column="2" 
                   VerticalAlignment="Top"
                   HorizontalAlignment="Right"
