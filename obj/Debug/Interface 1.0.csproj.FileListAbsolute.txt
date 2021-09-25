@@ -66,3 +66,40 @@ C:\Программирование\проекты\Project_block_diagram\Burrokk
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\LogInWindow.baml
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Help.g.cs
 C:\Программирование\проекты\Project_block_diagram\Burrokku-zu\obj\Debug\Help.baml
+E:\Projects\Burrokku-zu\bin\Debug\Interface 1.0.exe.config
+E:\Projects\Burrokku-zu\bin\Debug\Interface 1.0.exe
+E:\Projects\Burrokku-zu\bin\Debug\Interface 1.0.pdb
+E:\Projects\Burrokku-zu\bin\Debug\Newtonsoft.Json.dll
+E:\Projects\Burrokku-zu\bin\Debug\System.Buffers.dll
+E:\Projects\Burrokku-zu\bin\Debug\System.Memory.dll
+E:\Projects\Burrokku-zu\bin\Debug\System.Numerics.Vectors.dll
+E:\Projects\Burrokku-zu\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+E:\Projects\Burrokku-zu\bin\Debug\System.Text.Encodings.Web.dll
+E:\Projects\Burrokku-zu\bin\Debug\System.Threading.Tasks.Extensions.dll
+E:\Projects\Burrokku-zu\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+E:\Projects\Burrokku-zu\bin\Debug\System.Buffers.xml
+E:\Projects\Burrokku-zu\bin\Debug\System.Memory.xml
+E:\Projects\Burrokku-zu\bin\Debug\System.Numerics.Vectors.xml
+E:\Projects\Burrokku-zu\obj\Debug\Interface 1.0.csprojAssemblyReference.cache
+E:\Projects\Burrokku-zu\obj\Debug\Interface 1.0.exe.config
+E:\Projects\Burrokku-zu\obj\Debug\Help.g.cs
+E:\Projects\Burrokku-zu\obj\Debug\LogInWindow.g.cs
+E:\Projects\Burrokku-zu\obj\Debug\MainWindow.g.cs
+E:\Projects\Burrokku-zu\obj\Debug\picture.g.cs
+E:\Projects\Burrokku-zu\obj\Debug\SaveWindow.g.cs
+E:\Projects\Burrokku-zu\obj\Debug\App.g.cs
+E:\Projects\Burrokku-zu\obj\Debug\Interface 1.0_MarkupCompile.cache
+E:\Projects\Burrokku-zu\obj\Debug\Interface 1.0_MarkupCompile.lref
+E:\Projects\Burrokku-zu\obj\Debug\App.baml
+E:\Projects\Burrokku-zu\obj\Debug\Help.baml
+E:\Projects\Burrokku-zu\obj\Debug\LogInWindow.baml
+E:\Projects\Burrokku-zu\obj\Debug\MainWindow.baml
+E:\Projects\Burrokku-zu\obj\Debug\picture.baml
+E:\Projects\Burrokku-zu\obj\Debug\SaveWindow.baml
+E:\Projects\Burrokku-zu\obj\Debug\Interface 1.0.g.resources
+E:\Projects\Burrokku-zu\obj\Debug\Interface_1._0.Properties.Resources.resources
+E:\Projects\Burrokku-zu\obj\Debug\Interface 1.0.csproj.GenerateResource.cache
+E:\Projects\Burrokku-zu\obj\Debug\Interface 1.0.csproj.CoreCompileInputs.cache
+E:\Projects\Burrokku-zu\obj\Debug\Interface 1.0.csproj.CopyComplete
+E:\Projects\Burrokku-zu\obj\Debug\Interface 1.0.exe
+E:\Projects\Burrokku-zu\obj\Debug\Interface 1.0.pdb
