@@ -58,13 +58,9 @@ namespace Interface_1._0
             DeserializedUsersData();
             Init();
             CreateLists();
+            
 
-            this.Activated += windowActivated;
-        }
-
-        private void windowActivated(object sender, EventArgs e)
-        {
-            if (activeUser == null) HideRightSideBar();
+            if (activeUser.Name == null) HideRightSideBar();
         }
 
         void DeserializedUsersData()
@@ -73,16 +69,13 @@ namespace Interface_1._0
             BinaryFormatter formatter = new BinaryFormatter();
             // десериализация из файла с данными о пользователях
 
-            using (FileStream fs = new FileStream("Data.dat", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream("Data.dat", FileMode.Open))
             {
                 try
                 {
                     DataForSavingUsers data = (DataForSavingUsers)formatter.Deserialize(fs);
                     activeUser = data.MarkedUser;
-                    if (activeUser != null)
-                    {
-                        activeUser.Mark = true;
-                    }
+                    activeUser.Mark = true;
                     AllUsers.Users = data.Users;
                 }
                 catch (Exception)
