@@ -35,11 +35,40 @@ namespace Interface_1._0
             }
             catch (Exception)
             {
-                this.Title = "Ошибка!";
-                Task.ImageSource = null;
-                this.Background = new SolidColorBrush(Colors.White);
-                this.Height = 150;
-                this.Width = 400;
+                try
+                {
+                    User activeUser = AllUsers.FindMarkedUser();
+                    string path = "/tasks/" + activeUser.SelectedTerm + "_" + activeUser.SelectedLab + "_" + activeUser.SelectedTask + "_" + activeUser.Option + ".PNG";
+                    BitmapImage bitmapImage = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
+                    Task.ImageSource = bitmapImage;
+                    this.Height = bitmapImage.Height + 50;
+                    this.Width = bitmapImage.Width;
+                    this.Title = "Задание №" + activeUser.SelectedTask;
+                }
+                catch (Exception)
+                {
+                    try
+                    {
+                        User activeUser = AllUsers.FindMarkedUser();
+                        string path = "tasks/" + activeUser.SelectedTerm + "_" + activeUser.SelectedLab + "_" + activeUser.SelectedTask + "_" + activeUser.Option + ".PNG";
+                        BitmapImage bitmapImage = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
+                        Task.ImageSource = bitmapImage;
+                        this.Height = bitmapImage.Height + 50;
+                        this.Width = bitmapImage.Width;
+                        this.Title = "Задание №" + activeUser.SelectedTask;
+                    }
+                    catch (Exception)
+                    {
+
+                        this.Title = "Ошибка!";
+                        Task.ImageSource = null;
+                        this.Background = new SolidColorBrush(Colors.White);
+                        this.Height = 150;
+                        this.Width = 400;
+                    }
+                    
+                }
+                
             }
 
             
