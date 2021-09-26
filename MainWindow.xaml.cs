@@ -58,9 +58,13 @@ namespace Interface_1._0
             DeserializedUsersData();
             Init();
             CreateLists();
-            
 
-            if (activeUser.Name == null) HideRightSideBar();
+            this.Activated += windowActivated;
+        }
+
+        private void windowActivated(object sender, EventArgs e)
+        {
+            if (activeUser == null) HideRightSideBar();
         }
 
         void DeserializedUsersData()
@@ -69,13 +73,16 @@ namespace Interface_1._0
             BinaryFormatter formatter = new BinaryFormatter();
             // десериализация из файла с данными о пользователях
 
-            using (FileStream fs = new FileStream("Data.dat", FileMode.Open))
+            using (FileStream fs = new FileStream("Data.dat", FileMode.OpenOrCreate))
             {
                 try
                 {
                     DataForSavingUsers data = (DataForSavingUsers)formatter.Deserialize(fs);
                     activeUser = data.MarkedUser;
-                    activeUser.Mark = true;
+                    if (activeUser != null)
+                    {
+                        activeUser.Mark = true;
+                    }
                     AllUsers.Users = data.Users;
                 }
                 catch (Exception)
@@ -1217,7 +1224,13 @@ namespace Interface_1._0
         }
         void LogicOf90LineBuild(Shape shape, Ellipse ellFrom, Ellipse ellTo, Line line)
         {
-
+            // use this to save line points. Go to the end of this method to save.
+            Line _1 = null;
+            Line _2 = null;
+            Line _3 = null;
+            Line _4 = null;
+            Line _5 = null;
+            
             if (!DiagrammAnalyzer.isPrevNext)
             {
                 diagramm.Lines.Add(new DataForSavingLine(new Point() { X = line.X1, Y = line.Y1 }, new Point() { X = line.X2, Y = line.Y2 }, ellFrom.Name, ellTo.Name, DiagrammAnalyzer.linesCounter));
@@ -1227,7 +1240,7 @@ namespace Interface_1._0
             if (CanvasPos.Children.IsSynchronized) Console.WriteLine(2);
             
             HideLines(line);
-
+    
             Shape fromGone = shape;
             Shape toGone = null;
             if (IsLoaded) toGone = GetShapeInCanvas(GetNameOfShape(ellTo.Name));
@@ -1304,18 +1317,21 @@ namespace Interface_1._0
                             Line lineThree = CreateLine(new Point() { X = lineTwo.X2, Y = lineTwo.Y2 }, new Point() { X = Canvas.GetLeft(ellTo) + 30, Y = lineTwo.Y2 }, ellFrom, ellTo);
                             
                             Line lineFour = CreateLine(new Point() { X = lineThree.X2, Y = lineThree.Y2 }, new Point() { X = lineThree.X2, Y = Canvas.GetTop(ellTo) }, ellFrom, ellTo);
-                            
-
 
                             Line lineFive = CreateLine(new Point() { X = lineFour.X2, Y = lineFour.Y2 }, new Point() { X = Canvas.GetLeft(ellTo), Y = Canvas.GetTop(ellTo) }, ellFrom, ellTo);
                             
-
                             Polyline arrTwo = new Polyline()
                             { Stroke = Brushes.Yellow, Points = leftArray.Points, StrokeThickness = 1.5 };
                             CanvasPos.Children.Add(arrTwo);
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineFive.X1 - lineFive.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = lineFour;
+                            _5 = lineFive;
                         }
                         else
                         {
@@ -1364,6 +1380,11 @@ namespace Interface_1._0
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = _5 = null;
                         }
                     }
 
@@ -1435,6 +1456,12 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineFive.X1 - lineFive.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = lineFour;
+                        _5 = lineFive;
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -1485,6 +1512,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone) 
@@ -1534,6 +1566,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                 }
@@ -1614,6 +1651,12 @@ namespace Interface_1._0
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineFive.X1 - lineFive.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = lineFour;
+                            _5 = lineFive;
                         }
                         else
                         {
@@ -1679,6 +1722,12 @@ namespace Interface_1._0
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineFive.X1 - lineFive.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                            
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = lineFour;
+                            _5 = lineFive;
                         }
                     }
 
@@ -1751,6 +1800,12 @@ namespace Interface_1._0
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineFive.X1 - lineFive.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                            
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = lineFour;
+                            _5 = lineFive;
                         }
                         else
                         {
@@ -1796,6 +1851,11 @@ namespace Interface_1._0
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                            
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = _5 = null;
                         }
                     }
 
@@ -1846,6 +1906,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -1896,6 +1961,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
                 }
 
@@ -1951,6 +2021,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
@@ -2000,6 +2075,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -2057,7 +2137,11 @@ namespace Interface_1._0
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                         }
-
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                         
                     }
 
@@ -2109,6 +2193,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                 }
@@ -2167,6 +2256,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
@@ -2236,6 +2330,12 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineFive.X1 - lineFive.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = lineFour;
+                        _5 = lineFive;
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -2285,6 +2385,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -2334,6 +2439,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
                 }
             }
@@ -2415,6 +2525,12 @@ namespace Interface_1._0
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineFive.X1 - lineFive.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                            
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = lineFour;
+                            _5 = lineFive;
                         }
                         else
                         {
@@ -2460,6 +2576,11 @@ namespace Interface_1._0
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                            
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = _5 = null;
                         }
                     }
 
@@ -2532,6 +2653,12 @@ namespace Interface_1._0
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineFive.X1 - lineFive.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                            
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = lineFour;
+                            _5 = lineFive;
                         }
                         else
                         {
@@ -2597,6 +2724,12 @@ namespace Interface_1._0
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineFive.X1 - lineFive.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                            
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = lineFour;
+                            _5 = lineFive;
                         }
                     }
 
@@ -2657,7 +2790,11 @@ namespace Interface_1._0
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                         }
 
-                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
+
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -2716,6 +2853,11 @@ namespace Interface_1._0
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                         }
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                 }
@@ -2793,6 +2935,12 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineFive.X1 - lineFive.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = lineFour;
+                        _5 = lineFive;
                     }
 
                     if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
@@ -2863,6 +3011,12 @@ namespace Interface_1._0
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineFive.X1 - lineFive.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                            
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = lineFour;
+                            _5 = lineFive;
                         }
                         else
                         {
@@ -2909,6 +3063,11 @@ namespace Interface_1._0
 
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                            
+                            _1 = lineOne;
+                            _2 = lineTwo;
+                            _3 = lineThree;
+                            _4 = _5 = null;
                         }
                     }
 
@@ -2968,6 +3127,11 @@ namespace Interface_1._0
                             Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                             Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
                         }
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -3017,6 +3181,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
                 }
 
@@ -3072,6 +3241,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
@@ -3121,6 +3295,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -3170,6 +3349,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -3219,6 +3403,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
                 }
 
@@ -3276,6 +3465,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) < Canvas.GetLeft(toGone)
@@ -3325,6 +3519,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -3375,6 +3574,11 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) + Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
 
                     if (Canvas.GetLeft(ellTo) > Canvas.GetLeft(toGone)
@@ -3424,8 +3628,22 @@ namespace Interface_1._0
 
                         Canvas.SetLeft(arrTwo, Canvas.GetLeft(ellTo) - Math.Abs(lineThree.X1 - lineThree.X2) / 2);
                         Canvas.SetTop(arrTwo, Canvas.GetTop(ellTo) - 5);
+                        
+                        _1 = lineOne;
+                        _2 = lineTwo;
+                        _3 = lineThree;
+                        _4 = _5 = null;
                     }
                 }
+                
+                // hello, below this comment save data
+                // P.S. Before save check _4 & _5 on null 
+
+                if(_4 == null && _5 == null) {
+                    //save _1 & _2 & _3
+                 } else {
+                    // save _1 & _2 & _3 & _4 & _5
+                 }
             }
             void LineMouseDown(object sender, MouseButtonEventArgs e)
             {
